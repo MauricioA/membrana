@@ -1,0 +1,8 @@
+        !COMPILER-GENERATED INTERFACE MODULE: Fri Nov 16 13:49:44 2012
+        MODULE UPCASE__genmod
+          INTERFACE 
+            SUBROUTINE UPCASE(WORD)
+              CHARACTER(*), INTENT(INOUT) :: WORD
+            END SUBROUTINE UPCASE
+          END INTERFACE 
+        END MODULE UPCASE__genmod
