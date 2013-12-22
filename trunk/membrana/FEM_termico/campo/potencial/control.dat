@@ -1,4 +1,4 @@
-  ARCHIVO1: CELULA1.FEM         
+  ARCHIVO1: CELULA4.FEM         
   OPCION:            1
   ARCHIVO3: SISTEMA.DAT         
   SIGINT:    1.0000000000000000     
@@ -9,8 +9,8 @@
   FRECUENCIA:    0.0000000000000000     
   DIRICHV:            2
   DIRICHT:            2
-  BANDWIDTH:         1631   EN ELEMENTO          3085
- nonulos del sistema          1775        5222  1.65744894E-03
-  BANDWIDTH:         6523   EN ELEMENTO          3085
- nonulos del sistema          3550       22664  1.79837330E-03
- iteraciones internas            1  5.00000023748725653E-004         173  9.76740067193244719E-007
+  BANDWIDTH:         5673   EN ELEMENTO         10535
+ nonulos del sistema          6057       18016  4.91069804E-04
+  BANDWIDTH:        22691   EN ELEMENTO         10535
+ nonulos del sistema         12114       78122  5.32351143E-04
+ iteraciones internas            1  5.00000023748725653E-004         634  9.49242441002713426E-007
