@@ -2,7 +2,7 @@ subroutine campo(nnodes,nelements,nodpel,solution,material,conect,coor_x,coor_y,
    &        grad_x,grad_y,grad_z,gradxel_x,gradxel_y,gradxel_z)
 implicit none
 integer :: nnodes,nelements,nodpel,conect(nelements,nodpel),material(nelements)
-double precision :: grad_x(nnodes),grad_y(nnodes),grad_z(nnodes)
+double precision :: grad_x(nnodes),grad_y(nnodes),grad_z(nnodes) 
 double precision :: gradxel_x(nelements),gradxel_y(nelements),gradxel_z(nelements)
 
 double precision :: solution(nnodes),coor_x(nnodes),coor_y(nnodes),coor_z(nnodes),sigma1,sigma2 ,sigma3,sigma4
