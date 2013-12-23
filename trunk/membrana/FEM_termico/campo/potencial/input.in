@@ -11,9 +11,9 @@ opcion: 1         # 1 construye el sistema. 2 lo lee
 
 archivo3:  sistema.dat
 
-sigint:  1.0  #0.13       #condutividad de la zona intraelular
-sigext:  1.0   #0.6      #condutividad de la zona extra
-sigmem:  1.0  #0.0000053     #condutividad de la membrana
+sigint:  0.13  #0.13       #condutividad de la zona intraelular
+sigext:  0.6   #0.6      #condutividad de la zona extra
+sigmem:  0.0000053  #0.0000053     #condutividad de la membrana
 permit :  1.0          #permitividad de la membrana
 Potencial: 1.0     # voltaje 
 Frecuencia: 0.0  # del campo en MGhz
