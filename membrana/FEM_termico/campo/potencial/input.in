@@ -5,7 +5,7 @@ Problema: celula
 
 data_entrada
 
-archivo1: celula4.fem
+archivo1: celula1.fem
 
 opcion: 1         # 1 construye el sistema. 2 lo lee
 
