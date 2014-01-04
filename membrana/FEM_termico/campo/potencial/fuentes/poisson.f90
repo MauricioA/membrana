@@ -51,6 +51,11 @@ do while(error>epsil .and. nconta< NCOTA )
             sigma_el = sigmaint
         endif
    
+! jel = elemento actual
+! nodpel = 3
+! x = arreglo con 3 coordenadas x, 1 por cada nodo del elem
+! y = arreglo con 3 coordenadas y, 1 por cada nodo del elem
+! sol = arreglo con 3 soluciones anteriores, una por cada nodo
         qe=0.0
         DO I=1,nodpel
             ns(I)=conect(JEL,I)
