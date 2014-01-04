@@ -4,6 +4,8 @@ implicit none
 INTEGER :: nope,NS(NOPE),NLE
 DOUBLE PRECISION :: X(NOPE),Y(NOPE),EF(NOPE),ESM(NOPE,NOPE),sigma_el,qe,sol(nope),Ex_el,Ey_el
 
+! NOPE = 3
+
 DOUBLE PREcIsION:: B(3),C(3),DETER,A,RMED
 DOUBLE PREcIsION:: PI=3.14159
 integer i,j
