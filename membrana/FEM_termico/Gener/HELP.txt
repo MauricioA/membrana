@@ -1,0 +1,5 @@
+1. escribir un .gen
+2. delaunay.exe para crear un .fem
+3. campo usa el .fem
+
+adicionalmente pre2d para generar un .dir para ver con view2d
