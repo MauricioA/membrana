@@ -14,4 +14,3 @@ fclose(f);
 plot3(x,y,V,'.')
 pause
 plot3(x,y,C,'.');xlabel('x');ylabel('y')
-
