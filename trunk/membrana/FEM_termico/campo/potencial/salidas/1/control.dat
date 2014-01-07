@@ -1,0 +1,16 @@
+  ARCHIVO1: CELULA1.FEM         
+  OPCION:            1
+  ARCHIVO3: SISTEMA.DAT         
+  SIGINT:   0.13000000000000000     
+  SIGEXT:   0.59999999999999998     
+  SIGMEM:    5.3000000000000001E-006
+  PERMIT:    1.0000000000000000     
+  POTENCIAL:    1.0000000000000000     
+  FRECUENCIA:    0.0000000000000000     
+  DIRICHV:           11
+  DIRICHT:           11
+  BANDWIDTH:         1631   EN ELEMENTO          3085
+ nonulos del sistema          1775        5222   1.65744894E-03
+  BANDWIDTH:         6523   EN ELEMENTO          3085
+ nonulos del sistema          3550       22664   1.79837330E-03
+ iteraciones internas            1   5.0000002374872565E-004         208   9.1770840543189237E-007
