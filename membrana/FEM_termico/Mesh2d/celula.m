@@ -75,7 +75,7 @@ end
 
 fprintf(f, '1 %d Tri3\n', size(elemsF)(2));
 fprintf(f, '2 %d Tri3\n', size(elemsM)(2));
-fprintf(f, '2 %d Tri3\n', size(elemsC)(2));
+fprintf(f, '3 %d Tri3\n', size(elemsC)(2));
 
 fprintf(f, '*INCIDENCES\n');
 
