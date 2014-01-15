@@ -1,0 +1,16 @@
+  ARCHIVO1: NUEVA-100N-64.FEM   
+  OPCION:            1
+  ARCHIVO3: SISTEMA.DAT         
+  SIGINT:    1.5000000000000001E-012
+  SIGEXT:    2.0000000000000000E-012
+  SIGMEM:    5.0000000000000004E-018
+  PERMIT:    1.0000000000000000     
+  POTENCIAL:    1.0000000000000000     
+  FRECUENCIA:    0.0000000000000000     
+  DIRICHV:            4
+  DIRICHT:            4
+  BANDWIDTH:         2503   EN ELEMENTO             7
+ nonulos del sistema          2576        7659   1.15419808E-03
+  BANDWIDTH:        10011   EN ELEMENTO             7
+ nonulos del sistema          5152       33213   1.25128543E-03
+ iteraciones internas            1   5.0000002374872565E-004         256   7.5049039511265892E-007

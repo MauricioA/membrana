@@ -1,13 +1,14 @@
-n = 32;
+n = 4096 - 1;
 h = 100;
 r = 10;
-d = 0.1
+d = 15e-3;
+archivo = '15n-4k.fem';
 
 dtheta = pi/n;
 theta  = (-pi/2 : dtheta : pi/2)';
 memb_i = [cos(theta)*r     sin(theta)*r+h/2];
 memb_o = [cos(theta)*(r+d) sin(theta)*(r+d)+h/2];
-nodes  = [0 0; 50 0; 50 100; 0 100];
+nodes  = [0 0; h/2 0; h/2 h; 0 h];
 
 nodes = vertcat(nodes, memb_i, memb_o);
 
@@ -44,7 +45,7 @@ faces{3} = [6, 8 + 1 : 8 + size(edges_i)(1)];
 
 [p, t, g] = meshfaces(nodes, edges, faces);
 
-f = fopen('nueva.fem', 'w');
+f = fopen(archivo, 'w');
 
 nNodos = size(p)(1);
 nElems = size(t)(1);

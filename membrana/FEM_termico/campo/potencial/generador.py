@@ -14,9 +14,9 @@ t = []
 for line in lines:
 	if re.match("\*ELEMENT\_GROUPS", line):
 		break
-	if re.match("\d+\s\d+\.?\d*\s10", line):
+	if re.match("\d+\s\d+\.?\d*\s100\.?0*", line):
 		v.append(re.match("\d+", line).group())
-	elif re.match("\d+\s\d+\.?\d*\s0\s", line):
+	elif re.match("\d+\s\d+\.?\d*\s0\.?0*\s", line):
 		t.append(re.match("\d+", line).group())
 
 f = open("input.in", "w")
@@ -29,9 +29,9 @@ f.write("archivo1: " + args.file + "\n")
 f.write("opcion: 1\n")
 f.write("archivo3: sistema.dat\n")
 f.write("""
-sigint:  	0.13  		#condutividad de la zona intraelular
-sigext:  	0.6        	#condutividad de la zona extra
-sigmem: 	0.0000053	#condutividad de la membrana
+sigint:  	150e-9 		#condutividad de la zona intraelular [S/um]
+sigext:  	200e-9    	#condutividad de la zona extra
+sigmem: 	500e-15		#condutividad de la membrana
 permit :  	1.0       	#permitividad de la membrana
 Potencial: 	1.0     	#voltaje 
 Frecuencia:	0.0  		#freq del campo en MGhz

@@ -1,0 +1,16 @@
+  ARCHIVO1: NUEVA-25N-512.FEM   
+  OPCION:            1
+  ARCHIVO3: SISTEMA.DAT         
+  SIGINT:    1.5000000000000001E-012
+  SIGEXT:    2.0000000000000000E-012
+  SIGMEM:    5.0000000000000004E-018
+  PERMIT:    1.0000000000000000     
+  POTENCIAL:    1.0000000000000000     
+  FRECUENCIA:    0.0000000000000000     
+  DIRICHV:            4
+  DIRICHT:            4
+  BANDWIDTH:         5121   EN ELEMENTO             7
+ nonulos del sistema          5192       15487   5.74510428E-04
+  BANDWIDTH:        20483   EN ELEMENTO             7
+ nonulos del sistema         10384       67141   6.22670748E-04
+ iteraciones internas            1   5.0000002374872565E-004         373   9.9006898921860915E-007

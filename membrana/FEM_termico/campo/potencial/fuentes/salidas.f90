@@ -8,14 +8,14 @@ integer :: kk,jj,ii,ngrid,nzgrid2,casex,ncamp,j
 double precision :: camp,xmed,ymed,zmed,col,z=0,solmed
 character*(1)::coma=','
 
-write(unit_sal,*) 'X,    Y,  Z,   V  ' ! nnodes
+write(unit_sal,*) 'X,    Y,   V  ' ! nnodes
 
 do kk=1,nnodes
-   write(unit_sal,'(e15.5,a,e15.5,a,e15.5,a,e15.5)') coor_x(kk),coma,coor_y(kk),coma,z,coma,solucion(kk)
+   write(unit_sal,'(e15.5,a,e15.5,a,e15.5)') coor_x(kk),coma,coor_y(kk),coma,solucion(kk)
 enddo
 
 
-write(unit_camp,*)  ' x,     y,    Z,    camp'
+write(unit_camp,*)  ' x,     y,   camp'
 
 do kk=1,nelements
    
@@ -31,7 +31,7 @@ do kk=1,nelements
         solmed=solmed + solucion(j)/real(nodpel)
    enddo
 
-   write(unit_camp,'(e15.5,3(a,e15.5))')   xmed,coma,ymed,coma,zmed,coma,camp
+   write(unit_camp,'(e15.5,2(a,e15.5))')   xmed,coma,ymed,coma,camp
 
    if(material(kk)==2) then
       write(unit_2d,'(4e15.5)') xmed,ymed,solmed, camp
