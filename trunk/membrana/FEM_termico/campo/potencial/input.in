@@ -1,42 +1,28 @@
 Problema: celula
 
 data_entrada
-archivo1: celula6.fem
+archivo1: NUEVA-75N-512.FEM
 opcion: 1
 archivo3: sistema.dat
 
-sigint:  	0.13  		#condutividad de la zona intraelular
-sigext:  	0.6        	#condutividad de la zona extra
-sigmem: 	0.0000053	#condutividad de la membrana
+sigint:  	150e-9 		#condutividad de la zona intraelular [S/um]
+sigext:  	200e-9    	#condutividad de la zona extra
+sigmem: 	500e-15		#condutividad de la membrana
 permit :  	1.0       	#permitividad de la membrana
 Potencial: 	1.0     	#voltaje 
 Frecuencia:	0.0  		#freq del campo en MGhz
 end_data
 
-dirichV: 11
-3
-4
-39
-40
-41
-42
-43
-44
-45
-46
-47
-
-dirichT: 11
-1
+dirichV: 4
 2
-11
-12
-13
-14
-15
-16
-17
-18
-19
+5243
+5299
+5313
+
+dirichT: 4
+1
+5242
+5298
+5307
 
 end_dataCC

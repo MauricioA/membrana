@@ -1,8 +1,0 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Mon Apr 29 09:43:30 2013
-        MODULE POISSON__genmod
-          INTERFACE 
-            SUBROUTINE POISSON
-              USE DEF_VARIABLES
-            END SUBROUTINE POISSON
-          END INTERFACE 
-        END MODULE POISSON__genmod
