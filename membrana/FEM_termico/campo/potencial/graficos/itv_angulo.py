@@ -3,9 +3,9 @@ import argparse, re, math
 centerX 	= 0
 centerY 	= 50
 radioCel 	= 10
-dMemb 		= 75e-3
+dMemb 		= 25e-3		# en um
 tolerancia 	= 1e-3
-sigma_memb  = 500e-15
+#~ sigma_memb  = 500e-15
 
 #~ 25 4.864341e-06
 #~ 50 2.183236e-06
@@ -66,9 +66,9 @@ for voltaje in voltajes:
 	v = voltaje[2]
 	radio = math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2)
 	if y < 5:
-		tita = math.degrees(math.asin((x - centerX) / radio))
+		tita = 180 - math.degrees(math.asin((x - centerX) / radio))
 	else:
-		tita = math.degrees(math.asin((y - centerY) / radio)) + 90
+		tita = 180 - math.degrees(math.asin((y - centerY) / radio)) - 90
 	
 	if abs(radio - radioCel) < tolerancia:
 		internos.append((tita, v))
@@ -81,24 +81,24 @@ externos = sorted(externos, key = lambda ang : ang[0])
 print len(internos)
 print len(externos)
 
-volt_intra 	= open("volt_intra.csv", "w")
-flujo_intra = open("flujo.csv", "w")
+volt_intra 	= open("itv.csv", "w")
+#~ flujo_intra = open("flujo.csv", "w")
 
-volt_intra.write("angulo, voltaje trans\n")
-flujo.write("angulo, flujo\n")
+volt_intra.write("tita, itv [V]\n")
+#~ flujo.write("angulo, flujo\n")
 
 v_trans_promedio = 0
 
 for i in range(len(internos)):
 	tita = (internos[i][0] + externos[i][0]) / 2
 	voltaje = externos[i][1] - internos[i][1]
-	flujo = sigma_memb * voltaje / dMemb
+	#~ flujo = sigma_memb * voltaje / dMemb
 	volt_intra.write("%f, %e\n" % (tita, voltaje))
-	flujo.write("%f, %e\n" % (tita, flujo))
+	#~ flujo.write("%f, %e\n" % (tita, flujo))
 	v_trans_promedio += voltaje
 	
 volt_intra.close()
-flujo.close()
+#~ flujo.close()
 
 v_trans_promedio /= len(internos)
 
