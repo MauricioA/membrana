@@ -61,7 +61,7 @@ for valor in valores:
 	y = valor[1]
 	v = valor[2]
 	radio = math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2)
-	tita = 180 - 90 - math.degrees(math.asin((y - centerY) / radio))
+	tita = math.degrees(math.acos((y - centerY) / radio))
 	
 	if abs(radio - radioCel) < tolerancia:
 		internos.append((tita, v))

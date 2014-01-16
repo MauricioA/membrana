@@ -3,7 +3,7 @@ import argparse, re, math
 centerX 	= 0
 centerY 	= 50
 radioCel 	= 10
-dMemb 		= 1	   # en um
+dMemb 		= 25e-3	   # en um
 tolerancia 	= 1e-3
 
 parser = argparse.ArgumentParser()
@@ -54,7 +54,7 @@ for line in lines[1:]:
 	dist = math.sqrt((x - centerX)**2 + (y - centerY)**2)
 	if dist > minDist and dist < maxDist:
 		radio = math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2)
-		tita = 180 - 90 - math.degrees(math.asin((y - centerY) / radio))
+		tita = math.degrees(math.acos((y - centerY) / radio))
 		valores.append((tita, c))
 	
 valores = sorted(valores, key = lambda ang : ang[0])
