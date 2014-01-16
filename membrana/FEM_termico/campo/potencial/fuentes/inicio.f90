@@ -13,5 +13,6 @@ implicit none
     open(unit=unit_camp,file=file_camp)
     open(unit=unit_sal2d,file=file_sal2d)
     open(unit=unit_el2d,file=file_el2d)
+    open(unit=unit_corr,file=file_corr)
     
 end subroutine inicio

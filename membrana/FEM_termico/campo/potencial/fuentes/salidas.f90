@@ -4,7 +4,7 @@ use def_constantes
 implicit none
 double precision :: solucion(nnodes)
 ! local 
-integer :: kk,jj,ii,ngrid,nzgrid2,casex,ncamp,j
+integer :: kk,jj,ii,ngrid,nzgrid2,casex,ncamp,j,kkk
 double precision :: camp,xmed,ymed,zmed,col,z=0,solmed
 character*(1)::coma=','
 
@@ -37,11 +37,33 @@ do kk=1,nelements
       write(unit_2d,'(4e15.5)') xmed,ymed,solmed, camp
    endif
 
-
-
 enddo
 
 
+! corriente
+write(unit_corr,*)  ' x,     y,   corriente'
+
+do kkk = 1, nelements
+   
+	camp = dsqrt(corrxel_x(kkk) * corrxel_x(kkk) + corrxel_y(kkk) * corrxel_y(kkk))
+	xmed = 0
+	ymed = 0
+	zmed = 0
+	solmed = 0
+	do jj = 1, nodpel
+		j = conect(kkk, jj)
+		xmed = xmed + coor_x(j) / real(nodpel)
+		ymed = ymed + coor_y(j) / real(nodpel)
+		solmed = solmed + solucion(j)/real(nodpel)
+	enddo
+
+	write(unit_corr, '(e15.5,2(a,e15.5))')   xmed, coma, ymed, coma, camp
+
+	if(material(kkk)==2) then
+		write(unit_2d, '(4e15.5)') xmed, ymed, solmed, camp
+	endif
+
+enddo
 
 
 end subroutine salida_sol

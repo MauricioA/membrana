@@ -141,7 +141,7 @@ do kk=1,nquieto
       write(unit_cc,'(2i6,2e15.5)') kk,nod_quieto(kk), coor_x(jj),coor_y(jj)
 enddo
  
-allocate(grad_x(nnodes),grad_y(nnodes),grad_z(nnodes),gradxel_x(nelements),gradxel_y(nelements),gradxel_z(nelements))
+allocate(grad_x(nnodes),grad_y(nnodes),grad_z(nnodes),gradxel_x(nelements),gradxel_y(nelements),gradxel_z(nelements), corr_x(nnodes), corr_y(nnodes), corrxel_x(nelements), corrxel_y(nelements))
 
 
 end subroutine leemalla

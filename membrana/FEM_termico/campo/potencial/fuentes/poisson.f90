@@ -70,6 +70,9 @@ do while(error>epsil .and. nconta< NCOTA )
         gradxel_y(jel)=0.0
 !        gradxel_z(jel)=0.0
 
+		corrxel_x(jel) = 0.0
+		corrxel_y(jel) = 0.0
+
         if(nodpel==27) then
             CALL ARMADO(NCASE,JEL,X,Y,Z,ns,nodpel,ESM,EF,sigma_el,qe)
         elseif(nodpel==8) then
@@ -174,8 +177,13 @@ enddo ! end while
 
 !call campo(nnodes,nelements,nodpel,solucion,material,conect,coor_x,coor_y,coor_z,sigma1,sigma2,sigma3,sigma4,grad_x,grad_y,grad_z,  &
 !      &    gradxel_x,gradxel_y,gradxel_z)
-call campo2d(nnodes,nelements,nodpel,solucion,material,conect,coor_x,coor_y,sigmaext,sigmaint,sigmamem,grad_x,grad_y,  &
+
+call     campo2d(nnodes,nelements,nodpel,solucion,material,conect,coor_x,coor_y,sigmaext,sigmaint,sigmamem,grad_x,grad_y,  &
       &    gradxel_x,gradxel_y)
+
+call corriente2d(nnodes,nelements,nodpel,solucion,material,conect,coor_x,coor_y,sigmaext,sigmaint,sigmamem, corr_x, corr_y, &
+      & corrxel_x, corrxel_y)
+
 
 call salida_sol(solucion)
 

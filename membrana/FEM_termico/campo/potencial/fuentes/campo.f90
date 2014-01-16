@@ -229,9 +229,11 @@ DO JEL=1,nelements
    gradxel_x(jel)=(B(1)*sol(1)+B(2)*sol(2)+B(3)*sol(3))/DETER
    gradxel_y(jel)=(C(1)*sol(1)+C(2)*sol(2)+C(3)*sol(3))/DETER
    
-   gradxel_x(jel)=sigma_el* gradxel_x(jel)*(-1.)
-   gradxel_y(jel)=sigma_el* gradxel_y(jel)*(-1.)   
+!~    gradxel_x(jel)=sigma_el* gradxel_x(jel)*(-1.)
+!~    gradxel_y(jel)=sigma_el* gradxel_y(jel)*(-1.)   
 
+   gradxel_x(jel) = gradxel_x(jel)*(-1.)
+   gradxel_y(jel) = gradxel_y(jel)*(-1.)
    
    do i=1,nodpel
         j=ns(i)
@@ -241,6 +243,81 @@ DO JEL=1,nelements
     
 enddo
 
-
-
 end subroutine campo2d
+
+
+
+subroutine corriente2d(nnodes,nelements,nodpel,solution,material,conect,coor_x,coor_y,sigmaext,sigmaint,sigmamem,grad_x,grad_y,  &
+      &    gradxel_x,gradxel_y)
+
+
+implicit none
+integer :: nnodes,nelements,nodpel,conect(nelements,nodpel),material(nelements)
+double precision :: grad_x(nnodes),grad_y(nnodes)
+double precision :: gradxel_x(nelements),gradxel_y(nelements)
+
+double precision :: solution(nnodes),coor_x(nnodes),coor_y(nnodes),sigmaext,sigmaint,sigmamem
+! local
+INTEGER :: nope,NS(nodpel),jel,mat
+DOUBLE PRECISION :: X(nodpel),Y(nodpel),sol(nodpel),sigma_el,Ex_el,ey_el,ez_el,ex(nodpel),ey(nodpel)
+DOUBLE PREcIsION:: B(3),C(3),DETER,A,RMED
+DOUBLE PREcIsION:: PI=3.14159
+
+integer kk,jj,i,j,ii,K,NLE,pgaus,I2,ngaus
+	 
+grad_x=0.0
+grad_y=0.0
+gradxel_x=0.0
+gradxel_y=0.0
+
+DO JEL=1,nelements
+
+   mat=material(jel)        
+   if(mat==3) then
+       sigma_el = sigmaint
+   elseif(mat==2) then
+       sigma_el = sigmamem
+   elseif(mat==1 ) then
+       sigma_el = sigmaext
+   endif
+   
+   
+   DO I=1,nodpel
+        ns(I)=conect(JEL,I)
+	    j=NS(I)
+        X(i)=coor_x(j)
+        y(i)=coor_y(j)
+        sol(i)=solution(j)
+        Ex(i)=0.0
+        Ey(i)=0.0
+   ENDDO
+        
+   Ex_el=0
+   Ey_el=0
+
+
+      
+!  EVALUACION DEL GRADIENTE EN LOS ELEMENTOS
+   B(1)=Y(2)-Y(3)
+   B(2)=Y(3)-Y(1)
+   B(3)=Y(1)-Y(2)
+   C(1)=X(3)-X(2)
+   C(2)=X(1)-X(3)
+   C(3)=X(2)-X(1)
+   
+   DETER=X(2)*Y(3)+X(3)*Y(1)+X(1)*Y(2)-X(2)*Y(1)-X(3)*Y(2)-X(1)*Y(3)
+   gradxel_x(jel)=(B(1)*sol(1)+B(2)*sol(2)+B(3)*sol(3))/DETER
+   gradxel_y(jel)=(C(1)*sol(1)+C(2)*sol(2)+C(3)*sol(3))/DETER
+   
+   gradxel_x(jel)=sigma_el* gradxel_x(jel)*(-1.)
+   gradxel_y(jel)=sigma_el* gradxel_y(jel)*(-1.)   
+
+   do i=1,nodpel
+        j=ns(i)
+        grad_x(j) =  grad_x(j) + gradxel_x(i)/real(nodpel)
+        grad_y(j) =  grad_y(j) + gradxel_y(i)/real(nodpel)
+   enddo
+    
+enddo
+
+end subroutine corriente2d
