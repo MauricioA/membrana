@@ -4,16 +4,12 @@ centerX 	= 0
 centerY 	= 50
 radioCel 	= 10
 dMemb 		= 25e-3		# en um
-tolerancia 	= 1e-3
-#~ sigma_memb  = 500e-15
-
-#~ 25 4.864341e-06
-#~ 50 2.183236e-06
-#~ 75 2.304688e-06
+tolerancia 	= 10e-3
 
 parser = argparse.ArgumentParser()
 parser.add_argument('fem')
-parser.add_argument('results')
+parser.add_argument('datos')
+parser.add_argument('salida')
 args = parser.parse_args()
 
 fem = open(args.fem)
@@ -41,10 +37,10 @@ for i in range(nPuntos + nElemsGrupo1 + 8, nPuntos + nElemsGrupo1 + 8 + nElemsMe
 	for j in range(1, 4):
 		puntosMemb.add(puntos[int(groups[j])])
 	
-voltajes = open(args.results)
-lines = voltajes.readlines()
-voltajes.close()
-voltajes = []
+resultados = open(args.datos)
+lines = resultados.readlines()
+resultados.close()
+valores = []
 
 for line in lines[1:]:
 	reg = re.match('\s+(\d+\.?\d*E?\+?\-?\d*)\,\s+(\d+\.?\d*E?\+?\-?\d*)\,\s+(\d+\.?\d*E?\+?\-?\d*)', line)
@@ -54,21 +50,18 @@ for line in lines[1:]:
 	v = float(groups[2])
 	for punto in puntosMemb:
 		if abs(punto[0] - x) < tolerancia and abs(punto[1] - y) < tolerancia:
-			voltajes.append((x, y, v))
+			valores.append((x, y, v))
 			break
 
-internos = []	# (grados, voltaje)
+internos = []	# (grados, valor)
 externos = []
 
-for voltaje in voltajes:
-	x = voltaje[0]
-	y = voltaje[1]
-	v = voltaje[2]
+for valor in valores:
+	x = valor[0]
+	y = valor[1]
+	v = valor[2]
 	radio = math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2)
-	if y < 5:
-		tita = 180 - math.degrees(math.asin((x - centerX) / radio))
-	else:
-		tita = 180 - math.degrees(math.asin((y - centerY) / radio)) - 90
+	tita = 180 - 90 - math.degrees(math.asin((y - centerY) / radio))
 	
 	if abs(radio - radioCel) < tolerancia:
 		internos.append((tita, v))
@@ -81,25 +74,20 @@ externos = sorted(externos, key = lambda ang : ang[0])
 print len(internos)
 print len(externos)
 
-volt_intra 	= open("itv.csv", "w")
-#~ flujo_intra = open("flujo.csv", "w")
+f_salida = open(args.salida, "w")
 
-volt_intra.write("tita, itv [V]\n")
-#~ flujo.write("angulo, flujo\n")
+f_salida.write("tita, itv [V]\n")
 
-v_trans_promedio = 0
+v_promedio = 0
 
 for i in range(len(internos)):
 	tita = (internos[i][0] + externos[i][0]) / 2
-	voltaje = externos[i][1] - internos[i][1]
-	#~ flujo = sigma_memb * voltaje / dMemb
-	volt_intra.write("%f, %e\n" % (tita, voltaje))
-	#~ flujo.write("%f, %e\n" % (tita, flujo))
-	v_trans_promedio += voltaje
+	valor = externos[i][1] - internos[i][1]
+	f_salida.write("%f, %e\n" % (tita, valor))
+	v_promedio += valor
 	
-volt_intra.close()
-#~ flujo.close()
+f_salida.close()
 
-v_trans_promedio /= len(internos)
+v_promedio /= len(internos)
 
-print "V promedio = %e" % v_trans_promedio
+print "promedio = %e" % v_promedio

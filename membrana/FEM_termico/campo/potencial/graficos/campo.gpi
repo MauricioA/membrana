@@ -1,0 +1,21 @@
+
+set angles degrees
+
+set terminal png
+
+set xlabel "Tita [º]"
+set ylabel "Campo [V/cm]"
+
+set xrange [0 : 180]
+# set yrange [25:100]
+
+set output "campo.png"
+
+# en los datos está en V/um
+# tengo que multiplicar por 1e4 para pasar a V/cm
+
+plot "campo500.csv" using ($1):(($2)*1e4) title 'd = 500 nm' with lines linestyle 2, \
+	 "campo100.csv" using ($1):(($2)*1e4) title 'd = 100 nm' with lines linestyle 3, \
+	 "campo75.csv"  using ($1):(($2)*1e4) title 'd = 75 nm'  with lines linestyle 4, \
+	 "campo50.csv"  using ($1):(($2)*1e4) title 'd = 50 nm'  with lines linestyle 5, \
+	 "campo25.csv"  using ($1):(($2)*1e4) title 'd = 25 nm'  with lines linestyle 6, \
