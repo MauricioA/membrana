@@ -4,7 +4,7 @@ character(10):: problema
 character(20):: archi_malla='    '
 character(20):: archi_sistema='    '
 
-double precision,allocatable :: coor_x(:),coor_y(:),coor_z(:),grad_x(:),grad_y(:),grad_z(:),cer(:),gradxel_x(:),gradxel_y(:),gradxel_z(:)
+double precision,allocatable :: coor_x(:),coor_y(:),coor_z(:),grad_x(:),grad_y(:),grad_z(:),cer(:),gradxel_x(:),gradxel_y(:),gradxel_z(:), corr_x(:), corr_y(:), corrxel_x(:), corrxel_y(:)
 
 double precision,allocatable :: tension(:,:),deforma(:,:)
 integer :: ntension=4
@@ -34,9 +34,10 @@ integer :: unit_data=1,  &! data de entrada
    &       unit_2d=12,   &  
    &       unit_gra=13,   & 
    &       unit_grid=14,   & 
-   &       unit_camp=15,   &      ! camp elemental
+   &       unit_camp=15,   &    ! camp elemental
    &       unit_sal2d=16,   &   ! desplazameinos
-   &       unit_el2d=17        ! tensiones elementsles
+   &       unit_el2d=17,    &   ! tensiones elementsles
+   &       unit_corr=18			! corrientes
    
    
    
@@ -50,6 +51,7 @@ character*(30) :: filedata='input.in',  & ! entrada
      &          file_grid='grid2D.dat',  &   ! alguna salida especial     
      &          file_camp='campo.dat',    & 
      &          file_sal2d='desplaz.csv' ,   & 
-     &          file_el2d='elemen.csv'
-
+     &          file_el2d='elemen.csv', &
+     &          file_corr='corriente.csv'	! corriente
+     
 end module def_variables
