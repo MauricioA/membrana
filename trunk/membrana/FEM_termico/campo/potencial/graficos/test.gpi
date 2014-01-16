@@ -1,0 +1,43 @@
+
+set angles degrees
+
+e  = 10e3	# [V/m] (100v/cm)
+
+r  = 10e-6	# [m]
+
+d  = 25e-9	
+
+so = 0.15	# [S/m]
+
+sm = 5e-7
+
+si = 0.2
+
+num = 3*so * (3*d*(r**2)*si + (3*(d**2)*r - (d**3)) * (sm - si))
+
+den = 2*(r**3) * (sm + 2*so) * (sm + .5*si) - 2 * ((r - d)**3) * (so - sm) * (si - sm)
+
+f = num / den
+
+itv_teo(x) = f * e * r * cos(x)
+
+set terminal png
+
+set xlabel "Tiempo de bloqueo"
+set ylabel "Veces"
+
+set xrange [0 : 180]
+# set yrange [25:100]
+
+set output "teorico.png"
+
+plot itv_teo(x) title 'teo' with lines linestyle 1
+
+set output "real.png"
+
+plot "itv.csv" using ($1):($2) title 'Real' with lines linestyle 2
+
+set output "error.png"
+
+plot "itv.csv" using ($1):(abs($2 - itv_teo($1))) title "Error" with points
+

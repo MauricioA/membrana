@@ -1,7 +1,7 @@
 Problema: celula
 
 data_entrada
-archivo1: 15n-4k.fem
+archivo1: NUEVA-25N-512.FEM
 opcion: 1
 archivo3: sistema.dat
 
@@ -15,14 +15,14 @@ end_data
 
 dirichV: 4
 2
-47287
-47337
-47352
+5122
+5178
+5192
 
 dirichT: 4
 1
-47286
-47336
-47346
+5121
+5177
+5186
 
 end_dataCC
