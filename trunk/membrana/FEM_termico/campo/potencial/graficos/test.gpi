@@ -23,21 +23,26 @@ itv_teo(x) = f * e * r * cos(x)
 
 set terminal png
 
-set xlabel "Tiempo de bloqueo"
-set ylabel "Veces"
+set xlabel "Tita [º]"
 
 set xrange [0 : 180]
 # set yrange [25:100]
 
-set output "teorico.png"
+set output "itv25-teo.png"
 
-plot itv_teo(x) title 'teo' with lines linestyle 1
+set ylabel "ITV [V]"
 
-set output "real.png"
+plot itv_teo(x) with lines linestyle 1 title "ITV teórico d = 25 nm"
 
-plot "itv.csv" using ($1):($2) title 'Real' with lines linestyle 2
+set output "itv25.png"
 
-set output "error.png"
+set ylabel "ITV [V]"
 
-plot "itv.csv" using ($1):(abs($2 - itv_teo($1))) title "Error" with points
+plot "itv25.csv" using ($1):($2) with lines linestyle 1 title "ITV d = 25 nm"
+
+set output "itv-error-25.png"
+
+set ylabel "Error ITV [V]"
+
+plot "itv25.csv" using ($1):(abs($2 - itv_teo($1))) with points title "Error ITV d = 25 nm"
 
