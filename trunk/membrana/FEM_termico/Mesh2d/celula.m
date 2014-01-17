@@ -1,8 +1,8 @@
-n = 32 - 1;
+n = 512-1;
 h = 100;
 r = 10;
-d = 20e-3;
-archivo = '20n-32.fem';
+d = 50e-3;
+archivo = '50n-512.fem';
 
 dtheta = pi/n;
 theta  = (-pi/2 : dtheta : pi/2)';
