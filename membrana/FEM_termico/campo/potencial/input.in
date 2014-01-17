@@ -1,7 +1,7 @@
 Problema: celula
 
 data_entrada
-archivo1: 50.FEM
+archivo1: CELULA.FEM
 opcion: 1
 archivo3: sistema.dat
 
@@ -13,16 +13,13 @@ Potencial: 	1.0     	#voltaje
 Frecuencia:	0.0  		#freq del campo en MGhz
 end_data
 
-dirichV: 4
-2
-5005
-5062
-5076
+dirichV: 3
+1029
+1030
+13984
 
-dirichT: 4
-1
-5004
-5061
-5070
+dirichT: 2
+1027
+1028
 
 end_dataCC
