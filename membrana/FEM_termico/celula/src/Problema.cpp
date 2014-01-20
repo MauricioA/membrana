@@ -1,3 +1,5 @@
+#include "Problema.h"
+
 #include <stdlib.h>
 #include <fstream>
 #include <cmath>
@@ -5,7 +7,6 @@
 //test
 #include <iostream>
 
-#include "Problema.h"
 
 using namespace std;
 
@@ -151,7 +152,7 @@ void Problema::poisson() {
 
 			/* Ensamblado */
 			for (int i = 0; i < NODPEL; i++) {
-				rhs[elemento[i]] += ef[i];
+				//rhs[elemento[i]] += ef[i];
 				//ad [ns[i]] += esm[i][i];
 
 				for (int j = 1; j < NODPEL; j++) {
@@ -166,7 +167,21 @@ void Problema::poisson() {
 }
 
 void Problema::control() {
-	//TODO
+
+	rhs(19);
+	//matriz(50, 50);
+
+	Eigen::SparseMatrix<double> mat(50, 50);
+
+	Eigen::ConjugateGradient<Eigen::SparseMatrix<double> > cg;
+	cg.compute(mat);
+	Eigen::VectorXd x(50), rr(50);
+	x = cg.solve(rr);
+
+
+
+	Eigen::VectorXd a(5);
+
 }
 
 void Problema::armado(double x[], double y[], double ef[], double qe, double esm[3][3], double sigma) {

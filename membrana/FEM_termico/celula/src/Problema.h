@@ -1,10 +1,12 @@
-#include <vector>
-#include "declaraciones.cpp"
-
 #ifndef PROBLEMA_H_
 #define PROBLEMA_H_
 
+#include <Eigen/Sparse>
+#include <vector>
+#include "declaraciones.cpp"
+
 using namespace std;
+//using Eigen::Triplet;
 
 class Problema {
 public:
@@ -23,12 +25,18 @@ private:
 	double sigmas[3];
 	double potencial;
 
-	vector<Nodo>     nodos;
-	vector<Elemento> elementos;
-	vector<double> 	 solucionAnterior;
-	vector<double>   gradElemX;
-	vector<double>   gradElemY;
-	vector<double>   rhs;
+	std::vector<Nodo>     nodos;
+	std::vector<Elemento> elementos;
+	std::vector<double> 	 solucionAnterior;
+	std::vector<double>   gradElemX;
+	std::vector<double>   gradElemY;
+
+
+	Eigen::VectorXd rhs;
+	Eigen::SparseMatrix<double> matriz;
+
+	std::vector< Eigen::Triplet<double> > triplets;
+
 
 	void control();
 
