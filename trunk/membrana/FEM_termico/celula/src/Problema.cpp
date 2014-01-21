@@ -1,14 +1,13 @@
-#include "Problema.h"
-
 #include <stdlib.h>
 #include <fstream>
 #include <cmath>
 
-//test
+#include "Problema.h"
+
+//TODO sacar (test)
 #include <iostream>
 
-
-using namespace std;
+//TODO capacidad inicial de los vectores con reserve
 
 Problema::Problema() {
 	//TODO valores mockeados. Leer de input.in
@@ -93,6 +92,8 @@ void Problema::leerMalla(const char* archivo) {
 		elementos.push_back(Elemento(nodos, INTERNO));
 	}
 
+	nElems = elementos.size();
+
 	stream.close();
 }
 
@@ -100,27 +101,26 @@ void Problema::poisson() {
 	control();
 
 	double error = 1.;
-	//double ns[NODPEL];
 	double ef[NODPEL];
+	vector< Triplet<double> > triplets;
 
 	for (int contador = 0; error > EPSILON && contador < N_COTA; contador++) {
+
 		for (uint elemIdx = 0; elemIdx < elementos.size(); elemIdx++) {
+
 			Elemento elemento = elementos[elemIdx];
 			double sigma = sigmas[elemento.material];
 			double qe = 0.;
 			double x[NODPEL], y[NODPEL];
-			double sol[NODPEL];
 			double esm[3][3];
 
 			for (int i = 0; i < NODPEL; i++) {
-				//ns[i] = elemento[i];
 				int j = elemento[i];
 				x[i] = nodos[j].x;
 				y[i] = nodos[j].y;
-				sol[i] = solucionAnterior[j];
 			}
 
-			gradElemX[elemIdx] = gradElemY[elemIdx] = 0.;
+			//gradElemX[elemIdx] = gradElemY[elemIdx] = 0.;
 
 			armado(x, y, ef, qe, esm, sigma);
 
@@ -152,36 +152,39 @@ void Problema::poisson() {
 
 			/* Ensamblado */
 			for (int i = 0; i < NODPEL; i++) {
-				//rhs[elemento[i]] += ef[i];
-				//ad [ns[i]] += esm[i][i];
-
-				for (int j = 1; j < NODPEL; j++) {
-
+				rhs[elemento[i]] += ef[i];
+				for (int j = 0; j < NODPEL; j++) {
+					triplets.push_back(Triplet<double>(elemento[i], elemento[j], esm[i][j]));
 				}
 			}
 		}
 
+		matriz.setFromTriplets(triplets.begin(), triplets.end());
+
 		/* Resolución */
 
+		//TODO esto no sirve para nada
+		//solucion = rhs;
+
+		ConjugateGradient< SparseMatrix<double> > cg(matriz);
+
+		cout << "resolviendo... ";
+
+		solucion = cg.solve(rhs);
+
+		cout << "done\n";
+
+		//TODO no tiene sentido, siempre hace una sola iteración
+		error = EPSILON * .5;
 	}
 }
 
 void Problema::control() {
-
-	rhs(19);
-	//matriz(50, 50);
-
-	Eigen::SparseMatrix<double> mat(50, 50);
-
-	Eigen::ConjugateGradient<Eigen::SparseMatrix<double> > cg;
-	cg.compute(mat);
-	Eigen::VectorXd x(50), rr(50);
-	x = cg.solve(rr);
-
-
-
-	Eigen::VectorXd a(5);
-
+	rhs.resize(nNodes);
+	rhs.fill(0.0);
+	solucion.resize(nNodes);
+	solucion.fill(0.0);
+	matriz.resize(nNodes, nNodes);
 }
 
 void Problema::armado(double x[], double y[], double ef[], double qe, double esm[3][3], double sigma) {

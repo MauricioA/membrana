@@ -15,7 +15,7 @@ enum Material {
 struct Nodo {
 	double x;
 	double y;
-	double potencial;	//TODO esto se usa??
+	double potencial;	//TODO esto se usa?
 	bool esTierra;
 	bool esPotencia;
 };
