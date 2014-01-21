@@ -1,11 +1,9 @@
 #include <stdlib.h>
+#include <iostream>
 #include <fstream>
 #include <cmath>
 
 #include "Problema.h"
-
-//TODO sacar (test)
-#include <iostream>
 
 //TODO capacidad inicial de los vectores con reserve
 
@@ -120,7 +118,7 @@ void Problema::poisson() {
 				y[i] = nodos[j].y;
 			}
 
-			//gradElemX[elemIdx] = gradElemY[elemIdx] = 0.;
+//			gradElemX[elemIdx] = gradElemY[elemIdx] = 0.;
 
 			armado(x, y, ef, qe, esm, sigma);
 
@@ -161,6 +159,8 @@ void Problema::poisson() {
 
 		matriz.setFromTriplets(triplets.begin(), triplets.end());
 
+		// chequearSimetria();
+
 		/* Resolución */
 
 		//TODO esto no sirve para nada
@@ -174,9 +174,22 @@ void Problema::poisson() {
 
 		cout << "done\n";
 
+		double r = cg.error();
+		cout << "error: " << r << endl;
+
 		//TODO no tiene sentido, siempre hace una sola iteración
 		error = EPSILON * .5;
 	}
+
+	VectorXd b1 = matriz * solucion;
+	for (int i = 0; i < nNodes; i++) {
+		if (abs(rhs.coeff(i) - b1.coeff(i)) > 1e-6) cerr << "ERROR!" << endl;
+		cout << "(" << rhs.coeff(i) << ", " << b1.coeff(i) << ") " << endl;
+	}
+
+	corriente2D();
+
+	grabar();
 }
 
 void Problema::control() {
@@ -185,6 +198,8 @@ void Problema::control() {
 	solucion.resize(nNodes);
 	solucion.fill(0.0);
 	matriz.resize(nNodes, nNodes);
+//	gradElemX.resize(nNodes);
+//	gradElemY.resize(nNodes);
 }
 
 void Problema::armado(double x[], double y[], double ef[], double qe, double esm[3][3], double sigma) {
@@ -212,7 +227,7 @@ void Problema::armado(double x[], double y[], double ef[], double qe, double esm
 	}
 
 	for (int i = 0; i < 3; i++) {
-		ef[i] = 0.;
+		ef[i] = 0.0;
 		for (int j = 0; j < 3; j++) {
 			double a = i == j ? 2. : 1.;
 			ef[i] += (qe * determinante * M_PI / 12.) * (a * x[j]);
@@ -221,7 +236,89 @@ void Problema::armado(double x[], double y[], double ef[], double qe, double esm
 	}
 }
 
+void Problema::corriente2D() {
+	double x[3], y[3], sol[3];
+
+	gradElemX.resize(nElems);
+	gradElemY.resize(nElems);
+	for (int i = 0; i < nElems; i++) {
+		gradElemX[i] = 0.0;
+		gradElemY[i] = 0.0;
+	}
+
+	gradX.resize(nNodes);
+	gradY.resize(nNodes);
+	for (int i = 0; i < nNodes; i++) {
+		gradX[i] = 0.0;
+		gradY[i] = 0.0;
+	}
+
+	for (int iElem = 0; iElem < nElems; iElem++) {
+		Elemento elem = elementos[iElem];
+
+		for (int i = 0; i < NODPEL; i++) {
+			x[i] = nodos[elem[i]].x;
+			y[i] = nodos[elem[i]].x;
+			sol[i] = solucion.coeff(elem[i]);
+		}
+
+		double b[] = {
+			y[1] - y[2],
+			y[2] - y[0],
+			y[0] - y[1],
+		};
+
+		double c[] = {
+			x[2] - x[1],
+			x[0] - x[2],
+			x[1] - x[0],
+		};
+
+		double determinante =
+			+ x[1]*y[2] + x[2]*y[0] + x[0]*y[1]
+			- x[1]*y[0] - x[2]*y[1] - x[0]*y[2];
+
+		gradElemX[iElem] = (b[0] * sol[0] + b[1] * sol[1] + b[2] * sol[2]) / determinante;
+		gradElemY[iElem] = (c[0] * sol[0] + c[1] * sol[1] + c[2] * sol[2]) / determinante;
+
+		gradElemX[iElem] = sigmas[elem.material] * gradElemX[iElem] * -1;
+		gradElemY[iElem] = sigmas[elem.material] * gradElemY[iElem] * -1;
+
+		for (int i = 0; i < NODPEL; i++) {
+			int jNodo = elem[i];
+			//TODO ESTO ESTÁ MAL SEGURO!!!!
+			gradX[jNodo] += gradElemX[i] / NODPEL;
+			gradY[jNodo] += gradElemY[i] / NODPEL;
+		}
+	}
+}
+
+void Problema::grabar() {
+	/* Tensión */
+	ofstream tension("tension.csv", ofstream::out);
+
+	tension << "X, Y, V\n";
+
+	for (int iNodo = 0; iNodo < nNodes; iNodo++) {
+		Nodo nodo = nodos[iNodo];
+		tension << nodo.x << ", " << nodo.y << ", " << solucion[iNodo] << "\n";
+	}
+
+	tension.close();
+}
+
 Elemento Problema::getElement(int i) {
 	return elementos[i];
 }
 
+void Problema::chequearSimetria() {
+	for (int i = 0; i < nNodes; i++) {
+		for (int j = i; j < nNodes; j++) {
+			if (abs(matriz.coeff(i, j) - matriz.coeff(j, i)) > 1e-4) {
+				cout << "i = " << i << " j = " << j << " " << matriz.coeff(i, j) << " " << matriz.coeff(j, i) << endl;
+			}
+		}
+	}
+
+	cout << "chequeo completo\n";
+}

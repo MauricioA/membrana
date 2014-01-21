@@ -27,12 +27,13 @@ private:
 
 	vector<Nodo>     nodos;
 	vector<Elemento> elementos;
-	vector<double>	 solucionAnterior;
-	//vector<double>   gradElemX;
-	//vector<double>   gradElemY;
 
+//	vector<double>	 solucionAnterior;
 
-	//vector< Triplet<double> > triplets;
+	vector<double> gradElemX;
+	vector<double> gradElemY;
+	vector<double> gradX;
+	vector<double> gradY;
 
 	SparseMatrix<double> matriz;
 
@@ -42,6 +43,12 @@ private:
 	void control();
 
 	void armado(double x[], double y[], double ef[], double qe, double esm[3][3], double sigma);
+
+	void corriente2D();
+
+	void grabar();
+
+	void chequearSimetria();
 
 };
 
