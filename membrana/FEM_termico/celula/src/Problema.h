@@ -6,7 +6,7 @@
 #include "declaraciones.cpp"
 
 using namespace std;
-//using Eigen::Triplet;
+using namespace Eigen;
 
 class Problema {
 public:
@@ -25,18 +25,19 @@ private:
 	double sigmas[3];
 	double potencial;
 
-	std::vector<Nodo>     nodos;
-	std::vector<Elemento> elementos;
-	std::vector<double> 	 solucionAnterior;
-	std::vector<double>   gradElemX;
-	std::vector<double>   gradElemY;
+	vector<Nodo>     nodos;
+	vector<Elemento> elementos;
+	vector<double>	 solucionAnterior;
+	//vector<double>   gradElemX;
+	//vector<double>   gradElemY;
 
 
-	Eigen::VectorXd rhs;
-	Eigen::SparseMatrix<double> matriz;
+	//vector< Triplet<double> > triplets;
 
-	std::vector< Eigen::Triplet<double> > triplets;
+	SparseMatrix<double> matriz;
 
+	VectorXd rhs;
+	VectorXd solucion;
 
 	void control();
 
