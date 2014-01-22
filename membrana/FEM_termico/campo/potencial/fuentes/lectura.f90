@@ -73,6 +73,9 @@ do while(textinput /= 'END_DATA')
 			if(opcion(1:last)=='SIGEXT') then
 				read(opcion(last+1:leng),'(e15.5)') sigmaext
 				write(unit_cont,*) ' SIGEXT: ', sigmaext
+				
+				write(6,*) "sigext ", sigmaext
+				
 				last=leng+1
 			endif
         enddo
@@ -82,6 +85,9 @@ do while(textinput /= 'END_DATA')
 			if(opcion(1:last)=='SIGMEM') then
 				read(opcion(last+1:leng),'(e15.5)') sigmamem
 				write(unit_cont,*) ' SIGMEM: ', sigmamem
+				
+				write(6,*) "sigmem ", sigmamem
+				
 				last=leng+1
 			endif
         enddo
