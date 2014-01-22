@@ -1,5 +1,8 @@
 !   CALCULA LAS MATRICES DE CADA ELEMENTO
 SUBROUTINE ARMADO3(NLE,X,Y,ns,NOPE,ESM,EF,sigma_el,qe,sol,Ex_el,Ey_el)
+
+!CALL ARMADO3(JEL,X,Y,ns,nodpel,ESM,EF,sigma_el,qe,sol,gradxel_x(jel),gradxel_y(jel))
+
 implicit none
 INTEGER :: nope,NS(NOPE),NLE
 DOUBLE PRECISION :: X(NOPE),Y(NOPE),EF(NOPE),ESM(NOPE,NOPE),sigma_el,qe,sol(nope),Ex_el,Ey_el
@@ -25,6 +28,15 @@ IF(ABS(DETER)<0.0000001) then
    stop ' '
 endif
 
+!borrar
+if (NLE.eq.1) then
+	write(6,*) "deter ", DETER
+	write(6,*) "rmed ", RMED
+	write(6,*) "b ", B
+	write(6,*) "c ", C
+	write(6,*) "sigma ", sigma_el
+	write(6,*) 200e-9
+endif
  
 do I=1,3
   EF(I)=0.0
@@ -33,7 +45,7 @@ do I=1,3
       IF(I.EQ.J) A=2.0
       EF(I)=EF(I)+(QE*DETER*PI/12.)*(A*X(J))
       ESM(I,J)=(sigma_el*B(I)*B(J)+sigma_el*C(I)*C(J))*PI*RMED/DETER
-  enddo    
+  enddo     
 enddo      
 
 end subroutine armado3

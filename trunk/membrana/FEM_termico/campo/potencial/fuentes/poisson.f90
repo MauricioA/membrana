@@ -73,6 +73,16 @@ do while(error>epsil .and. nconta< NCOTA )
 		corrxel_x(jel) = 0.0
 		corrxel_y(jel) = 0.0
 
+		
+        !borrar
+        if (JEL.eq.1) then
+			write(6, *) "x ", x
+			write(6, *) "y ", y
+			write(6, *) "ef ", ef
+			write(6, *) "qe ", qe
+		endif
+		
+
         if(nodpel==27) then
             CALL ARMADO(NCASE,JEL,X,Y,Z,ns,nodpel,ESM,EF,sigma_el,qe)
         elseif(nodpel==8) then
@@ -80,6 +90,20 @@ do while(error>epsil .and. nconta< NCOTA )
         elseif(nodpel==3) then
             CALL ARMADO3(JEL,X,Y,ns,nodpel,ESM,EF,sigma_el,qe,sol,gradxel_x(jel),gradxel_y(jel))
         endif
+        
+        !borrar
+        if (JEL.eq.1) then
+			write(6, *) esm(1, 1)
+			write(6, *) esm(1, 2)
+			write(6, *) esm(1, 3)
+			write(6, *) esm(2, 1)
+			write(6, *) esm(2, 2)
+			write(6, *) esm(2, 3)
+			write(6, *) esm(3, 1)
+			write(6, *) esm(3, 2)
+			write(6, *) esm(3, 3)
+		endif
+        
 ! INTRODUZCO EN LAS MATRICES LAS CONDICIONES DE CONTORNO
 
         do inode=1,nodpel
@@ -148,6 +172,7 @@ do while(error>epsil .and. nconta< NCOTA )
     solucion=RHS
     iter=0
     err=1.0
+    
     call CG(nnodes,IA,JA,AN,AD,RHS,solucion,toler,itermax,ITER,ERR)
        do jj=1,nnodes
          write(111,*) 'Sol ',jj,solucion(jj)

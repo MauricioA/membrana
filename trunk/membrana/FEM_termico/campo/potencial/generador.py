@@ -29,9 +29,9 @@ f.write("archivo1: " + args.file + "\n")
 f.write("opcion: 1\n")
 f.write("archivo3: sistema.dat\n")
 f.write("""
-sigint:  	150e-9 		#condutividad de la zona intraelular [S/um]
-sigext:  	200e-9    	#condutividad de la zona extra
-sigmem: 	500e-15		#condutividad de la membrana
+sigint:  	0.00000015	#condutividad de la zona intraelular [S/um]
+sigext:  	0.0000002    	#condutividad de la zona extra
+sigmem: 	0.0000000000005		#condutividad de la membrana
 permit :  	1.0       	#permitividad de la membrana
 Potencial: 	1.0     	#voltaje 
 Frecuencia:	0.0  		#freq del campo en MGhz
