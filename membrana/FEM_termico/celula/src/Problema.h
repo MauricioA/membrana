@@ -12,8 +12,6 @@ class Problema {
 public:
 	Problema();
 
-	void leerMalla(const char* archivo);
-
 	void poisson();
 
 	Elemento getElement(int i);
@@ -27,18 +25,15 @@ private:
 
 	vector<Nodo>     nodos;
 	vector<Elemento> elementos;
-
-//	vector<double>	 solucionAnterior;
-
-	vector<double> gradElemX;
-	vector<double> gradElemY;
-	vector<double> gradX;
-	vector<double> gradY;
+	vector<double>	 corrElemX;
+	vector<double>   corrElemY;
 
 	SparseMatrix<double> matriz;
 
 	VectorXd rhs;
 	VectorXd solucion;
+
+	void leerMalla(string malla);
 
 	void control();
 
@@ -49,7 +44,6 @@ private:
 	void grabar();
 
 	void chequearSimetria();
-
 };
 
 #endif
