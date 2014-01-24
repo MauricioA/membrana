@@ -25,6 +25,8 @@ private:
 
 	vector<Nodo>     nodos;
 	vector<Elemento> elementos;
+	vector<double>	 campoElemX;
+	vector<double>   campoElemY;
 	vector<double>	 corrElemX;
 	vector<double>   corrElemY;
 
@@ -35,15 +37,17 @@ private:
 
 	void leerMalla(string malla);
 
-	void control();
+	void armado3(double x[], double y[], double esm[3][3], double sigma);
 
-	void armado(double x[], double y[], double ef[], double qe, double esm[3][3], double sigma);
+	void campo();
 
-	void corriente2D();
+	void corriente();
 
 	void grabar();
 
 	void chequearSimetria();
+
+	double determinante(double x[], double y[], double b[], double c[]);
 };
 
 #endif

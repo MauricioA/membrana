@@ -6,8 +6,9 @@
 
 #include "Problema.h"
 
-//TODO capacidad inicial de los vectores con reserve
 //TODO archivo input por parámetros
+//TODO valgrind!
+//TODO fort: input y qe = 0 -> ef
 
 Problema::Problema() {
 	string s, line, malla;
@@ -91,6 +92,7 @@ void Problema::leerMalla(string malla) {
 
 	/* Numero de nodos */
 	stream >> nNodes;
+	nodos.reserve(nNodes);
 
 	/* Nodos */
 	for (int i = 0; i < nNodes; i++) {
@@ -116,6 +118,8 @@ void Problema::leerMalla(string malla) {
 	stream.getline(line, max);
 	stream >> n >> elemsInt;
 	stream.getline(line, max);
+	nElems = elemsExt + elemsMemb + elemsInt;
+	elementos.reserve(nElems);
 
 	/* *INCIDENCES */
 	stream.getline(line, max);
@@ -141,13 +145,14 @@ void Problema::leerMalla(string malla) {
 		elementos.push_back(Elemento(nodos, INTERNO));
 	}
 
-	nElems = elementos.size();
-
 	stream.close();
 }
 
 void Problema::poisson() {
-	control();
+	rhs.resize(nNodes);
+	rhs.fill(0.0);
+	solucion.resize(nNodes);
+	matriz.resize(nNodes, nNodes);
 
 	double error = 1.0;
 
@@ -160,7 +165,6 @@ void Problema::poisson() {
 			double sigma = sigmas[elemento.material];
 			double ef[NODPEL];
 
-			double qe = 0.0;
 			double x[NODPEL], y[NODPEL];
 			double esm[3][3];
 
@@ -168,9 +172,10 @@ void Problema::poisson() {
 				int j = elemento[i];
 				x[i] = nodos[j].x;
 				y[i] = nodos[j].y;
+				ef[i] = 0.0;
 			}
 
-			armado(x, y, ef, qe, esm, sigma);
+			armado3(x, y, esm, sigma);
 
 			/* Condiciones de contorno */
 			for (int i = 0; i < NODPEL; i++) {
@@ -212,77 +217,57 @@ void Problema::poisson() {
 
 		/* Resolución */
 		ConjugateGradient< SparseMatrix<double> > cg(matriz);
+
 		cout << "Resolviendo... ";
 
 		solucion = cg.solve(rhs);
 
-		cout << "OK\n";
-		cout << "error:\t\t" << (double) cg.error() << endl;
-		cout << "iters cg:\t" << cg.iterations() << endl;
+		cout << "OK\terror: " << (double) cg.error() << " iters: " << cg.iterations() << "\n";
 
-		//TODO no tiene sentido, siempre hace una sola iteración
+		//TODO siempre hace una sola iteración
 		error = EPSILON * .5;
 	}
 
-	corriente2D();
+	cout << "Corriente y campo... ";
+
+	corriente();
+	campo();
+
+	cout << "OK\n";
+	cout << "Grabando... ";
 
 	grabar();
+
+	cout << "OK\n";
 }
 
-void Problema::control() {
-	rhs.resize(nNodes);
-	rhs.fill(0.0);
-	solucion.resize(nNodes);
-	solucion.fill(0.0);
-	matriz.resize(nNodes, nNodes);
-}
+void Problema::armado3(double x[], double y[], double esm[3][3], double sigma) {
+	double b[3], c[3];
 
-void Problema::armado(double x[], double y[], double ef[], double qe, double esm[3][3], double sigma) {
-	double b[] = {
-		y[1] - y[2],
-		y[2] - y[0],
-		y[0] - y[1],
-	};
-
-	double c[] = {
-		x[2] - x[1],
-		x[0] - x[2],
-		x[1] - x[0],
-	};
-
-	double determinante =
-		+ x[1]*y[2] + x[2]*y[0] + x[0]*y[1]
-		- x[1]*y[0] - x[2]*y[1] - x[0]*y[2];
+	double det = determinante(x, y, b, c);
 
 	double rMed = (x[0] + x[1] + x[2]) / 3;
 
-	if (abs(determinante) < TOLER_AREA) {
+	if (abs(det) < TOLER_AREA) {
 		cerr << "Error area es cero\n";
 		exit(EXIT_FAILURE);
 	}
 
 	for (int i = 0; i < 3; i++) {
-		ef[i] = 0.0;
 		for (int j = 0; j < 3; j++) {
-			double a = (i == j) ? 2.0 : 1.0;
-			ef[i] += (qe * determinante * M_PI / 12.) * (a * x[j]);
-			esm[i][j] = (sigma * (b[i] * b[j] + c[i] * c[j])) * M_PI * rMed / determinante;
+			esm[i][j] = sigma * (b[i] * b[j] + c[i] * c[j]) * M_PI * rMed / det;
 		}
 	}
 }
 
-void Problema::corriente2D() {
+void Problema::corriente() {
 	double x[3], y[3], sol[3];
-
 	corrElemX.resize(nElems);
 	corrElemY.resize(nElems);
-	for (int i = 0; i < nElems; i++) {
-		corrElemX[i] = 0.0;
-		corrElemY[i] = 0.0;
-	}
 
 	for (int iElem = 0; iElem < nElems; iElem++) {
 		Elemento elem = elementos[iElem];
+		double b[3], c[3];
 
 		for (int i = 0; i < NODPEL; i++) {
 			int iNodo = elem[i];
@@ -291,24 +276,37 @@ void Problema::corriente2D() {
 			sol[i] = solucion[iNodo];
 		}
 
-		double b[] = {
-			y[1] - y[2],
-			y[2] - y[0],
-			y[0] - y[1],
-		};
+		double det = determinante(x, y, b, c);
 
-		double c[] = {
-			x[2] - x[1],
-			x[0] - x[2],
-			x[1] - x[0],
-		};
+		corrElemX[iElem] = (b[0] * sol[0] + b[1] * sol[1] + b[2] * sol[2]) / det;
+		corrElemY[iElem] = (c[0] * sol[0] + c[1] * sol[1] + c[2] * sol[2]) / det;
+	}
+}
 
-		double determinante =
-			+ x[1]*y[2] + x[2]*y[0] + x[0]*y[1]
-			- x[1]*y[0] - x[2]*y[1] - x[0]*y[2];
+double Problema::determinante(double x[], double y[], double b[], double c[]) {
+	int i = 0;
+	b[i++] = y[1] - y[2];
+	b[i++] = y[2] - y[0];
+	b[i++] = y[0] - y[1];
 
-		corrElemX[iElem] = -sigmas[elem.material] * (b[0] * sol[0] + b[1] * sol[1] + b[2] * sol[2]) / determinante;
-		corrElemY[iElem] = -sigmas[elem.material] * (c[0] * sol[0] + c[1] * sol[1] + c[2] * sol[2]) / determinante;
+	i = 0;
+	c[i++] = x[2] - x[1];
+	c[i++] = x[0] - x[2];
+	c[i++] = x[1] - x[0];
+
+	return
+		+ x[1]*y[2] + x[2]*y[0] + x[0]*y[1]
+		- x[1]*y[0] - x[2]*y[1] - x[0]*y[2];
+}
+
+void Problema::campo() {
+	campoElemX.resize(nElems);
+	campoElemY.resize(nElems);
+
+	for (int iElem = 0; iElem < nElems; iElem++) {
+		Elemento elem = elementos[iElem];
+		corrElemX[iElem] = -sigmas[elem.material] * corrElemX[iElem];
+		corrElemY[iElem] = -sigmas[elem.material] * corrElemY[iElem];
 	}
 }
 
@@ -325,13 +323,16 @@ void Problema::grabar() {
 
 	tension.close();
 
-	/* Corriente */
+	/* Corriente y campo */
 	ofstream corriente("corriente.csv", ofstream::out);
+	ofstream campo("capo.csv", ofstream::out);
 
 	corriente << "X, Y, corriente";
+	campo 	  << "X, Y, campo";
 
 	for (int k = 0; k < nElems; k++) {
-		double corr = sqrt(pow(corrElemX[k], 2) + pow(corrElemY[k], 2));
+		double corr = sqrt(pow( corrElemX[k], 2) + pow( corrElemY[k], 2));
+		double camp = sqrt(pow(campoElemX[k], 2) + pow(campoElemY[k], 2));
 		double xMed = 0.0, yMed = 0.0;
 
 		for (int j = 0; j < NODPEL; j++) {
@@ -343,11 +344,12 @@ void Problema::grabar() {
 		xMed /= NODPEL;
 		yMed /= NODPEL;
 
-		corriente << endl << xMed << ", " << yMed << ", " << corr;
+		corriente << "\n" << xMed << ", " << yMed << ", " << corr;
+		campo 	  << "\n" << xMed << ", " << yMed << ", " << camp;
 	}
 
 	corriente.close();
-
+	campo.close();
 }
 
 Elemento Problema::getElement(int i) {
@@ -357,8 +359,9 @@ Elemento Problema::getElement(int i) {
 void Problema::chequearSimetria() {
 	for (int i = 0; i < nNodes; i++) {
 		for (int j = i; j < nNodes; j++) {
-			if (abs(matriz.coeff(i, j) - matriz.coeff(j, i)) > 1e-4) {
-				cout << "i = " << i << " j = " << j << " " << matriz.coeff(i, j) << " " << matriz.coeff(j, i) << endl;
+			if (abs(matriz.coeff(i, j) - matriz.coeff(j, i)) > 1e-9) {
+				cerr << "Error: matriz no es simétrica\n";
+				exit(EXIT_FAILURE);
 			}
 		}
 	}
