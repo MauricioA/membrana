@@ -325,7 +325,7 @@ void Problema::grabar() {
 
 	/* Corriente y campo */
 	ofstream corriente("corriente.csv", ofstream::out);
-	ofstream campo("capo.csv", ofstream::out);
+	ofstream campo("campo.csv", ofstream::out);
 
 	corriente << "X, Y, corriente";
 	campo 	  << "X, Y, campo";
