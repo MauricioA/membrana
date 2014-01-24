@@ -48,3 +48,6 @@ objs/def_variables.o: fuentes/def_variables.f90
 	
 clean: 
 	rm -f objs/*.o objs/*.mod celula objs/celula
+
+run: celula
+	./celula

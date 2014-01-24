@@ -306,6 +306,17 @@ DO JEL=1,nelements
    C(3)=X(2)-X(1)
    
    DETER=X(2)*Y(3)+X(3)*Y(1)+X(1)*Y(2)-X(2)*Y(1)-X(3)*Y(2)-X(1)*Y(3)
+   
+   if (JEL.eq.nelements) then
+!~ 		write(6,*) "DETER ", DETER
+!~ 		write(6,*) "sigma_el ", sigma_el
+!~ 		write(6,*) "b ", b
+!~ 		write(6,*) "c ", c
+!~ 		write(6,*) (B(1)*sol(1)+B(2)*sol(2)+B(3)*sol(3))/DETER
+		write(6,*) "sol: ", sol
+!~ 		write(6,*) conect(JEL,1), ", ", conect(JEL,2), ", ", conect(JEL,3)
+	endif
+   
    gradxel_x(jel)=(B(1)*sol(1)+B(2)*sol(2)+B(3)*sol(3))/DETER
    gradxel_y(jel)=(C(1)*sol(1)+C(2)*sol(2)+C(3)*sol(3))/DETER
    
@@ -319,5 +330,8 @@ DO JEL=1,nelements
    enddo
     
 enddo
+
+!~ write(6,*) "gradxel_x(nelements) ", gradxel_x(nelements)
+!~ write(6,*) "gradxel_y(nelements) ", gradxel_y(nelements)
 
 end subroutine corriente2d

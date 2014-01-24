@@ -3,7 +3,7 @@ import argparse, re, math
 centerX 	= 0
 centerY 	= 50
 radioCel 	= 10
-dMemb 		= 25e-3		# en um
+dMemb 		= 50e-3		# en um
 tolerancia 	= 10e-3
 
 parser = argparse.ArgumentParser()
@@ -43,7 +43,10 @@ resultados.close()
 valores = []
 
 for line in lines[1:]:
-	reg = re.match('\s+(\d+\.?\d*E?\+?\-?\d*)\,\s+(\d+\.?\d*E?\+?\-?\d*)\,\s+(\d+\.?\d*E?\+?\-?\d*)', line)
+	reg = re.match('\s*(\-?\d+\.?\d*E?e?\+?\-?\d*)\,\s*(\-?\d+\.?\d*E?e?\+?\-?\d*)\,\s*(\-?\d+\.?\d*E?e?\+?\-?\d*)', line)
+	
+	if not reg: print line	
+
 	groups = reg.groups()
 	x = float(groups[0])
 	y = float(groups[1])

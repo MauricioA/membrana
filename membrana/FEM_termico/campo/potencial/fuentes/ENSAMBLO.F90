@@ -28,15 +28,15 @@ IF(ABS(DETER)<0.0000001) then
    stop ' '
 endif
 
-!borrar
-if (NLE.eq.1) then
-	write(6,*) "deter ", DETER
-	write(6,*) "rmed ", RMED
-	write(6,*) "b ", B
-	write(6,*) "c ", C
-	write(6,*) "sigma ", sigma_el
-	write(6,*) 200e-9
-endif
+!~ !borrar
+!~ if (NLE.eq.1) then
+!~ 	write(6,*) "deter ", DETER
+!~ 	write(6,*) "rmed ", RMED
+!~ 	write(6,*) "b ", B
+!~ 	write(6,*) "c ", C
+!~ 	write(6,*) "sigma ", sigma_el
+!~ 	write(6,*) 200e-9
+!~ endif
  
 do I=1,3
   EF(I)=0.0

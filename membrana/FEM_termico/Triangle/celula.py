@@ -46,7 +46,7 @@ for i in range(1, n_curva+1):
 	segs_i.append((i, i+1))
 	segs_o.append((i + n_curva + 1, i + n_curva + 2))
 
-segs_otros = [(v, v-1), (v-1, v-2), (v-2, v-3), (v, v-4), (v-3, n_curva+1), (1, n_curva+1), (1, n_curva), (n_curva, v-4)]
+segs_otros = [(v, v-1), (v-1, v-2), (v-2, v-3), (v-3, n_curva+2), (n_curva+2, 1), (1, n_curva+1), (n_curva+1, v-4), (v-4, v)]
 
 segs_tot = segs_i + segs_o + segs_otros
 
@@ -56,3 +56,5 @@ for s in range(len(segs_tot)):
 	print "%d %d %d" % (s+1, segs_tot[s][0], segs_tot[s][1])
 	
 print 0
+
+#~ print segs_otros
