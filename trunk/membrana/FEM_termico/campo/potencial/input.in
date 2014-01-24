@@ -1,7 +1,7 @@
 Problema: celula
 
 data_entrada
-archivo1: CELULA.FEM
+archivo1: celula.fem
 opcion: 1
 archivo3: sistema.dat
 

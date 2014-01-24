@@ -74,13 +74,12 @@ do while(error>epsil .and. nconta< NCOTA )
 		corrxel_y(jel) = 0.0
 
 		
-        !borrar
-        if (JEL.eq.1) then
-			write(6, *) "x ", x
-			write(6, *) "y ", y
-			write(6, *) "ef ", ef
-			write(6, *) "qe ", qe
-		endif
+!~         if (JEL.eq.1) then
+!~ 			write(6, *) "x ", x
+!~ 			write(6, *) "y ", y
+!~ 			write(6, *) "ef ", ef
+!~ 			write(6, *) "qe ", qe
+!~ 		endif
 		
 
         if(nodpel==27) then
@@ -92,22 +91,38 @@ do while(error>epsil .and. nconta< NCOTA )
         endif
         
         !borrar
-        if (JEL.eq.1) then
-			write(6, *) esm(1, 1)
-			write(6, *) esm(1, 2)
-			write(6, *) esm(1, 3)
-			write(6, *) esm(2, 1)
-			write(6, *) esm(2, 2)
-			write(6, *) esm(2, 3)
-			write(6, *) esm(3, 1)
-			write(6, *) esm(3, 2)
-			write(6, *) esm(3, 3)
+        if (JEL.eq.nelements) then
+			write(6, *) "X ", X
+			write(6, *) "Y ", Y
+!~ 			write(6, *) esm(1, 1)
+!~ 			write(6, *) esm(1, 2)
+!~ 			write(6, *) esm(1, 3)
+!~ 			write(6, *) esm(2, 1)
+!~ 			write(6, *) esm(2, 2)
+!~ 			write(6, *) esm(2, 3)
+!~ 			write(6, *) esm(3, 1)
+!~ 			write(6, *) esm(3, 2)
+!~ 			write(6, *) esm(3, 3)
+!~ 			
+!~ 			write(6,*) 'ef:'
+!~ 			do inode=1, 3
+!~ 				write(6,*) ef(i)
+!~ 			end do
 		endif
+		
         
 ! INTRODUZCO EN LAS MATRICES LAS CONDICIONES DE CONTORNO
 
         do inode=1,nodpel
             ipoin=NS(inode)
+            
+            !borrar
+			if (JEL.eq.7) then 
+				write(6,*) 'ipoin' , ipoin
+				write(6,*) 'vec_tierra(ipoin) ', vec_tierra(ipoin)
+				write(6,*) 'vec_poten(ipoin) ', vec_poten(ipoin)
+			endif
+
             if(  vec_tierra(ipoin)/=-1 ) then
               adiag=ESM(inode,inode)
               do jnode=1,nodpel
@@ -130,12 +145,19 @@ do while(error>epsil .and. nconta< NCOTA )
             end if
         end do
 
-
 ! ENSAMBLO
         DO II=1,nodpel
             RHS(NS(II))=RHS(NS(II)) + EF(II)
 	        AD(NS(II)) = AD(NS(II)) + ESM(II,II)
-            	     
+			
+!~ 			write(6, *) AD(NS())
+			
+			if (JEL.eq.7) then
+				write(6, *) "nodo: ", NS(II)
+				write(6, *) "rhs: ", rhs(ns(II))
+			endif
+			
+			
 	        DO JJ=1,nodpel
 
                 esm_tot(NS(II),NS(jj))=esm_tot(NS(II),NS(jj)) + ESM(II,jj)
@@ -173,7 +195,21 @@ do while(error>epsil .and. nconta< NCOTA )
     iter=0
     err=1.0
     
-    call CG(nnodes,IA,JA,AN,AD,RHS,solucion,toler,itermax,ITER,ERR)
+    
+!~     do ii = 1, nnodes
+!~ 		write(6,*) rhs(ii)
+!~ 	enddo
+    
+    write(6,*) "resolviendo... "
+    
+     call CG(nnodes,IA,JA,AN,AD,RHS,solucion,toler,itermax,ITER,ERR)
+    
+    write(6,*) "done"
+    
+!~     do jj=1, nnodes
+!~ 		write(6,*) solucion(jj)
+!~ 	enddo
+    
        do jj=1,nnodes
          write(111,*) 'Sol ',jj,solucion(jj)
         

@@ -81,6 +81,9 @@ SUBROUTINE CG(NP,IA,JA,A_SPA,AD,B,X,TOL,ITMAX,ITER,ERR)
 
 	DEALLOCATE (P,PP,ZZ,Z,R,RR) 
 	
+	
+	write(6,*) iter
+	
 	end subroutine cg
       
    DOUBLE PRECISION FUNCTION FUNNORM(N,Y)
