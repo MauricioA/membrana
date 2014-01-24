@@ -39,6 +39,8 @@ private:
 
 	void armado3(double x[], double y[], double esm[3][3], double sigma);
 
+	void armado4(double x[], double y[], double esm[4][4], double sigma);
+
 	void campo();
 
 	void corriente();

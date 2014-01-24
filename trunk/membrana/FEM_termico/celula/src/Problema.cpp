@@ -253,10 +253,100 @@ void Problema::armado3(double x[], double y[], double esm[3][3], double sigma) {
 		exit(EXIT_FAILURE);
 	}
 
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			esm[i][j] = sigma * (b[i] * b[j] + c[i] * c[j]) * M_PI * rMed / det;
+	for (int i = 0; i < 3; i++) for (int j = 0; j < 3; j++) {
+		esm[i][j] = sigma * (b[i] * b[j] + c[i] * c[j]) * M_PI * rMed / det;
+	}
+}
+
+void Problema::armado4(double x[], double y[], double esm[4][4], double sigma) {
+	const int NGAUSS = 2, NDIM = 2;
+	const double GAUSSPT[] = { (- 1 / M_SQRT3), (1 / M_SQRT3) };
+	const double GAUSSWT[] = { 1.0, 1.0 };
+
+	int kGauss = 0;
+	for (int i = 0; i < 4; i++) for (int j = 0; j < 4; j++) esm[i][j] = 0.0;
+
+	double phi[2*NGAUSS][NODPEL];
+	double dphi[NDIM][2*NGAUSS][NODPEL];
+	double gxCod[NDIM][2*NGAUSS];
+	double phidX[NDIM][2*NGAUSS][NODPEL];
+	double cteI[2*NGAUSS];
+
+	for (int j = 0; j < NGAUSS; j++) for (int i = 0; i < NGAUSS; i++) {
+		double t = GAUSSPT[j];
+		double s = GAUSSWT[i];
+
+		double sm = 0.5 * (1.0 - s);
+		double tm = 0.5 * (1.0 - t);
+		double sq = 0.5 * (1.0 + s);
+		double tp = 0.5 * (1.0 + t);
+
+		int k = 0;
+		phi[kGauss][k++] = sm * tm;
+		phi[kGauss][k++] = sq * tm;
+		phi[kGauss][k++] = sq * tp;
+		phi[kGauss][k++] = sm * tp;
+
+		k = 0;
+		dphi[0][kGauss][k++] = -0.5 * tm;
+		dphi[0][kGauss][k++] = -0.5 * tm;
+		dphi[0][kGauss][k++] = -0.5 * tp;
+		dphi[0][kGauss][k++] = -0.5 * tp;
+
+		k = 0;
+		dphi[0][kGauss][k++] = -0.5 * sm;
+		dphi[0][kGauss][k++] = -0.5 * sq;
+		dphi[0][kGauss][k++] = -0.5 * sq;
+		dphi[0][kGauss][k++] = -0.5 * sm;
+
+		for (int dim = 0; dim < NDIM; dim++) {
+			gxCod[dim][kGauss] = 0.0;
+
+			for (int i = 0; i < NODPEL; i++) {
+				gxCod[dim][kGauss] += x[i] * phi[kGauss][i];
+			}
 		}
+
+		double aJacob2D[2][2];
+		for (k = 0; k < 2; k++) for (int l = 0; l < 2; l++) aJacob2D[k][l] = 0.0;
+
+		for (k = 0; k < NODPEL; k++) {
+			aJacob2D[0][0] += dphi[0][kGauss][k] * x[k];
+			aJacob2D[0][1] += dphi[0][kGauss][k] * y[k];
+			aJacob2D[1][0] += dphi[1][kGauss][k] * x[k];
+			aJacob2D[1][1] += dphi[1][kGauss][k] * y[k];
+		}
+
+		double det =
+			aJacob2D[0][0] * aJacob2D[1][1] -
+			aJacob2D[0][1] * aJacob2D[1][0];
+
+		double aJacobI2d[2][2] = {
+			{
+				aJacob2D[1][1] / det,
+				aJacob2D[0][1] / det,
+			}, {
+				aJacob2D[1][0] / det,
+				aJacob2D[0][0] / det,
+			},
+		};
+
+		for (int k = 0; k < NODPEL; k++) {
+			phidX[0][kGauss][k] =
+				aJacobI2d[0][0] * dphi[0][kGauss][k] +
+				aJacobI2d[0][1] * dphi[1][kGauss][k];
+
+			phidX[1][kGauss][k] =
+				aJacobI2d[1][0] * dphi[0][kGauss][k] +
+				aJacobI2d[1][1] * dphi[1][kGauss][k];
+		}
+
+		cteI[kGauss] = det * GAUSSWT[i] * GAUSSWT[j] * 2 * M_PI * gxCod[0][kGauss];
+		kGauss++;
+	}
+
+	for (kGauss = 0; kGauss < NGAUSS*NGAUSS; kGauss++) for (int i = 0; i < NODPEL; i++) for (int j = 0; j < NODPEL; j++) for (int dim = 0; dim < NDIM; dim++) {
+		esm[i][j] += sigma * phidX[dim][kGauss][i] * phidX[dim][kGauss][j] * cteI[kGauss];
 	}
 }
 
@@ -357,12 +447,10 @@ Elemento Problema::getElement(int i) {
 }
 
 void Problema::chequearSimetria() {
-	for (int i = 0; i < nNodes; i++) {
-		for (int j = i; j < nNodes; j++) {
-			if (abs(matriz.coeff(i, j) - matriz.coeff(j, i)) > 1e-9) {
-				cerr << "Error: matriz no es simétrica\n";
-				exit(EXIT_FAILURE);
-			}
+	for (int i = 0; i < nNodes; i++) for (int j = i; j < nNodes; j++) {
+		if (abs(matriz.coeff(i, j) - matriz.coeff(j, i)) > 1e-9) {
+			cerr << "Error: matriz no es simétrica\n";
+			exit(EXIT_FAILURE);
 		}
 	}
 
