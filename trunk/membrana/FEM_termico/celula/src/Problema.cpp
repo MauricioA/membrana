@@ -244,7 +244,7 @@ void Problema::poisson() {
 void Problema::armado3(double x[], double y[], double esm[3][3], double sigma) {
 	double b[3], c[3];
 
-	double det = determinante(x, y, b, c);
+	double det = determinante3(x, y, b, c);
 
 	double rMed = (x[0] + x[1] + x[2]) / 3;
 
@@ -366,14 +366,14 @@ void Problema::corriente() {
 			sol[i] = solucion[iNodo];
 		}
 
-		double det = determinante(x, y, b, c);
+		double det = determinante3(x, y, b, c);
 
 		corrElemX[iElem] = (b[0] * sol[0] + b[1] * sol[1] + b[2] * sol[2]) / det;
 		corrElemY[iElem] = (c[0] * sol[0] + c[1] * sol[1] + c[2] * sol[2]) / det;
 	}
 }
 
-double Problema::determinante(double x[], double y[], double b[], double c[]) {
+double Problema::determinante3(double x[], double y[], double b[], double c[]) {
 	int i = 0;
 	b[i++] = y[1] - y[2];
 	b[i++] = y[2] - y[0];
