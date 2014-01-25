@@ -7,14 +7,13 @@
 #include "Problema.h"
 
 //TODO archivo input por parámetros
-//TODO valgrind!
 //TODO fort: input y qe = 0 -> ef
 
 Problema::Problema() {
 	string s, line, malla;
 	vector<int> dirichV, dirichT;
 
-	cout << "Leyendo archivos... ";
+	cout << "Leyendo archivos... " << flush;
 	ifstream input("input.in", ifstream::in);
 
 	if (!input.is_open()) {
@@ -157,6 +156,7 @@ void Problema::poisson() {
 	double error = 1.0;
 
 	for (int contador = 0; error > EPSILON && contador < N_COTA; contador++) {
+		cout << "Armando matriz... " << flush;
 		vector< Triplet<double> > triplets;
 
 		for (uint elemIdx = 0; elemIdx < elementos.size(); elemIdx++) {
@@ -217,8 +217,9 @@ void Problema::poisson() {
 
 		/* Resolución */
 		ConjugateGradient< SparseMatrix<double> > cg(matriz);
-
-		cout << "Resolviendo... ";
+	
+		cout << "OK\n";
+		cout << "Resolviendo... " << flush;
 
 		solucion = cg.solve(rhs);
 
@@ -228,13 +229,13 @@ void Problema::poisson() {
 		error = EPSILON * .5;
 	}
 
-	cout << "Corriente y campo... ";
+	cout << "Corriente y campo... " << flush;
 
 	corriente();
 	campo();
 
 	cout << "OK\n";
-	cout << "Grabando... ";
+	cout << "Grabando... " << flush;
 
 	grabar();
 
@@ -260,7 +261,7 @@ void Problema::armado3(double x[], double y[], double esm[3][3], double sigma) {
 
 void Problema::armado4(double x[], double y[], double esm[4][4], double sigma) {
 	const int NGAUSS = 2, NDIM = 2;
-	const double GAUSSPT[] = { (- 1 / M_SQRT3), (1 / M_SQRT3) };
+	const double GAUSSPT[] = { (- 1 / sqrt(3.0)), (1 / sqrt(3.0)) };
 	const double GAUSSWT[] = { 1.0, 1.0 };
 
 	int kGauss = 0;
