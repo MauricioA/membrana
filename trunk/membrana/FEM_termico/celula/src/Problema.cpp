@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include <math.h>
+#include <ctime>
 
 #include "Problema.h"
 
@@ -10,10 +10,11 @@
 //TODO fort: input y qe = 0 -> ef
 
 Problema::Problema() {
+	cout << "Leyendo archivos... " << flush;
+	clock_t start = clock();
+
 	string s, line, malla;
 	vector<int> dirichV, dirichT;
-
-	cout << "Leyendo archivos... " << flush;
 	ifstream input("input.in", ifstream::in);
 
 	if (!input.is_open()) {
@@ -71,7 +72,8 @@ Problema::Problema() {
 		nodos[dirichT[i]].esTierra = true;
 	}
 
-	cout << "OK\n";
+	int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
+	cout << "OK\t\t" << time << "ms\n";
 }
 
 void Problema::leerMalla(string malla) {
@@ -157,6 +159,7 @@ void Problema::poisson() {
 
 	for (int contador = 0; error > EPSILON && contador < N_COTA; contador++) {
 		cout << "Armando matriz... " << flush;
+		clock_t start = clock();
 		vector< Triplet<double> > triplets;
 
 		for (uint elemIdx = 0; elemIdx < elementos.size(); elemIdx++) {
@@ -214,32 +217,32 @@ void Problema::poisson() {
 		}
 
 		matriz.setFromTriplets(triplets.begin(), triplets.end());
+		int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
+		cout << "OK\t\t" << time << "ms\n";
 
-		/* Resolución */
-		ConjugateGradient< SparseMatrix<double> > cg(matriz);
-	
-		cout << "OK\n";
 		cout << "Resolviendo... " << flush;
+		start = clock();
+		SimplicialLDLT< SparseMatrix<double> > cholesky(matriz);
 
-		solucion = cg.solve(rhs);
+		solucion = cholesky.solve(rhs);
 
-		cout << "OK\terror: " << (double) cg.error() << " iters: " << cg.iterations() << "\n";
+		time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
+		cout << "OK\t\t" << time << "ms\n";
 
 		//TODO siempre hace una sola iteración
 		error = EPSILON * .5;
 	}
 
 	cout << "Corriente y campo... " << flush;
+	clock_t start = clock();
 
 	corriente();
 	campo();
 
-	cout << "OK\n";
-	cout << "Grabando... " << flush;
+	int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
+	cout << "OK\t\t" << time << "ms\n";
 
 	grabar();
-
-	cout << "OK\n";
 }
 
 void Problema::armado3(double x[], double y[], double esm[3][3], double sigma) {
@@ -402,6 +405,9 @@ void Problema::campo() {
 }
 
 void Problema::grabar() {
+	cout << "Grabando... " << flush;
+	clock_t start = clock();
+
 	/* Tensión */
 	ofstream tension("tension.csv", ofstream::out);
 
@@ -441,6 +447,9 @@ void Problema::grabar() {
 
 	corriente.close();
 	campo.close();
+
+	int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
+	cout << "OK\t\t\t" << time << "ms\n";
 }
 
 Elemento Problema::getElement(int i) {
