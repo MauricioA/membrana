@@ -49,7 +49,7 @@ private:
 
 	void chequearSimetria();
 
-	double determinante(double x[], double y[], double b[], double c[]);
+	double determinante3(double x[], double y[], double b[], double c[]);
 };
 
 #endif
