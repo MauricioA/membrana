@@ -263,6 +263,22 @@ void Problema::armado3(double x[], double y[], double esm[3][3], double sigma) {
 	}
 }
 
+double Problema::determinante3(double x[], double y[], double b[], double c[]) {
+	int i = 0;
+	b[i++] = y[1] - y[2];
+	b[i++] = y[2] - y[0];
+	b[i++] = y[0] - y[1];
+
+	i = 0;
+	c[i++] = x[2] - x[1];
+	c[i++] = x[0] - x[2];
+	c[i++] = x[1] - x[0];
+
+	return
+		+ x[1]*y[2] + x[2]*y[0] + x[0]*y[1]
+		- x[1]*y[0] - x[2]*y[1] - x[0]*y[2];
+}
+
 void Problema::armado4(double x[], double y[], double esm[4][4], double sigma) {
 	const int NGAUSS = 2, NDIM = 2;
 	const double GAUSSPT[] = { (- 1 / sqrt(3.0)), (1 / sqrt(3.0)) };
@@ -376,22 +392,6 @@ void Problema::corriente() {
 		corrElemX[iElem] = (b[0] * sol[0] + b[1] * sol[1] + b[2] * sol[2]) / det;
 		corrElemY[iElem] = (c[0] * sol[0] + c[1] * sol[1] + c[2] * sol[2]) / det;
 	}
-}
-
-double Problema::determinante3(double x[], double y[], double b[], double c[]) {
-	int i = 0;
-	b[i++] = y[1] - y[2];
-	b[i++] = y[2] - y[0];
-	b[i++] = y[0] - y[1];
-
-	i = 0;
-	c[i++] = x[2] - x[1];
-	c[i++] = x[0] - x[2];
-	c[i++] = x[1] - x[0];
-
-	return
-		+ x[1]*y[2] + x[2]*y[0] + x[0]*y[1]
-		- x[1]*y[0] - x[2]*y[1] - x[0]*y[2];
 }
 
 void Problema::campo() {
