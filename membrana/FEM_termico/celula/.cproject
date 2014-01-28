@@ -32,6 +32,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1998508871" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/cygdrive/c/Archivos/Membrana/FEM_termico/celula/eigen"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.optimization.flags.1087923019" superClass="gnu.cpp.compiler.option.optimization.flags" value="-msse4" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.1640250766" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.exe.debug.543997328" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.exe.debug">
@@ -89,7 +90,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1580101483" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/cygdrive/c/Archivos/Membrana/FEM_termico/celula/eigen"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.optimization.flags.420000400" superClass="gnu.cpp.compiler.option.optimization.flags" value="-msse4" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.optimization.flags.420000400" name="Other optimization flags" superClass="gnu.cpp.compiler.option.optimization.flags" value="-msse3" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin.805418681" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input.cygwin"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.exe.release.745307402" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.exe.release">
