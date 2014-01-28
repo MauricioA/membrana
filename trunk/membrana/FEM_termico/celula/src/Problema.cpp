@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -8,6 +7,7 @@
 
 //TODO archivo input por parámetros
 //TODO fort: input y qe = 0 -> ef
+//TODO cambiar flags de vectorización
 
 Problema::Problema() {
 	cout << "Leyendo archivos... " << flush;
@@ -220,10 +220,11 @@ void Problema::poisson() {
 		int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
 		cout << "OK\t\t" << time << "ms\n";
 
+		/* Resolución */
 		cout << "Resolviendo... " << flush;
 		start = clock();
-		SimplicialLDLT< SparseMatrix<double> > cholesky(matriz);
 
+		SimplicialLDLT< SparseMatrix<double> > cholesky(matriz);
 		solucion = cholesky.solve(rhs);
 
 		time = (clock() - start) / (CLOCKS_PER_SEC / 1000);

@@ -4,7 +4,7 @@ const int 	 NODPEL 	= 3;
 const int 	 N_COTA 	= 10;
 const double TOLER_AREA = 1e-6;
 const double EPSILON 	= 1e-3;
-const double TIERRA		= 0.;
+const double TIERRA		= 0.0;
 
 enum Material {
 	EXTERNO,
