@@ -2,17 +2,24 @@
 #include <fstream>
 #include <cmath>
 #include <ctime>
+#include <cassert>
 
 #include "Problema.h"
 
+//TODO corregir corriente y campo! (al revéz y multiplicar para que de corriente por cm?)
+//TODO transporte
+//TODO carpeta de salida
 //TODO archivo input por parámetros
 //TODO fort: input y qe = 0 -> ef
 //TODO cambiar flags de vectorización
+//TODO ignorar bien los comentarios
+//TODO mover declaraciones
 
 Problema::Problema() {
 	cout << "Leyendo archivos... " << flush;
 	clock_t start = clock();
 
+	double alto;
 	string s, line, malla;
 	vector<int> dirichV, dirichT;
 	ifstream input("input.in", ifstream::in);
@@ -25,38 +32,20 @@ Problema::Problema() {
 	while (getline(input, line)) {
 		istringstream iss(line);
 
-		if (line.find("archivo1") != string::npos) {
+		if (line.find("malla") != string::npos) {
 			iss >> s >> malla;
+		} else if (line.find("nodpel") != string::npos) {
+			iss >> s >> nodpel;
 		} else if (line.find("sigint") != string::npos) {
 			iss >> s >> sigmas[INTERNO];
 		} else if (line.find("sigext") != string::npos) {
 			iss >> s >> sigmas[EXTERNO];
 		} else if (line.find("sigmem") != string::npos) {
 			iss >> s >> sigmas[MEMBRANA];
-		} else if (line.find("Potencial") != string::npos) {
+		} else if (line.find("potencial") != string::npos) {
 			iss >> s >> potencial;
-		} else if (line.find("dirichV") != string::npos) {
-			int nDirichV;
-			iss >> s >> nDirichV;
-
-			for (int i = 0; i < nDirichV; i++) {
-				getline(input, line);
-				istringstream iss2(line);
-				int nodo;
-				iss2 >> nodo;
-				dirichV.push_back(nodo - 1);
-			}
-		} else if (line.find("dirichT") != string::npos) {
-			int nDirichT;
-			iss >> s >> nDirichT;
-
-			for (int i = 0; i < nDirichT; i++) {
-				getline(input, line);
-				istringstream iss2(line);
-				int nodo;
-				iss2 >> nodo;
-				dirichT.push_back(nodo - 1);
-			}
+		} else if (line.find("alto") != string::npos) {
+			iss >> s >> alto;
 		}
 	}
 
@@ -64,12 +53,12 @@ Problema::Problema() {
 
 	leerMalla(malla);
 
-	for (uint i = 0; i < dirichV.size(); i++) {
-		nodos[dirichV[i]].esPotencia = true;
-	}
-
-	for (uint i = 0; i < dirichT.size(); i++) {
-		nodos[dirichT[i]].esTierra = true;
+	for (int i = 0; i < nNodes; i++) {
+		if (abs(nodos[i].y - alto) < EPSILON) {
+			nodos[i].esPotencia = true;
+		} else if (abs(nodos[i].y) < EPSILON) {
+			nodos[i].esTierra = true;
+		}
 	}
 
 	int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
@@ -77,10 +66,11 @@ Problema::Problema() {
 }
 
 void Problema::leerMalla(string malla) {
-	int n, nodo1, nodo2, nodo3;
+	int n;
+	int nod[4];
 	double x, y;
-	int max = 256;
-	char line[max];
+	string line;
+	istringstream iss;
 
 	ifstream stream(malla.c_str(), ifstream::in);
 	if (!stream.is_open()) {
@@ -88,16 +78,15 @@ void Problema::leerMalla(string malla) {
 		exit(EXIT_FAILURE);
 	}
 
-	/* *COORDINATES */
-	stream.getline(line, max);
-
 	/* Numero de nodos */
-	stream >> nNodes;
+	dameLinea(stream, iss);
+	iss >> nNodes;
 	nodos.reserve(nNodes);
 
 	/* Nodos */
 	for (int i = 0; i < nNodes; i++) {
-		stream >> n >> x >> y;
+		dameLinea(stream, iss);
+		iss >> n >> x >> y;
 		Nodo nodo;
 		nodo.x = x;
 		nodo.y = y;
@@ -106,47 +95,59 @@ void Problema::leerMalla(string malla) {
 		nodos.push_back(nodo);
 	}
 
-	/* *ELEMENT_GROUPS - 3 */
-	stream.getline(line, max);
-	stream.getline(line, max);
-	stream.getline(line, max);
+	/* nGrupos */
+	int nGrupos;
+	dameLinea(stream, iss);
+	iss >> nGrupos;
 
 	/* Grupos */
 	int elemsExt, elemsMemb, elemsInt;
-	stream >> n >> elemsExt;
-	stream.getline(line, max);
-	stream >> n >> elemsMemb;
-	stream.getline(line, max);
-	stream >> n >> elemsInt;
-	stream.getline(line, max);
+	dameLinea(stream, iss);
+	iss >> n >> elemsExt;
+	dameLinea(stream, iss);
+	iss >> n >> elemsMemb;
+	dameLinea(stream, iss);
+	iss >> n >> elemsInt;
 	nElems = elemsExt + elemsMemb + elemsInt;
 	elementos.reserve(nElems);
 
-	/* *INCIDENCES */
-	stream.getline(line, max);
-
 	/* Elementos extrenos */
 	for (int i = 0; i < elemsExt; i++) {
-		stream >> n >> nodo1 >> nodo2 >> nodo3;
-		int nodos[3] = {nodo1-1, nodo2-1, nodo3-1};
-		elementos.push_back(Elemento(nodos, EXTERNO));
+		dameLinea(stream, iss);
+		iss >> n;
+		for (int j = 0; j < nodpel; j++) iss >> nod[j];
+		for (int j = 0; j < nodpel; j++) nod[j]--;
+		elementos.push_back(Elemento(nod, nodpel, EXTERNO));
 	}
 
 	/* Elementos membrana */
 	for (int i = 0; i < elemsMemb; i++) {
-		stream >> n >> nodo1 >> nodo2 >> nodo3;
-		int nodos[3] = {nodo1-1, nodo2-1, nodo3-1};
-		elementos.push_back(Elemento(nodos, MEMBRANA));
+		dameLinea(stream, iss);
+		iss >> n;
+		for (int j = 0; j < nodpel; j++) iss >> nod[j];
+		for (int j = 0; j < nodpel; j++) nod[j]--;
+		elementos.push_back(Elemento(nod, nodpel, MEMBRANA));
 	}
 
 	/* Elementos internos */
 	for (int i = 0; i < elemsInt; i++) {
-		stream >> n >> nodo1 >> nodo2 >> nodo3;
-		int nodos[3] = {nodo1-1, nodo2-1, nodo3-1};
-		elementos.push_back(Elemento(nodos, INTERNO));
+		dameLinea(stream, iss);
+		iss >> n;
+		for (int j = 0; j < nodpel; j++) iss >> nod[j];
+		for (int j = 0; j < nodpel; j++) nod[j]--;
+		elementos.push_back(Elemento(nod, nodpel, INTERNO));
 	}
 
 	stream.close();
+}
+
+void Problema::dameLinea(ifstream& archivo, istringstream& iss) {
+	string line;
+	do {
+		getline(archivo, line);
+	} while(line[0] == '*');
+	iss.clear();
+	iss.str(line);
 }
 
 void Problema::poisson() {
@@ -166,27 +167,27 @@ void Problema::poisson() {
 
 			Elemento elemento = elementos[elemIdx];
 			double sigma = sigmas[elemento.material];
-			double ef[NODPEL];
+			double ef[nodpel];
 
-			double x[NODPEL], y[NODPEL];
-			double esm[3][3];
+			double x[nodpel], y[nodpel];
+			double esm[MAXNPEL][MAXNPEL];
 
-			for (int i = 0; i < NODPEL; i++) {
+			for (int i = 0; i < nodpel; i++) {
 				int j = elemento[i];
 				x[i] = nodos[j].x;
 				y[i] = nodos[j].y;
 				ef[i] = 0.0;
 			}
 
-			armado3(x, y, esm, sigma);
+			armado(x, y, esm, sigma);
 
 			/* Condiciones de contorno */
-			for (int i = 0; i < NODPEL; i++) {
+			for (int i = 0; i < nodpel; i++) {
 				Nodo nodo = nodos[elemento[i]];
 				double adiag = esm[i][i];
 
 				if (nodo.esTierra) {
-					for (int j = 0; j < NODPEL; j++) {
+					for (int j = 0; j < nodpel; j++) {
 						esm[i][j] = 0.0;
 						ef[j] -= esm[j][i] * TIERRA;
 						esm[j][i] = 0.0;
@@ -196,7 +197,7 @@ void Problema::poisson() {
 				}
 
 				if (nodo.esPotencia) {
-					for (int j = 0; j < NODPEL; j++) {
+					for (int j = 0; j < nodpel; j++) {
 						esm[i][j] = 0.0;
 						ef[j] -= esm[j][i] * potencial;
 						esm[j][i] = 0.0;
@@ -207,10 +208,10 @@ void Problema::poisson() {
 			}
 
 			/* Ensamblado */
-			for (int i = 0; i < NODPEL; i++) {
+			for (int i = 0; i < nodpel; i++) {
 				rhs[elemento[i]] += ef[i];
 
-				for (int j = 0; j < NODPEL; j++) {
+				for (int j = 0; j < nodpel; j++) {
 					triplets.push_back(Triplet<double>(elemento[i], elemento[j], esm[i][j]));
 				}
 			}
@@ -246,7 +247,22 @@ void Problema::poisson() {
 	grabar();
 }
 
-void Problema::armado3(double x[], double y[], double esm[3][3], double sigma) {
+void Problema::armado(double x[], double y[], double esm[][MAXNPEL], double sigma) {
+	switch (nodpel) {
+	case 3:
+		armado3(x, y, esm, sigma);
+		break;
+	case 4:
+		armado4(x, y, esm, sigma);
+		break;
+	default:
+		cerr << "Error armado\n";
+		exit(EXIT_FAILURE);
+	}
+}
+
+void Problema::armado3(double x[], double y[], double esm[][MAXNPEL], double sigma) {
+	const int NODPEL = 3;
 	double b[3], c[3];
 
 	double det = determinante3(x, y, b, c);
@@ -258,7 +274,7 @@ void Problema::armado3(double x[], double y[], double esm[3][3], double sigma) {
 		exit(EXIT_FAILURE);
 	}
 
-	for (int i = 0; i < 3; i++) for (int j = 0; j < 3; j++) {
+	for (int i = 0; i < NODPEL; i++) for (int j = 0; j < 3; j++) {
 		esm[i][j] = sigma * (b[i] * b[j] + c[i] * c[j]) * M_PI * rMed / det;
 	}
 }
@@ -279,8 +295,8 @@ double Problema::determinante3(double x[], double y[], double b[], double c[]) {
 		- x[1]*y[0] - x[2]*y[1] - x[0]*y[2];
 }
 
-void Problema::armado4(double x[], double y[], double esm[4][4], double sigma) {
-	const int NGAUSS = 2, NDIM = 2;
+void Problema::armado4(double x[], double y[], double esm[][MAXNPEL], double sigma) {
+	const int NGAUSS = 2, NDIM = 2, NODPEL = 4;
 	const double GAUSSPT[] = { (- 1 / sqrt(3.0)), (1 / sqrt(3.0)) };
 	const double GAUSSWT[] = { 1.0, 1.0 };
 
@@ -380,7 +396,7 @@ void Problema::corriente() {
 		Elemento elem = elementos[iElem];
 		double b[3], c[3];
 
-		for (int i = 0; i < NODPEL; i++) {
+		for (int i = 0; i < nodpel; i++) {
 			int iNodo = elem[i];
 			x[i] = nodos[iNodo].x;
 			y[i] = nodos[iNodo].y;
@@ -433,14 +449,14 @@ void Problema::grabar() {
 		double camp = sqrt(pow(campoElemX[k], 2) + pow(campoElemY[k], 2));
 		double xMed = 0.0, yMed = 0.0;
 
-		for (int j = 0; j < NODPEL; j++) {
+		for (int j = 0; j < nodpel; j++) {
 			int jNodo = elementos[k][j];
 			xMed += nodos[jNodo].x;
 			yMed += nodos[jNodo].y;
 		}
 
-		xMed /= NODPEL;
-		yMed /= NODPEL;
+		xMed /= nodpel;
+		yMed /= nodpel;
 
 		corriente << "\n" << xMed << ", " << yMed << ", " << corr;
 		campo 	  << "\n" << xMed << ", " << yMed << ", " << camp;
@@ -452,10 +468,10 @@ void Problema::grabar() {
 	int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
 	cout << "OK\t\t\t" << time << "ms\n";
 }
-
-Elemento Problema::getElement(int i) {
-	return elementos[i];
-}
+//
+//Elemento Problema::getElement(int i) {
+//	return elementos[i];
+//}
 
 void Problema::chequearSimetria() {
 	for (int i = 0; i < nNodes; i++) for (int j = i; j < nNodes; j++) {

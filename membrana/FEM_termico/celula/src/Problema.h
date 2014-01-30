@@ -8,6 +8,8 @@
 using namespace std;
 using namespace Eigen;
 
+const int MAXNPEL = 4;
+
 class Problema {
 public:
 	Problema();
@@ -19,6 +21,7 @@ public:
 private:
 	int nElems;
 	int nNodes;
+	int nodpel;
 
 	double sigmas[3];
 	double potencial;
@@ -37,9 +40,15 @@ private:
 
 	void leerMalla(string malla);
 
-	void armado3(double x[], double y[], double esm[3][3], double sigma);
+	void dameLinea(ifstream& archivo, istringstream& iss);
 
-	void armado4(double x[], double y[], double esm[4][4], double sigma);
+	void armado (double x[], double y[], double esm[][MAXNPEL], double sigma);
+
+	void armado3(double x[], double y[], double esm[][MAXNPEL], double sigma);
+
+	void armado4(double x[], double y[], double esm[][MAXNPEL], double sigma);
+
+	double determinante3(double x[], double y[], double b[], double c[]);
 
 	void campo();
 
@@ -49,7 +58,6 @@ private:
 
 	void chequearSimetria();
 
-	double determinante3(double x[], double y[], double b[], double c[]);
 };
 
 #endif
