@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <cmath>
 #include <ctime>
 #include <cassert>
 
@@ -60,9 +59,9 @@ Problema::Problema() {
 	leerMalla(malla);
 
 	for (int i = 0; i < nNodes; i++) {
-		if (abs(nodos[i].y - alto) < EPSILON) {
+		if (abs(nodos[i].y - alto) < EPSILON_POISSON) {
 			nodos[i].esPotencia = true;
-		} else if (abs(nodos[i].y) < EPSILON) {
+		} else if (abs(nodos[i].y) < EPSILON_POISSON) {
 			nodos[i].esTierra = true;
 		}
 	}
@@ -161,7 +160,7 @@ void Problema::poisson() {
 
 	double error = 1.0;
 
-	for (int contador = 0; error > EPSILON && contador < N_COTA; contador++) {
+	for (int contador = 0; error > EPSILON_POISSON && contador < N_COTA; contador++) {
 		cout << "Armando matriz... " << flush;
 		clock_t start = clock();
 		vector< Triplet<double> > triplets;
@@ -172,17 +171,17 @@ void Problema::poisson() {
 			double sigma = sigmas[elemento.material];
 			double ef[nodpel];
 
-			double x[nodpel], y[nodpel];
+			Double2D pos[MAXNPEL];
 			double esm[MAXNPEL][MAXNPEL];
 
 			for (int i = 0; i < nodpel; i++) {
 				int j = elemento[i];
-				x[i] = nodos[j].x;
-				y[i] = nodos[j].y;
+				pos[i].x = nodos[j].x;
+				pos[i].y = nodos[j].y;
 				ef[i] = 0.0;
 			}
 
-			armado(x, y, esm, sigma);
+			armado(pos, esm, sigma);
 
 			/* Condiciones de contorno */
 			for (int i = 0; i < nodpel; i++) {
@@ -235,7 +234,7 @@ void Problema::poisson() {
 		cout << "OK\t\t" << time << "ms\n";
 
 		//TODO siempre hace una sola iteración
-		error = EPSILON * .5;
+		error = EPSILON_POISSON * .5;
 	}
 
 	cout << "Corriente y campo... " << flush;
@@ -250,23 +249,25 @@ void Problema::poisson() {
 	grabar();
 }
 
-void Problema::armado(double x[], double y[], double esm[][MAXNPEL], double sigma) {
+void Problema::armado(Double2D pos[], double esm[][MAXNPEL], double sigma) {
 	switch (nodpel) {
 	case 3:
-		armado3(x, y, esm, sigma);
+		armado3(pos, esm, sigma);
 		break;
 	case 4:
-		armado4(x, y, esm, sigma);
+		armado4(pos, esm, sigma);
 		break;
 	}
 }
 
-void Problema::armado3(double x[], double y[], double esm[][MAXNPEL], double sigma) {
+void Problema::armado3(Double2D pos[], double esm[][MAXNPEL], double sigma) {
+	assert(nodpel == 3);
+
 	const int NODPEL = 3;
 	double b[3], c[3];
 
-	double det = determinante3(x, y, b, c);
-	double rMed = (x[0] + x[1] + x[2]) / 3;
+	double det = determinante3(pos, b, c);
+	double rMed = (pos[0].x + pos[1].x + pos[2].x) / 3;
 
 	assert(abs(det) > TOLER_AREA);
 
@@ -275,115 +276,138 @@ void Problema::armado3(double x[], double y[], double esm[][MAXNPEL], double sig
 	}
 }
 
-double Problema::determinante3(double x[], double y[], double b[], double c[]) {
+double Problema::determinante3(Double2D pos[], double b[], double c[]) {
+	assert(nodpel == 3);
+
 	int i = 0;
-	b[i++] = y[1] - y[2];
-	b[i++] = y[2] - y[0];
-	b[i++] = y[0] - y[1];
+	b[i++] = pos[1].y - pos[2].y;
+	b[i++] = pos[2].y - pos[0].y;
+	b[i++] = pos[0].y - pos[1].y;
 
 	i = 0;
-	c[i++] = x[2] - x[1];
-	c[i++] = x[0] - x[2];
-	c[i++] = x[1] - x[0];
+	c[i++] = pos[2].x - pos[1].x;
+	c[i++] = pos[0].x - pos[2].x;
+	c[i++] = pos[1].x - pos[0].x;
 
 	return
-		+ x[1]*y[2] + x[2]*y[0] + x[0]*y[1]
-		- x[1]*y[0] - x[2]*y[1] - x[0]*y[2];
+		+ pos[1].x*pos[2].y + pos[2].x*pos[0].y + pos[0].x*pos[1].y
+		- pos[1].x*pos[0].y - pos[2].x*pos[1].y - pos[0].x*pos[2].y;
 }
 
-void Problema::armado4(double x[], double y[], double esm[][MAXNPEL], double sigma) {
-	const int NGAUSS = 2, NDIM = 2, NODPEL = 4;
-	const double GAUSSPT[] = { (- 1 / sqrt(3.0)), (1 / sqrt(3.0)) };
-	const double GAUSSWT[] = { 1.0, 1.0 };
-
+void Problema::armado4(Double2D pos[], double esm[][MAXNPEL], double sigma) {
+	assert(nodpel == 4);
+	const int NODPEL = 4;
 	int kGauss = 0;
-	for (int i = 0; i < 4; i++) for (int j = 0; j < 4; j++) esm[i][j] = 0.0;
-
 	double phi[2*NGAUSS][NODPEL];
 	double dphi[NDIM][2*NGAUSS][NODPEL];
 	double gxCod[NDIM][2*NGAUSS];
-	double phidX[NDIM][2*NGAUSS][NODPEL];
+	double phidX[NDIM][2*NGAUSS][4];
 	double cteI[2*NGAUSS];
-	double aJacob2D[2][2];
 
-	for (int j = 0; j < NGAUSS; j++) for (int i = 0; i < NGAUSS; i++) {
-		double t = GAUSSPT[j];
-		double s = GAUSSPT[i];
-
-		double sm = 0.5 * (1.0 - s);
-		double tm = 0.5 * (1.0 - t);
-		double sq = 0.5 * (1.0 + s);
-		double tp = 0.5 * (1.0 + t);
-
-		int k = 0;
-		phi[kGauss][k++] = sm * tm;
-		phi[kGauss][k++] = sq * tm;
-		phi[kGauss][k++] = sq * tp;
-		phi[kGauss][k++] = sm * tp;
-
-		k = 0;
-		dphi[0][kGauss][k++] = -0.5 * tm;
-		dphi[0][kGauss][k++] =  0.5 * tm;
-		dphi[0][kGauss][k++] =  0.5 * tp;
-		dphi[0][kGauss][k++] = -0.5 * tp;
-
-		k = 0;
-		dphi[1][kGauss][k++] = -0.5 * sm;
-		dphi[1][kGauss][k++] = -0.5 * sq;
-		dphi[1][kGauss][k++] =  0.5 * sq;
-		dphi[1][kGauss][k++] =  0.5 * sm;
+	for (int i = 0; i < NGAUSS; i++) for (int j = 0; j < NGAUSS; j++) {
+		double det = iteracion4(phi, dphi, phidX, i, j, kGauss, pos);
 
 		for (int dim = 0; dim < NDIM; dim++) {
 			gxCod[dim][kGauss] = 0.0;
 
-			for (int i = 0; i < NODPEL; i++) {
-				gxCod[dim][kGauss] += x[i] * phi[kGauss][i];
+			for (int k = 0; k < NODPEL; k++) {
+				gxCod[dim][kGauss] += pos[k].x * phi[kGauss][k];
 			}
-		}
-
-		for (int k = 0; k < 2; k++) for (int l = 0; l < 2; l++) aJacob2D[k][l] = 0.0;
-
-		for (k = 0; k < NODPEL; k++) {
-			aJacob2D[0][0] += dphi[0][kGauss][k] * x[k];
-			aJacob2D[0][1] += dphi[0][kGauss][k] * y[k];
-			aJacob2D[1][0] += dphi[1][kGauss][k] * x[k];
-			aJacob2D[1][1] += dphi[1][kGauss][k] * y[k];
-		}
-
-		double det =
-			aJacob2D[0][0] * aJacob2D[1][1] -
-			aJacob2D[0][1] * aJacob2D[1][0];
-
-		double aJacobI2d[2][2] = {
-			{  aJacob2D[1][1] / det, -aJacob2D[0][1] / det, },
-			{ -aJacob2D[1][0] / det,  aJacob2D[0][0] / det,	},
-		};
-
-		for (int k = 0; k < NODPEL; k++) {
-			phidX[0][kGauss][k] =
-				aJacobI2d[0][0] * dphi[0][kGauss][k] +
-				aJacobI2d[0][1] * dphi[1][kGauss][k];
-
-			phidX[1][kGauss][k] =
-				aJacobI2d[1][0] * dphi[0][kGauss][k] +
-				aJacobI2d[1][1] * dphi[1][kGauss][k];
 		}
 
 		cteI[kGauss] = det * GAUSSWT[i] * GAUSSWT[j] * 2 * M_PI * gxCod[0][kGauss];
 		kGauss++;
 	}
 
-	for (kGauss = 0; kGauss < NGAUSS*NGAUSS; kGauss++) for (int i = 0; i < NODPEL; i++) for (int j = 0; j < NODPEL; j++) for (int dim = 0; dim < NDIM; dim++) {
-		esm[i][j] += sigma * phidX[dim][kGauss][i] * phidX[dim][kGauss][j] * cteI[kGauss];
+	for (int i = 0; i < 4; i++) for (int j = 0; j < 4; j++) esm[i][j] = 0.;
+
+	for (int kGauss = 0; kGauss < NGAUSS*NGAUSS; kGauss++) {
+		for (int i = 0; i < nodpel; i++) for (int j = 0; j < nodpel; j++) {
+			for (int d = 0; d < NDIM; d++) {
+				esm[i][j] += sigma * phidX[d][kGauss][i] * phidX[d][kGauss][j] * cteI[kGauss];
+			}
+		}
 	}
 }
 
-void Problema::campo() {
-	if (nodpel != 3) return;
+double Problema::iteracion4(double phi[2*NGAUSS][4], double dphi[NDIM][2*NGAUSS][4],
+		double phidX[NDIM][2*NGAUSS][4], int i, int j, int kGauss, Double2D pos[4]) {
+	assert(nodpel == 4);
 
-	double x[3], y[3], sol[3];
-	corrElemX.resize(nElems);
-	corrElemY.resize(nElems);
+	double t = GAUSSPT[i];
+	double s = GAUSSPT[j];
+
+	double sm = 0.5 * (1.0 - s);
+	double tm = 0.5 * (1.0 - t);
+	double sq = 0.5 * (1.0 + s);
+	double tp = 0.5 * (1.0 + t);
+
+	int k = 0;
+	phi[kGauss][k++] = sm * tm;
+	phi[kGauss][k++] = sq * tm;
+	phi[kGauss][k++] = sq * tp;
+	phi[kGauss][k++] = sm * tp;
+
+	k = 0;
+	dphi[0][kGauss][k++] = -0.5 * tm;
+	dphi[0][kGauss][k++] =  0.5 * tm;
+	dphi[0][kGauss][k++] =  0.5 * tp;
+	dphi[0][kGauss][k++] = -0.5 * tp;
+
+	k = 0;
+	dphi[1][kGauss][k++] = -0.5 * sm;
+	dphi[1][kGauss][k++] = -0.5 * sq;
+	dphi[1][kGauss][k++] =  0.5 * sq;
+	dphi[1][kGauss][k++] =  0.5 * sm;
+
+	double aJacob[2][2];
+	for (int k = 0; k < 2; k++) for (int l = 0; l < 2; l++) aJacob[k][l] = 0.0;
+
+	for (k = 0; k < nodpel; k++) {
+		aJacob[0][0] += dphi[0][kGauss][k] * pos[k].x;
+		aJacob[0][1] += dphi[0][kGauss][k] * pos[k].y;
+		aJacob[1][0] += dphi[1][kGauss][k] * pos[k].x;
+		aJacob[1][1] += dphi[1][kGauss][k] * pos[k].y;
+	}
+
+	double det =
+		aJacob[0][0] * aJacob[1][1] -
+		aJacob[0][1] * aJacob[1][0];
+
+	double aJacobInv[2][2] = {
+		{  aJacob[1][1] / det, -aJacob[0][1] / det, },
+		{ -aJacob[1][0] / det,  aJacob[0][0] / det,	},
+	};
+
+	for (int k = 0; k < nodpel; k++) {
+		phidX[0][kGauss][k] =
+			aJacobInv[0][0] * dphi[0][kGauss][k] +
+			aJacobInv[0][1] * dphi[1][kGauss][k];
+
+		phidX[1][kGauss][k] =
+			aJacobInv[1][0] * dphi[0][kGauss][k] +
+			aJacobInv[1][1] * dphi[1][kGauss][k];
+	}
+
+	return det;
+}
+
+void Problema::campo() {
+	switch(nodpel) {
+	case 3:
+		campo3();
+		break;
+	case 4:
+		campo4();
+		break;
+	}
+}
+
+void Problema::campo3() {
+	assert(nodpel == 3);
+	Double2D pos[3];
+	double sol[3];
+	gradElem.resize(nElems);
 
 	for (int iElem = 0; iElem < nElems; iElem++) {
 		Elemento elem = elementos[iElem];
@@ -391,29 +415,35 @@ void Problema::campo() {
 
 		for (int i = 0; i < 3; i++) {
 			int iNodo = elem[i];
-			x[i] = nodos[iNodo].x;
-			y[i] = nodos[iNodo].y;
+			pos[i].x = nodos[iNodo].x;
+			pos[i].y = nodos[iNodo].y;
 			sol[i] = solucion[iNodo];
 		}
 
-		double det = determinante3(x, y, b, c);
+		double det = determinante3(pos, b, c);
 
-		corrElemX[iElem] = (b[0] * sol[0] + b[1] * sol[1] + b[2] * sol[2]) / det;
-		corrElemY[iElem] = (c[0] * sol[0] + c[1] * sol[1] + c[2] * sol[2]) / det;
+		gradElem[iElem].x = (b[0] * sol[0] + b[1] * sol[1] + b[2] * sol[2]) / det;
+		gradElem[iElem].y = (c[0] * sol[0] + c[1] * sol[1] + c[2] * sol[2]) / det;
 	}
 }
 
+void Problema::campo4() {
+	assert(nodpel == 4);
+//	TODO
+}
+
+//TODO corregir esto!
 void Problema::corriente() {
-	if (nodpel != 3) return;
-
-	campoElemX.resize(nElems);
-	campoElemY.resize(nElems);
-
-	for (int iElem = 0; iElem < nElems; iElem++) {
-		Elemento elem = elementos[iElem];
-		corrElemX[iElem] = -sigmas[elem.material] * corrElemX[iElem];
-		corrElemY[iElem] = -sigmas[elem.material] * corrElemY[iElem];
-	}
+//	if (nodpel != 3) return;
+//
+//	campoElemX.resize(nElems);
+//	campoElemY.resize(nElems);
+//
+//	for (int iElem = 0; iElem < nElems; iElem++) {
+//		Elemento elem = elementos[iElem];
+//		gradElemX[iElem] = -sigmas[elem.material] * gradElemX[iElem];
+//		gradElemY[iElem] = -sigmas[elem.material] * gradElemY[iElem];
+//	}
 }
 
 void Problema::grabar() {
@@ -441,8 +471,8 @@ void Problema::grabar() {
 		campo 	  << "X, Y, campo";
 
 		for (int k = 0; k < nElems; k++) {
-			double corr = sqrt(pow( corrElemX[k], 2) + pow( corrElemY[k], 2));
-			double camp = sqrt(pow(campoElemX[k], 2) + pow(campoElemY[k], 2));
+			double corr = sqrt(pow( gradElem[k].x, 2) + pow( gradElem[k].y, 2));
+			double camp = sqrt(pow(campoElem[k].x, 2) + pow(campoElem[k].y, 2));
 			double xMed = 0.0, yMed = 0.0;
 
 			for (int j = 0; j < nodpel; j++) {
@@ -477,11 +507,10 @@ void Problema::chequearSimetria() {
 }
 
 void Problema::transporte() {
-	vector<double>  cons[NESPS];
-	vector<double>  ants[NESPS];
-	vector<double> phAux[NESPS];
+	const double T_CERO = 1.;
+	const double DELTA_T = 1e-6;
 
-	for (Especie esp = 0; esp < NESPS; esp++) {
+	for (int esp = 0; esp < NESPS; esp++) {
 		cons[esp].resize(nNodes);
 		ants[esp].resize(nNodes);
 	}
@@ -490,7 +519,7 @@ void Problema::transporte() {
 	phAux[OH].resize(nNodes);
 
 	for (int iNode = 0; iNode < nNodes; iNode++) {
-		for (Especie esp = 0; esp < NESPS; esp++) {
+		for (int esp = 0; esp < NESPS; esp++) {
 			cons[esp][iNode] = CONCENTRACION_INICIAL[esp];
 			ants[esp][iNode] = CONCENTRACION_INICIAL[esp];
 		}
@@ -499,15 +528,22 @@ void Problema::transporte() {
 		phAux[OH][iNode] = -log10(cons[OH][iNode] * 1e15 / 6.02e23);
 	}
 
+	masaDiag2D();
+	cargas.resize(nNodes);
+
+	for (double tt = 0.; tt < T_CERO; tt += DELTA_T) {
+		poisson();
+
+
+	}
 
 }
 
 void Problema::masaDiag2D() {
 	assert(nodpel == 4);
 
-	vector<double> masa;	//TODO poner esto afuera
-	masa.resize(nNodes);
-	for (int i = 0; i < nNodes; i++) masa[i] = 0.0;
+	masas.resize(nNodes);
+	for (int i = 0; i < nNodes; i++) masas[i] = 0.0;
 
 	const int NLOCS = 2;
 	const int INOGA[] = {0, 3, 1, 2};
@@ -565,9 +601,46 @@ void Problema::masaDiag2D() {
 
 			double gpDet = aJacob[0][0] * aJacob[1][1] - aJacob[0][1] * aJacob[1][0];
 			double gpVol = weigc[iNode] * gpDet;
-			masa[elem[iNode]] += gpVol;
+			masas[elem[iNode]] += gpVol;
 		}
 
-		for (int iPoint = 0; iPoint < nNodes; iPoint++)	assert(masa[iPoint] > TOLER_MASA);
+		for (int iPoint = 0; iPoint < nNodes; iPoint++)	assert(masas[iPoint] > TOLER_MASA);
 	}
+}
+
+void Problema::carga() {
+	const double CTE = 1e6 / 6.03e23;
+	const double CTE_DILUCION = CONCENTRACION_INICIAL[H_] / CONCENTRACION_INICIAL[NA];
+
+	for (int iNodo = 0; iNodo < nNodes; iNodo++) {
+		cargas[iNodo] =	FARADAY / (EPSILON_TRANSPORTE * EPSILON_0) * CTE * (
+			CARGA[H_] * cons[H_][iNodo] +
+			CARGA[OH] * cons[OH][iNodo] +
+			CARGA[NA] * cons[NA][iNodo] * CTE_DILUCION +
+			CARGA[CL] * cons[CL][iNodo] * CTE_DILUCION
+		);
+	}
+}
+
+void Problema::concentracion(int esp) {
+	for (int kElem = 0; kElem < elementos.size(); kElem++) {
+		Elemento elem = elementos[kElem];
+
+		double yMed = 0.;// potenciaMed = 0.;
+
+		for (int i = 0; i < nodpel; i++) {
+			int iNodo = elem[i];
+			yMed += nodos[iNodo].y;
+//			potenciaMed += solucion[iNodo];
+		}
+
+		yMed /= nodpel;
+//		potenciaMed /= nodpel;
+
+		double difElem = DIFUSION[esp];
+		if (elem.material == MEMBRANA) difElem *= 1e-3;
+
+//		double mu = -difElem * CLAVE * CARGA[H_] *
+	}
+
 }
