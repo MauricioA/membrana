@@ -28,8 +28,8 @@ private:
 
 	vector<Nodo>     nodos;
 	vector<Elemento> elementos;
-	vector<Double2D> campoElem;
 	vector<Double2D> gradElem;
+	vector<Double2D> corrElem;
 
 	vector<double>	 masas;
 	vector<double> 	 cargas;
@@ -50,7 +50,8 @@ private:
 
 	void armado3(Double2D pos[], double esm[][MAXNPEL], double sigma);
 
-	void armado4(Double2D pos[], double esm[][MAXNPEL], double sigma);
+	void armado4(Double2D pos[], double esm[][MAXNPEL], double sigma,
+			bool transp, double landa, double mu, double est[][4], double mas[]);
 
 	double determinante3(Double2D pos[], double b[], double c[]);
 
@@ -74,6 +75,8 @@ private:
 	void carga();
 
 	void concentracion(int especie);
+
+	void armadoTransporte();
 };
 
 #endif
