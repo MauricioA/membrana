@@ -8,13 +8,13 @@
 using namespace std;
 using namespace Eigen;
 
-const int MAXNPEL = 4;
-
 class Problema {
 public:
 	Problema();
 
 	void poisson();
+
+	void transporte();
 
 	Elemento getElement(int i);
 
@@ -57,6 +57,8 @@ private:
 	void grabar();
 
 	void chequearSimetria();
+
+	void masaDiag2D();
 
 };
 

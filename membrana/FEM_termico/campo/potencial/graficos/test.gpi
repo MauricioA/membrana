@@ -5,7 +5,7 @@ e  = 10e3	# [V/m] (100v/cm)
 
 r  = 10e-6	# [m]
 
-d  = 50e-9	
+d  = 5e-9	
 
 so = 0.15	# [S/m]
 
@@ -28,21 +28,21 @@ set xlabel "Tita [º]"
 set xrange [0 : 180]
 # set yrange [25:100]
 
-set output "itv50-teo.png"
+set output "itvq-teo.png"
 
 set ylabel "ITV [V]"
 
-plot itv_teo(x) with lines linestyle 1 title "ITV teórico d = 50 nm"
+plot itv_teo(x) with lines linestyle 1 title "ITV teórico d = 5 nm"
 
-set output "itv50.png"
+set output "itvq.png"
 
 set ylabel "ITV [V]"
 
-plot "itv-temp.csv" using ($1):($2) with lines linestyle 1 title "ITV d = 50 nm"
+plot "itvq.csv" using ($1):($2) with lines linestyle 1 title "ITV d = 5 nm"
 
-set output "itv-error-50.png"
+set output "itv-error-q.png"
 
 set ylabel "Error ITV [V]"
 
-plot "itv-temp.csv" using ($1):(abs($2 - itv_teo($1))) with points title "Error ITV d = 50 nm"
+plot "itvq.csv" using ($1):(abs($2 - itv_teo($1))) with points title "Error ITV d = 5 nm"
 
