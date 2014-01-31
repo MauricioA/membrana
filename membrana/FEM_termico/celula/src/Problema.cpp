@@ -15,6 +15,7 @@
 //TODO ignorar bien los comentarios
 //TODO refactorizar a varios archivos/clases?
 //TODO ver como graba en windows
+//TODO comparar resultados de campo para tri y quad con fortran
 
 Problema::Problema() {
 	cout << "Leyendo archivos... " << flush;
@@ -255,7 +256,7 @@ void Problema::armado(Double2D pos[], double esm[][MAXNPEL], double sigma) {
 		armado3(pos, esm, sigma);
 		break;
 	case 4:
-		armado4(pos, esm, sigma);
+		armado4(pos, esm, sigma, false, 0., 0., NULL, NULL);
 		break;
 	}
 }
@@ -294,15 +295,17 @@ double Problema::determinante3(Double2D pos[], double b[], double c[]) {
 		- pos[1].x*pos[0].y - pos[2].x*pos[1].y - pos[0].x*pos[2].y;
 }
 
-void Problema::armado4(Double2D pos[], double esm[][MAXNPEL], double sigma) {
+void Problema::armado4(Double2D pos[], double esm[][MAXNPEL], double sigma,
+		bool transp, double landa, double mu, double est[][4], double mas[]) {
 	assert(nodpel == 4);
+
 	const int NODPEL = 4;
-	int kGauss = 0;
 	double phi[2*NGAUSS][NODPEL];
 	double dphi[NDIM][2*NGAUSS][NODPEL];
 	double gxCod[NDIM][2*NGAUSS];
 	double phidX[NDIM][2*NGAUSS][4];
 	double cteI[2*NGAUSS];
+	int kGauss = 0;
 
 	for (int i = 0; i < NGAUSS; i++) for (int j = 0; j < NGAUSS; j++) {
 		double det = iteracion4(phi, dphi, phidX, i, j, kGauss, pos);
@@ -321,11 +324,18 @@ void Problema::armado4(Double2D pos[], double esm[][MAXNPEL], double sigma) {
 
 	for (int i = 0; i < 4; i++) for (int j = 0; j < 4; j++) esm[i][j] = 0.;
 
-	for (int kGauss = 0; kGauss < NGAUSS*NGAUSS; kGauss++) {
-		for (int i = 0; i < nodpel; i++) for (int j = 0; j < nodpel; j++) {
+	for (int kGauss = 0; kGauss < NGAUSS*NGAUSS; kGauss++) for (int i = 0; i < nodpel; i++) {
+		for (int j = 0; j < nodpel; j++) {
 			for (int d = 0; d < NDIM; d++) {
 				esm[i][j] += sigma * phidX[d][kGauss][i] * phidX[d][kGauss][j] * cteI[kGauss];
 			}
+
+			if (transp) {
+				esm[i][j] += mu * phidX[0][kGauss][i] * phi[kGauss][j] * cteI[kGauss];
+			}
+		}
+		if (transp) {
+			est[i][i] += mas[i] * landa * cteI[kGauss];
 		}
 	}
 }
@@ -393,7 +403,7 @@ double Problema::iteracion4(double phi[2*NGAUSS][4], double dphi[NDIM][2*NGAUSS]
 }
 
 void Problema::campo() {
-	switch(nodpel) {
+	switch (nodpel) {
 	case 3:
 		campo3();
 		break;
@@ -429,21 +439,57 @@ void Problema::campo3() {
 
 void Problema::campo4() {
 	assert(nodpel == 4);
-//	TODO
+	gradElem.resize(nElems);
+
+	for (int iElem = 0; iElem < nElems; iElem++) {
+		Elemento elem = elementos[iElem];
+		int kGauss = 0;
+		double phi[2*NGAUSS][4];
+		double dphi[NDIM][2*NGAUSS][4];
+		double phidX[NDIM][2*NGAUSS][4];
+		double sol[nodpel];
+		Double2D pos[4];
+		Double2D e[nodpel];
+		Double2D eElem;
+		eElem.x = 0.;
+		eElem.y = 0.;
+
+		for (int i = 0; i < 3; i++) {
+			int iNodo = elem[i];
+			pos[i].x = nodos[iNodo].x;
+			pos[i].y = nodos[iNodo].y;
+			sol[i] = solucion[i];
+			e[i].x = 0.;
+			e[i].y = 0.;
+		}
+
+		for (int i = 0; i < NGAUSS; i++) for (int j = 0; j < NGAUSS; j++) {
+			iteracion4(phi, dphi, phidX, i, j, kGauss, pos);
+
+			for (int k = 0; k < nodpel; k++) {
+				e[k].x  += dphi[0][kGauss][k] * sol[k];
+				e[k].y  += dphi[1][kGauss][k] * sol[k];
+				eElem.x += dphi[0][kGauss][k] * sol[k];
+				eElem.y += dphi[1][kGauss][k] * sol[k];
+			}
+
+			kGauss++;
+		}
+
+		gradElem[iElem].x = -eElem.x * 0.25;
+		gradElem[iElem].y = -eElem.y * 0.25;
+	}
 }
 
-//TODO corregir esto!
+//TODO multiplicar para que quede por metro?
 void Problema::corriente() {
-//	if (nodpel != 3) return;
-//
-//	campoElemX.resize(nElems);
-//	campoElemY.resize(nElems);
-//
-//	for (int iElem = 0; iElem < nElems; iElem++) {
-//		Elemento elem = elementos[iElem];
-//		gradElemX[iElem] = -sigmas[elem.material] * gradElemX[iElem];
-//		gradElemY[iElem] = -sigmas[elem.material] * gradElemY[iElem];
-//	}
+	corrElem.resize(nElems);
+
+	for (int iElem = 0; iElem < nElems; iElem++) {
+		Elemento elem = elementos[iElem];
+		corrElem[iElem].x = -sigmas[elem.material] * gradElem[iElem].x;
+		gradElem[iElem].y = -sigmas[elem.material] * gradElem[iElem].y;
+	}
 }
 
 void Problema::grabar() {
@@ -472,7 +518,7 @@ void Problema::grabar() {
 
 		for (int k = 0; k < nElems; k++) {
 			double corr = sqrt(pow( gradElem[k].x, 2) + pow( gradElem[k].y, 2));
-			double camp = sqrt(pow(campoElem[k].x, 2) + pow(campoElem[k].y, 2));
+			double camp = sqrt(pow(corrElem[k].x, 2) + pow(corrElem[k].y, 2));
 			double xMed = 0.0, yMed = 0.0;
 
 			for (int j = 0; j < nodpel; j++) {
@@ -640,7 +686,15 @@ void Problema::concentracion(int esp) {
 		double difElem = DIFUSION[esp];
 		if (elem.material == MEMBRANA) difElem *= 1e-3;
 
-//		double mu = -difElem * CLAVE * CARGA[H_] *
+		double mu = -difElem * CLAVE * CARGA[H_] * gradElem[kElem].y;
+
+//		armado(pos, esm, sigma, landa, )
+
 	}
+
+}
+
+void Problema::armadoTransporte() {
+	assert(nodpel == 4);	//not implemented para nodpel == 3
 
 }
