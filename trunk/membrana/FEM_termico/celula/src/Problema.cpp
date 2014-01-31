@@ -6,28 +6,28 @@
 
 #include "Problema.h"
 
-//TODO corregir corriente y campo! (al revéz y multiplicar para que de corriente por cm?)
 //TODO transporte
+//TODO corriente y campo para quad
+//TODO multiplicar corriente para obtener por m o cm
 //TODO carpeta de salida
 //TODO archivo input por parámetros
 //TODO fort: input y qe = 0 -> ef
 //TODO cambiar flags de vectorización
 //TODO ignorar bien los comentarios
-//TODO mover declaraciones
+//TODO refactorizar a varios archivos/clases?
+//TODO ver como graba en windows
 
 Problema::Problema() {
 	cout << "Leyendo archivos... " << flush;
 	clock_t start = clock();
 
-	double alto;
 	string s, line, malla;
 	vector<int> dirichV, dirichT;
 	ifstream input("input.in", ifstream::in);
+	double alto;
+	nodpel = 3;
 
-	if (!input.is_open()) {
-		cerr << "Error abriendo archivo input\n";
-		exit(EXIT_FAILURE);
-	}
+	assert(input.is_open());
 
 	while (getline(input, line)) {
 		istringstream iss(line);
@@ -35,7 +35,13 @@ Problema::Problema() {
 		if (line.find("malla") != string::npos) {
 			iss >> s >> malla;
 		} else if (line.find("nodpel") != string::npos) {
-			iss >> s >> nodpel;
+			iss >> s >> s;
+
+			if (s == "tri") {
+				nodpel = 3;
+			} else if (s == "quad") {
+				nodpel = 4;
+			}
 		} else if (line.find("sigint") != string::npos) {
 			iss >> s >> sigmas[INTERNO];
 		} else if (line.find("sigext") != string::npos) {
@@ -73,10 +79,7 @@ void Problema::leerMalla(string malla) {
 	istringstream iss;
 
 	ifstream stream(malla.c_str(), ifstream::in);
-	if (!stream.is_open()) {
-		cerr << "Error abriendo malla\n";
-		exit(EXIT_FAILURE);
-	}
+	assert(stream.is_open());
 
 	/* Numero de nodos */
 	dameLinea(stream, iss);
@@ -238,8 +241,8 @@ void Problema::poisson() {
 	cout << "Corriente y campo... " << flush;
 	clock_t start = clock();
 
-	corriente();
 	campo();
+	corriente();
 
 	int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
 	cout << "OK\t\t" << time << "ms\n";
@@ -255,9 +258,6 @@ void Problema::armado(double x[], double y[], double esm[][MAXNPEL], double sigm
 	case 4:
 		armado4(x, y, esm, sigma);
 		break;
-	default:
-		cerr << "Error armado\n";
-		exit(EXIT_FAILURE);
 	}
 }
 
@@ -266,13 +266,9 @@ void Problema::armado3(double x[], double y[], double esm[][MAXNPEL], double sig
 	double b[3], c[3];
 
 	double det = determinante3(x, y, b, c);
-
 	double rMed = (x[0] + x[1] + x[2]) / 3;
 
-	if (abs(det) < TOLER_AREA) {
-		cerr << "Error area es cero\n";
-		exit(EXIT_FAILURE);
-	}
+	assert(abs(det) > TOLER_AREA);
 
 	for (int i = 0; i < NODPEL; i++) for (int j = 0; j < 3; j++) {
 		esm[i][j] = sigma * (b[i] * b[j] + c[i] * c[j]) * M_PI * rMed / det;
@@ -308,10 +304,11 @@ void Problema::armado4(double x[], double y[], double esm[][MAXNPEL], double sig
 	double gxCod[NDIM][2*NGAUSS];
 	double phidX[NDIM][2*NGAUSS][NODPEL];
 	double cteI[2*NGAUSS];
+	double aJacob2D[2][2];
 
 	for (int j = 0; j < NGAUSS; j++) for (int i = 0; i < NGAUSS; i++) {
 		double t = GAUSSPT[j];
-		double s = GAUSSWT[i];
+		double s = GAUSSPT[i];
 
 		double sm = 0.5 * (1.0 - s);
 		double tm = 0.5 * (1.0 - t);
@@ -326,15 +323,15 @@ void Problema::armado4(double x[], double y[], double esm[][MAXNPEL], double sig
 
 		k = 0;
 		dphi[0][kGauss][k++] = -0.5 * tm;
-		dphi[0][kGauss][k++] = -0.5 * tm;
-		dphi[0][kGauss][k++] = -0.5 * tp;
+		dphi[0][kGauss][k++] =  0.5 * tm;
+		dphi[0][kGauss][k++] =  0.5 * tp;
 		dphi[0][kGauss][k++] = -0.5 * tp;
 
 		k = 0;
-		dphi[0][kGauss][k++] = -0.5 * sm;
-		dphi[0][kGauss][k++] = -0.5 * sq;
-		dphi[0][kGauss][k++] = -0.5 * sq;
-		dphi[0][kGauss][k++] = -0.5 * sm;
+		dphi[1][kGauss][k++] = -0.5 * sm;
+		dphi[1][kGauss][k++] = -0.5 * sq;
+		dphi[1][kGauss][k++] =  0.5 * sq;
+		dphi[1][kGauss][k++] =  0.5 * sm;
 
 		for (int dim = 0; dim < NDIM; dim++) {
 			gxCod[dim][kGauss] = 0.0;
@@ -344,8 +341,7 @@ void Problema::armado4(double x[], double y[], double esm[][MAXNPEL], double sig
 			}
 		}
 
-		double aJacob2D[2][2];
-		for (k = 0; k < 2; k++) for (int l = 0; l < 2; l++) aJacob2D[k][l] = 0.0;
+		for (int k = 0; k < 2; k++) for (int l = 0; l < 2; l++) aJacob2D[k][l] = 0.0;
 
 		for (k = 0; k < NODPEL; k++) {
 			aJacob2D[0][0] += dphi[0][kGauss][k] * x[k];
@@ -359,13 +355,8 @@ void Problema::armado4(double x[], double y[], double esm[][MAXNPEL], double sig
 			aJacob2D[0][1] * aJacob2D[1][0];
 
 		double aJacobI2d[2][2] = {
-			{
-				aJacob2D[1][1] / det,
-				aJacob2D[0][1] / det,
-			}, {
-				aJacob2D[1][0] / det,
-				aJacob2D[0][0] / det,
-			},
+			{  aJacob2D[1][1] / det, -aJacob2D[0][1] / det, },
+			{ -aJacob2D[1][0] / det,  aJacob2D[0][0] / det,	},
 		};
 
 		for (int k = 0; k < NODPEL; k++) {
@@ -387,7 +378,9 @@ void Problema::armado4(double x[], double y[], double esm[][MAXNPEL], double sig
 	}
 }
 
-void Problema::corriente() {
+void Problema::campo() {
+	if (nodpel != 3) return;
+
 	double x[3], y[3], sol[3];
 	corrElemX.resize(nElems);
 	corrElemY.resize(nElems);
@@ -396,7 +389,7 @@ void Problema::corriente() {
 		Elemento elem = elementos[iElem];
 		double b[3], c[3];
 
-		for (int i = 0; i < nodpel; i++) {
+		for (int i = 0; i < 3; i++) {
 			int iNodo = elem[i];
 			x[i] = nodos[iNodo].x;
 			y[i] = nodos[iNodo].y;
@@ -410,7 +403,9 @@ void Problema::corriente() {
 	}
 }
 
-void Problema::campo() {
+void Problema::corriente() {
+	if (nodpel != 3) return;
+
 	campoElemX.resize(nElems);
 	campoElemY.resize(nElems);
 
@@ -432,54 +427,147 @@ void Problema::grabar() {
 
 	for (int iNodo = 0; iNodo < nNodes; iNodo++) {
 		Nodo nodo = nodos[iNodo];
-		tension << endl << nodo.x << ", " << nodo.y << ", " << solucion[iNodo];
+		tension << "\n" << nodo.x << ", " << nodo.y << ", " << solucion[iNodo];
 	}
 
 	tension.close();
 
 	/* Corriente y campo */
-	ofstream corriente("corriente.csv", ofstream::out);
-	ofstream campo("campo.csv", ofstream::out);
+	if (nodpel == 3) {
+		ofstream corriente("corriente.csv", ofstream::out);
+		ofstream campo("campo.csv", ofstream::out);
 
-	corriente << "X, Y, corriente";
-	campo 	  << "X, Y, campo";
+		corriente << "X, Y, corriente";
+		campo 	  << "X, Y, campo";
 
-	for (int k = 0; k < nElems; k++) {
-		double corr = sqrt(pow( corrElemX[k], 2) + pow( corrElemY[k], 2));
-		double camp = sqrt(pow(campoElemX[k], 2) + pow(campoElemY[k], 2));
-		double xMed = 0.0, yMed = 0.0;
+		for (int k = 0; k < nElems; k++) {
+			double corr = sqrt(pow( corrElemX[k], 2) + pow( corrElemY[k], 2));
+			double camp = sqrt(pow(campoElemX[k], 2) + pow(campoElemY[k], 2));
+			double xMed = 0.0, yMed = 0.0;
 
-		for (int j = 0; j < nodpel; j++) {
-			int jNodo = elementos[k][j];
-			xMed += nodos[jNodo].x;
-			yMed += nodos[jNodo].y;
+			for (int j = 0; j < nodpel; j++) {
+				int jNodo = elementos[k][j];
+				xMed += nodos[jNodo].x;
+				yMed += nodos[jNodo].y;
+			}
+
+			xMed /= nodpel;
+			yMed /= nodpel;
+
+			corriente << "\n" << xMed << ", " << yMed << ", " << corr;
+			campo 	  << "\n" << xMed << ", " << yMed << ", " << camp;
 		}
 
-		xMed /= nodpel;
-		yMed /= nodpel;
-
-		corriente << "\n" << xMed << ", " << yMed << ", " << corr;
-		campo 	  << "\n" << xMed << ", " << yMed << ", " << camp;
+		corriente.close();
+		campo.close();
 	}
-
-	corriente.close();
-	campo.close();
 
 	int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
 	cout << "OK\t\t\t" << time << "ms\n";
 }
-//
-//Elemento Problema::getElement(int i) {
-//	return elementos[i];
-//}
+
+Elemento Problema::getElement(int i) {
+	return elementos[i];
+}
 
 void Problema::chequearSimetria() {
 	for (int i = 0; i < nNodes; i++) for (int j = i; j < nNodes; j++) {
-		if (abs(matriz.coeff(i, j) - matriz.coeff(j, i)) > 1e-9) {
-			cerr << "Error: matriz no es simétrica\n";
-			exit(EXIT_FAILURE);
-		}
+		assert(abs(matriz.coeff(i, j) - matriz.coeff(j, i)) < 1e-9);
+	}
+}
+
+void Problema::transporte() {
+	vector<double>  cons[NESPS];
+	vector<double>  ants[NESPS];
+	vector<double> phAux[NESPS];
+
+	for (Especie esp = 0; esp < NESPS; esp++) {
+		cons[esp].resize(nNodes);
+		ants[esp].resize(nNodes);
 	}
 
-	cout << "chequeo completo\n";
+	phAux[H_].resize(nNodes);
+	phAux[OH].resize(nNodes);
+
+	for (int iNode = 0; iNode < nNodes; iNode++) {
+		for (Especie esp = 0; esp < NESPS; esp++) {
+			cons[esp][iNode] = CONCENTRACION_INICIAL[esp];
+			ants[esp][iNode] = CONCENTRACION_INICIAL[esp];
+		}
+
+		phAux[H_][iNode] = -log10(cons[H_][iNode] * 1e15 / 6.02e23);
+		phAux[OH][iNode] = -log10(cons[OH][iNode] * 1e15 / 6.02e23);
+	}
+
+
+}
+
+void Problema::masaDiag2D() {
+	assert(nodpel == 4);
+
+	vector<double> masa;	//TODO poner esto afuera
+	masa.resize(nNodes);
+	for (int i = 0; i < nNodes; i++) masa[i] = 0.0;
+
+	const int NLOCS = 2;
+	const int INOGA[] = {0, 3, 1, 2};
+	const double POSGL[] = {-1.0, 1.0};
+	const double WEIGL[] = { 1.0, 1.0};
+
+	for (int iElem = 0; iElem < nElems; iElem++) {
+		Elemento elem = elementos[iElem];
+		Nodo nodosElem[nodpel];
+		for (int i = 0; i < nodpel; i++) nodosElem[i] = nodos[elem[i]];
+
+		/*	subroutine armotodo(nope,x,y,deriv,weigc) */
+		int iGauss = 0;
+		double weigc[nodpel];
+		double posgc[2][nodpel];
+		double deriv[2][nodpel][nodpel];
+
+		for (int ilocs = 0; ilocs < NLOCS; ilocs++) {
+			for (int jlocs = 0; jlocs < NLOCS; jlocs++) {
+				weigc[INOGA[iGauss]] = WEIGL[ilocs] * WEIGL[jlocs];
+				posgc[0][INOGA[iGauss]] = POSGL[ilocs];
+				posgc[1][INOGA[iGauss]] = POSGL[jlocs];
+				iGauss++;
+			}
+		}
+
+		for (int i = 0; i < nodpel; i++) {
+			double s = posgc[0][i];
+			double t = posgc[1][i];
+
+			int k = 0;
+			deriv[0][k++][i] = (-1.0 + t) * 0.25;
+			deriv[0][k++][i] = ( 1.0 - t) * 0.25;
+			deriv[0][k++][i] = ( 1.0 + t) * 0.25;
+			deriv[0][k++][i] = (-1.0 - t) * 0.25;
+
+			k = 0;
+			deriv[1][k++][i] = (-1.0 + s) * 0.25;
+			deriv[1][k++][i] = (-1.0 - s) * 0.25;
+			deriv[1][k++][i] = ( 1.0 + s) * 0.25;
+			deriv[1][k++][i] = ( 1.0 - s) * 0.25;
+		}
+		/* end subroutine armotodo */
+
+		for (int iNode = 0; iNode < nodpel; iNode++) {
+			double aJacob[2][2];
+			for (int i = 0; i < 2; i++) for (int j = 0; j < 2; j++) aJacob[i][j] = 0.0;
+
+			for (int jNode = 0; jNode < nodpel; jNode++) {
+				aJacob[0][0] += nodosElem[jNode].x * deriv[0][jNode][iNode];
+				aJacob[0][1] += nodosElem[jNode].x * deriv[1][jNode][iNode];
+				aJacob[1][0] += nodosElem[jNode].y * deriv[0][jNode][iNode];
+				aJacob[1][1] += nodosElem[jNode].y * deriv[1][jNode][iNode];
+			}
+
+			double gpDet = aJacob[0][0] * aJacob[1][1] - aJacob[0][1] * aJacob[1][0];
+			double gpVol = weigc[iNode] * gpDet;
+			masa[elem[iNode]] += gpVol;
+		}
+
+		for (int iPoint = 0; iPoint < nNodes; iPoint++)	assert(masa[iPoint] > TOLER_MASA);
+	}
 }
