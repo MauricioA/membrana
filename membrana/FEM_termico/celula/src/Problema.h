@@ -33,9 +33,9 @@ private:
 
 	vector<double>	 masas;
 	vector<double> 	 cargas;
-	vector<double>   cons[NESPS];
-	vector<double>   ants[NESPS];
-	vector<double> 	phAux[NESPS];
+	vector<double>   concentraciones[NESPS];
+//	vector<double>   anteriores[NESPS];
+	vector<double> 	 phAux[NESPS];
 
 	SparseMatrix<double> matriz;
 

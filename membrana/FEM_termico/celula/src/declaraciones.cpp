@@ -18,6 +18,10 @@ const double EPSILON_TRANSPORTE	= 78.5;			// cte dieléctrica del agua
 const double EPSILON_0			= 8.85e-12;		// cte de permitividad C**2 / (N m**2)
 const double CLAVE 				= FARADAY / (R_CTE * T_CTE);
 const double DELTA_T 			= 1e-6;
+//const double E_EQ				= 1.23;			// V
+//const double I_EQ				= 1e-18;		// at/(um**2)
+//const double E2_EQ				= 1.36; 		// V
+//const double I2_EQ 				= 1e-12;		// at/(um**2)
 
 const double GAUSSPT[] = {
 	-1 / sqrt(3.),
@@ -37,18 +41,32 @@ const double CONCENTRACION_INICIAL[] = {	// En at/(um**3)
 	96.32e6,	// CL 0.16 M
 };
 
+const double CONCENTRACION_ANODO[] = {		// En at/(um**3)
+	1.5e7,		// H
+	0.,			// OH
+	1e12,		// NA
+	0.,			// CL
+};
+
+const double CONCENTRACION_CATODO[] = {		// En at/(um**3)
+	0.,			// H
+	1.806e7,	// OH
+	0.,			// NA
+	0.,			// CL
+};
+
 const double CARGA[] = {
-	+1.,	// H
-	-1.,	// OH
-	+1.,	// NA
-	-1.,	// CL
+	+1.,		// H
+	-1.,		// OH
+	+1.,		// NA
+	-1.,		// CL
 };
 
 const double DIFUSION[] = {		// (creo)
-	12500.,	// H
-	7050.,	// OH
-	1780.,	// NA
-	3830.,	// CL
+	12500.,		// H
+	7050.,		// OH
+	1780.,		// NA
+	3830.,		// CL
 };
 
 enum Material {
