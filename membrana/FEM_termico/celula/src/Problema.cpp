@@ -5,6 +5,7 @@
 
 #include "Problema.h"
 
+//TODO ver cosa rara en armado4!!!
 //TODO transporte
 //TODO corriente y campo para quad
 //TODO multiplicar corriente para obtener por m o cm
@@ -331,6 +332,7 @@ void Problema::armado4(Double2D pos[], double esm[][MAXNPEL], double sigma,
 			}
 
 			if (transp) {
+//				TODO esto lo calcula de más porque despues lo sobrescribe en armadoTransporte()!!!
 				esm[i][j] += mu * phidX[0][kGauss][i] * phi[kGauss][j] * cteI[kGauss];
 			}
 		}
@@ -554,7 +556,6 @@ void Problema::chequearSimetria() {
 
 void Problema::transporte() {
 	const double T_CERO = 1.;
-	const double DELTA_T = 1e-6;
 
 	for (int esp = 0; esp < NESPS; esp++) {
 		cons[esp].resize(nNodes);
@@ -669,32 +670,67 @@ void Problema::carga() {
 }
 
 void Problema::concentracion(int esp) {
+	double esm[nodpel][MAXNPEL];
+
 	for (int kElem = 0; kElem < elementos.size(); kElem++) {
 		Elemento elem = elementos[kElem];
-
-		double yMed = 0.;// potenciaMed = 0.;
+		double yMed = 0.;
+		Double2D pos[nodpel];
+		double sol[nodpel];
+		double ef[nodpel];
 
 		for (int i = 0; i < nodpel; i++) {
 			int iNodo = elem[i];
-			yMed += nodos[iNodo].y;
-//			potenciaMed += solucion[iNodo];
+			Nodo nodo = nodos[iNodo];
+			yMed += nodo.y;
+			pos[i].x = nodo.x;
+			pos[i].y = nodo.y;
+			sol[i] = solucion[iNodo];
 		}
 
 		yMed /= nodpel;
-//		potenciaMed /= nodpel;
+		double sigma = sigmas[elem.material];
 
 		double difElem = DIFUSION[esp];
 		if (elem.material == MEMBRANA) difElem *= 1e-3;
 
 		double mu = -difElem * CLAVE * CARGA[H_] * gradElem[kElem].y;
 
-//		armado(pos, esm, sigma, landa, )
+		double landa = 1.;
+
+		armadoTransporte(pos, esm, sigma, landa, mu, sol, ef);
+
+//		!!!!USTED ESTA AQUI!
 
 	}
 
 }
 
-void Problema::armadoTransporte() {
+void Problema::armadoTransporte(Double2D pos[], double esm[][MAXNPEL], double sigma, double landa,
+		double mu, double sol[], double ef[]) {
 	assert(nodpel == 4);	//not implemented para nodpel == 3
 
+	const int NODPEL = 4;
+	const double th2 = 0.5;
+	const double aCoef1 = DELTA_T * th2;
+	const double aCoef2 = DELTA_T * (1. - th2);
+
+	double est[NODPEL][NODPEL];
+	double mas[NODPEL];
+
+	for (int i = 0; i < NODPEL; i++) {
+		mas[i] = 0.;
+		for (int j = 0; j < NODPEL; j++) est[i][j] = 0.;
+	}
+
+	armado4(pos, esm, sigma, true, landa, mu, est, mas);
+
+	for (int k = 1; k < NODPEL; k++) {
+		double sum = 0.;
+		for (int j = 0; j < NODPEL; j++) {
+			sum += (est[k][j] - aCoef2 * esm[k][j]) * sol[j];
+			esm[k][j] = est[k][j] + aCoef1 * esm[k][j];
+		}
+		ef[k] = (aCoef1 + aCoef2) * ef[k] + sum;
+	}
 }

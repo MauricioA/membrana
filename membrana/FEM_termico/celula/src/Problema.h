@@ -76,7 +76,8 @@ private:
 
 	void concentracion(int especie);
 
-	void armadoTransporte();
+	void armadoTransporte(Double2D pos[], double esm[][MAXNPEL], double sigma, double landa,
+			double mu, double sol[], double ef[]);
 };
 
 #endif
