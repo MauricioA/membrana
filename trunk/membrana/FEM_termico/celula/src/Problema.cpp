@@ -3,6 +3,8 @@
 #include <ctime>
 #include <cassert>
 
+#include <Eigen/LU>
+
 #include "Problema.h"
 
 //TODO ver cosa rara en armado4!!!
@@ -12,10 +14,11 @@
 //TODO carpeta de salida
 //TODO archivo input por parámetros
 //TODO fort: input y qe = 0 -> ef
-//TODO cambiar flags de vectorización
 //TODO ignorar bien los comentarios
 //TODO refactorizar a varios archivos/clases?
-//TODO ver como graba en windows
+//TODO PERFO: ver como graba en windows
+//TODO PERFO: compilar con NDEBUG
+//TODO PERFO: cambiar flags de vectorización
 //TODO comparar resultados de campo para tri y quad con fortran
 
 Problema::Problema() {
@@ -558,8 +561,8 @@ void Problema::transporte() {
 	const double T_CERO = 1.;
 
 	for (int esp = 0; esp < NESPS; esp++) {
-		cons[esp].resize(nNodes);
-		ants[esp].resize(nNodes);
+		concentraciones[esp].resize(nNodes);
+//		anteriores[esp].resize(nNodes);
 	}
 
 	phAux[H_].resize(nNodes);
@@ -567,12 +570,12 @@ void Problema::transporte() {
 
 	for (int iNode = 0; iNode < nNodes; iNode++) {
 		for (int esp = 0; esp < NESPS; esp++) {
-			cons[esp][iNode] = CONCENTRACION_INICIAL[esp];
-			ants[esp][iNode] = CONCENTRACION_INICIAL[esp];
+			concentraciones[esp][iNode] = CONCENTRACION_INICIAL[esp];
+//			anteriores[esp][iNode] = CONCENTRACION_INICIAL[esp];
 		}
 
-		phAux[H_][iNode] = -log10(cons[H_][iNode] * 1e15 / 6.02e23);
-		phAux[OH][iNode] = -log10(cons[OH][iNode] * 1e15 / 6.02e23);
+		phAux[H_][iNode] = -log10(concentraciones[H_][iNode] * 1e15 / 6.02e23);
+		phAux[OH][iNode] = -log10(concentraciones[OH][iNode] * 1e15 / 6.02e23);
 	}
 
 	masaDiag2D();
@@ -661,18 +664,19 @@ void Problema::carga() {
 
 	for (int iNodo = 0; iNodo < nNodes; iNodo++) {
 		cargas[iNodo] =	FARADAY / (EPSILON_TRANSPORTE * EPSILON_0) * CTE * (
-			CARGA[H_] * cons[H_][iNodo] +
-			CARGA[OH] * cons[OH][iNodo] +
-			CARGA[NA] * cons[NA][iNodo] * CTE_DILUCION +
-			CARGA[CL] * cons[CL][iNodo] * CTE_DILUCION
+			CARGA[H_] * concentraciones[H_][iNodo] +
+			CARGA[OH] * concentraciones[OH][iNodo] +
+			CARGA[NA] * concentraciones[NA][iNodo] * CTE_DILUCION +
+			CARGA[CL] * concentraciones[CL][iNodo] * CTE_DILUCION
 		);
 	}
 }
 
 void Problema::concentracion(int esp) {
 	double esm[nodpel][MAXNPEL];
+	vector< Triplet<double> > triplets;
 
-	for (int kElem = 0; kElem < elementos.size(); kElem++) {
+	for (uint kElem = 0; kElem < elementos.size(); kElem++) {
 		Elemento elem = elementos[kElem];
 		double yMed = 0.;
 		Double2D pos[nodpel];
@@ -694,14 +698,72 @@ void Problema::concentracion(int esp) {
 		double difElem = DIFUSION[esp];
 		if (elem.material == MEMBRANA) difElem *= 1e-3;
 
-		double mu = -difElem * CLAVE * CARGA[H_] * gradElem[kElem].y;
+		double mu = -difElem * CLAVE * CARGA[esp] * gradElem[kElem].y;
 
 		double landa = 1.;
 
 		armadoTransporte(pos, esm, sigma, landa, mu, sol, ef);
 
-//		!!!!USTED ESTA AQUI!
+		for (int i = 0; i < nodpel; i++) {
+			int iNodo = elem[i];
+			Nodo nodo = nodos[iNodo];
 
+			if (nodo.esTierra) {
+				double adiag = esm[i][i];
+				for (int j = 0; j < nodpel; j++) {
+					esm[i][j] = 0.;
+					ef[j] -= esm[j][i] * CONCENTRACION_CATODO[esp];
+					esm[j][i] = 0.;
+				}
+				esm[i][i] = adiag;
+				ef[i] = adiag * CONCENTRACION_CATODO[esp];
+			}
+
+			if (nodo.esPotencia) {
+				double adiag = esm[i][i];
+				for (int j = 0; j < nodpel; j++) {
+					esm[i][j] = 0.;
+					ef[j] -= esm[j][i] * CONCENTRACION_ANODO[esp];
+					esm[j][i] = 0.;
+				}
+				esm[i][i] = adiag;
+				ef[iNodo] = adiag * CONCENTRACION_ANODO[esp];
+			}
+		}
+
+		/* Ensamblado */
+		for (int i = 0; i < nNodes; i++) rhs[i] = 0.;
+		triplets.clear();
+
+		for (int i = 0; i < nodpel; i++) {
+			int iNodo = elem[i];
+			rhs[iNodo] += ef[i];
+
+			for (int j = 0; j < nodpel; j++) {
+				int jNodo = elem[j];
+				triplets.push_back(Triplet<double>(iNodo, jNodo, esm[i][j]));
+			}
+		}
+
+		for (int iNodo = 0; iNodo < nNodes; iNodo++) {
+			concentraciones[esp][iNodo] = rhs[iNodo];
+		}
+
+		matriz.setFromTriplets(triplets.begin(), triplets.end());
+		matriz.makeCompressed();
+
+		/* Resolución */
+		SparseLU< SparseMatrix<double, ColMajor>, COLAMDOrdering<Index> > solver;
+
+
+//		SimplicialLDLT< SparseMatrix<double> > cholesky(matriz);
+//		solucion = cholesky.solve(rhs);
+//
+//		time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
+//		cout << "OK\t\t" << time << "ms\n";
+//
+//		//TODO siempre hace una sola iteración
+//		error = EPSILON_POISSON * .5;
 	}
 
 }
