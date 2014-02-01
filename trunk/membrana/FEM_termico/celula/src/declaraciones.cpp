@@ -17,6 +17,7 @@ const double T_CTE				= 310.;			// K
 const double EPSILON_TRANSPORTE	= 78.5;			// cte dieléctrica del agua
 const double EPSILON_0			= 8.85e-12;		// cte de permitividad C**2 / (N m**2)
 const double CLAVE 				= FARADAY / (R_CTE * T_CTE);
+const double DELTA_T 			= 1e-6;
 
 const double GAUSSPT[] = {
 	-1 / sqrt(3.),
