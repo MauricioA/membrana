@@ -18,10 +18,16 @@ const double EPSILON_TRANSPORTE	= 78.5;			// cte dieléctrica del agua
 const double EPSILON_0			= 8.85e-12;		// cte de permitividad C**2 / (N m**2)
 const double CLAVE 				= FARADAY / (R_CTE * T_CTE);
 const double DELTA_T 			= 1e-6;
+const double KWF				= 249.16;		// (um**3)/at/s = 1.5e11 1/mol/s
+const double KWB 				= 2.7e-5;		// 1/s
+const double CONCENT_H2O 		= 3.34e10;		// at/(um**3)
+const double RSA 				= 0.5;
+const double CONCENT_MINIMO 	= 1e-8;
+
 //const double E_EQ				= 1.23;			// V
 //const double I_EQ				= 1e-18;		// at/(um**2)
-//const double E2_EQ				= 1.36; 		// V
-//const double I2_EQ 				= 1e-12;		// at/(um**2)
+//const double E2_EQ				= 1.36; 	// V
+//const double I2_EQ 				= 1e-12;	// at/(um**2)
 
 const double GAUSSPT[] = {
 	-1 / sqrt(3.),
