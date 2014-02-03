@@ -17,7 +17,7 @@ public:
 
 	void transporte();
 
-	Elemento getElement(int i);
+	void chequearSimetria();
 
 	int nodpel;
 	int nElems;
@@ -25,6 +25,11 @@ public:
 
 	double potencial;
 	double sigmas[3];
+
+	VectorXd concentraciones[NESPS];
+	VectorXd anteriores[NESPS];
+
+	vector<double> 	 phAux[NESPS];
 
 	vector<Nodo>& 	  getNodos();
 	vector<Elemento>& getElementos();
@@ -35,6 +40,11 @@ public:
 
 	VectorXd& getRhs();
 	VectorXd& getSolucion();
+
+	vector<double>& getMasas();
+	vector<double>& getCargas();
+
+	void setSolucion(VectorXd sol);
 
 private:
 	vector<Nodo>     nodos;
@@ -47,30 +57,8 @@ private:
 	VectorXd rhs;
 	VectorXd solucion;
 
-	vector<double>	 masas;
-	vector<double> 	 cargas;
-	vector<double> 	 phAux[NESPS];
-
-	VectorXd concentraciones[NESPS];
-	VectorXd anteriores[NESPS];
-
-	void campo();
-
-	void campo3();
-
-	void campo4();
-
-	void corriente();
-
-	void grabar();
-
-	void chequearSimetria();
-
-	void masaDiag2D();
-
-	void carga();
-
-	void concentracion(int especie);
+	vector<double> masas;
+	vector<double> cargas;
 
 };
 

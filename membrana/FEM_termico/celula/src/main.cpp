@@ -6,7 +6,7 @@ int main() {
 
 	Celula problema;
 
-	problema.poisson();
+	problema.transporte();
 
 	return EXIT_SUCCESS;
 }

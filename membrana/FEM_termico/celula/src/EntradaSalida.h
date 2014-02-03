@@ -5,10 +5,12 @@
 
 class EntradaSalida {
 public:
-	static void leerInput(Celula &celula);
+	static void leerInput(Celula& celula);
+
+	static void grabar(Celula& celula);
 
 private:
-	static void leerMalla(Celula &celula, string malla);
+	static void leerMalla(Celula& celula, string malla);
 
 	static void dameLinea(ifstream& archivo, istringstream& iss);
 

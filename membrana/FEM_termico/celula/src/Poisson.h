@@ -5,7 +5,16 @@
 
 class Poisson {
 public:
-	static void Poisson(Celula &celula);
+	static void poisson(Celula& celula);
+
+private:
+	static void campo(Celula& celula);
+
+	static void campo3(Celula& celula);
+
+	static void campo4(Celula& celula);
+
+	static void corriente(Celula& celula);
 
 };
 

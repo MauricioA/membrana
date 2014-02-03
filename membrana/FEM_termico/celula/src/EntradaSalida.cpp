@@ -6,7 +6,11 @@
 
 using namespace std;
 
-void EntradaSalida::leerInput(Celula &celula) {
+//TODO carpeta de salida
+//TODO archivo input por parámetros
+//TODO ignorar bien los comentarios
+
+void EntradaSalida::leerInput(Celula& celula) {
 	cout << "Leyendo archivos... " << flush;
 	clock_t start = clock();
 
@@ -60,7 +64,7 @@ void EntradaSalida::leerInput(Celula &celula) {
 	cout << "OK\t\t" << time << "ms\n";
 }
 
-void EntradaSalida::leerMalla(Celula &celula, string malla) {
+void EntradaSalida::leerMalla(Celula& celula, string malla) {
 	int n;
 	int nod[4];
 	double x, y;
@@ -141,3 +145,54 @@ void EntradaSalida::dameLinea(ifstream& archivo, istringstream& iss) {
 	iss.clear();
 	iss.str(line);
 }
+
+void EntradaSalida::grabar(Celula& celula) {
+	cout << "Grabando... " << flush;
+	clock_t start = clock();
+
+	/* Tensión */
+	ofstream tension("tension.csv", ofstream::out);
+
+	tension << "X, Y, V";
+
+	for (int iNodo = 0; iNodo < celula.nNodes; iNodo++) {
+		Nodo nodo = celula.getNodos()[iNodo];
+		tension << "\n" << nodo.x << ", " << nodo.y << ", " << celula.getSolucion()[iNodo];
+	}
+
+	tension.close();
+
+	/* Corriente y campo */
+	if (celula.nodpel == 3) {
+		ofstream corriente("corriente.csv", ofstream::out);
+		ofstream campo("campo.csv", ofstream::out);
+
+		corriente << "X, Y, corriente";
+		campo 	  << "X, Y, campo";
+
+		for (int k = 0; k < celula.nElems; k++) {
+			double corr = sqrt(pow(celula.getGradElem()[k].x, 2) + pow(celula.getGradElem()[k].y, 2));
+			double camp = sqrt(pow(celula.getCorrElem()[k].x, 2) + pow(celula.getCorrElem()[k].y, 2));
+			double xMed = 0.0, yMed = 0.0;
+
+			for (int j = 0; j < celula.nodpel; j++) {
+				int jNodo = celula.getElementos()[k][j];
+				xMed += celula.getNodos()[jNodo].x;
+				yMed += celula.getNodos()[jNodo].y;
+			}
+
+			xMed /= celula.nodpel;
+			yMed /= celula.nodpel;
+
+			corriente << "\n" << xMed << ", " << yMed << ", " << corr;
+			campo 	  << "\n" << xMed << ", " << yMed << ", " << camp;
+		}
+
+		corriente.close();
+		campo.close();
+	}
+
+	int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
+	cout << "OK\t\t\t" << time << "ms\n";
+}
+
