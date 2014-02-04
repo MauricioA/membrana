@@ -10,9 +10,10 @@ using namespace std;
 //TODO archivo input por parámetros
 //TODO ignorar bien los comentarios
 
+clock_t EntradaSalida::start = 0;
+
 void EntradaSalida::leerInput(Celula& celula) {
-	cout << "Leyendo archivos... " << flush;
-	clock_t start = clock();
+	printStart("Leyendo archivos...", true);
 
 	string s, line, malla;
 	vector<int> dirichV, dirichT;
@@ -60,8 +61,7 @@ void EntradaSalida::leerInput(Celula& celula) {
 		}
 	}
 
-	int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
-	cout << "OK\t\t" << time << "ms\n";
+	printEnd();
 }
 
 void EntradaSalida::leerMalla(Celula& celula, string malla) {
@@ -147,8 +147,7 @@ void EntradaSalida::dameLinea(ifstream& archivo, istringstream& iss) {
 }
 
 void EntradaSalida::grabar(Celula& celula) {
-	cout << "Grabando... " << flush;
-	clock_t start = clock();
+	printStart("Grabando...", true);
 
 	/* Tensión */
 	ofstream tension("tension.csv", ofstream::out);
@@ -192,7 +191,21 @@ void EntradaSalida::grabar(Celula& celula) {
 		campo.close();
 	}
 
-	int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
-	cout << "OK\t\t\t" << time << "ms\n";
+	printEnd(3);
 }
 
+void EntradaSalida::printStart(string message, bool verbose) {
+	if (verbose) {
+		start = clock();
+		cout << message << " " << flush;
+	}
+}
+
+void EntradaSalida::printEnd(int tabs, bool verbose) {
+	if (verbose) {
+		int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
+		cout << "OK";
+		for (int i = 0; i < tabs; i++) cout << "\t";
+		cout << time << "ms" << endl;
+	}
+}
