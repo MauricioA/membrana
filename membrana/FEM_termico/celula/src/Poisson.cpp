@@ -1,22 +1,21 @@
 #include <iostream>
 #include "Poisson.h"
 #include "Armado.h"
+#include "EntradaSalida.h"
 
 using namespace std;
 
 //TODO multiplicar corriente para obtener por m o cm
 //TODO comparar resultados de campo para tri y quad con fortran
 
-void Poisson::poisson(Celula &celula) {
+void Poisson::poisson(Celula &celula, bool verbose) {
 	celula.getRhs().resize(celula.nNodes);
 	celula.getRhs().fill(0.0);
 	celula.getSolucion().resize(celula.nNodes);
-
 	double error = 1.0;
 
 	for (int contador = 0; error > EPSILON_POISSON && contador < N_COTA; contador++) {
-		cout << "Armando matriz... " << flush;
-		clock_t start = clock();
+		EntradaSalida::printStart("Armando matriz...", verbose);
 		vector< Triplet<double> > triplets;
 
 		for (int elemIdx = 0; elemIdx < celula.nElems; elemIdx++) {
@@ -75,31 +74,24 @@ void Poisson::poisson(Celula &celula) {
 
 		celula.getMatriz().resize(celula.nNodes, celula.nNodes);
 		celula.getMatriz().setFromTriplets(triplets.begin(), triplets.end());
-		int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
-		cout << "OK\t\t" << time << "ms\n";
+		EntradaSalida::printEnd(2, verbose);
 
 		/* Resolución */
-		cout << "Resolviendo... " << flush;
-		start = clock();
-
+		EntradaSalida::printStart("Resolviendo...", verbose);
 		SimplicialLDLT< SparseMatrix<double> > cholesky(celula.getMatriz());
 		celula.setSolucion(cholesky.solve(celula.getRhs()));
 
-		time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
-		cout << "OK\t\t" << time << "ms\n";
-
-		//TODO siempre hace una sola iteración
+		EntradaSalida::printEnd(2, verbose);
 		error = EPSILON_POISSON * .5;
+		//TODO siempre hace una sola iteración
 	}
 
-	cout << "Corriente y campo... " << flush;
-	clock_t start = clock();
+	EntradaSalida::printStart("Corriente y campo...", verbose);
 
 	campo(celula);
 	corriente(celula);
 
-	int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
-	cout << "OK\t\t" << time << "ms\n";
+	EntradaSalida::printEnd(2, verbose);
 }
 
 void Poisson::campo(Celula &celula) {

@@ -5,16 +5,18 @@
 #include "declaraciones.h"
 #include "Poisson.h"
 #include "Armado.h"
+#include "EntradaSalida.h"
 
 using namespace declaraciones;
 using namespace Eigen;
 using namespace std;
 
 //TODO transporte
+//TODO calcular error
 //TODO FORT: armado_t algo raro en esm con transporte
 
 void Transporte::transporte(Celula& cel) {
-	const double T_CERO = 1.;
+	const double T_CERO = 1;
 
 	for (int esp = 0; esp < NESPS; esp++) {
 		cel.concentraciones[esp].resize(cel.nNodes);
@@ -38,7 +40,9 @@ void Transporte::transporte(Celula& cel) {
 	cel.getCargas().resize(cel.nNodes);
 
 	for (double tt = 0.; tt < T_CERO; tt += DELTA_T) {
-		Poisson::poisson(cel);
+		EntradaSalida::printStart("Iteración transporte...");
+
+		Poisson::poisson(cel, false);
 
 		for (int esp = 0; esp < NESPS; esp++) {
 			concentracion(cel, esp);
@@ -58,6 +62,7 @@ void Transporte::transporte(Celula& cel) {
 		}
 
 //		TODO escribir por salida
+		EntradaSalida::printEnd(1);
 	}
 }
 
@@ -126,7 +131,10 @@ void Transporte::masaDiag2D(Celula& cel) {
 			cel.getMasas()[elem[iNode]] += gpVol;
 		}
 
-		for (int iPoint = 0; iPoint < cel.nNodes; iPoint++)	assert(cel.getMasas()[iPoint] > TOLER_MASA);
+	}
+
+	for (int iNode = 0; iNode < cel.nNodes; iNode++)	{
+		assert(cel.getMasas()[iNode] > TOLER_MASA);
 	}
 }
 

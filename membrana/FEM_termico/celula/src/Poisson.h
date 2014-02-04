@@ -5,7 +5,7 @@
 
 class Poisson {
 public:
-	static void poisson(Celula& celula);
+	static void poisson(Celula& celula, bool verbose=true);
 
 private:
 	static void campo(Celula& celula);
