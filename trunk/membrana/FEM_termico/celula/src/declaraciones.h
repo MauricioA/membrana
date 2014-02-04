@@ -2,6 +2,9 @@
 #define DECLARACIONES_H_
 
 #include <cmath>
+#include <string>
+
+using namespace std;
 
 #define BREAKPOINT cout << "";
 
@@ -11,6 +14,8 @@ namespace declaraciones {
 	const int 	 NESPS				= 4;
 	const int 	 NGAUSS 			= 2;
 	const int 	 NDIM 				= 2;
+	const int	 PASO_DISCO			= 100;
+	const int 	 PASO_CONSOLA 		= 10;
 	const double TOLER_AREA 		= 1e-6;
 	const double TOLER_MASA 		= 1e-12;
 	const double EPSILON_POISSON	= 1e-3;
@@ -27,6 +32,8 @@ namespace declaraciones {
 	const double RSA 				= 0.5;
 	const double CONCENT_MINIMO 	= 1e-8;
 	const double CLAVE 				= FARADAY / (R_CTE * T_CTE);
+	const string RUTA_HISTORIAL		= "salida/historial.csv";
+	const string RUTA_PH			= "salida/ph.csv";
 
 	const double GAUSSPT[] = {
 		-1 / sqrt(3.),

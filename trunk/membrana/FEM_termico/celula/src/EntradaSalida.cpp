@@ -10,7 +10,10 @@ using namespace std;
 //TODO archivo input por parámetros
 //TODO ignorar bien los comentarios
 
-clock_t EntradaSalida::start = 0;
+clock_t  EntradaSalida::start;
+ofstream historial;
+ofstream ph;
+bool	 EntradaSalida::firstWrite = true;
 
 void EntradaSalida::leerInput(Celula& celula) {
 	printStart("Leyendo archivos...", true);
@@ -146,7 +149,7 @@ void EntradaSalida::dameLinea(ifstream& archivo, istringstream& iss) {
 	iss.str(line);
 }
 
-void EntradaSalida::grabar(Celula& celula) {
+void EntradaSalida::grabarPoisson(Celula& celula) {
 	printStart("Grabando...", true);
 
 	/* Tensión */
@@ -208,4 +211,36 @@ void EntradaSalida::printEnd(int tabs, bool verbose) {
 		for (int i = 0; i < tabs; i++) cout << "\t";
 		cout << time << "ms" << endl;
 	}
+}
+
+void EntradaSalida::grabarTransporte(Celula& cel) {
+	_Ios_Openmode flags = firstWrite ? ios::out : ios::app;
+
+	historial.open(RUTA_HISTORIAL.c_str(), flags);
+	ph.open(RUTA_PH.c_str(), flags);
+
+	assert(historial.is_open() && ph.is_open());
+
+	for (int jNodo = 0; jNodo < cel.nNodes; jNodo++) {
+		ostringstream histSS, phSS;
+		Nodo nodo = cel.getNodos()[jNodo];
+
+		histSS << jNodo+1 << ", " << nodo.x << ", " << nodo.y << ", " << cel.getSolucion()[jNodo];
+		phSS   << jNodo+1 << ", " << nodo.x << ", " << nodo.y << ", " << cel.getSolucion()[jNodo];
+
+		for (int esp = 0; esp < NESPS; esp++) {
+			histSS << ", " << cel.concentraciones[esp][jNodo];
+		}
+
+		phSS << ", " << cel.phAux[H_][jNodo] << ", " << cel.phAux[OH][jNodo];
+
+		histSS << "\n";
+		phSS   << "\n";
+
+		historial << histSS.str();
+		ph << phSS.str();
+	}
+
+	historial.close();
+	ph.close();
 }

@@ -1,5 +1,6 @@
 #include <cassert>
 #include <vector>
+#include <iostream>
 #include <Eigen/Sparse>
 #include "Transporte.h"
 #include "declaraciones.h"
@@ -38,10 +39,9 @@ void Transporte::transporte(Celula& cel) {
 
 	masaDiag2D(cel);
 	cel.getCargas().resize(cel.nNodes);
+	long iter = 0;
 
 	for (double tt = 0.; tt < T_CERO; tt += DELTA_T) {
-		EntradaSalida::printStart("Iteración transporte...");
-
 		Poisson::poisson(cel, false);
 
 		for (int esp = 0; esp < NESPS; esp++) {
@@ -61,8 +61,15 @@ void Transporte::transporte(Celula& cel) {
 			}
 		}
 
-//		TODO escribir por salida
-		EntradaSalida::printEnd(1);
+		iter++;
+		if (iter % PASO_CONSOLA == 0) {
+			cout << "." << flush;
+		}
+
+		if (iter % PASO_DISCO == 0) {
+			EntradaSalida::grabarTransporte(cel);
+			cout << "*" << endl;
+		}
 	}
 }
 

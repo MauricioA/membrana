@@ -7,14 +7,18 @@ class EntradaSalida {
 public:
 	static void leerInput(Celula& celula);
 
-	static void grabar(Celula& celula);
+	static void grabarPoisson(Celula& celula);
 
 	static void printStart(string message, bool verbose=true);
 
 	static void printEnd(int tabs=2, bool verbose=true);
 
+	static void grabarTransporte(Celula& cel);
+
 private:
 	static clock_t start;
+
+	static bool firstWrite;
 
 	static void leerMalla(Celula& celula, string malla);
 

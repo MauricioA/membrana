@@ -18,7 +18,7 @@ Celula::Celula() {
 
 void Celula::poisson() {
 	Poisson::poisson(*this);
-	EntradaSalida::grabar(*this);
+	EntradaSalida::grabarPoisson(*this);
 }
 
 void Celula::transporte() {
