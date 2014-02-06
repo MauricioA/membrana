@@ -2,6 +2,8 @@
 #include <cassert>
 #include <cmath>
 
+#include <iostream>	//TODO borrar
+
 using namespace std;
 
 void Armado::armadoPoisson(Double2D pos[], double sigma, int nodpel, double esm[][MAXNPEL]) {
@@ -41,8 +43,8 @@ double Armado::determinante3(Double2D pos[], double b[], double c[]) {
 	c[i++] = pos[1].x - pos[0].x;
 
 	return
-		+ pos[1].x*pos[2].y + pos[2].x*pos[0].y + pos[0].x*pos[1].y
-		- pos[1].x*pos[0].y - pos[2].x*pos[1].y - pos[0].x*pos[2].y;
+		+ pos[1].x * pos[2].y + pos[2].x * pos[0].y + pos[0].x * pos[1].y
+		- pos[1].x * pos[0].y - pos[2].x * pos[1].y - pos[0].x * pos[2].y;
 }
 
 void Armado::armado4(Double2D pos[], double sigma, double qe, bool transp, double landa, double mu,
@@ -60,7 +62,7 @@ void Armado::armado4(Double2D pos[], double sigma, double qe, bool transp, doubl
 		double det = iteracion4(i, j, kGauss, pos, phi, dphi, phidX);
 
 		for (int dim = 0; dim < NDIM; dim++) {
-			gxCod[dim][kGauss] = 0.0;
+			gxCod[dim][kGauss] = 0;
 
 			for (int k = 0; k < NODPEL; k++) {
 				gxCod[dim][kGauss] += pos[k].x * phi[kGauss][k];
@@ -71,19 +73,20 @@ void Armado::armado4(Double2D pos[], double sigma, double qe, bool transp, doubl
 		kGauss++;
 	}
 
-	for (int i = 0; i < 4; i++) for (int j = 0; j < 4; j++) esm[i][j] = 0.;
+	for (int i = 0; i < NODPEL; i++) for (int j = 0; j < NODPEL; j++) esm[i][j] = 0;
+	for (int i = 0; i < NODPEL; i++) ef[i] = 0;
 
-	for (int kGauss = 0; kGauss < NGAUSS*NGAUSS; kGauss++) for (int i = 0; i < NODPEL; i++) {
+	for (int kGauss = 0; kGauss < (NGAUSS*NGAUSS); kGauss++) for (int i = 0; i < NODPEL; i++) {
 		for (int j = 0; j < NODPEL; j++) {
 			for (int d = 0; d < NDIM; d++) {
 				esm[i][j] += sigma * phidX[d][kGauss][i] * phidX[d][kGauss][j] * cteI[kGauss];
 			}
 
-			if (transp) {
-//				TODO esto lo calcula de más porque despues lo sobrescribe en armadoTransporte()!!!
-				esm[i][j] += mu * phidX[0][kGauss][i] * phi[kGauss][j] * cteI[kGauss];
+			if (transp) {	//upwing
+				esm[i][j] += mu * phidX[1][kGauss][i] * phi[kGauss][j] * cteI[kGauss];
 			}
 		}
+
 		if (transp) {
 			est[i][i] += mas[i] * landa * cteI[kGauss];
 		}
@@ -92,7 +95,7 @@ void Armado::armado4(Double2D pos[], double sigma, double qe, bool transp, doubl
 }
 
 double Armado::iteracion4(int i, int j, int kGauss, Double2D pos[4],
-		double phi[2*NGAUSS][4], double dphi[NDIM][2*NGAUSS][4],double phidX[NDIM][2*NGAUSS][4]) {
+		double phi[2*NGAUSS][4], double dphi[NDIM][2*NGAUSS][4], double phidX[NDIM][2*NGAUSS][4]) {
 
 	const int NODPEL = 4;
 
@@ -174,7 +177,7 @@ void Armado::armadoTransporte(Double2D pos[], double sigma, double qe, double la
 	armado4(pos, sigma, qe, true, landa, mu, esm, ef, est, mas);
 
 	for (int k = 1; k < NODPEL; k++) {
-		double sum = 0.;
+		double sum = 0;
 		for (int j = 0; j < NODPEL; j++) {
 			sum += (est[k][j] - aCoef2 * esm[k][j]) * sol[j];
 			esm[k][j] = est[k][j] + aCoef1 * esm[k][j];

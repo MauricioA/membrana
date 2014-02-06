@@ -215,6 +215,7 @@ void EntradaSalida::printEnd(int tabs, bool verbose) {
 
 void EntradaSalida::grabarTransporte(Celula& cel) {
 	_Ios_Openmode flags = firstWrite ? ios::out : ios::app;
+	firstWrite = false;
 
 	historial.open(RUTA_HISTORIAL.c_str(), flags);
 	ph.open(RUTA_PH.c_str(), flags);

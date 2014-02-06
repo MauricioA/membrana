@@ -14,7 +14,7 @@ namespace declaraciones {
 	const int 	 NESPS				= 4;
 	const int 	 NGAUSS 			= 2;
 	const int 	 NDIM 				= 2;
-	const int	 PASO_DISCO			= 100;
+	const int	 PASO_DISCO			= 500;
 	const int 	 PASO_CONSOLA 		= 10;
 	const double TOLER_AREA 		= 1e-6;
 	const double TOLER_MASA 		= 1e-12;
