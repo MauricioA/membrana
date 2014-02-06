@@ -10,9 +10,9 @@ using namespace std;
 //TODO archivo input por parámetros
 //TODO ignorar bien los comentarios
 
-clock_t  EntradaSalida::start;
 ofstream historial;
 ofstream ph;
+clock_t  EntradaSalida::start;
 bool	 EntradaSalida::firstWrite = true;
 
 void EntradaSalida::leerInput(Celula& celula) {
@@ -213,7 +213,9 @@ void EntradaSalida::printEnd(int tabs, bool verbose) {
 	}
 }
 
-void EntradaSalida::grabarTransporte(Celula& cel) {
+void EntradaSalida::grabarTransporte(Celula& cel, double time) {
+	EntradaSalida::printStart("Grabando en disco...");
+
 	_Ios_Openmode flags = firstWrite ? ios::out : ios::app;
 	firstWrite = false;
 
@@ -221,27 +223,33 @@ void EntradaSalida::grabarTransporte(Celula& cel) {
 	ph.open(RUTA_PH.c_str(), flags);
 
 	assert(historial.is_open() && ph.is_open());
+	ostringstream histSS, phSS;
+	histSS << "paso: " << time << "\n";
+	phSS   << "paso: " << time << "\n";
 
 	for (int jNodo = 0; jNodo < cel.nNodes; jNodo++) {
-		ostringstream histSS, phSS;
 		Nodo nodo = cel.getNodos()[jNodo];
 
-		histSS << jNodo+1 << ", " << nodo.x << ", " << nodo.y << ", " << cel.getSolucion()[jNodo];
-		phSS   << jNodo+1 << ", " << nodo.x << ", " << nodo.y << ", " << cel.getSolucion()[jNodo];
+
+		histSS << jNodo+1 << "\t" << nodo.x << "\t" << nodo.y << "\t" << cel.getSolucion()[jNodo];
+		phSS   << jNodo+1 << "\t" << nodo.x << "\t" << nodo.y << "\t" << cel.getSolucion()[jNodo];
 
 		for (int esp = 0; esp < NESPS; esp++) {
-			histSS << ", " << cel.concentraciones[esp][jNodo];
+			histSS << "\t" << cel.concentraciones[esp][jNodo];
 		}
 
-		phSS << ", " << cel.phAux[H_][jNodo] << ", " << cel.phAux[OH][jNodo];
+		phSS << "\t" << cel.phAux[H_][jNodo] << "\t" << cel.phAux[OH][jNodo];
 
 		histSS << "\n";
 		phSS   << "\n";
 
-		historial << histSS.str();
-		ph << phSS.str();
 	}
+
+	historial << histSS.str();
+	ph << phSS.str();
 
 	historial.close();
 	ph.close();
+
+	EntradaSalida::printEnd();
 }

@@ -2,8 +2,6 @@
 #include <cassert>
 #include <cmath>
 
-#include <iostream>	//TODO borrar
-
 using namespace std;
 
 void Armado::armadoPoisson(Double2D pos[], double sigma, int nodpel, double esm[][MAXNPEL]) {
@@ -88,7 +86,7 @@ void Armado::armado4(Double2D pos[], double sigma, double qe, bool transp, doubl
 		}
 
 		if (transp) {
-			est[i][i] += mas[i] * landa * cteI[kGauss];
+			est[i][i] += mas[i] * landa; //* cteI[kGauss];
 		}
 		ef[i] += cteI[kGauss] * phi[kGauss][i] * qe;
 	}
@@ -159,7 +157,7 @@ double Armado::iteracion4(int i, int j, int kGauss, Double2D pos[4],
 
 /* Solo funca con nodpel = 4 */
 void Armado::armadoTransporte(Double2D pos[], double sigma, double qe, double landa,
-		double mu, double sol[], double esm[][MAXNPEL], double ef[]) {
+		double mu, double mas[], double sol[], double esm[][MAXNPEL], double ef[]) {
 
 	const int NODPEL = 4;
 	const double th2 = 0.5;
@@ -167,12 +165,7 @@ void Armado::armadoTransporte(Double2D pos[], double sigma, double qe, double la
 	const double aCoef2 = DELTA_T * (1 - th2);
 
 	double est[NODPEL][NODPEL];
-	double mas[NODPEL];
-
-	for (int i = 0; i < NODPEL; i++) {
-		mas[i] = 0;
-		for (int j = 0; j < NODPEL; j++) est[i][j] = 0;
-	}
+	for (int i = 0; i < NODPEL; i++) for (int j = 0; j < NODPEL; j++) est[i][j] = 0;
 
 	armado4(pos, sigma, qe, true, landa, mu, esm, ef, est, mas);
 
