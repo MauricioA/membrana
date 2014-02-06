@@ -14,8 +14,8 @@ namespace declaraciones {
 	const int 	 NESPS				= 4;
 	const int 	 NGAUSS 			= 2;
 	const int 	 NDIM 				= 2;
-	const int	 PASO_DISCO			= 500;
-	const int 	 PASO_CONSOLA 		= 10;
+	const int	 PASO_DISCO			= 100;
+	const int 	 PASO_CONSOLA 		= 50;
 	const double TOLER_AREA 		= 1e-6;
 	const double TOLER_MASA 		= 1e-12;
 	const double EPSILON_POISSON	= 1e-3;
@@ -25,15 +25,15 @@ namespace declaraciones {
 	const double T_CTE				= 310;			// K
 	const double EPSILON_TRANSPORTE	= 78.5;			// cte dieléctrica del agua
 	const double EPSILON_0			= 8.85e-12;		// cte de permitividad C**2 / (N m**2)
-	const double DELTA_T 			= 1e-6;
+	const double DELTA_T 			= 10e-6;
 	const double KWF				= 249.16;		// (um**3)/at/s = 1.5e11 1/mol/s
 	const double KWB 				= 2.7e-5;		// 1/s
 	const double CONCENT_H2O 		= 3.34e10;		// at/(um**3)
 	const double RSA 				= 0.5;
 	const double CONCENT_MINIMO 	= 1e-8;
 	const double CLAVE 				= FARADAY / (R_CTE * T_CTE);
-	const string RUTA_HISTORIAL		= "salida/historial.csv";
-	const string RUTA_PH			= "salida/ph.csv";
+	const string RUTA_HISTORIAL		= "salida/historial.dat";
+	const string RUTA_PH			= "salida/ph.dat";
 
 	const double GAUSSPT[] = {
 		-1 / sqrt(3.),

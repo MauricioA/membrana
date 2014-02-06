@@ -29,22 +29,50 @@ public:
 	VectorXd concentraciones[NESPS];
 	VectorXd anteriores[NESPS];
 
-	vector<double> 	 phAux[NESPS];
+	vector<double> phAux[NESPS];
 
-	vector<Nodo>& 	  getNodos();
-	vector<Elemento>& getElementos();
-	vector<Double2D>& getGradElem();
-	vector<Double2D>& getCorrElem();
+	SparseMatrix<double> matrizTrans[NESPS];
 
-	SparseMatrix<double>& getMatriz();
+	inline vector<Nodo>& getNodos() {
+		return nodos;
+	}
 
-	VectorXd& getRhs();
-	VectorXd& getSolucion();
+	inline vector<Elemento>& getElementos() {
+		return elementos;
+	}
 
-	vector<double>& getMasas();
-	vector<double>& getCargas();
+	inline vector<Double2D>& getGradElem() {
+		return gradElem;
+	}
 
-	void setSolucion(VectorXd sol);
+	inline vector<Double2D>& getCorrElem() {
+		return corrElem;
+	}
+
+	inline SparseMatrix<double>& getMatriz() {
+		return matriz;
+	}
+
+	inline VectorXd& getRhs() {
+		return rhs;
+	}
+
+	inline VectorXd& getSolucion() {
+		return solucion;
+	}
+
+	inline vector<double>& getMasas() {
+		return masas;
+	}
+
+	inline vector<double>& getCargas() {
+		return cargas;
+	}
+
+	/* Acá se hace una copia entera! */
+	inline void setSolucion(VectorXd sol) {
+		solucion = sol;
+	}
 
 private:
 	vector<Nodo>     nodos;

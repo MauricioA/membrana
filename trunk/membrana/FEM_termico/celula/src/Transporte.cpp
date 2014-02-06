@@ -9,8 +9,6 @@
 #include "Armado.h"
 #include "EntradaSalida.h"
 
-//#include <unsupported/Eigen/IterativeSolvers>
-
 using namespace declaraciones;
 using namespace Eigen;
 using namespace std;
@@ -22,8 +20,11 @@ using namespace std;
 // -DNDEBUG al compilador
 
 // TODO es siempre la misma matriz para una especie!!
+
+/* TODO solo para nodpel = 4 */
 void Transporte::transporte(Celula& cel) {
-	const double T_CERO = 1;
+	assert(cel.nodpel == 4);
+	const double T_FINAL = 1;
 
 	for (int esp = 0; esp < NESPS; esp++) {
 		cel.concentraciones[esp].resize(cel.nNodes);
@@ -38,17 +39,14 @@ void Transporte::transporte(Celula& cel) {
 			cel.concentraciones[esp][iNode] = CONCENTRACION_INICIAL[esp];
 			cel.anteriores[esp][iNode] = CONCENTRACION_INICIAL[esp];
 		}
-
-//		phAux[H_][iNode] = -log10(concentraciones[H_][iNode] * 1e15 / 6.02e23);
-//		phAux[OH][iNode] = -log10(concentraciones[OH][iNode] * 1e15 / 6.02e23);
 	}
 
 	masaDiag2D(cel);
 	cel.getCargas().resize(cel.nNodes);
 	long iter = 0;
 
-	clock_t reloj;
-	for (double time = 0; time < T_CERO; time += DELTA_T) {
+	clock_t reloj = 0;
+	for (double time = 0; time < T_FINAL; time += DELTA_T) {
 		double num = 0, den = 0;
 
 		if (iter == 3) {
@@ -68,12 +66,11 @@ void Transporte::transporte(Celula& cel) {
 
 			for (int esp = 0; esp < NESPS; esp++) {
 				num += pow(cel.concentraciones[esp][kNodo] - cel.anteriores[esp][kNodo], 2);
-
-				cout << cel.concentraciones[esp][kNodo] << "\t" << cel.anteriores[esp][kNodo] << endl;
-
 				den += pow(cel.concentraciones[esp][kNodo], 2);
 
-				cel.concentraciones[esp][kNodo] = RSA * cel.concentraciones[esp][kNodo] + (1-RSA) * cel.anteriores[esp][kNodo];
+				cel.concentraciones[esp][kNodo] =
+						RSA * cel.concentraciones[esp][kNodo] +
+						(1-RSA) * cel.anteriores[esp][kNodo];
 				if (cel.concentraciones[esp][kNodo] < CONCENT_MINIMO) {
 					cel.concentraciones[esp][kNodo] = 0;
 				}
@@ -82,7 +79,6 @@ void Transporte::transporte(Celula& cel) {
 		}
 
 		double error = sqrt(num/den);
-		cout << error << endl;
 		if (error > 1e3 || error != error) {
 			cerr << "iter " << iter << ", error: " << error << ", den: " << den << endl;
 			exit(EXIT_FAILURE);
@@ -92,13 +88,11 @@ void Transporte::transporte(Celula& cel) {
 			if (iter != 0) {
 				int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
 				cout << time*1e6 << "us\t" << iter << " iters"
-					 << "\t" << interv/PASO_CONSOLA << " ms/it" << endl;
+					 << "\t" << interv/PASO_CONSOLA << " ms/it" <<  endl;
 			}
 
 			if (iter % PASO_DISCO == 0) {
-				EntradaSalida::printStart("Grabando en disco...");
-				EntradaSalida::grabarTransporte(cel);
-				EntradaSalida::printEnd();
+				EntradaSalida::grabarTransporte(cel, time);
 			}
 
 			reloj = clock();
@@ -122,7 +116,13 @@ void Transporte::masaDiag2D(Celula& cel) {
 	for (int iElem = 0; iElem < cel.nElems; iElem++) {
 		Elemento elem = cel.getElementos()[iElem];
 		Nodo nodosElem[cel.nodpel];
-		for (int i = 0; i < cel.nodpel; i++) nodosElem[i] = cel.getNodos()[elem[i]];
+		double rMed = 0;
+
+		for (int i = 0; i < cel.nodpel; i++) {
+			nodosElem[i] = cel.getNodos()[elem[i]];
+			rMed += cel.getNodos()[elem[i]].x;
+		}
+		rMed /= 3;
 
 		/*	subroutine armotodo(nope,x,y,deriv,weigc) */
 		int iGauss = 0;
@@ -157,20 +157,20 @@ void Transporte::masaDiag2D(Celula& cel) {
 		}
 		/* end subroutine armotodo */
 
-		for (int iNode = 0; iNode < cel.nodpel; iNode++) {
+		for (int i = 0; i < cel.nodpel; i++) {
 			double aJacob[2][2];
-			for (int i = 0; i < 2; i++) for (int j = 0; j < 2; j++) aJacob[i][j] = 0.0;
+			for (int k = 0; k < 2; k++) for (int l = 0; l < 2; l++) aJacob[k][l] = 0.0;
 
-			for (int jNode = 0; jNode < cel.nodpel; jNode++) {
-				aJacob[0][0] += nodosElem[jNode].x * deriv[0][jNode][iNode];
-				aJacob[0][1] += nodosElem[jNode].x * deriv[1][jNode][iNode];
-				aJacob[1][0] += nodosElem[jNode].y * deriv[0][jNode][iNode];
-				aJacob[1][1] += nodosElem[jNode].y * deriv[1][jNode][iNode];
+			for (int j = 0; j < cel.nodpel; j++) {
+				aJacob[0][0] += nodosElem[j].x * deriv[0][j][i];
+				aJacob[0][1] += nodosElem[j].x * deriv[1][j][i];
+				aJacob[1][0] += nodosElem[j].y * deriv[0][j][i];
+				aJacob[1][1] += nodosElem[j].y * deriv[1][j][i];
 			}
 
 			double gpDet = aJacob[0][0] * aJacob[1][1] - aJacob[0][1] * aJacob[1][0];
-			double gpVol = weigc[iNode] * gpDet;
-			cel.getMasas()[elem[iNode]] += gpVol;
+			double gpVol = weigc[i] * gpDet;
+			cel.getMasas()[elem[i]] += gpVol * 2 * M_PI * rMed;
 		}
 
 	}
@@ -202,6 +202,7 @@ void Transporte::concentracion(Celula& cel, int esp) {
 	for (uint kElem = 0; kElem < cel.getElementos().size(); kElem++) {
 		Elemento elem = cel.getElementos()[kElem];
 		Double2D pos[cel.nodpel];
+		double mas[cel.nodpel];
 		double sol[cel.nodpel];
 		double ef[cel.nodpel];
 		double ch_Med = 0.;
@@ -213,6 +214,7 @@ void Transporte::concentracion(Celula& cel, int esp) {
 			pos[i].x = nodo.x;
 			pos[i].y = nodo.y;
 			sol[i] = cel.getSolucion()[iNodo];
+			mas[i] = cel.getMasas()[iNodo];
 
 			if (esp == OH) {
 				ch_Med += cel.anteriores[H_][iNodo];
@@ -239,7 +241,7 @@ void Transporte::concentracion(Celula& cel, int esp) {
 			qe = KWB * CONCENT_H2O - KWF * ch_Med * cohMed;
 		}
 
-		Armado::armadoTransporte(pos, sigma, qe, landa, mu, sol, esm, ef);
+		Armado::armadoTransporte(pos, sigma, qe, landa, mu, mas, sol, esm, ef);
 
 		for (int i = 0; i < cel.nodpel; i++) {
 			int iNodo = elem[i];
@@ -268,20 +270,9 @@ void Transporte::concentracion(Celula& cel, int esp) {
 			}
 		}
 
-		/* Ensamblado */
 		for (int i = 0; i < cel.nodpel; i++) {
 			int iNodo = elem[i];
-
-			double v = ef[i];
-//			if (abs(v) > 1e50) {
-//				BREAKPOINT;
-//			}
-			cel.getRhs()[iNodo] += v;
-//			if (abs(cel.getRhs()[iNodo]) > 1e50) {
-//				BREAKPOINT;
-//			}
-
-//			cel.getRhs()[iNodo] += ef[i];
+			cel.getRhs()[iNodo] += ef[i];
 
 			for (int j = 0; j < cel.nodpel; j++) {
 				int jNodo = elem[j];
@@ -317,14 +308,18 @@ void Transporte::concentracion(Celula& cel, int esp) {
 //	/* END SCALING */
 
 	/* Resolución */
-	SparseLU< SparseMatrix<double> > solver;
+//	/* LU */
+//	SparseLU< SparseMatrix<double> > solver;
+//
+//	solver.analyzePattern(cel.getMatriz());
+//	solver.factorize(cel.getMatriz());
+//
+//	cel.concentraciones[esp] = solver.solve(cel.getRhs());
+//
+//	assert(solver.info() == Success);
 
-	solver.analyzePattern(cel.getMatriz());
-	solver.factorize(cel.getMatriz());
-
+	BiCGSTAB< SparseMatrix<double> > solver(cel.getMatriz());
 	cel.concentraciones[esp] = solver.solve(cel.getRhs());
-
-	VectorXd rhsP = cel.getMatriz() * cel.concentraciones[esp];
 
 	assert(solver.info() == Success);
 }
