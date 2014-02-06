@@ -144,10 +144,10 @@ void Poisson::campo4(Celula &celula) {
 		Double2D pos[4];
 		Double2D e[NODPEL];
 		Double2D eElem;
-		eElem.x = 0.;
-		eElem.y = 0.;
+		eElem.x = 0;
+		eElem.y = 0;
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < NODPEL; i++) {
 			int iNodo = elem[i];
 			pos[i].x = celula.getNodos()[iNodo].x;
 			pos[i].y = celula.getNodos()[iNodo].y;

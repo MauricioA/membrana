@@ -15,7 +15,7 @@ public:
 	static double determinante3(Double2D pos[], double b[], double c[]);
 
 	static double iteracion4(int i, int j, int kGauss, Double2D pos[4],
-			double phi[2*NGAUSS][4], double dphi[NDIM][2*NGAUSS][4],double phidX[NDIM][2*NGAUSS][4]);
+			double phi[2*NGAUSS][4], double dphi[NDIM][2*NGAUSS][4], double phidX[NDIM][2*NGAUSS][4]);
 
 private:
 	static void armado3(Double2D pos[], double sigma, double esm[][MAXNPEL]);

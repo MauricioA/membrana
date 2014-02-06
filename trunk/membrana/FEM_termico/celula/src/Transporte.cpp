@@ -1,12 +1,15 @@
 #include <cassert>
 #include <vector>
 #include <iostream>
+#include <ctime>
 #include <Eigen/Sparse>
 #include "Transporte.h"
 #include "declaraciones.h"
 #include "Poisson.h"
 #include "Armado.h"
 #include "EntradaSalida.h"
+
+//#include <unsupported/Eigen/IterativeSolvers>
 
 using namespace declaraciones;
 using namespace Eigen;
@@ -16,6 +19,9 @@ using namespace std;
 //TODO calcular error
 //TODO FORT: armado_t algo raro en esm con transporte
 
+// -DNDEBUG al compilador
+
+// TODO es siempre la misma matriz para una especie!!
 void Transporte::transporte(Celula& cel) {
 	const double T_CERO = 1;
 
@@ -41,7 +47,14 @@ void Transporte::transporte(Celula& cel) {
 	cel.getCargas().resize(cel.nNodes);
 	long iter = 0;
 
-	for (double tt = 0.; tt < T_CERO; tt += DELTA_T) {
+	clock_t reloj;
+	for (double time = 0; time < T_CERO; time += DELTA_T) {
+		double num = 0, den = 0;
+
+		if (iter == 3) {
+			BREAKPOINT;
+		}
+
 		Poisson::poisson(cel, false);
 
 		for (int esp = 0; esp < NESPS; esp++) {
@@ -52,24 +65,46 @@ void Transporte::transporte(Celula& cel) {
 			cel.phAux[H_][kNodo] = -log10(cel.concentraciones[H_][kNodo] * 1e15 / 6.02e23);
 			cel.phAux[OH][kNodo] = -log10(cel.concentraciones[OH][kNodo] * 1e15 / 6.02e23);
 
+
 			for (int esp = 0; esp < NESPS; esp++) {
+				num += pow(cel.concentraciones[esp][kNodo] - cel.anteriores[esp][kNodo], 2);
+
+				cout << cel.concentraciones[esp][kNodo] << "\t" << cel.anteriores[esp][kNodo] << endl;
+
+				den += pow(cel.concentraciones[esp][kNodo], 2);
+
 				cel.concentraciones[esp][kNodo] = RSA * cel.concentraciones[esp][kNodo] + (1-RSA) * cel.anteriores[esp][kNodo];
 				if (cel.concentraciones[esp][kNodo] < CONCENT_MINIMO) {
-					cel.concentraciones[esp][kNodo] = 0.;
+					cel.concentraciones[esp][kNodo] = 0;
 				}
 				cel.anteriores[esp][kNodo] = cel.concentraciones[esp][kNodo];
 			}
 		}
 
-		iter++;
-		if (iter % PASO_CONSOLA == 0) {
-			cout << "." << flush;
+		double error = sqrt(num/den);
+		cout << error << endl;
+		if (error > 1e3 || error != error) {
+			cerr << "iter " << iter << ", error: " << error << ", den: " << den << endl;
+			exit(EXIT_FAILURE);
 		}
 
-		if (iter % PASO_DISCO == 0) {
-			EntradaSalida::grabarTransporte(cel);
-			cout << "*" << endl;
+		if (iter % PASO_CONSOLA == 0) {
+			if (iter != 0) {
+				int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
+				cout << time*1e6 << "us\t" << iter << " iters"
+					 << "\t" << interv/PASO_CONSOLA << " ms/it" << endl;
+			}
+
+			if (iter % PASO_DISCO == 0) {
+				EntradaSalida::printStart("Grabando en disco...");
+				EntradaSalida::grabarTransporte(cel);
+				EntradaSalida::printEnd();
+			}
+
+			reloj = clock();
 		}
+
+		iter++;
 	}
 }
 
@@ -162,6 +197,7 @@ void Transporte::carga(Celula& cel) {
 void Transporte::concentracion(Celula& cel, int esp) {
 	double esm[cel.nodpel][MAXNPEL];
 	vector< Triplet<double> > triplets;
+	for (int i = 0; i < cel.nNodes; i++) cel.getRhs()[i] = 0.;
 
 	for (uint kElem = 0; kElem < cel.getElementos().size(); kElem++) {
 		Elemento elem = cel.getElementos()[kElem];
@@ -195,8 +231,9 @@ void Transporte::concentracion(Celula& cel, int esp) {
 		if (elem.material == MEMBRANA) difElem *= 1e-3;
 
 		double mu = -difElem * CLAVE * CARGA[esp] * cel.getGradElem()[kElem].y;
-		double landa = 1.;
-		double qe = 0.;
+
+		double landa = 1;
+		double qe = 0;
 
 		if (esp == OH) {
 			qe = KWB * CONCENT_H2O - KWF * ch_Med * cohMed;
@@ -232,12 +269,19 @@ void Transporte::concentracion(Celula& cel, int esp) {
 		}
 
 		/* Ensamblado */
-		for (int i = 0; i < cel.nNodes; i++) cel.getRhs()[i] = 0.;
-		triplets.clear();
-
 		for (int i = 0; i < cel.nodpel; i++) {
 			int iNodo = elem[i];
-			cel.getRhs()[iNodo] += ef[i];
+
+			double v = ef[i];
+//			if (abs(v) > 1e50) {
+//				BREAKPOINT;
+//			}
+			cel.getRhs()[iNodo] += v;
+//			if (abs(cel.getRhs()[iNodo]) > 1e50) {
+//				BREAKPOINT;
+//			}
+
+//			cel.getRhs()[iNodo] += ef[i];
 
 			for (int j = 0; j < cel.nodpel; j++) {
 				int jNodo = elem[j];
@@ -248,15 +292,39 @@ void Transporte::concentracion(Celula& cel, int esp) {
 
 	cel.getMatriz().resize(cel.nNodes, cel.nNodes);
 	cel.getMatriz().setFromTriplets(triplets.begin(), triplets.end());
+	cel.getMatriz().makeCompressed();
+
+//	/* SCALING */
+//
+//	Requiere #include "src/IterativeSolvers/Scaling.h" en eigen/unsupported/Eigen/IterativeSolvers
+//	(o acá?) y #include <unsupported/Eigen/IterativeSolvers>
+//
+//	IterScaling<SparseMatrix<double> > scal;
+//
+//	scal.computeRef(cel.getMatriz());
+//
+//	cel.getRhs() = scal.LeftScaling().cwiseProduct(cel.getRhs());
+//
+//	SparseLU< SparseMatrix<double> > solver;
+//
+//	solver.analyzePattern(cel.getMatriz());
+//	solver.factorize(cel.getMatriz());
+//
+//	cel.concentraciones[esp] = solver.solve(cel.getRhs());
+//
+//	cel.concentraciones[esp] = scal.RightScaling().cwiseProduct(cel.concentraciones[esp]);
+//
+//	/* END SCALING */
 
 	/* Resolución */
-//	TODO usar LU
-	BiCGSTAB< SparseMatrix<double> > solver;
+	SparseLU< SparseMatrix<double> > solver;
 
-//	TODO usar precondicionador
-	solver.compute(cel.getMatriz());
+	solver.analyzePattern(cel.getMatriz());
+	solver.factorize(cel.getMatriz());
 
-//	concentraciones[esp] = solver.solve(rhs);
-	VectorXd guess = cel.concentraciones[esp];
-	cel.concentraciones[esp] = solver.solveWithGuess(cel.getRhs(), guess);
+	cel.concentraciones[esp] = solver.solve(cel.getRhs());
+
+	VectorXd rhsP = cel.getMatriz() * cel.concentraciones[esp];
+
+	assert(solver.info() == Success);
 }
