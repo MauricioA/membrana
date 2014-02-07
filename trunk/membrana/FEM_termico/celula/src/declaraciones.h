@@ -32,7 +32,7 @@ namespace declaraciones {
 	const double RSA 				= 0.5;
 	const double CONCENT_MINIMO 	= 1e-8;
 	const double CLAVE 				= FARADAY / (R_CTE * T_CTE);
-	const string RUTA_HISTORIAL		= "salida/historial.dat";
+	const string RUTA_HISTORIAL		= "salida/historia.dat";
 	const string RUTA_PH			= "salida/ph.dat";
 
 	const double GAUSSPT[] = {
