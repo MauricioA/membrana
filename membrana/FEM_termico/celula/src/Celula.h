@@ -65,9 +65,9 @@ public:
 		return masas;
 	}
 
-	inline vector<double>& getCargas() {
-		return cargas;
-	}
+//	inline vector<double>& getCargas() {
+//		return cargas;
+//	}
 
 	/* Acá se hace una copia entera! */
 	inline void setSolucion(VectorXd sol) {
@@ -86,7 +86,7 @@ private:
 	VectorXd solucion;
 
 	vector<double> masas;
-	vector<double> cargas;
+//	vector<double> cargas;
 
 };
 

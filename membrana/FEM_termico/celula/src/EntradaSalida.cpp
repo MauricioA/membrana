@@ -217,19 +217,22 @@ void EntradaSalida::grabarTransporte(Celula& cel, double time) {
 	EntradaSalida::printStart("Grabando en disco...");
 
 	_Ios_Openmode flags = firstWrite ? ios::out : ios::app;
-	firstWrite = false;
 
 	historial.open(RUTA_HISTORIAL.c_str(), flags);
 	ph.open(RUTA_PH.c_str(), flags);
 
 	assert(historial.is_open() && ph.is_open());
 	ostringstream histSS, phSS;
+
+	if (firstWrite) {
+		histSS << cel.nNodes << "\n";
+		phSS   << cel.nNodes << "\n";
+	}
 	histSS << "paso: " << time << "\n";
 	phSS   << "paso: " << time << "\n";
 
 	for (int jNodo = 0; jNodo < cel.nNodes; jNodo++) {
 		Nodo nodo = cel.getNodos()[jNodo];
-
 
 		histSS << jNodo+1 << "\t" << nodo.x << "\t" << nodo.y << "\t" << cel.getSolucion()[jNodo];
 		phSS   << jNodo+1 << "\t" << nodo.x << "\t" << nodo.y << "\t" << cel.getSolucion()[jNodo];
@@ -242,7 +245,6 @@ void EntradaSalida::grabarTransporte(Celula& cel, double time) {
 
 		histSS << "\n";
 		phSS   << "\n";
-
 	}
 
 	historial << histSS.str();
@@ -251,5 +253,6 @@ void EntradaSalida::grabarTransporte(Celula& cel, double time) {
 	historial.close();
 	ph.close();
 
+	firstWrite = false;
 	EntradaSalida::printEnd();
 }

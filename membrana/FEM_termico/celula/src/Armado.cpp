@@ -155,26 +155,60 @@ double Armado::iteracion4(int i, int j, int kGauss, Double2D pos[4],
 	return det;
 }
 
-/* Solo funca con nodpel = 4 */
-void Armado::armadoTransporte(Double2D pos[], double sigma, double qe, double landa,
+void Armado::armadoTransporte(int nodpel, Double2D pos[], double sigma, double qe, double landa,
 		double mu, double mas[], double sol[], double esm[][MAXNPEL], double ef[]) {
 
-	const int NODPEL = 4;
 	const double th2 = 0.5;
 	const double aCoef1 = DELTA_T * th2;
 	const double aCoef2 = DELTA_T * (1 - th2);
 
-	double est[NODPEL][NODPEL];
-	for (int i = 0; i < NODPEL; i++) for (int j = 0; j < NODPEL; j++) est[i][j] = 0;
+	double est[nodpel][MAXNPEL];
+	for (int i = 0; i < nodpel; i++) for (int j = 0; j < MAXNPEL; j++) est[i][j] = 0;
 
-	armado4(pos, sigma, qe, true, landa, mu, esm, ef, est, mas);
+	switch (nodpel) {
+		case 3: {
+			armadoTransporte3(pos, sigma, qe, landa, mu, mas, sol, esm, ef, est);
+			break;
+		} case 4: {
+			armado4(pos, sigma, qe, true, landa, mu, esm, ef, est, mas);
+			break;
+		} default: {
+			assert(false);
+		}
+	}
 
-	for (int k = 1; k < NODPEL; k++) {
+	for (int k = 1; k < nodpel; k++) {
 		double sum = 0;
-		for (int j = 0; j < NODPEL; j++) {
+		for (int j = 0; j < nodpel; j++) {
 			sum += (est[k][j] - aCoef2 * esm[k][j]) * sol[j];
 			esm[k][j] = est[k][j] + aCoef1 * esm[k][j];
 		}
 		ef[k] = (aCoef1 + aCoef2) * ef[k] + sum;
+	}
+}
+
+void Armado::armadoTransporte3(Double2D pos[], double sigma, double qe, double landa,
+		double mu, double mas[], double sol[], double esm[][MAXNPEL], double ef[], double est[][MAXNPEL]) {
+
+	const int NODPEL = 3;
+	double b[NODPEL], c[NODPEL];
+	double rMed = 0;
+
+	double det = determinante3(pos, b, c);
+	assert(abs(det) > TOLER_AREA);
+
+	for (int i = 0; i < NODPEL; i++) rMed += pos[i].x;
+	rMed /= NODPEL;
+
+	for (int i = 0; i < NODPEL; i++) {
+		ef[i] = 0;
+
+		for (int j = 0; j < NODPEL; j++) {
+			double a = (i==j) ? 2 : 1;
+			ef[i] += qe * det * (M_PI / 12) * a * pos[j].x;
+			esm[i][j] = (b[i] * b[j] + c[i] * c[j]) * sigma * M_PI  * rMed / det;
+		}
+
+		est[i][i] = mas[i] * landa * M_PI * rMed / det;
 	}
 }

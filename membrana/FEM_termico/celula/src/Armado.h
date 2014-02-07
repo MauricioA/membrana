@@ -9,7 +9,7 @@ class Armado {
 public:
 	static void armadoPoisson(Double2D pos[], double sigma, int nodpel, double esm[][MAXNPEL]);
 
-	static void armadoTransporte(Double2D pos[], double sigma, double qe, double landa,
+	static void armadoTransporte(int nodpel, Double2D pos[], double sigma, double qe, double landa,
 			double mu, double mas[], double sol[], double esm[][MAXNPEL], double ef[]);
 
 	static double determinante3(Double2D pos[], double b[], double c[]);
@@ -22,6 +22,9 @@ private:
 
 	static void armado4(Double2D pos[], double sigma, double qe, bool transp, double landa, double mu,
 			double esm[][MAXNPEL], double ef[MAXNPEL], double est[][4], double mas[]);
+
+	static void armadoTransporte3(Double2D pos[], double sigma, double qe, double landa,
+			double mu, double mas[], double sol[], double esm[][MAXNPEL], double ef[], double est[][MAXNPEL]);
 
 };
 

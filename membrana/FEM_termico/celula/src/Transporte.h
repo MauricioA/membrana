@@ -10,7 +10,7 @@ public:
 private:
 	static void masaDiag2D(Celula& cel);
 
-	static void carga(Celula& cel);
+//	static void carga(Celula& cel);
 
 	static void concentracion(Celula& cel, int esp);
 

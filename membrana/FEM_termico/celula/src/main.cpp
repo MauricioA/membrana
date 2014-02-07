@@ -1,6 +1,8 @@
 #include "Celula.h"
 #include <iostream>
 
+//TODO cambiar clases estáticas a singleton
+
 int main() {
 	BREAKPOINT
 

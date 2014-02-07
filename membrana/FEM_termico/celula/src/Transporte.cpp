@@ -21,9 +21,7 @@ using namespace std;
 
 // TODO es siempre la misma matriz para una especie!!
 
-/* TODO solo para nodpel = 4 */
 void Transporte::transporte(Celula& cel) {
-	assert(cel.nodpel == 4);
 	const double T_FINAL = 1;
 
 	for (int esp = 0; esp < NESPS; esp++) {
@@ -42,16 +40,12 @@ void Transporte::transporte(Celula& cel) {
 	}
 
 	masaDiag2D(cel);
-	cel.getCargas().resize(cel.nNodes);
+//	cel.getCargas().resize(cel.nNodes);
 	long iter = 0;
 
 	clock_t reloj = 0;
 	for (double time = 0; time < T_FINAL; time += DELTA_T) {
 		double num = 0, den = 0;
-
-		if (iter == 3) {
-			BREAKPOINT;
-		}
 
 		Poisson::poisson(cel, false);
 
@@ -60,8 +54,8 @@ void Transporte::transporte(Celula& cel) {
 		}
 
 		for (int kNodo = 0; kNodo < cel.nNodes; kNodo++) {
-			cel.phAux[H_][kNodo] = -log10(cel.concentraciones[H_][kNodo] * 1e15 / 6.02e23);
-			cel.phAux[OH][kNodo] = -log10(cel.concentraciones[OH][kNodo] * 1e15 / 6.02e23);
+			cel.phAux[H_][kNodo] = -log10((cel.concentraciones[H_][kNodo] + 1e-18) * 1e15 / 6.02e23);
+			cel.phAux[OH][kNodo] = -log10((cel.concentraciones[OH][kNodo] + 1e-18) * 1e15 / 6.02e23);
 
 
 			for (int esp = 0; esp < NESPS; esp++) {
@@ -71,6 +65,7 @@ void Transporte::transporte(Celula& cel) {
 				cel.concentraciones[esp][kNodo] =
 						RSA * cel.concentraciones[esp][kNodo] +
 						(1-RSA) * cel.anteriores[esp][kNodo];
+
 				if (cel.concentraciones[esp][kNodo] < CONCENT_MINIMO) {
 					cel.concentraciones[esp][kNodo] = 0;
 				}
@@ -87,8 +82,9 @@ void Transporte::transporte(Celula& cel) {
 		if (iter % PASO_CONSOLA == 0) {
 			if (iter != 0) {
 				int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
-				cout << time*1e6 << "us\t" << iter << " iters"
-					 << "\t" << interv/PASO_CONSOLA << " ms/it" <<  endl;
+				cout << time*1e6 << "us\t"
+					 << iter << " iters\t"
+					 << interv/PASO_CONSOLA << " ms/it" <<  endl;
 			}
 
 			if (iter % PASO_DISCO == 0) {
@@ -103,8 +99,6 @@ void Transporte::transporte(Celula& cel) {
 }
 
 void Transporte::masaDiag2D(Celula& cel) {
-	assert(cel.nodpel == 4);
-
 	cel.getMasas().resize(cel.nNodes);
 	for (int i = 0; i < cel.nNodes; i++) cel.getMasas()[i] = 0;
 
@@ -120,84 +114,111 @@ void Transporte::masaDiag2D(Celula& cel) {
 
 		for (int i = 0; i < cel.nodpel; i++) {
 			nodosElem[i] = cel.getNodos()[elem[i]];
-			rMed += cel.getNodos()[elem[i]].x;
+			rMed += nodosElem[i].x;
 		}
-		rMed /= 3;
+		rMed /= cel.nodpel;
 
-		/*	subroutine armotodo(nope,x,y,deriv,weigc) */
-		int iGauss = 0;
-		double weigc[cel.nodpel];
-		double posgc[2][cel.nodpel];
-		double deriv[2][cel.nodpel][cel.nodpel];
+		switch (cel.nodpel) {
+			case 3: {
+				double b[3], c[3];
+				Double2D pos[3];
+				for (int i = 0; i < cel.nodpel; i++) {
+					pos[i].x = nodosElem[i].x;
+					pos[i].y = nodosElem[i].y;
+				}
 
-		for (int ilocs = 0; ilocs < NLOCS; ilocs++) {
-			for (int jlocs = 0; jlocs < NLOCS; jlocs++) {
-				weigc[INOGA[iGauss]] = WEIGL[ilocs] * WEIGL[jlocs];
-				posgc[0][INOGA[iGauss]] = POSGL[ilocs];
-				posgc[1][INOGA[iGauss]] = POSGL[jlocs];
-				iGauss++;
+				double det = Armado::determinante3(pos, b, c);
+
+				double gpvol = det * M_PI * rMed;
+				for (int i = 0; i < cel.nodpel; i++) {
+					cel.getMasas()[elem[i]] += gpvol;
+				}
+
+				break;
+			} case 4: {
+				/*	subroutine armotodo(nope,x,y,deriv,weigc) */
+				int iGauss = 0;
+				double weigc[cel.nodpel];
+				double posgc[2][cel.nodpel];
+				double deriv[2][cel.nodpel][cel.nodpel];
+
+				for (int ilocs = 0; ilocs < NLOCS; ilocs++) {
+					for (int jlocs = 0; jlocs < NLOCS; jlocs++) {
+						weigc[INOGA[iGauss]] = WEIGL[ilocs] * WEIGL[jlocs];
+						posgc[0][INOGA[iGauss]] = POSGL[ilocs];
+						posgc[1][INOGA[iGauss]] = POSGL[jlocs];
+						iGauss++;
+					}
+				}
+
+				for (int i = 0; i < cel.nodpel; i++) {
+					double s = posgc[0][i];
+					double t = posgc[1][i];
+
+					int k = 0;
+					deriv[0][k++][i] = (-1.0 + t) * 0.25;
+					deriv[0][k++][i] = ( 1.0 - t) * 0.25;
+					deriv[0][k++][i] = ( 1.0 + t) * 0.25;
+					deriv[0][k++][i] = (-1.0 - t) * 0.25;
+
+					k = 0;
+					deriv[1][k++][i] = (-1.0 + s) * 0.25;
+					deriv[1][k++][i] = (-1.0 - s) * 0.25;
+					deriv[1][k++][i] = ( 1.0 + s) * 0.25;
+					deriv[1][k++][i] = ( 1.0 - s) * 0.25;
+				}
+				/* end subroutine armotodo */
+
+				for (int i = 0; i < cel.nodpel; i++) {
+					double aJacob[2][2];
+					for (int k = 0; k < 2; k++) for (int l = 0; l < 2; l++) aJacob[k][l] = 0;
+
+					for (int j = 0; j < cel.nodpel; j++) {
+						aJacob[0][0] += nodosElem[j].x * deriv[0][j][i];
+						aJacob[0][1] += nodosElem[j].x * deriv[1][j][i];
+						aJacob[1][0] += nodosElem[j].y * deriv[0][j][i];
+						aJacob[1][1] += nodosElem[j].y * deriv[1][j][i];
+					}
+
+					double gpDet = aJacob[0][0] * aJacob[1][1] - aJacob[0][1] * aJacob[1][0];
+					double gpVol = weigc[i] * gpDet;
+					cel.getMasas()[elem[i]] += gpVol * 2 * M_PI * rMed;
+				}
+
+				break;
+			}
+			default: {
+				assert(false);
 			}
 		}
-
-		for (int i = 0; i < cel.nodpel; i++) {
-			double s = posgc[0][i];
-			double t = posgc[1][i];
-
-			int k = 0;
-			deriv[0][k++][i] = (-1.0 + t) * 0.25;
-			deriv[0][k++][i] = ( 1.0 - t) * 0.25;
-			deriv[0][k++][i] = ( 1.0 + t) * 0.25;
-			deriv[0][k++][i] = (-1.0 - t) * 0.25;
-
-			k = 0;
-			deriv[1][k++][i] = (-1.0 + s) * 0.25;
-			deriv[1][k++][i] = (-1.0 - s) * 0.25;
-			deriv[1][k++][i] = ( 1.0 + s) * 0.25;
-			deriv[1][k++][i] = ( 1.0 - s) * 0.25;
-		}
-		/* end subroutine armotodo */
-
-		for (int i = 0; i < cel.nodpel; i++) {
-			double aJacob[2][2];
-			for (int k = 0; k < 2; k++) for (int l = 0; l < 2; l++) aJacob[k][l] = 0.0;
-
-			for (int j = 0; j < cel.nodpel; j++) {
-				aJacob[0][0] += nodosElem[j].x * deriv[0][j][i];
-				aJacob[0][1] += nodosElem[j].x * deriv[1][j][i];
-				aJacob[1][0] += nodosElem[j].y * deriv[0][j][i];
-				aJacob[1][1] += nodosElem[j].y * deriv[1][j][i];
-			}
-
-			double gpDet = aJacob[0][0] * aJacob[1][1] - aJacob[0][1] * aJacob[1][0];
-			double gpVol = weigc[i] * gpDet;
-			cel.getMasas()[elem[i]] += gpVol * 2 * M_PI * rMed;
-		}
-
 	}
 
-	for (int iNode = 0; iNode < cel.nNodes; iNode++)	{
+	for (int iNode = 0; iNode < cel.nNodes; iNode++) {
+		if (cel.getMasas()[iNode] < TOLER_MASA) {
+			cout << iNode << endl;
+		}
 		assert(cel.getMasas()[iNode] > TOLER_MASA);
 	}
 }
 
-void Transporte::carga(Celula& cel) {
-	const double CTE = 1e6 / 6.03e23;
-	const double CTE_DILUCION = CONCENTRACION_INICIAL[H_] / CONCENTRACION_INICIAL[NA];
-
-	for (int iNodo = 0; iNodo < cel.nNodes; iNodo++) {
-		cel.getCargas()[iNodo] = FARADAY / (EPSILON_TRANSPORTE * EPSILON_0) * CTE * (
-			CARGA[H_] * cel.concentraciones[H_][iNodo] +
-			CARGA[OH] * cel.concentraciones[OH][iNodo] +
-			CARGA[NA] * cel.concentraciones[NA][iNodo] * CTE_DILUCION +
-			CARGA[CL] * cel.concentraciones[CL][iNodo] * CTE_DILUCION
-		);
-	}
-}
+//void Transporte::carga(Celula& cel) {
+//	const double CTE = 1e6 / 6.03e23;
+//	const double CTE_DILUCION = CONCENTRACION_INICIAL[H_] / CONCENTRACION_INICIAL[NA];
+//
+//	for (int iNodo = 0; iNodo < cel.nNodes; iNodo++) {
+//		cel.getCargas()[iNodo] = FARADAY / (EPSILON_TRANSPORTE * EPSILON_0) * CTE * (
+//			CARGA[H_] * cel.concentraciones[H_][iNodo] +
+//			CARGA[OH] * cel.concentraciones[OH][iNodo] +
+//			CARGA[NA] * cel.concentraciones[NA][iNodo] * CTE_DILUCION +
+//			CARGA[CL] * cel.concentraciones[CL][iNodo] * CTE_DILUCION
+//		);
+//	}
+//}
 
 void Transporte::concentracion(Celula& cel, int esp) {
 	double esm[cel.nodpel][MAXNPEL];
 	vector< Triplet<double> > triplets;
-	for (int i = 0; i < cel.nNodes; i++) cel.getRhs()[i] = 0.;
+	for (int i = 0; i < cel.nNodes; i++) cel.getRhs()[i] = 0;
 
 	for (uint kElem = 0; kElem < cel.getElementos().size(); kElem++) {
 		Elemento elem = cel.getElementos()[kElem];
@@ -213,7 +234,7 @@ void Transporte::concentracion(Celula& cel, int esp) {
 			Nodo nodo = cel.getNodos()[iNodo];
 			pos[i].x = nodo.x;
 			pos[i].y = nodo.y;
-			sol[i] = cel.getSolucion()[iNodo];
+			sol[i] = cel.anteriores[esp][iNodo];
 			mas[i] = cel.getMasas()[iNodo];
 
 			if (esp == OH) {
@@ -241,7 +262,7 @@ void Transporte::concentracion(Celula& cel, int esp) {
 			qe = KWB * CONCENT_H2O - KWF * ch_Med * cohMed;
 		}
 
-		Armado::armadoTransporte(pos, sigma, qe, landa, mu, mas, sol, esm, ef);
+		Armado::armadoTransporte(cel.nodpel, pos, sigma, qe, landa, mu, mas, sol, esm, ef);
 
 		for (int i = 0; i < cel.nodpel; i++) {
 			int iNodo = elem[i];
@@ -250,9 +271,9 @@ void Transporte::concentracion(Celula& cel, int esp) {
 			if (nodo.esTierra) {
 				double adiag = esm[i][i];
 				for (int j = 0; j < cel.nodpel; j++) {
-					esm[i][j] = 0.;
+					esm[i][j] = 0;
 					ef[j] -= esm[j][i] * CONCENTRACION_CATODO[esp];
-					esm[j][i] = 0.;
+					esm[j][i] = 0;
 				}
 				esm[i][i] = adiag;
 				ef[i] = adiag * CONCENTRACION_CATODO[esp];
@@ -261,9 +282,9 @@ void Transporte::concentracion(Celula& cel, int esp) {
 			if (nodo.esPotencia) {
 				double adiag = esm[i][i];
 				for (int j = 0; j < cel.nodpel; j++) {
-					esm[i][j] = 0.;
+					esm[i][j] = 0;
 					ef[j] -= esm[j][i] * CONCENTRACION_ANODO[esp];
-					esm[j][i] = 0.;
+					esm[j][i] = 0;
 				}
 				esm[i][i] = adiag;
 				ef[iNodo] = adiag * CONCENTRACION_ANODO[esp];
@@ -320,6 +341,17 @@ void Transporte::concentracion(Celula& cel, int esp) {
 
 	BiCGSTAB< SparseMatrix<double> > solver(cel.getMatriz());
 	cel.concentraciones[esp] = solver.solve(cel.getRhs());
+
+//	if (esp == OH) {
+//		cout << cel.getRhs()[17] << endl;
+//	}
+
+//	if (solver.info() != Success) {
+//		for (int i = 0; i < cel.nNodes; i++) {
+//			cout << cel.getRhs()[i] << endl;
+//		}
+//		cout << esp << "\t" << solver.error() << "\t" << solver.iterations() << endl;
+//	}
 
 	assert(solver.info() == Success);
 }
