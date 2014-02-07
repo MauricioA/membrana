@@ -1,0 +1,2079 @@
+  DIMEN:            2
+  MODO:            3
+  ARCHIVO1: CELULA4.FEM         
+  NODPEL:            4
+  OPCION:            1
+  ARCHIVO3: SISTEMA.DAT         
+  SIGINT:   2.000000000000000E-007
+  SIGEXT:   1.500000000000000E-007
+  SIGMEM:   5.000000000000000E-012
+  PERMIT:    1.00000000000000     
+  POTENCIAL:    1.00000000000000     
+  FRECUENCIA:   0.000000000000000E+000
+  DIRICHV:            6
+  DIRICHT:            6
+ nonulos del sistema          1788       14044  4.3929452E-03
+  BANDWIDTH:         4939   EN ELEMENTO          1191
+ nonulos del sistema          3576       29877  2.3363719E-03
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
+ iteraciones internas            1  5.000000237487257E-004         202
+  7.831687993480490E-011
