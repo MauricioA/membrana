@@ -22,7 +22,6 @@ void EntradaSalida::leerInput(Celula& celula) {
 	vector<int> dirichV, dirichT;
 	ifstream input("input.in", ifstream::in);
 	double alto;
-	celula.nodpel = 3;
 
 	assert(input.is_open());
 
@@ -38,6 +37,8 @@ void EntradaSalida::leerInput(Celula& celula) {
 				celula.nodpel = 3;
 			} else if (s == "quad") {
 				celula.nodpel = 4;
+			} else {
+				assert(false);
 			}
 		} else if (line.find("sigint") != string::npos) {
 			iss >> s >> celula.sigmas[INTERNO];

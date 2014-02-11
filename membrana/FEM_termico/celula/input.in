@@ -1,5 +1,5 @@
-malla: 	transpo2.fem
-nodpel:	tri
+malla: 	grande.msh
+nodpel:	quad
 
 sigint:		150e-9	# condutividad de la zona intraelular [S/um]
 sigext:		200e-9	# condutividad de la zona extra
