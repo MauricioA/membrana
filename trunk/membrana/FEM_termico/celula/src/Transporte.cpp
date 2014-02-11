@@ -17,7 +17,7 @@ using namespace std;
 //TODO calcular error
 //TODO FORT: armado_t algo raro en esm con transporte
 
-// -DNDEBUG al compilador
+// -DNDEBUG al compilador p/que valla mas rapido
 
 // TODO es siempre la misma matriz para una especie!!
 
@@ -42,12 +42,14 @@ void Transporte::transporte(Celula& cel) {
 	masaDiag2D(cel);
 //	cel.getCargas().resize(cel.nNodes);
 	long iter = 0;
-
 	clock_t reloj = 0;
-	for (double time = 0; time < T_FINAL; time += DELTA_T) {
+
+	for (double time = 0; time <= T_FINAL; time += DELTA_T) {
 		double num = 0, den = 0;
 
-		Poisson::poisson(cel, false);
+		if (iter == 0)  {
+			Poisson::poisson(cel, true);
+		}
 
 		for (int esp = 0; esp < NESPS; esp++) {
 			concentracion(cel, esp);
@@ -79,13 +81,11 @@ void Transporte::transporte(Celula& cel) {
 			exit(EXIT_FAILURE);
 		}
 
-		if (iter % PASO_CONSOLA == 0) {
-			if (iter != 0) {
-				int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
-				cout << time*1e6 << "us\t"
-					 << iter << " iters\t"
-					 << interv/PASO_CONSOLA << " ms/it" <<  endl;
-			}
+		if (iter % PASO_CONSOLA == 0 && iter!= 0) {
+			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
+			cout << time*1e6 << "us\t"
+				 << iter << " iters\t"
+				 << interv/PASO_CONSOLA << " ms/it" <<  endl;
 
 			if (iter % PASO_DISCO == 0) {
 				EntradaSalida::grabarTransporte(cel, time);
@@ -293,6 +293,7 @@ void Transporte::concentracion(Celula& cel, int esp) {
 
 		for (int i = 0; i < cel.nodpel; i++) {
 			int iNodo = elem[i];
+
 			cel.getRhs()[iNodo] += ef[i];
 
 			for (int j = 0; j < cel.nodpel; j++) {
@@ -304,54 +305,20 @@ void Transporte::concentracion(Celula& cel, int esp) {
 
 	cel.getMatriz().resize(cel.nNodes, cel.nNodes);
 	cel.getMatriz().setFromTriplets(triplets.begin(), triplets.end());
-	cel.getMatriz().makeCompressed();
-
-//	/* SCALING */
-//
-//	Requiere #include "src/IterativeSolvers/Scaling.h" en eigen/unsupported/Eigen/IterativeSolvers
-//	(o acá?) y #include <unsupported/Eigen/IterativeSolvers>
-//
-//	IterScaling<SparseMatrix<double> > scal;
-//
-//	scal.computeRef(cel.getMatriz());
-//
-//	cel.getRhs() = scal.LeftScaling().cwiseProduct(cel.getRhs());
-//
-//	SparseLU< SparseMatrix<double> > solver;
-//
-//	solver.analyzePattern(cel.getMatriz());
-//	solver.factorize(cel.getMatriz());
-//
-//	cel.concentraciones[esp] = solver.solve(cel.getRhs());
-//
-//	cel.concentraciones[esp] = scal.RightScaling().cwiseProduct(cel.concentraciones[esp]);
-//
-//	/* END SCALING */
-
-	/* Resolución */
-//	/* LU */
-//	SparseLU< SparseMatrix<double> > solver;
-//
-//	solver.analyzePattern(cel.getMatriz());
-//	solver.factorize(cel.getMatriz());
-//
-//	cel.concentraciones[esp] = solver.solve(cel.getRhs());
-//
-//	assert(solver.info() == Success);
 
 	BiCGSTAB< SparseMatrix<double> > solver(cel.getMatriz());
 	cel.concentraciones[esp] = solver.solve(cel.getRhs());
 
-//	if (esp == OH) {
-//		cout << cel.getRhs()[17] << endl;
-//	}
-
-//	if (solver.info() != Success) {
-//		for (int i = 0; i < cel.nNodes; i++) {
-//			cout << cel.getRhs()[i] << endl;
-//		}
-//		cout << esp << "\t" << solver.error() << "\t" << solver.iterations() << endl;
-//	}
+//	cel.getMatriz().makeCompressed();
+//	SparseLU< SparseMatrix<double> > solver;
+//
+//	solver.analyzePattern(cel.getMatriz());
+//	solver.factorize(cel.getMatriz());
+//
+//	cel.concentraciones[esp] = solver.solve(cel.getRhs());
 
 	assert(solver.info() == Success);
 }
+
+//	Para scaling: #include "src/IterativeSolvers/Scaling.h" en eigen/unsupported/Eigen/IterativeSolvers
+//	(o acá?) y #include <unsupported/Eigen/IterativeSolvers>

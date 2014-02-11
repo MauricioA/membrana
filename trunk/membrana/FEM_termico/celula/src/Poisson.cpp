@@ -15,7 +15,7 @@ void Poisson::poisson(Celula &celula, bool verbose) {
 	double error = 1.0;
 
 	for (int contador = 0; error > EPSILON_POISSON && contador < N_COTA; contador++) {
-		EntradaSalida::printStart("Armando matriz...", verbose);
+		EntradaSalida::printStart("Armando matriz poisson...", verbose);
 		vector< Triplet<double> > triplets;
 
 		for (int elemIdx = 0; elemIdx < celula.nElems; elemIdx++) {
@@ -74,14 +74,14 @@ void Poisson::poisson(Celula &celula, bool verbose) {
 
 		celula.getMatriz().resize(celula.nNodes, celula.nNodes);
 		celula.getMatriz().setFromTriplets(triplets.begin(), triplets.end());
-		EntradaSalida::printEnd(2, verbose);
+		EntradaSalida::printEnd(1, verbose);
 
 		/* Resolución */
-		EntradaSalida::printStart("Resolviendo...", verbose);
+		EntradaSalida::printStart("Resolviendo poisson...", verbose);
 		SimplicialLDLT< SparseMatrix<double> > cholesky(celula.getMatriz());
 		celula.setSolucion(cholesky.solve(celula.getRhs()));
 
-		EntradaSalida::printEnd(2, verbose);
+		EntradaSalida::printEnd(1, verbose);
 		error = EPSILON_POISSON * .5;
 		//TODO siempre hace una sola iteración
 	}
@@ -142,7 +142,7 @@ void Poisson::campo4(Celula &celula) {
 		double phidX[NDIM][2*NGAUSS][4];
 		double sol[NODPEL];
 		Double2D pos[4];
-		Double2D e[NODPEL];
+//		Double2D e[NODPEL];
 		Double2D eElem;
 		eElem.x = 0;
 		eElem.y = 0;
@@ -152,16 +152,16 @@ void Poisson::campo4(Celula &celula) {
 			pos[i].x = celula.getNodos()[iNodo].x;
 			pos[i].y = celula.getNodos()[iNodo].y;
 			sol[i] = celula.getSolucion()[i];
-			e[i].x = 0.;
-			e[i].y = 0.;
+//			e[i].x = 0.;
+//			e[i].y = 0.;
 		}
 
 		for (int i = 0; i < NGAUSS; i++) for (int j = 0; j < NGAUSS; j++) {
 			Armado::iteracion4(i, j, kGauss, pos, phi, dphi, phidX);
 
 			for (int k = 0; k < NODPEL; k++) {
-				e[k].x  += dphi[0][kGauss][k] * sol[k];
-				e[k].y  += dphi[1][kGauss][k] * sol[k];
+//				e[k].x  += dphi[0][kGauss][k] * sol[k];
+//				e[k].y  += dphi[1][kGauss][k] * sol[k];
 				eElem.x += dphi[0][kGauss][k] * sol[k];
 				eElem.y += dphi[1][kGauss][k] * sol[k];
 			}
