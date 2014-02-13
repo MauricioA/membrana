@@ -85,10 +85,13 @@ void Armado::armado4(Double2D pos[], double sigma, double qe, bool transp, doubl
 			}
 		}
 
-		if (transp) {
-			est[i][i] += mas[i] * landa; //* cteI[kGauss];
-		}
 		ef[i] += cteI[kGauss] * phi[kGauss][i] * qe;
+	}
+
+	for (int i = 0; i < NODPEL; i++) {
+		if (transp) {
+			est[i][i] += mas[i] * landa;
+		}
 	}
 }
 
@@ -177,7 +180,7 @@ void Armado::armadoTransporte(int nodpel, Double2D pos[], double sigma, double q
 		}
 	}
 
-	for (int k = 1; k < nodpel; k++) {
+	for (int k = 0; k < nodpel; k++) {
 		double sum = 0;
 		for (int j = 0; j < nodpel; j++) {
 			sum += (est[k][j] - aCoef2 * esm[k][j]) * sol[j];
