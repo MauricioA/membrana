@@ -1,4 +1,4 @@
-malla: 	grande.msh
+malla: 	inputs/grande.msh
 nodpel:	quad
 
 sigint:		150e-9	# condutividad de la zona intraelular [S/um]

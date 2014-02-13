@@ -85,7 +85,7 @@ void Transporte::transporte(Celula& cel) {
 			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
 			cout << time*1e6 << "us\t"
 				 << iter << " iters\t"
-				 << interv/PASO_CONSOLA << " ms/it" <<  endl;
+				 << interv/PASO_CONSOLA << "ms/it" <<  endl;
 
 			if (iter % PASO_DISCO == 0) {
 				EntradaSalida::grabarTransporte(cel, time);
@@ -226,8 +226,6 @@ void Transporte::concentracion(Celula& cel, int esp) {
 		double mas[cel.nodpel];
 		double sol[cel.nodpel];
 		double ef[cel.nodpel];
-		double ch_Med = 0.;
-		double cohMed = 0.;
 
 		for (int i = 0; i < cel.nodpel; i++) {
 			int iNodo = elem[i];
@@ -236,16 +234,6 @@ void Transporte::concentracion(Celula& cel, int esp) {
 			pos[i].y = nodo.y;
 			sol[i] = cel.anteriores[esp][iNodo];
 			mas[i] = cel.getMasas()[iNodo];
-
-			if (esp == OH) {
-				ch_Med += cel.anteriores[H_][iNodo];
-				cohMed += cel.anteriores[OH][iNodo];
-			}
-		}
-
-		if (esp == OH) {
-			ch_Med /= cel.nodpel;
-			cohMed /= cel.nodpel;
 		}
 
 		double sigma = cel.sigmas[elem.material];
@@ -257,10 +245,6 @@ void Transporte::concentracion(Celula& cel, int esp) {
 
 		double landa = 1;
 		double qe = 0;
-
-		if (esp == OH) {
-			qe = KWB * CONCENT_H2O - KWF * ch_Med * cohMed;
-		}
 
 		Armado::armadoTransporte(cel.nodpel, pos, sigma, qe, landa, mu, mas, sol, esm, ef);
 
@@ -287,7 +271,7 @@ void Transporte::concentracion(Celula& cel, int esp) {
 					esm[j][i] = 0;
 				}
 				esm[i][i] = adiag;
-				ef[iNodo] = adiag * CONCENTRACION_ANODO[esp];
+				ef[i] = adiag * CONCENTRACION_ANODO[esp];
 			}
 		}
 
