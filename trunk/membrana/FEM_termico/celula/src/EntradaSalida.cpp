@@ -9,6 +9,7 @@ using namespace std;
 //TODO carpeta de salida
 //TODO archivo input por parámetros
 //TODO ignorar bien los comentarios
+//TODO asserts en leermalla
 
 ofstream historial;
 ofstream ph;
@@ -21,7 +22,6 @@ void EntradaSalida::leerInput(Celula& celula) {
 	string s, line, malla;
 	vector<int> dirichV, dirichT;
 	ifstream input("input.in", ifstream::in);
-	double alto;
 
 	assert(input.is_open());
 
@@ -49,7 +49,11 @@ void EntradaSalida::leerInput(Celula& celula) {
 		} else if (line.find("potencial") != string::npos) {
 			iss >> s >> celula.potencial;
 		} else if (line.find("alto") != string::npos) {
-			iss >> s >> alto;
+			iss >> s >> celula.alto;
+		} else if (line.find("radio") != string::npos) {
+			iss >> s >> celula.radio;
+		} else if (line.find("ancho") != string::npos) {
+			iss >> s >> celula.ancho;
 		}
 	}
 
@@ -58,7 +62,7 @@ void EntradaSalida::leerInput(Celula& celula) {
 	leerMalla(celula, malla);
 
 	for (int i = 0; i < celula.nNodes; i++) {
-		if (abs(celula.getNodos()[i].y - alto) < EPSILON_POISSON) {
+		if (abs(celula.getNodos()[i].y - celula.alto) < EPSILON_POISSON) {
 			celula.getNodos()[i].esPotencia = true;
 		} else if (abs(celula.getNodos()[i].y) < EPSILON_POISSON) {
 			celula.getNodos()[i].esTierra = true;

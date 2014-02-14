@@ -24,6 +24,9 @@ public:
 	int nNodes;
 
 	double potencial;
+	double radio;
+	double alto;
+	double ancho;
 	double sigmas[3];
 
 	VectorXd concentraciones[NESPS];
