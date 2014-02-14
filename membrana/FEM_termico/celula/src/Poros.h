@@ -1,20 +1,22 @@
 #ifndef POROS_H_
 #define POROS_H_
 
-#include <string>
+#include <map>
+#include "declaraciones.h"
 
 using namespace std;
+using namespace declaraciones;
 
 class Poros {
 public:
-	static Poros& instance();
+	Poros();
 
-	string s;
+	void iteracion();
+
+	void loop();
 
 private:
-	Poros();
-	Poros(Poros const&);
-	void operator=(Poros const&);
+	map<int, ElementoMembrana> mapaMembrana;
 
 };
 

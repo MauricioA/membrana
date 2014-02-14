@@ -115,6 +115,11 @@ namespace declaraciones {
 		double x;
 		double y;
 	};
+
+	struct ElementoMembrana {
+		int NodosInternos[2];	//No necesariamente los nodos del elem!!
+		int NodosExternos[2];
+	};
 }
 
 #endif /* DECLARACIONES_H_ */
