@@ -18,6 +18,7 @@ namespace declaraciones {
 	const int 	 PASO_CONSOLA 		= 100;
 	const double TOLER_AREA 		= 1e-6;
 	const double TOLER_MASA 		= 1e-12;
+	const double TOLER_DIST 		= 1e-3;
 	const double EPSILON_POISSON	= 1e-3;
 	const double TIERRA				= 0;
 	const double FARADAY 			= 96485.34;		// C/mol
@@ -34,6 +35,17 @@ namespace declaraciones {
 	const double CLAVE 				= FARADAY / (R_CTE * T_CTE);
 	const string RUTA_HISTORIAL		= "salida/historia.dat";
 	const string RUTA_PH			= "salida/ph.dat";
+
+	/* Poros */
+	//TODO chequear unidades! tmb en transp
+	const double DENSIDAD_INICIAL	= 0;
+	const double RADIO_INICIAL 		= 510e-6;		// r* 0.51 nm
+	const double RADIO_MIN_ENERGIA	= 800e-6;		// rm 0.80 nm
+	const double ALPHA				= 1e-3;			// Coeficiente de creación 1e9 m**-2 s**-1
+	const double V_EP				= 0.258;		// Voltaje característico [V]
+	const double DENSIDAD_EQ		= 1.5e-3;		// Densidad de poros en equilibrio 1.5e9 m**-2
+	const double CONST_Q			= pow((RADIO_MIN_ENERGIA / RADIO_INICIAL), 2);
+	const double DIFF_POROS			= 50e-3;		// Coeficiente de diffusión para poros 5e-14 m**2 s**-1
 
 	const double GAUSSPT[] = {
 		-1 / sqrt(3.),
@@ -114,11 +126,6 @@ namespace declaraciones {
 	struct Double2D {
 		double x;
 		double y;
-	};
-
-	struct ElementoMembrana {
-		int NodosInternos[2];	//No necesariamente los nodos del elem!!
-		int NodosExternos[2];
 	};
 }
 
