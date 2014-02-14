@@ -15,6 +15,8 @@ public:
 
 	void poisson();
 
+	void poros();
+
 	void transporte();
 
 	void chequearSimetria();
