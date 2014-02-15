@@ -1,118 +1,185 @@
-#include "Poros.h"
 #include <cmath>
 #include <cassert>
+#include <algorithm>
+#include <iostream> //
+#include "Poros.h"
+#include "EntradaSalida.h"
+
+inline bool operator<(const Poros::InfoAngulo& lhs, const Poros::InfoAngulo& rhs){
+	return lhs.tita < rhs.tita;
+};
 
 Poros::Poros(Celula& celula) {
 	assert(celula.nodpel == 4);
 	const int NODPEL = 4;
 
 	_celula = &celula;
+	densidadPromedio = 0;
 
-	vector<int> nodosInternos, nodosExternos;
-	vector<double> angulosInternos, angulosExternos;
+	for (int iElem = 0; iElem < celula.nElems; iElem++) {
+		Elemento elem = celula.getElementos()[iElem];
+
+		/* Chequeo que sea de la membrana y del borde externo */
+		if (elem.material == MEMBRANA) {
+			bool externo = false;
+			for (int i = 0; !externo && i < NODPEL; i++) {
+				int iNod = elem[i];
+				externo = esNodoExterno(celula.getNodos()[iNod]);
+			}
+
+			if (externo) {
+				double tita = 0;
+				int indice = 0;
+				InfoAngulo info;
+
+				for (int i = 0; i < NODPEL; i++) {
+					int iNod = elem[i];
+					Nodo nodo = celula.getNodos()[iNod];
+					if (esNodoExterno(nodo)) {
+						tita += getTita(nodo);
+						info.nodosExternos[indice] = iNod;
+						indice++;
+					}
+				}
+				assert(indice == 2);
+				tita /= 2;
+
+				info.densidad = DENSIDAD_INICIAL;
+				info.radios = RADIO_INICIAL;
+				info.tita = tita;
+				valores.push_back(info);
+			}
+		}
+	}
+	assert(valores.size() > 0);
+
+	/* Busco los nodos internos de los valores */
+	uint ints = 0;
+	for (int iElem = 0; iElem < celula.nElems; iElem++) {
+		Elemento elem = celula.getElementos()[iElem];
+
+		/* Chequeo que sea de la membrana y del borde interno */
+		if (elem.material == MEMBRANA) {
+			bool interno = false;
+			for (int i = 0; !interno && i < NODPEL; i++) {
+				int iNod = elem[i];
+				interno = esNodoInterno(celula.getNodos()[iNod]);
+			}
+
+			if (interno) {
+				double tita = 0;
+				int indice = 0;
+				int internos[2];
+
+				for (int i = 0; i < NODPEL; i++) {
+					int iNod = elem[i];
+					Nodo nodo = celula.getNodos()[iNod];
+					if (esNodoInterno(nodo)) {
+						tita += getTita(nodo);
+						internos[indice] = iNod;
+						indice++;
+					}
+				}
+				assert(indice == 2);
+				tita /= 2;
+
+				/* Busco el info del angulo */
+				bool encontrado = false;
+				for (uint i = 0; !encontrado && i < valores.size(); i++) {
+					if (abs(valores[i].tita - tita) < TOLER_DIST) {
+						valores[i].nodosInternos[0] = internos[0];
+						valores[i].nodosInternos[1] = internos[1];
+						encontrado = true;
+					}
+				}
+				assert(encontrado);
+				ints++;
+			}
+		}
+	}
+	assert(ints == valores.size());
+
+	sort(valores.begin(), valores.end());
+}
+
+inline Celula& Poros::getCelula() {
+	return *_celula;
+}
+
+bool Poros::esNodoExterno(Nodo nodo) {
+	Celula& celula = *_celula;
 	Double2D center;
 	center.x = 0;
 	center.y = celula.alto / 2;
 
-	for (int iNodo = 0; iNodo < celula.nNodes; iNodo++) {
-		Nodo nodo = celula.getNodos()[iNodo];
-		double radio = sqrt(pow(nodo.x - center.x, 2) + pow(nodo.y - center.y, 2));
-		double tita = acos(nodo.y - center.y) / celula.radio;
+	double radio = sqrt(pow(nodo.x - center.x, 2) + pow(nodo.y - center.y, 2));
+	return (abs(radio - (celula.radio + celula.ancho)) < TOLER_DIST);
+}
 
-		if (abs(radio - celula.radio) < TOLER_DIST) {
-			nodosInternos.push_back(iNodo);
-			angulosInternos.push_back(tita);
-		} else if (abs(radio - (celula.radio + celula.ancho)) < TOLER_DIST) {
-			nodosExternos.push_back(iNodo);
-			angulosExternos.push_back(tita);
-		}
+bool Poros::esNodoInterno(Nodo nodo) {
+	Celula& celula = *_celula;
+	Double2D center;
+	center.x = 0;
+	center.y = celula.alto / 2;
 
-		assert(nodosExternos.size() == nodosInternos.size());
-		assert(nodosExternos.size() > 0);
-	}
+	double radio = sqrt(pow(nodo.x - center.x, 2) + pow(nodo.y - center.y, 2));
+	return (abs(radio - celula.radio) < TOLER_DIST);
+}
 
-	for (int iElem = 0; iElem < NODPEL; iElem++) {
-		Elemento elem = celula.getElementos()[iElem];
-		if (elem.material == MEMBRANA) {
-			double tita1, tita2;
-			ElementoMembrana infoMemb;
+double Poros::getTita(Nodo nodo) {
+	Celula& celula = *_celula;
+	Double2D center;
+	center.x = 0;
+	center.y = celula.alto / 2;
 
-			bool ambos = false;
-			int iNod = elem[0];
-			tita1 = acos(celula.getNodos()[iNod].y - center.y) / celula.radio;
-			for (int i = 1; (!ambos) && i < NODPEL; i++) {
-				iNod = elem[i];
-				double tita = acos(celula.getNodos()[iNod].y - center.y) / celula.radio;
-				if (abs(tita - tita1) > TOLER_DIST) {
-					tita2 = tita;
-					ambos = true;
-				}
-			}
-			assert(ambos);
-
-			bool tita1Done = false, tita2Done = false;
-			for (uint i = 0; !(tita1Done && tita2Done) && i < angulosInternos.size(); i++) {
-				if (abs(angulosInternos[i] - tita1) < TOLER_DIST) {
-					infoMemb.NodosInternos[0] = nodosInternos[i];
-					tita1Done = true;
-				} else if (abs(angulosInternos[i] - tita2) < TOLER_DIST) {
-					infoMemb.NodosInternos[1] = nodosInternos[i];
-					tita2Done = true;
-				}
-			}
-			assert(tita1Done && tita2Done);
-			
-			tita1Done = false, tita2Done = false;
-			for (uint i = 0; !(tita1Done && tita2Done) && i < angulosExternos.size(); i++) {
-				if (abs(angulosExternos[i] - tita1) < TOLER_DIST) {
-					infoMemb.NodosExternos[0] = nodosExternos[i];
-					tita1Done = true;
-				} else if (abs(angulosExternos[i] - tita2) < TOLER_DIST) {
-					infoMemb.NodosExternos[1] = nodosExternos[i];
-					tita2Done = true;
-				}
-			}
-			assert(tita1Done && tita2Done);
-
-			infoMemb.densidad = DENSIDAD_INICIAL;
-			infoMemb.radios = RADIO_INICIAL;
-
-			mapaMembrana[iElem] = infoMemb;
-		}
-	}
+	double radio = sqrt(pow(nodo.x - center.x, 2) + pow(nodo.y - center.y, 2));
+	double tita = acos((nodo.y - center.y) / radio);
+	assert(tita == tita);
+	return tita;
 }
 
 void Poros::iteracion() {
-	for (map<int, ElementoMembrana>::iterator it = mapaMembrana.begin();
-			it != mapaMembrana.end(); ++it) {
-		ElementoMembrana info = it -> second;
-		Celula& cel = *_celula;
+	densidadPromedio = 0;
 
-		ElementoMembrana nuevo;
-		nuevo.NodosInternos[0] = info.NodosInternos[0];
-		nuevo.NodosInternos[1] = info.NodosInternos[1];
-		nuevo.NodosExternos[0] = info.NodosExternos[0];
-		nuevo.NodosExternos[1] = info.NodosExternos[1];
+	for (vector<InfoAngulo>::iterator it = valores.begin(); it != valores.end(); ++it) {
+		InfoAngulo& info = *it;
+		double itv1 = getCelula().getSolucion()[info.nodosExternos[0]] -
+				getCelula().getSolucion()[info.nodosInternos[0]];
 
-		double itv1 = cel.getSolucion()[info.NodosExternos[0]] - cel.getSolucion()[info.NodosInternos[0]];
-		double itv2 = cel.getSolucion()[info.NodosExternos[1]] - cel.getSolucion()[info.NodosInternos[1]];
+		double itv2 = getCelula().getSolucion()[info.nodosExternos[1]] -
+				getCelula().getSolucion()[info.nodosInternos[1]];
+
 		double itv = (itv1 + itv2) / 2;
-
 		double n_eq = DENSIDAD_EQ * exp(CONST_Q * pow(itv / V_EP, 2));
-		nuevo.densidad = DELTA_T * ALPHA * exp(pow((itv / V_EP), 2)) * (1 - info.densidad / n_eq) + info.densidad;
+		info.densidad = DELTA_T_TRANSPORTE * ALPHA * exp(pow((itv / V_EP), 2)) * (1 - info.densidad / n_eq) + info.densidad;
+		densidadPromedio += info.densidad;
 
-		//TODO calcular el radio!!
-		nuevo.radios = info.radios;
-
-		it -> second = nuevo;
+//		TODO calular radio de los poros
 	}
+
+	densidadPromedio /= valores.size();
 }
 
 void Poros::loop() {
-	const double T_FINAL = 1;
+	const double T_FINAL = 200e-3;
+	EntradaSalida::printStart("Poros...", false);
 
-//	TODO achicar delta_t!
-	for (double time = 0; time <= T_FINAL; time += DELTA_T) {
+	int it = 0;
+	for (double time = 0; time <= T_FINAL; time += DELTA_T_POROS) {
+		if (it % 10000 == 0) {
+			cout << time << "\t" << densidadPromedio << endl;
+		}
+
 		iteracion();
+
+		it++;
 	}
+
+//	for (vector<InfoAngulo>::iterator it = valores.begin();
+//			it != valores.end(); ++it) {
+//		InfoAngulo info = *it;
+//		cout << info.tita << ",\t" << info.densidad << "\n";
+//	}
+
+	EntradaSalida::printEnd(3, false);
 }
