@@ -16,17 +16,38 @@ public:
 
 	void loop();
 
-	struct ElementoMembrana {
-		int NodosInternos[2];	//No necesariamente los nodos del elem!!
-		int NodosExternos[2];
+	struct InfoAngulo {
+		int nodosInternos[2];
+		int nodosExternos[2];
 		double densidad;
 		double radios;
+		double tita;
+
+//		const bool operator< (const infoAngulo other) {
+//			return tita < other.tita;
+//		}
+
+//		inline bool operator< (const InfoAngulo& lhs, const InfoAngulo& rhs){ return lhs.tita < rhs.tita };
 	};
 
 private:
 	Celula* _celula;
 
-	map<int, ElementoMembrana> mapaMembrana;
+	inline Celula& getCelula();
+
+//	map<int, infoAngulo> mapaMembrana;
+
+	double densidadPromedio;
+
+	vector<InfoAngulo> valores;
+
+	bool esNodoExterno(Nodo nodo);
+
+	bool esNodoInterno(Nodo nodo);
+
+	double getTita(Nodo nodo);
+
+	double getTita(Elemento elemento);
 
 };
 

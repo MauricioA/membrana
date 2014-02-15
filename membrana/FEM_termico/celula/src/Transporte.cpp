@@ -44,7 +44,7 @@ void Transporte::transporte(Celula& cel) {
 	long iter = 0;
 	clock_t reloj = 0;
 
-	for (double time = 0; time <= T_FINAL; time += DELTA_T) {
+	for (double time = 0; time <= T_FINAL; time += DELTA_T_TRANSPORTE) {
 		double num = 0, den = 0;
 
 		if (iter == 0)  {

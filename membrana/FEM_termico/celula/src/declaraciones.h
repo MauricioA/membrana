@@ -26,7 +26,7 @@ namespace declaraciones {
 	const double T_CTE				= 310;			// K
 	const double EPSILON_TRANSPORTE	= 78.5;			// cte dieléctrica del agua
 	const double EPSILON_0			= 8.85e-12;		// cte de permitividad C**2 / (N m**2)
-	const double DELTA_T 			= 10e-6;
+	const double DELTA_T_TRANSPORTE = 10e-6;
 	const double KWF				= 249.16;		// (um**3)/at/s = 1.5e11 1/mol/s
 	const double KWB 				= 2.7e-5;		// 1/s
 	const double CONCENT_H2O 		= 3.34e10;		// at/(um**3)
@@ -46,6 +46,7 @@ namespace declaraciones {
 	const double DENSIDAD_EQ		= 1.5e-3;		// Densidad de poros en equilibrio 1.5e9 m**-2
 	const double CONST_Q			= pow((RADIO_MIN_ENERGIA / RADIO_INICIAL), 2);
 	const double DIFF_POROS			= 50e-3;		// Coeficiente de diffusión para poros 5e-14 m**2 s**-1
+	const double DELTA_T_POROS		= 100e-9;
 
 	const double GAUSSPT[] = {
 		-1 / sqrt(3.),
