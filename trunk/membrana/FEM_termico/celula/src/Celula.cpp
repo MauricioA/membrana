@@ -12,6 +12,8 @@ Celula::Celula() {
 	alto = radio = ancho = 0;
 
 	EntradaSalida::leerInput(*this);
+
+	area = 4 * M_PI * pow(radio, 2);
 }
 
 void Celula::poisson() {

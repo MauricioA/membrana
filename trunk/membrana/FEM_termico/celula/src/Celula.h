@@ -29,6 +29,7 @@ public:
 	double radio;
 	double alto;
 	double ancho;
+	double area;
 	double sigmas[3];
 
 	VectorXd concentraciones[NESPS];
@@ -70,13 +71,16 @@ public:
 		return masas;
 	}
 
-//	inline vector<double>& getCargas() {
-//		return cargas;
-//	}
-
 	/* Acá se hace una copia entera! */
 	inline void setSolucion(VectorXd sol) {
 		solucion = sol;
+	}
+
+	inline Double2D getCenter() {
+		Double2D center;
+		center.x = 0;
+		center.y = alto / 2;
+		return center;
 	}
 
 private:
@@ -91,7 +95,6 @@ private:
 	VectorXd solucion;
 
 	vector<double> masas;
-//	vector<double> cargas;
 
 };
 
