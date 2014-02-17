@@ -13,10 +13,6 @@ using namespace declaraciones;
 using namespace Eigen;
 using namespace std;
 
-//TODO transporte
-//TODO calcular error
-//TODO FORT: armado_t algo raro en esm con transporte
-
 // -DNDEBUG al compilador p/que valla mas rapido
 
 // TODO es siempre la misma matriz para una especie!!
@@ -40,7 +36,6 @@ void Transporte::transporte(Celula& cel) {
 	}
 
 	masaDiag2D(cel);
-//	cel.getCargas().resize(cel.nNodes);
 	long iter = 0;
 	clock_t reloj = 0;
 
@@ -200,20 +195,6 @@ void Transporte::masaDiag2D(Celula& cel) {
 		assert(cel.getMasas()[iNode] > TOLER_MASA);
 	}
 }
-
-//void Transporte::carga(Celula& cel) {
-//	const double CTE = 1e6 / 6.03e23;
-//	const double CTE_DILUCION = CONCENTRACION_INICIAL[H_] / CONCENTRACION_INICIAL[NA];
-//
-//	for (int iNodo = 0; iNodo < cel.nNodes; iNodo++) {
-//		cel.getCargas()[iNodo] = FARADAY / (EPSILON_TRANSPORTE * EPSILON_0) * CTE * (
-//			CARGA[H_] * cel.concentraciones[H_][iNodo] +
-//			CARGA[OH] * cel.concentraciones[OH][iNodo] +
-//			CARGA[NA] * cel.concentraciones[NA][iNodo] * CTE_DILUCION +
-//			CARGA[CL] * cel.concentraciones[CL][iNodo] * CTE_DILUCION
-//		);
-//	}
-//}
 
 void Transporte::concentracion(Celula& cel, int esp) {
 	double esm[cel.nodpel][MAXNPEL];

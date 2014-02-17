@@ -22,22 +22,14 @@ public:
 		double densidad;
 		double radios;
 		double tita;
-
-//		const bool operator< (const infoAngulo other) {
-//			return tita < other.tita;
-//		}
-
-//		inline bool operator< (const InfoAngulo& lhs, const InfoAngulo& rhs){ return lhs.tita < rhs.tita };
+		double deltaTita;
+		double sin;
 	};
 
 private:
 	Celula* _celula;
 
 	inline Celula& getCelula();
-
-//	map<int, infoAngulo> mapaMembrana;
-
-	double densidadPromedio;
 
 	vector<InfoAngulo> valores;
 
@@ -47,7 +39,9 @@ private:
 
 	double getTita(Nodo nodo);
 
-	double getTita(Elemento elemento);
+	double getDensidadPromedio();
+
+	double getNPoros();
 
 };
 
