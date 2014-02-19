@@ -22,27 +22,27 @@ void Poisson::poisson(Celula &celula, bool verbose) {
 
 			Elemento elemento = celula.getElementos()[elemIdx];
 			double sigma = celula.sigmas[elemento.material];
-			double ef[celula.nodpel];
+			double ef[MAXNPEL];
 
 			Double2D pos[MAXNPEL];
 			double esm[MAXNPEL][MAXNPEL];
 
-			for (int i = 0; i < celula.nodpel; i++) {
+			for (int i = 0; i < MAXNPEL; i++) {
 				int j = elemento[i];
 				pos[i].x = celula.getNodos()[j].x;
 				pos[i].y = celula.getNodos()[j].y;
 				ef[i] = 0.0;
 			}
 
-			Armado::armadoPoisson(pos, sigma, celula.nodpel, esm);
+			Armado::armadoPoisson(pos, sigma, MAXNPEL, esm);
 
 			/* Condiciones de contorno */
-			for (int i = 0; i < celula.nodpel; i++) {
+			for (int i = 0; i < MAXNPEL; i++) {
 				Nodo nodo = celula.getNodos()[elemento[i]];
 				double adiag = esm[i][i];
 
 				if (nodo.esTierra) {
-					for (int j = 0; j < celula.nodpel; j++) {
+					for (int j = 0; j < MAXNPEL; j++) {
 						esm[i][j] = 0.0;
 						ef[j] -= esm[j][i] * TIERRA;
 						esm[j][i] = 0.0;
@@ -52,7 +52,7 @@ void Poisson::poisson(Celula &celula, bool verbose) {
 				}
 
 				if (nodo.esPotencia) {
-					for (int j = 0; j < celula.nodpel; j++) {
+					for (int j = 0; j < MAXNPEL; j++) {
 						esm[i][j] = 0.0;
 						ef[j] -= esm[j][i] * celula.potencial;
 						esm[j][i] = 0.0;
@@ -63,10 +63,10 @@ void Poisson::poisson(Celula &celula, bool verbose) {
 			}
 
 			/* Ensamblado */
-			for (int i = 0; i < celula.nodpel; i++) {
+			for (int i = 0; i < MAXNPEL; i++) {
 				celula.getRhs()[elemento[i]] += ef[i];
 
-				for (int j = 0; j < celula.nodpel; j++) {
+				for (int j = 0; j < MAXNPEL; j++) {
 					triplets.push_back(Triplet<double>(elemento[i], elemento[j], esm[i][j]));
 				}
 			}
@@ -95,7 +95,7 @@ void Poisson::poisson(Celula &celula, bool verbose) {
 }
 
 void Poisson::campo(Celula &celula) {
-	switch (celula.nodpel) {
+	switch (MAXNPEL) {
 	case 3:
 		campo3(celula);
 		break;
@@ -106,7 +106,7 @@ void Poisson::campo(Celula &celula) {
 }
 
 void Poisson::campo3(Celula &celula) {
-	assert(celula.nodpel == 3);
+	assert(MAXNPEL == 3);
 	Double2D pos[3];
 	double sol[3];
 	celula.getGradElem().resize(celula.nElems);
@@ -130,7 +130,7 @@ void Poisson::campo3(Celula &celula) {
 }
 
 void Poisson::campo4(Celula &celula) {
-	assert(celula.nodpel == 4);
+	assert(MAXNPEL == 4);
 	const int NODPEL = 4;
 	celula.getGradElem().resize(celula.nElems);
 

@@ -1,12 +1,16 @@
 #ifndef DECLARACIONES_H_
 #define DECLARACIONES_H_
 
-#include <cmath>
+#define _USE_MATH_DEFINES
+
+#include <math.h>
 #include <string>
 
 using namespace std;
 
 #define BREAKPOINT cout << "";
+
+#define uint unsigned int
 
 namespace declaraciones {
 	const int 	 N_COTA 			= 10;

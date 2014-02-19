@@ -1,6 +1,8 @@
 #include "Armado.h"
 #include <cassert>
-#include <cmath>
+
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 using namespace std;
 
@@ -165,7 +167,7 @@ void Armado::armadoTransporte(int nodpel, Double2D pos[], double sigma, double q
 	const double aCoef1 = DELTA_T_TRANSPORTE * th2;
 	const double aCoef2 = DELTA_T_TRANSPORTE * (1 - th2);
 
-	double est[nodpel][MAXNPEL];
+	double est[MAXNPEL][MAXNPEL];
 	for (int i = 0; i < nodpel; i++) for (int j = 0; j < MAXNPEL; j++) est[i][j] = 0;
 
 	switch (nodpel) {

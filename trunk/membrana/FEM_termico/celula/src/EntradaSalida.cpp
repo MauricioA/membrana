@@ -13,7 +13,7 @@ using namespace std;
 
 ofstream historial;
 ofstream ph;
-clock_t  EntradaSalida::start;
+//clock_t  EntradaSalida::start;
 bool	 EntradaSalida::firstWrite = true;
 
 void EntradaSalida::leerInput(Celula& celula) {
@@ -204,24 +204,28 @@ void EntradaSalida::grabarPoisson(Celula& celula) {
 
 void EntradaSalida::printStart(string message, bool verbose) {
 	if (verbose) {
-		start = clock();
+		//start = clock();
 		cout << message << " " << flush;
 	}
 }
 
 void EntradaSalida::printEnd(int tabs, bool verbose) {
 	if (verbose) {
+		/*
 		int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
 		cout << "OK";
 		for (int i = 0; i < tabs; i++) cout << "\t";
 		cout << time << "ms" << endl;
+		*/
+		cout << "OK";
 	}
 }
 
 void EntradaSalida::grabarTransporte(Celula& cel, double time) {
 	EntradaSalida::printStart("Grabando en disco...");
 
-	_Ios_Openmode flags = firstWrite ? ios::out : ios::app;
+	//_Ios_Openmode flags = firstWrite ? ios::out : ios::app;
+	ios_base::open_mode flags = firstWrite ? ios::out : ios::app;
 
 	historial.open(RUTA_HISTORIAL.c_str(), flags);
 	ph.open(RUTA_PH.c_str(), flags);

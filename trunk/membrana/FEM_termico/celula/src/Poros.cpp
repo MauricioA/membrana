@@ -1,8 +1,8 @@
-#include <cmath>
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include <cassert>
 #include <algorithm>
-#include <iostream> //
-#include <cstdio>	//
+#include <cstdio> 	//
 #include "Poros.h"
 #include "EntradaSalida.h"
 
@@ -24,6 +24,7 @@ const double GAMA 				= 1.8e-17;		// 1.8e-11 J m**-1
 const double SIGMA_P			= 2e-14;		// 2e-2 J m**-2
 const double SIGMA_0			= 1e-18;		// 1e-6 J m**-2
 const double TEMPERATURA 		= 310;			// 37ºC
+const double TERM_TENSION_LINEA = - 2 * M_PI * GAMA;
 
 inline bool operator<(const Poros::InfoAngulo& lhs, const Poros::InfoAngulo& rhs){
 	return lhs.tita < rhs.tita;
@@ -63,10 +64,11 @@ Poros::Poros(Celula& celula) {
 				assert(indice == 2);
 
 				info.densidad = DENSIDAD_INICIAL;
-				info.radios = RADIO_INICIAL;
 				info.tita = (titas[0] + titas[1]) / 2;
-				info.deltaTita = abs(titas[0] - titas[1]);
-				info.sin = sin(info.tita);
+				double tita1 = min(titas[0], titas[1]);
+				double tita2 = max(titas[0], titas[1]);
+				info.constIntegral = 2 * M_PI * pow(getCelula().radio, 2) * (cos(tita1) - cos(tita2));
+				assert(info.constIntegral == info.constIntegral);
 				valores.push_back(info);
 			}
 		}
@@ -147,18 +149,23 @@ double Poros::getTita(Nodo nodo) {
 }
 
 void Poros::iteracion() {
-	double kPoros = 0;
+	int kPoros = 0;
 	double areaPoros = 0;
 
-	for (vector<InfoAngulo>::iterator it = valores.begin(); it != valores.end(); ++it) {
-		InfoAngulo info = *it;
-		double poros = info.densidad * info.sin * info.deltaTita * 2 * M_PI * pow(getCelula().radio, 2);
-		kPoros += poros;
-		areaPoros += M_PI * pow(info.radios, 2) * poros;
+	for (uint i = 0; i < valores.size(); i++) {
+		InfoAngulo& info = valores[i];
+		kPoros += info.poros.size();
+
+		for (uint j = 0; j < info.poros.size(); j++) {
+			double radio = info.poros[j];
+			areaPoros += M_PI * pow(radio, 2);
+		}
 	}
 
-	for (vector<InfoAngulo>::iterator it = valores.begin(); it != valores.end(); ++it) {
-		InfoAngulo& info = *it;
+	double tensionEfectiva = 2 * SIGMA_P - (2 * SIGMA_P - SIGMA_0) / pow(1 - areaPoros / getCelula().area, 2);
+
+	for (uint i = 0; i < valores.size(); i++) {
+		InfoAngulo& info = valores[i];
 		double itv1 = getCelula().getSolucion()[info.nodosExternos[0]] -
 				getCelula().getSolucion()[info.nodosInternos[0]];
 
@@ -168,38 +175,46 @@ void Poros::iteracion() {
 		double itv = (itv1 + itv2) / 2;
 
 		double n_eq = DENSIDAD_EQ * exp(CONST_Q * pow(itv / V_EP, 2));
-		info.densidad = DELTA_T_POROS * ALPHA * exp(pow((itv / V_EP), 2)) * (1 - info.densidad / n_eq) + info.densidad;
+		info.densidad = DELTA_T_POROS * ALPHA * exp(pow(itv / V_EP, 2)) * (1 - info.densidad / n_eq) + info.densidad;
 
-		if (kPoros >= 1) {
-			double termElectrico = (pow(itv, 2) * F_MAX) / (1 + R_H / (info.radios + R_T));
-			double termRepulsion = 4 * BETA * pow(RADIO_INICIAL / info.radios, 4) * (1 / info.radios);
-			double termTensionLinea = - 2 * M_PI * GAMA;
-			double tensionEfectiva = 2 * SIGMA_P - (2 * SIGMA_P - SIGMA_0) / pow(1 - areaPoros / getCelula().area, 2);
-			double termTensionSuperficial = 2 * M_PI * tensionEfectiva * info.radios;
+		for (uint j = 0; j < info.poros.size(); j++) {
+			double& radio = info.poros[j];
+			double termElectrico = (pow(itv, 2) * F_MAX) / (1 + R_H / (radio + R_T));
+			double termRepulsion = 4 * BETA * pow(RADIO_INICIAL / radio, 4) * (1 / radio);
+			double termTensionSuperficial = 2 * M_PI * tensionEfectiva * radio;
 
-			info.radios += DELTA_T_POROS * DIFF_POROS / (kPoros * TEMPERATURA) *
-					(termElectrico + termRepulsion + termTensionLinea + termTensionSuperficial);
+			radio += DELTA_T_POROS * DIFF_POROS / (kPoros * TEMPERATURA) *
+					(termElectrico + termRepulsion + TERM_TENSION_LINEA + termTensionSuperficial);
+
+			assert((radio == radio) && radio < 1);
+		}
+
+		int porosNuevos = getPorosEnTita(info) - info.poros.size();
+		assert(porosNuevos >= 0);
+
+		for (int i = 0; i < porosNuevos; i++) {
+			info.poros.push_back(RADIO_INICIAL);
 		}
 	}
 }
 
-double Poros::getNPoros() {
-	double integral = 0;
+int Poros::getPorosEnTita(InfoAngulo& info) {
+	return (int) (info.constIntegral * info.densidad);
+}
 
-	for (vector<InfoAngulo>::iterator it = valores.begin(); it != valores.end(); ++it) {
-		InfoAngulo info = *it;
-		integral += info.densidad * info.sin * info.deltaTita;
+int Poros::getNPoros() {
+	int kPoros = 0;
+	for (uint i = 0; i < valores.size(); i++) {
+		kPoros += valores[i].poros.size();
 	}
-
-	return integral * 2 * M_PI * pow(getCelula().radio, 2);
+	return kPoros;
 }
 
 double Poros::getDensidadPromedio() {
 	double densidad = 0;
 
-	for (vector<InfoAngulo>::iterator it = valores.begin(); it != valores.end(); ++it) {
-		InfoAngulo info = *it;
-		densidad += info.densidad;
+	for (uint i = 0; i < valores.size(); i++) {
+		densidad += valores[i].densidad;
 	}
 
 	return densidad / valores.size();
@@ -207,18 +222,36 @@ double Poros::getDensidadPromedio() {
 
 void Poros::loop() {
 	const double T_FINAL = 3;
-	const int PASO_CONSOLA = 500000;
+	const int PASO_CONSOLA = 100000;
 
 	EntradaSalida::printStart("Poros...", false);
-	clock_t reloj = 0;
+
+	printf("tita, itv\n");
+	for (uint i = 0; i < valores.size(); i++) {
+		InfoAngulo info = valores[i];
+		double itv1 = getCelula().getSolucion()[info.nodosExternos[0]] -
+				getCelula().getSolucion()[info.nodosInternos[0]];
+
+		double itv2 = getCelula().getSolucion()[info.nodosExternos[1]] -
+				getCelula().getSolucion()[info.nodosInternos[1]];
+
+		double itv = (itv1 + itv2) / 2;
+		printf("%f, %f\n", info.tita, itv);
+	}
+
+	fflush(stdout);
+
+	long reloj = 0;
 	int it = 0;
 
 	for (double time = 0; time <= T_FINAL; time += DELTA_T_POROS) {
 		if (it % PASO_CONSOLA == 0) {
-			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
-			printf("%f, %e, %f, %.0f us/it\n", time, getDensidadPromedio(), getNPoros(), (double)interv / PASO_CONSOLA * 1000);
+			//int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
+			//printf("%.2e, %e, %d, %.0fus/it\n", time, getDensidadPromedio(), getNPoros(), (double)interv / PASO_CONSOLA * 1000);
+			printf("%.2e, %e, %d\n", time, getDensidadPromedio(), getNPoros());
+//			printf("%.2e, %.0f us/it\n", time, (double)interv / PASO_CONSOLA * 1000);
 			fflush(stdout);
-			reloj = clock();
+			//reloj = clock();
 		}
 
 		iteracion();
@@ -226,10 +259,10 @@ void Poros::loop() {
 		it++;
 	}
 
-	for (vector<InfoAngulo>::iterator it = valores.begin();
-			it != valores.end(); ++it) {
+	printf("tita, densidad, nPoros\n");
+	for (vector<InfoAngulo>::iterator it = valores.begin();	it != valores.end(); ++it) {
 		InfoAngulo info = *it;
-		printf("%f, %e\n", info.tita, info.radios);
+		printf("%f, %e, %d\n", info.tita, info.densidad, info.poros.size());
 	}
 
 	EntradaSalida::printEnd(3, false);
