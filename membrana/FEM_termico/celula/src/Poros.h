@@ -20,10 +20,9 @@ public:
 		int nodosInternos[2];
 		int nodosExternos[2];
 		double densidad;
-		double radios;
 		double tita;
-		double deltaTita;
-		double sin;
+		double constIntegral;	// 2 * pi * radio**2 * (cos(tita1) - cos(tita2))
+		vector<double> poros;
 	};
 
 private:
@@ -37,11 +36,13 @@ private:
 
 	bool esNodoInterno(Nodo nodo);
 
+	int getPorosEnTita(InfoAngulo& info);
+
 	double getTita(Nodo nodo);
 
 	double getDensidadPromedio();
 
-	double getNPoros();
+	int getNPoros();
 
 };
 

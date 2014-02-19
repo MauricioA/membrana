@@ -16,7 +16,7 @@ public:
 	static void grabarTransporte(Celula& cel, double time);
 
 private:
-	static clock_t start;
+//	static clock_t start;
 
 	static bool firstWrite;
 
