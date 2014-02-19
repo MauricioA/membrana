@@ -10,7 +10,7 @@ using namespace std;
 
 #define BREAKPOINT cout << "";
 
-#define uint unsigned int
+typedef unsigned int uint;
 
 namespace declaraciones {
 	const int 	 N_COTA 			= 10;

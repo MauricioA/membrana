@@ -1,7 +1,7 @@
+#define _USE_MATH_DEFINES
+
 #include "Armado.h"
 #include <cassert>
-
-#define _USE_MATH_DEFINES
 #include <math.h>
 
 using namespace std;

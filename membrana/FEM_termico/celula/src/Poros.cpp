@@ -1,4 +1,5 @@
 #define _USE_MATH_DEFINES
+
 #include <math.h>
 #include <cassert>
 #include <algorithm>
@@ -241,17 +242,16 @@ void Poros::loop() {
 
 	fflush(stdout);
 
-	long reloj = 0;
+	clock_t reloj = 0;
 	int it = 0;
 
 	for (double time = 0; time <= T_FINAL; time += DELTA_T_POROS) {
 		if (it % PASO_CONSOLA == 0) {
-			//int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
-			//printf("%.2e, %e, %d, %.0fus/it\n", time, getDensidadPromedio(), getNPoros(), (double)interv / PASO_CONSOLA * 1000);
-			printf("%.2e, %e, %d\n", time, getDensidadPromedio(), getNPoros());
+			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
+			printf("%.2e, %e, %d, %.0fus/it\n", time, getDensidadPromedio(), getNPoros(), (double)interv / PASO_CONSOLA * 1000);
 //			printf("%.2e, %.0f us/it\n", time, (double)interv / PASO_CONSOLA * 1000);
 			fflush(stdout);
-			//reloj = clock();
+			reloj = clock();
 		}
 
 		iteracion();
