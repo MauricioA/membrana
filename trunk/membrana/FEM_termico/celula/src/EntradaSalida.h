@@ -2,6 +2,7 @@
 #define ENTRADASALIDA_H_
 
 #include "Celula.h"
+#include <ctime>
 
 class EntradaSalida {
 public:
@@ -16,7 +17,7 @@ public:
 	static void grabarTransporte(Celula& cel, double time);
 
 private:
-//	static clock_t start;
+	static clock_t start;
 
 	static bool firstWrite;
 
