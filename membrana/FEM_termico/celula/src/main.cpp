@@ -4,11 +4,11 @@
 int main() {
 	BREAKPOINT
 
-	Celula problema;
+	Celula celula;
 
-//	problema.transporte();
+//	celula.transporte();
 
-	problema.poros();
+	celula.poros();
 
 	return EXIT_SUCCESS;
 }
