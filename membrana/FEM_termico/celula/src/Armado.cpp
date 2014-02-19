@@ -168,7 +168,7 @@ void Armado::armadoTransporte(int nodpel, Double2D pos[], double sigma, double q
 	const double aCoef2 = DELTA_T_TRANSPORTE * (1 - th2);
 
 	double est[MAXNPEL][MAXNPEL];
-	for (int i = 0; i < nodpel; i++) for (int j = 0; j < MAXNPEL; j++) est[i][j] = 0;
+	for (int i = 0; i < nodpel; i++) for (int j = 0; j < nodpel; j++) est[i][j] = 0;
 
 	switch (nodpel) {
 		case 3: {
