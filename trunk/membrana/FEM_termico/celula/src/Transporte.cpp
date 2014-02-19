@@ -107,17 +107,17 @@ void Transporte::masaDiag2D(Celula& cel) {
 		Nodo nodosElem[MAXNPEL];
 		double rMed = 0;
 
-		for (int i = 0; i < MAXNPEL; i++) {
+		for (int i = 0; i < cel.nodpel; i++) {
 			nodosElem[i] = cel.getNodos()[elem[i]];
 			rMed += nodosElem[i].x;
 		}
-		rMed /= MAXNPEL;
+		rMed /= cel.nodpel;
 
-		switch (MAXNPEL) {
+		switch (cel.nodpel) {
 			case 3: {
 				double b[3], c[3];
 				Double2D pos[3];
-				for (int i = 0; i < MAXNPEL; i++) {
+				for (int i = 0; i < cel.nodpel; i++) {
 					pos[i].x = nodosElem[i].x;
 					pos[i].y = nodosElem[i].y;
 				}
@@ -125,7 +125,7 @@ void Transporte::masaDiag2D(Celula& cel) {
 				double det = Armado::determinante3(pos, b, c);
 
 				double gpvol = det * M_PI * rMed;
-				for (int i = 0; i < MAXNPEL; i++) {
+				for (int i = 0; i < cel.nodpel; i++) {
 					cel.getMasas()[elem[i]] += gpvol;
 				}
 
@@ -146,7 +146,7 @@ void Transporte::masaDiag2D(Celula& cel) {
 					}
 				}
 
-				for (int i = 0; i < MAXNPEL; i++) {
+				for (int i = 0; i < cel.nodpel; i++) {
 					double s = posgc[0][i];
 					double t = posgc[1][i];
 
@@ -164,11 +164,11 @@ void Transporte::masaDiag2D(Celula& cel) {
 				}
 				/* end subroutine armotodo */
 
-				for (int i = 0; i < MAXNPEL; i++) {
+				for (int i = 0; i < cel.nodpel; i++) {
 					double aJacob[2][2];
 					for (int k = 0; k < 2; k++) for (int l = 0; l < 2; l++) aJacob[k][l] = 0;
 
-					for (int j = 0; j < MAXNPEL; j++) {
+					for (int j = 0; j < cel.nodpel; j++) {
 						aJacob[0][0] += nodosElem[j].x * deriv[0][j][i];
 						aJacob[0][1] += nodosElem[j].x * deriv[1][j][i];
 						aJacob[1][0] += nodosElem[j].y * deriv[0][j][i];
@@ -208,7 +208,7 @@ void Transporte::concentracion(Celula& cel, int esp) {
 		double sol[MAXNPEL];
 		double ef[MAXNPEL];
 
-		for (int i = 0; i < MAXNPEL; i++) {
+		for (int i = 0; i < cel.nodpel; i++) {
 			int iNodo = elem[i];
 			Nodo nodo = cel.getNodos()[iNodo];
 			pos[i].x = nodo.x;
@@ -227,15 +227,15 @@ void Transporte::concentracion(Celula& cel, int esp) {
 		double landa = 1;
 		double qe = 0;
 
-		Armado::armadoTransporte(MAXNPEL, pos, sigma, qe, landa, mu, mas, sol, esm, ef);
+		Armado::armadoTransporte(cel.nodpel, pos, sigma, qe, landa, mu, mas, sol, esm, ef);
 
-		for (int i = 0; i < MAXNPEL; i++) {
+		for (int i = 0; i < cel.nodpel; i++) {
 			int iNodo = elem[i];
 			Nodo nodo = cel.getNodos()[iNodo];
 
 			if (nodo.esTierra) {
 				double adiag = esm[i][i];
-				for (int j = 0; j < MAXNPEL; j++) {
+				for (int j = 0; j < cel.nodpel; j++) {
 					esm[i][j] = 0;
 					ef[j] -= esm[j][i] * CONCENTRACION_CATODO[esp];
 					esm[j][i] = 0;
@@ -246,7 +246,7 @@ void Transporte::concentracion(Celula& cel, int esp) {
 
 			if (nodo.esPotencia) {
 				double adiag = esm[i][i];
-				for (int j = 0; j < MAXNPEL; j++) {
+				for (int j = 0; j < cel.nodpel; j++) {
 					esm[i][j] = 0;
 					ef[j] -= esm[j][i] * CONCENTRACION_ANODO[esp];
 					esm[j][i] = 0;
@@ -256,12 +256,12 @@ void Transporte::concentracion(Celula& cel, int esp) {
 			}
 		}
 
-		for (int i = 0; i < MAXNPEL; i++) {
+		for (int i = 0; i < cel.nodpel; i++) {
 			int iNodo = elem[i];
 
 			cel.getRhs()[iNodo] += ef[i];
 
-			for (int j = 0; j < MAXNPEL; j++) {
+			for (int j = 0; j < cel.nodpel; j++) {
 				int jNodo = elem[j];
 				triplets.push_back(Triplet<double>(iNodo, jNodo, esm[i][j]));
 			}
