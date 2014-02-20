@@ -1,7 +1,6 @@
 #ifndef POROS_H_
 #define POROS_H_
 
-#include <map>
 #include "Celula.h"
 #include "declaraciones.h"
 
@@ -41,6 +40,8 @@ private:
 	double getTita(Nodo nodo);
 
 	double getDensidadPromedio();
+
+	double getRadioMaximo();
 
 	int getNPoros();
 
