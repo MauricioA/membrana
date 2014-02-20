@@ -1,4 +1,5 @@
 #define _USE_MATH_DEFINES
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <math.h>
 #include <cassert>
@@ -16,7 +17,7 @@ const double V_EP				= 0.258;		// Voltaje característico [V]
 const double DENSIDAD_EQ		= 1.5e-3;		// N0 Densidad de poros en equilibrio 1.5e9 m**-2
 const double CONST_Q			= pow((RADIO_MIN_ENERGIA / RADIO_INICIAL), 2);
 const double DIFF_POROS			= 50e-3;		// D Coeficiente de diffusión para poros 5e-14 m**2 s**-1
-const double DELTA_T_POROS		= 100e-9;
+const double DELTA_T_POROS		= 1.5e-9;
 const double F_MAX				= 0.7e-9;		// Max fuerza electrica [N V**-2]
 const double R_H				= 970e-6;		// 0.97e-9 m
 const double R_T				= 310e-6;		// 0.31e-9 m
@@ -27,7 +28,7 @@ const double SIGMA_0			= 1e-18;		// 1e-6 J m**-2
 const double TEMPERATURA 		= 310;			// 37ºC
 const double TERM_TENSION_LINEA = - 2 * M_PI * GAMA;
 
-inline bool operator<(const Poros::InfoAngulo& lhs, const Poros::InfoAngulo& rhs){
+inline bool operator<(const Poros::InfoAngulo& lhs, const Poros::InfoAngulo& rhs) {
 	return lhs.tita < rhs.tita;
 };
 
@@ -184,9 +185,10 @@ void Poros::iteracion() {
 			double termRepulsion = 4 * BETA * pow(RADIO_INICIAL / radio, 4) * (1 / radio);
 			double termTensionSuperficial = 2 * M_PI * tensionEfectiva * radio;
 
-			radio += DELTA_T_POROS * DIFF_POROS / (kPoros * TEMPERATURA) *
+			double deltaR = DELTA_T_POROS * DIFF_POROS / (kPoros * TEMPERATURA) *
 					(termElectrico + termRepulsion + TERM_TENSION_LINEA + termTensionSuperficial);
 
+			radio += deltaR;
 			assert((radio == radio) && radio < 1);
 		}
 
@@ -221,8 +223,21 @@ double Poros::getDensidadPromedio() {
 	return densidad / valores.size();
 }
 
+double Poros::getRadioMaximo() {
+	double rMax = 0;
+
+	for (uint i = 0; i < valores.size(); i++) {
+		InfoAngulo& info = valores[i];
+		for (uint p = 0; p < info.poros.size(); p++) {
+			rMax = max(info.poros[p], rMax);
+		}
+	}
+
+	return rMax;
+}
+
 void Poros::loop() {
-	const double T_FINAL = 3;
+	const double T_FINAL = 0.35;
 	const int PASO_CONSOLA = 100000;
 
 	EntradaSalida::printStart("Poros...", false);
@@ -248,22 +263,29 @@ void Poros::loop() {
 	for (double time = 0; time <= T_FINAL; time += DELTA_T_POROS) {
 		if (it % PASO_CONSOLA == 0) {
 			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
-			printf("%.2e, %e, %d, %.0fus/it\n", time, getDensidadPromedio(), getNPoros(), (double)interv / PASO_CONSOLA * 1000);
-//			printf("%.2e, %.0f us/it\n", time, (double)interv / PASO_CONSOLA * 1000);
+			//printf("%.2e, %e, %d, %.0fus/it\n", time, getDensidadPromedio(), getNPoros(), (double)interv / PASO_CONSOLA * 1000);
+			printf("%.6f, %d, %.4e, %.0fus/it\n", time, getNPoros(), getRadioMaximo(), (double)interv / PASO_CONSOLA * 1000);
 			fflush(stdout);
 			reloj = clock();
 		}
-
+		
 		iteracion();
 
 		it++;
 	}
 
-	printf("tita, densidad, nPoros\n");
-	for (vector<InfoAngulo>::iterator it = valores.begin();	it != valores.end(); ++it) {
-		InfoAngulo info = *it;
-		printf("%f, %e, %d\n", info.tita, info.densidad, info.poros.size());
+	FILE* file;
+	file = fopen("temp.csv", "w");
+
+	for (vector<InfoAngulo>::iterator it = valores.begin(); it != valores.end(); ++it) {
+		InfoAngulo& info = *it;
+		//printf("%f, %e, %d\n", info.tita, info.densidad, info.poros.size());
+		for (uint p = 0; p < info.poros.size(); p++) {
+			fprintf(file, "%e\n", info.poros[p]);
+		}
 	}
 
+	fclose(file);
+	
 	EntradaSalida::printEnd(3, false);
 }
