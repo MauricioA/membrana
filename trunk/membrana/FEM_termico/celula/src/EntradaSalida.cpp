@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include <fstream>
+#include <cfloat>
 #include "Celula.h"
 #include "EntradaSalida.h"
 
@@ -48,8 +49,6 @@ void EntradaSalida::leerInput(Celula& celula) {
 			iss >> s >> celula.sigmas[MEMBRANA];
 		} else if (line.find("potencial") != string::npos) {
 			iss >> s >> celula.potencial;
-		} else if (line.find("alto") != string::npos) {
-			iss >> s >> celula.alto;
 		} else if (line.find("radio") != string::npos) {
 			iss >> s >> celula.radio;
 		} else if (line.find("ancho") != string::npos) {
@@ -61,10 +60,15 @@ void EntradaSalida::leerInput(Celula& celula) {
 
 	leerMalla(celula, malla);
 
+	celula.alto = -DBL_MAX;
+	for (auto nodo : celula.getNodos()) {
+		celula.alto = max(celula.alto, nodo.y);
+	}
+
 	for (int i = 0; i < celula.nNodes; i++) {
-		if (abs(celula.getNodos()[i].y - celula.alto) < EPSILON_POISSON) {
+		if (abs(celula.getNodos()[i].y - celula.alto) < EPSILON_DIST) {
 			celula.getNodos()[i].esPotencia = true;
-		} else if (abs(celula.getNodos()[i].y) < EPSILON_POISSON) {
+		} else if (abs(celula.getNodos()[i].y) < EPSILON_DIST) {
 			celula.getNodos()[i].esTierra = true;
 		}
 	}

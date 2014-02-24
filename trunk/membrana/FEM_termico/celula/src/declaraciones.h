@@ -13,6 +13,7 @@ using namespace std;
 typedef unsigned int uint;
 
 namespace declaraciones {
+
 	const int 	 N_COTA 			= 10;
 	const int 	 MAXNPEL 			= 4;
 	const int 	 NESPS				= 4;
@@ -20,6 +21,7 @@ namespace declaraciones {
 	const int 	 NDIM 				= 2;
 	const int	 PASO_DISCO			= 1000;
 	const int 	 PASO_CONSOLA 		= 100;
+	const double EPSILON_DIST		= 1e-9;
 	const double TOLER_AREA 		= 1e-6;
 	const double TOLER_MASA 		= 1e-12;
 	const double TOLER_DIST 		= 1e-3;
@@ -79,7 +81,7 @@ namespace declaraciones {
 		-1,			// CL
 	};
 
-	const double DIFUSION[] = {		// (creo)
+	const double DIFUSION[] = {	
 		12500,		// H
 		 7050,		// OH
 		 1780,		// NA
