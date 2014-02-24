@@ -198,7 +198,7 @@ void Transporte::masaDiag2D(Celula& cel) {
 
 void Transporte::concentracion(Celula& cel, int esp) {
 	double esm[MAXNPEL][MAXNPEL];
-	vector< Triplet<double> > triplets;
+	vector<Triplet<double>> triplets;
 	for (int i = 0; i < cel.nNodes; i++) cel.getRhs()[i] = 0;
 
 	for (uint kElem = 0; kElem < cel.getElementos().size(); kElem++) {
@@ -271,15 +271,13 @@ void Transporte::concentracion(Celula& cel, int esp) {
 	cel.getMatriz().resize(cel.nNodes, cel.nNodes);
 	cel.getMatriz().setFromTriplets(triplets.begin(), triplets.end());
 
-	BiCGSTAB< SparseMatrix<double> > solver(cel.getMatriz());
+	BiCGSTAB<SparseMatrix<double>> solver(cel.getMatriz());
 	cel.concentraciones[esp] = solver.solve(cel.getRhs());
 
 //	cel.getMatriz().makeCompressed();
 //	SparseLU< SparseMatrix<double> > solver;
-//
 //	solver.analyzePattern(cel.getMatriz());
 //	solver.factorize(cel.getMatriz());
-//
 //	cel.concentraciones[esp] = solver.solve(cel.getRhs());
 
 	assert(solver.info() == Success);

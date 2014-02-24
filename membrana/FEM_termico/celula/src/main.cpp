@@ -2,13 +2,13 @@
 #include <iostream>
 
 int main() {
-	BREAKPOINT
-
 	Celula celula;
 
-//	celula.transporte();
+	//celula.transporte();
 
 	celula.poros();
+
+	cin.ignore();
 
 	return EXIT_SUCCESS;
 }

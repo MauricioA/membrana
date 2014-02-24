@@ -78,7 +78,8 @@ void Poisson::poisson(Celula &celula, bool verbose) {
 
 		/* Resolución */
 		EntradaSalida::printStart("Resolviendo poisson...", verbose);
-		SimplicialLDLT< SparseMatrix<double> > cholesky(celula.getMatriz());
+
+		SimplicialLDLT<SparseMatrix<double>> cholesky(celula.getMatriz());
 		celula.setSolucion(cholesky.solve(celula.getRhs()));
 
 		EntradaSalida::printEnd(1, verbose);
