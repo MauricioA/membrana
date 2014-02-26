@@ -4,34 +4,34 @@
 #include <math.h>
 #include <cassert>
 #include <algorithm>
-#include <cstdio> 	//
+#include <cstdio> 
 #include "Poros.h"
 #include "EntradaSalida.h"
 
 /* Constantes */
 
-// um
-//const double DELTA_T_POROS		= 50e-9;
-//const double DENSIDAD_INICIAL	= 0;
-//const double RADIO_INICIAL 		= 510e-6;		// r* 0.51 nm
-//const double RADIO_MIN_ENERGIA	= 800e-6;		// rm 0.80 nm
-//const double ALPHA				= 1e-3;			// Coeficiente de creación 1e9 m**-2 s**-1
-//const double V_EP				= 0.258;		// Voltaje característico [V]
-//const double DENSIDAD_EQ		= 1.5e-3;		// N0 Densidad de poros en equilibrio 1.5e9 m**-2
-//const double CONST_Q			= pow((RADIO_MIN_ENERGIA / RADIO_INICIAL), 2);
-//const double DIFF_POROS			= 50e-3;		// D Coeficiente de diffusión para poros 5e-14 m**2 s**-1
-//const double F_MAX				= 0.7e-9;		// Max fuerza electrica [N V**-2]
-//const double R_H				= 970e-6;		// 0.97e-9 m
-//const double R_T				= 310e-6;		// 0.31e-9 m
-//const double BETA 				= 1.4e-19;		// Repulsión estérica [J]
-//const double GAMA 				= 1.8e-17;		// 1.8e-11 J m**-1
-//const double SIGMA_P			= 2e-14;		// 2e-2 J m**-2
-//const double SIGMA_0			= 1e-18;		// 1e-6 J m**-2
-//const double TEMPERATURA 		= 310;			// 37ºC
-//const double TERM_TENSION_LINEA = - 2 * M_PI * GAMA;
-//const double BOLTZMANN			= 1.3806488e-23;// cte de Boltzmann [J K**-1]
-//const double TOLER_DIST_POROS	= 1e-3;
-//const double TOLER_ANGULO		= 1e-3;
+/* // um
+const double DELTA_T_POROS		= 50e-9;
+const double DENSIDAD_INICIAL	= 0;
+const double RADIO_INICIAL 		= 510e-6;		// r* 0.51 nm
+const double RADIO_MIN_ENERGIA	= 800e-6;		// rm 0.80 nm
+const double ALPHA				= 1e-3;			// Coeficiente de creación 1e9 m**-2 s**-1
+const double V_EP				= 0.258;		// Voltaje característico [V]
+const double DENSIDAD_EQ		= 1.5e-3;		// N0 Densidad de poros en equilibrio 1.5e9 m**-2
+const double CONST_Q			= pow((RADIO_MIN_ENERGIA / RADIO_INICIAL), 2);
+const double DIFF_POROS			= 50e-3;		// D Coeficiente de diffusión para poros 5e-14 m**2 s**-1
+const double F_MAX				= 0.7e-9;		// Max fuerza electrica [N V**-2]
+const double R_H				= 970e-6;		// 0.97e-9 m
+const double R_T				= 310e-6;		// 0.31e-9 m
+const double BETA 				= 1.4e-19;		// Repulsión estérica [J]
+const double GAMA 				= 1.8e-17;		// 1.8e-11 J m**-1
+const double SIGMA_P			= 2e-14;		// 2e-2 J m**-2
+const double SIGMA_0			= 1e-18;		// 1e-6 J m**-2
+const double TEMPERATURA 		= 310;			// 37ºC
+const double TERM_TENSION_LINEA = - 2 * M_PI * GAMA;
+const double BOLTZMANN			= 1.3806488e-23;// cte de Boltzmann [J K**-1]
+const double TOLER_DIST_POROS	= 1e-3;
+const double TOLER_ANGULO		= 1e-3; */
 
 // m
 const double DELTA_T_POROS		= 50e-9;		// [s]
