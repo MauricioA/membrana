@@ -43,6 +43,8 @@ private:
 
 	double getRadioMaximo();
 
+	double getUnRadio();
+
 	int getNPoros();
 
 };
