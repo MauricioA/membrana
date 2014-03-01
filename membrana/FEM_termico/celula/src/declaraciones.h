@@ -8,8 +8,6 @@
 
 using namespace std;
 
-#define BREAKPOINT cout << "";
-
 typedef unsigned int uint;
 
 namespace declaraciones {
