@@ -8,10 +8,12 @@
 #include "Poros.h"
 #include "EntradaSalida.h"
 
-const double DELTA_T_POROS	= 10e-9;	// [s]
-const double T_FINAL		= 100e-3;
+const double DELTA_T_POROS	= 1.5e-9;	// [s]
+const double T_FINAL		= 1e-3;
 const int	 PASO_CONSOLA_P	= 100000;
 const bool   RADIOS			= true;     // calcular radios
+
+//TODO poros chicos
 
 /* // um
 const double DENSIDAD_INICIAL	= 0;
@@ -179,7 +181,8 @@ double Poros::getTita(Nodo nodo) {
 	return tita;
 }
 
-void Poros::iteracion() {
+/* sacar time */
+void Poros::iteracion(double time) {
 	double areaPoros = 0;
 
 	for (auto& info : valores) for (auto& radio : info.poros) {
@@ -189,13 +192,19 @@ void Poros::iteracion() {
 	double tensionEfectiva = 2 * SIGMA_P - (2 * SIGMA_P - SIGMA_0) / pow(1 - areaPoros / getCelula().area, 2);
 
 	for (auto& info : valores) {
+		double itv;
+
 		double itv1 = getCelula().getSolucion()[info.nodosExternos[0]] -
-				getCelula().getSolucion()[info.nodosInternos[0]];
+			getCelula().getSolucion()[info.nodosInternos[0]];
 
 		double itv2 = getCelula().getSolucion()[info.nodosExternos[1]] -
-				getCelula().getSolucion()[info.nodosInternos[1]];
+			getCelula().getSolucion()[info.nodosInternos[1]];
 
-		double itv = (itv1 + itv2) / 2;
+		itv = (itv1 + itv2) / 2;
+	
+		if (time > 0.5e-6) {
+			itv /= 3;
+		}
 
 		double n_eq = DENSIDAD_EQ * exp(CONST_Q * pow(itv / V_EP, 2));
 		info.densidad = DELTA_T_POROS * ALPHA * exp(pow(itv / V_EP, 2)) * (1 - info.densidad / n_eq) + info.densidad;
@@ -287,8 +296,7 @@ void Poros::loop() {
 	clock_t reloj = 0;
 	int it = 0;
 
-	FILE* nPoros = fopen("salida/poros.csv", "w");
-	fprintf(nPoros, "tiempo[s], nPoros, radio max [m], un radio [m]\n");
+	//FILE* filePoros = fopen("salida/poros.dat", "w");
 	
 	for (double time = 0; time <= T_FINAL; time += DELTA_T_POROS) {
 
@@ -298,17 +306,20 @@ void Poros::loop() {
 			printf("%.6f, %d, %.4e, %.0fus/it\n", time, getNPoros(), getRadioMaximo(), deltaReal);
 			fflush(stdout);
 			
-			fprintf(nPoros, "%e, %d, %e, %e\n", time, getNPoros(), getRadioMaximo(), getUnRadio());
+			//fprintf(filePoros, "%e %d\n", time, getNPoros());
+			//for (auto& info : valores) for (auto& poro : info.poros) {
+			//	fprintf(filePoros, "%e %e\n", info.tita, poro);
+			//}
 
 			reloj = clock();
 		}
 		
-		iteracion();
+		iteracion(time);
 
 		it++;
 	}
 
-	fclose(nPoros);
+	//fclose(filePoros);
 
 	/*FILE* file;
 	file = fopen("temp.csv", "w");
