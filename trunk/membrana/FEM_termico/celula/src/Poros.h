@@ -11,7 +11,7 @@ class Poros {
 public:
 	Poros(Celula& celula);
 
-	void iteracion();
+	void iteracion(double time);
 
 	void loop();
 
