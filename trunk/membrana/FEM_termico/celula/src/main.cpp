@@ -1,10 +1,9 @@
 #include "Celula.h"
-#include <iostream>
 
 int main() {
 	Celula celula;
 
-	celula.poros();
+	celula.transporteYPoros();
 
 	return EXIT_SUCCESS;
 }
