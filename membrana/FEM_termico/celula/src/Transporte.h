@@ -5,12 +5,22 @@
 
 class Transporte {
 public:
-	static void transporte(Celula& cel);
+	Transporte(Celula& celula);
 
-private:
-	static void masaDiag2D(Celula& cel);
+	void iteracion(double deltaT);
 
-	static void concentracion(Celula& cel, int esp);
+protected:
+	Celula* _celula;
+
+	Transporte() {}
+
+	inline Celula& getCelula();
+
+	void masaDiag2D();
+
+	void concentracion(int esp, double deltaT);
+
+	virtual double difusionMembrana(int iElem, int especie) = 0;
 
 };
 

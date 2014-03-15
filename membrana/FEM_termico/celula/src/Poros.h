@@ -1,6 +1,7 @@
 #ifndef POROS_H_
 #define POROS_H_
 
+#include <unordered_map>
 #include "Celula.h"
 #include "declaraciones.h"
 
@@ -11,7 +12,7 @@ class Poros {
 public:
 	Poros(Celula& celula);
 
-	void iteracion(double time);
+	void iteracion();
 
 	void loop();
 
@@ -20,12 +21,16 @@ public:
 		int nodosExternos[2];
 		double densidad;
 		double tita;
-		double constIntegral;	// 2 * pi * radio**2 * (cos(tita1) - cos(tita2))
+		double area;
 		vector<double> poros;
 	};
 
+	double getProporsionArea(int iElem);
+
 private:
 	Celula* _celula;
+
+	unordered_map<int, InfoAngulo*> mapa;
 
 	inline Celula& getCelula();
 
@@ -36,6 +41,8 @@ private:
 	bool esNodoInterno(Nodo nodo);
 
 	int getPorosEnTita(InfoAngulo& info);
+
+	double getTita(Elemento nodo);
 
 	double getTita(Nodo nodo);
 

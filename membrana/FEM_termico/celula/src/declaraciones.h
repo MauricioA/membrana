@@ -10,7 +10,7 @@ using namespace std;
 
 typedef unsigned int uint;
 
-namespace declaraciones {
+namespace declaraciones {	// todo para metros!
 
 	const int 	 N_COTA 			= 10;
 	const int 	 MAXNPEL 			= 4;
@@ -30,10 +30,9 @@ namespace declaraciones {
 	const double T_CTE				= 310;			// K
 	const double EPSILON_TRANSPORTE	= 78.5;			// cte dieléctrica del agua
 	const double EPSILON_0			= 8.85e-12;		// cte de permitividad C**2 / (N m**2)
-	const double DELTA_T_TRANSPORTE = 10e-6;
-	const double KWF				= 249.16;		// (um**3)/at/s = 1.5e11 1/mol/s
+	const double KWF				= 2.4909e-16;	// (m**3)/at/s = 1.5e11 1/mol/s
 	const double KWB 				= 2.7e-5;		// 1/s
-	const double CONCENT_H2O 		= 3.34e10;		// at/(um**3)
+	const double CONCENT_H2O		= 3.34e28;		// at/(m**3)
 	const double RSA 				= 0.5;
 	const double CONCENT_MINIMO 	= 1e-8;
 	const double CLAVE 				= FARADAY / (R_CTE * T_CTE);
@@ -51,23 +50,30 @@ namespace declaraciones {
 		H_,	OH,	NA,	CL,
 	};
 
-	const double CONCENTRACION_INICIAL[] = {	// En at/(um**3)
-		60.2,		// H_ 1e-7 M
-		60.2,		// OH 1e-7 M
-		96.32e6,	// NA 0.16 M
-		96.32e6,	// CL 0.16 M
+	const double CONCENTRACION_INICIAL_INTRA[] = {	// at*m**-3
+		2.3955516e19,	// H_ 0.3978e-7 M
+		2.3955516e19,	// OH 0.3978e-7 M
+		9.632e25,		// NA 0.16 M
+		9.632e25,		// CL 0.16 M
 	};
 
-	const double CONCENTRACION_ANODO[] = {		// En at/(um**3)
-		1.5e7,		// H
+	const double CONCENTRACION_INICIAL_EXTRA[] = {	// at*m**-3
+		6.022e19,		// H_ 1e-7 M
+		6.022e19,		// OH 1e-7 M
+		9.632e25,		// NA 0.16 M
+		9.632e25,		// CL 0.16 M
+	};
+
+	const double CONCENTRACION_ANODO[] = {			// at*m**-3
+		1.5e25,		// H
 		0,			// OH
-		1e12,		// NA
+		1e30,		// NA
 		0,			// CL
 	};
 
-	const double CONCENTRACION_CATODO[] = {		// En at/(um**3)
+	const double CONCENTRACION_CATODO[] = {			// at*m**-3
 		0,			// H
-		1.806e7,	// OH
+		1.806e25,	// OH
 		0,			// NA
 		0,			// CL
 	};
@@ -79,7 +85,7 @@ namespace declaraciones {
 		-1,			// CL
 	};
 
-	const double DIFUSION[] = {	
+	const double DIFUSION[] = {	//um**2 / s
 		12500,		// H
 		 7050,		// OH
 		 1780,		// NA
@@ -111,7 +117,7 @@ namespace declaraciones {
 			material = material_;
 		}
 
-		int operator[](int i) {
+		inline int operator[](int i) {
 			return nodos[i];
 		}
 	};
