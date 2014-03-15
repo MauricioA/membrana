@@ -43,7 +43,7 @@ void Celula::transporteYPoros() {
 	const double TIEMPO_FINAL = 1;
 	const double DELTA_T = 1e-6;
 	
-	Poros poros = Poros(*this);
+	//Poros poros = Poros(*this);
 	TransporteNulo transporte = TransporteNulo(*this);
 	
 	Poisson::poisson(*this);
@@ -55,6 +55,7 @@ void Celula::transporteYPoros() {
 		transporte.iteracion(DELTA_T);
 		//poros.iteracion();
 
+		// emprolijar esto
 		if (iter % PASO_CONSOLA == 0 && iter != 0) {
 			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
 			cout << time*1e6 << "us\t"
