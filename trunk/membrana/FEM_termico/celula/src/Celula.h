@@ -9,6 +9,7 @@ using namespace std;
 using namespace Eigen;
 using namespace declaraciones;
 
+//TODO poner en nodos y elementos todo
 class Celula {
 public:
 	Celula();

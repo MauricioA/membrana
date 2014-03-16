@@ -90,6 +90,10 @@
     <ClInclude Include="src\TransporteAreas.h" />
     <ClInclude Include="src\TransporteNulo.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="input.in" />
+    <Text Include="inputs\constantes.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

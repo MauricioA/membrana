@@ -1,9 +1,9 @@
-malla: 	inputs/grande.msh
+malla: 	inputs/scale.msh
 nodpel:	quad
 
-sigint:		150e-9	# condutividad de la zona intraelular [S/um]
-sigext:		200e-9	# condutividad de la zona extra
-sigmem:		500e-15	# condutividad de la membrana
+sigint:		0.15	# condutividad de la zona intraelular [S/um]
+sigext:		0.2		# condutividad de la zona extra
+sigmem:		5e-7	# condutividad de la membrana
 potencial:  1
-radio: 		10	
-ancho: 		5e-3	# ancho de la membrana
+radio: 		10e-6	
+ancho: 		5e-9	# ancho de la membrana

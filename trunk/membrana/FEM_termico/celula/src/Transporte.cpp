@@ -259,10 +259,6 @@ void Transporte::concentracion(int esp, double deltaT) {
 		for (int i = 0; i < celula.nodpel; i++) {
 			int iNodo = elem[i];
 
-			//if (ef[i] > 1e10) {
-			//	cout << endl;
-			//}
-
 			celula.getRhs()[iNodo] += ef[i];
 
 			for (int j = 0; j < celula.nodpel; j++) {
@@ -275,10 +271,14 @@ void Transporte::concentracion(int esp, double deltaT) {
 	celula.getMatriz().resize(celula.nNodes, celula.nNodes);
 	celula.getMatriz().setFromTriplets(triplets.begin(), triplets.end());
 
+	for (int i = 0; i < celula.nNodes; i++) {
+		cout << celula.getRhs()[i] << endl;
+	}
+
+	exit(0);
+
 	BiCGSTAB<SparseMatrix<double>> solver(celula.getMatriz());
 	celula.concentraciones[esp] = solver.solve(celula.getRhs());
-	
-	for (int i = 0; i < celula.nNodes; i++) cout << celula.getRhs()[i] << endl;
 
 	cout << solver.iterations() << endl;
 

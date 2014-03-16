@@ -59,7 +59,7 @@ void Armado::armado4(Double2D pos[], double sigma, double qe, bool transp, doubl
 	int kGauss = 0;
 
 	for (int i = 0; i < NGAUSS; i++) for (int j = 0; j < NGAUSS; j++) {
-		double det = iteracion4(i, j, kGauss, pos, phi, dphi, phidX);
+		double det = iteracion4(i, j, kGauss, pos, phi, dphi, phidX);	//1.77
 
 		for (int dim = 0; dim < NDIM; dim++) {
 			gxCod[dim][kGauss] = 0;
