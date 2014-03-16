@@ -9,8 +9,6 @@
 
 #include "TransporteNulo.h"
 
-//TODO poner en nodos y elementos todo
-
 Celula::Celula() {
 	potencial = 0;
 	nNodes = nElems = nodpel  = 0;
@@ -56,7 +54,7 @@ void Celula::transporteYPoros() {
 		//poros.iteracion();
 
 		// emprolijar esto
-		if (iter % PASO_CONSOLA == 0 && iter != 0) {
+		if (iter % PASO_CONSOLA == 0 /* && iter != 0 */) {
 			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
 			cout << time*1e6 << "us\t"
 				<< iter << " iters\t"
@@ -64,6 +62,7 @@ void Celula::transporteYPoros() {
 
 			if (iter % PASO_DISCO == 0) {
 				EntradaSalida::grabarTransporte(*this, time);
+				exit(0);
 			}
 
 			reloj = clock();

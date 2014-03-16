@@ -41,32 +41,40 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Armado.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Celula.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\declaraciones.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\EntradaSalida.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Poisson.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Poros.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Transporte.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\TransporteAreas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\TransporteNulo.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="src\Armado.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Celula.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\declaraciones.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EntradaSalida.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Poisson.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Transporte.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TransporteNulo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Poros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="input.in">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="inputs\constantes.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
