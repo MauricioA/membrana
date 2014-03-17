@@ -41,8 +41,8 @@ void Celula::transporteYPoros() {
 	const double TIEMPO_FINAL = 1;
 	const double DELTA_T = 1e-6;
 	
-	//Poros poros = Poros(*this);
-	TransporteNulo transporte = TransporteNulo(*this);
+	Poros poros = Poros(*this);
+	TransporteAreas transporte = TransporteAreas(*this, poros);
 	
 	Poisson::poisson(*this);
 
@@ -51,7 +51,7 @@ void Celula::transporteYPoros() {
 
 	for (double time = 0; time < TIEMPO_FINAL; time += DELTA_T) {
 		transporte.iteracion(DELTA_T);
-		//poros.iteracion();
+		poros.iteracion();
 
 		// emprolijar esto
 		if (iter % PASO_CONSOLA == 0 /* && iter != 0 */) {
@@ -62,7 +62,6 @@ void Celula::transporteYPoros() {
 
 			if (iter % PASO_DISCO == 0) {
 				EntradaSalida::grabarTransporte(*this, time);
-				exit(0);
 			}
 
 			reloj = clock();
