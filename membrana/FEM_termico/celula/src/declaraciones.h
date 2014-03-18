@@ -193,10 +193,12 @@ namespace declaraciones {
 
 	public:
 		Material material;
+		double sigma;
 
-		Elemento(int nodos_[], int nodpel, Material material_) {
+		Elemento(int nodos_[], int nodpel, Material material_, double _sigma) {
 			for (int i = 0; i < nodpel; i++) nodos[i] = nodos_[i];
 			material = material_;
+			sigma = _sigma;
 		}
 
 		inline int operator[](int i) {

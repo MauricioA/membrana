@@ -125,7 +125,7 @@ void EntradaSalida::leerMalla(Celula& celula, string malla) {
 		iss >> n;
 		for (int j = 0; j < celula.nodpel; j++) iss >> nod[j];
 		for (int j = 0; j < celula.nodpel; j++) nod[j]--;
-		celula.getElementos().push_back(Elemento(nod, celula.nodpel, EXTERNO));
+		celula.getElementos().push_back(Elemento(nod, celula.nodpel, EXTERNO, celula.sigmas[EXTERNO]));
 	}
 
 	/* Elementos membrana */
@@ -134,7 +134,7 @@ void EntradaSalida::leerMalla(Celula& celula, string malla) {
 		iss >> n;
 		for (int j = 0; j < celula.nodpel; j++) iss >> nod[j];
 		for (int j = 0; j < celula.nodpel; j++) nod[j]--;
-		celula.getElementos().push_back(Elemento(nod, celula.nodpel, MEMBRANA));
+		celula.getElementos().push_back(Elemento(nod, celula.nodpel, MEMBRANA, celula.sigmas[MEMBRANA]));
 	}
 
 	/* Elementos internos */
@@ -143,7 +143,7 @@ void EntradaSalida::leerMalla(Celula& celula, string malla) {
 		iss >> n;
 		for (int j = 0; j < celula.nodpel; j++) iss >> nod[j];
 		for (int j = 0; j < celula.nodpel; j++) nod[j]--;
-		celula.getElementos().push_back(Elemento(nod, celula.nodpel, INTERNO));
+		celula.getElementos().push_back(Elemento(nod, celula.nodpel, INTERNO, celula.sigmas[INTERNO]));
 	}
 
 	stream.close();
