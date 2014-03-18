@@ -7,8 +7,6 @@
 #include "TransporteAreas.h"
 #include "Poros.h"
 
-#include "TransporteNulo.h"
-
 Celula::Celula() {
 	potencial = 0;
 	nNodes = nElems = nodpel  = 0;

@@ -214,7 +214,8 @@ void Transporte::concentracion(int esp, double deltaT) {
 			mas[i] = celula.getMasas()[iNodo];
 		}
 
-		double sigma = celula.sigmas[elem.material];
+		//double sigma = celula.sigmas[elem.material];
+		double sigma = elem.sigma;
 
 		if (elem.material == MEMBRANA) {
 			difElem = difusionMembrana(kElem, esp);

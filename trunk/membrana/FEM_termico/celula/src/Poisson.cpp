@@ -10,18 +10,19 @@ using namespace std;
 
 void Poisson::poisson(Celula &celula, bool verbose) {
 	celula.getRhs().resize(celula.nNodes);
-	celula.getRhs().fill(0.0);
+	celula.getRhs().fill(0);
 	celula.getSolucion().resize(celula.nNodes);
-	double error = 1.0;
+	double error = 1;
 
 	for (int contador = 0; error > EPSILON_POISSON && contador < N_COTA; contador++) {
 		EntradaSalida::printStart("Armando matriz poisson...", verbose);
-		vector< Triplet<double> > triplets;
+		vector<Triplet<double>> triplets;
 
 		for (int elemIdx = 0; elemIdx < celula.nElems; elemIdx++) {
 
 			Elemento elemento = celula.getElementos()[elemIdx];
-			double sigma = celula.sigmas[elemento.material];
+			//double sigma = celula.sigmas[elemento.material];
+			double sigma = elemento.sigma;
 			double ef[MAXNPEL];
 
 			Double2D pos[MAXNPEL];
@@ -175,7 +176,9 @@ void Poisson::corriente(Celula &celula) {
 
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
 		Elemento elem = celula.getElementos()[iElem];
-		celula.getCorrElem()[iElem].x = -celula.sigmas[elem.material] * celula.getGradElem()[iElem].x;
-		celula.getCorrElem()[iElem].y = -celula.sigmas[elem.material] * celula.getGradElem()[iElem].y;
+		//celula.getCorrElem()[iElem].x = -celula.sigmas[elem.material] * celula.getGradElem()[iElem].x;
+		//celula.getCorrElem()[iElem].y = -celula.sigmas[elem.material] * celula.getGradElem()[iElem].y;
+		celula.getCorrElem()[iElem].x = -elem.sigma * celula.getGradElem()[iElem].x;
+		celula.getCorrElem()[iElem].y = -elem.sigma * celula.getGradElem()[iElem].y;
 	}
 }
