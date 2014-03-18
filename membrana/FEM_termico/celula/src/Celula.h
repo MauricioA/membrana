@@ -18,7 +18,9 @@ public:
 
 	void poros();
 
-	void transporteYPoros();
+	void transportePoros();
+
+	void actualizarSigmas();
 
 	void chequearSimetria();
 

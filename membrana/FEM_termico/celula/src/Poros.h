@@ -12,7 +12,7 @@ class Poros {
 public:
 	Poros(Celula& celula);
 
-	void iteracion();
+	void iteracion(double deltaT, double tiempo);
 
 	void loop();
 
@@ -26,6 +26,8 @@ public:
 	};
 
 	double getProporsionArea(int iElem);
+
+	double getRadioMaximo();
 
 private:
 	Celula* _celula;
@@ -48,9 +50,9 @@ private:
 
 	double getDensidadPromedio();
 
-	double getRadioMaximo();
-
 	double getUnRadio();
+	
+	double tau;
 
 	int getNPoros();
 

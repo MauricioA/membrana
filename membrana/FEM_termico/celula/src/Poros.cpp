@@ -9,33 +9,10 @@
 #include "EntradaSalida.h"
 
 //TODO poros chicos
+//TODO vrest, poros iniciales
 
-const double DELTA_T_POROS	= 1.5e-9;	// [s]
-const double T_FINAL		= 10e-3;
-const int	 PASO_CONSOLA_P	= 100000;
-const bool   RADIOS			= true;     // calcular radios
-
-//// todo en metros!
-//const double DENSIDAD_INICIAL	= 0;
-//const double RADIO_INICIAL 		= 0.51e-9;		// r* 0.51 nm
-//const double RADIO_MIN_ENERGIA	= 0.80e-9;		// rm 0.80 nm
-//const double ALPHA				= 1e9;			// Coeficiente de creación 1e9 m**-2 s**-1
-//const double V_EP				= 0.258;		// Voltaje característico [V]
-//const double DENSIDAD_EQ		= 1.5e9;		// N0 Densidad de poros en equilibrio 1.5e9 m**-2
-//const double DIFF_POROS			= 50e-14;		// D Coeficiente de diffusión para poros 5e-14 m**2 s**-1
-//const double F_MAX				= 0.7e-9;		// Max fuerza electrica [N V**-2]
-//const double R_H				= 0.97e-9;		// 0.97e-9 m
-//const double R_T				= 0.31e-9;		// 0.31e-9 m
-//const double BETA 				= 1.4e-19;		// Repulsión estérica [J]
-//const double GAMA 				= 1.8e-11;		// 1.8e-11 J m**-1
-//const double SIGMA_P			= 2e-2;			// 2e-2 J m**-2
-//const double SIGMA_0			= 1e-6;			// 1e-6 J m**-2
-//const double TEMPERATURA 		= 310;			// 37ºC
-//const double BOLTZMANN			= 1.3806488e-23;// cte de Boltzmann [J K**-1]
-//const double CONST_Q			= pow((RADIO_MIN_ENERGIA / RADIO_INICIAL), 2);
-//const double TERM_TENSION_LINEA = - 2 * M_PI * GAMA;
-//const double TOLER_DIST_POROS	= 1e-9;
-//const double TOLER_ANGULO		= 1e-3;
+const bool   CALCULAR_RADIOS		= true;
+const bool	 CALCULAR_CAPACITANCIA	= true;
 
 // um!! J -> 1e12, N -> 1e6 - esta testeado
 const double DENSIDAD_INICIAL	= 0;
@@ -53,6 +30,7 @@ const double GAMA 				= 1.8e-5;		// 1.8e-11 J m**-1
 const double SIGMA_P			= 2e-2;			// 2e-2 J m**-2
 const double SIGMA_0			= 1e-6;			// 1e-6 J m**-2
 const double TEMPERATURA 		= 310;			// 37ºC
+const double CAPACITANCIA		= 1e-13;		//10e-2 F m**-2
 const double BOLTZMANN			= 1.3806488e-11;// cte de Boltzmann 1.3806488e-23 [J K**-1]
 const double CONST_Q			= pow((RADIO_MIN_ENERGIA / RADIO_INICIAL), 2);
 const double TERM_TENSION_LINEA = - 2 * M_PI * GAMA;
@@ -68,6 +46,7 @@ Poros::Poros(Celula& celula) {
 	const int NODPEL = 4;
 
 	_celula = &celula;
+	tau = celula.radio * CAPACITANCIA * (1 / celula.sigmas[INTERNO] + 1 / (2 * celula.sigmas[EXTERNO]));
 
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
 		Elemento elem = celula.getElementos()[iElem];
@@ -194,12 +173,16 @@ bool Poros::esNodoInterno(Nodo nodo) {
 	return (abs(radio - getCelula().radio) < TOLER_DIST_POROS);
 }
 
-/* sacar time */
-void Poros::iteracion() {
+void Poros::iteracion(double deltaT, double tiempo) {
 	double areaPoros = 0;
 
 	for (auto& info : valores) for (auto& radio : info.poros) {
 		areaPoros += M_PI * pow(radio, 2);
+	}
+
+	double factorPulso = 1;
+	if (CALCULAR_CAPACITANCIA) {
+		factorPulso = (1 - exp(-tiempo / tau));
 	}
 
 	double tensionEfectiva = 2 * SIGMA_P - (2 * SIGMA_P - SIGMA_0) / pow(1 - areaPoros / getCelula().area, 2);
@@ -213,13 +196,13 @@ void Poros::iteracion() {
 		double itv2 = getCelula().getSolucion()[info.nodosExternos[1]] -
 			getCelula().getSolucion()[info.nodosInternos[1]];
 
-		itv = (itv1 + itv2) / 2;
+		itv = factorPulso * (itv1 + itv2) / 2;
 
 		double n_eq = DENSIDAD_EQ * exp(CONST_Q * pow(itv / V_EP, 2));
-		info.densidad = DELTA_T_POROS * ALPHA * exp(pow(itv / V_EP, 2)) * (1 - info.densidad / n_eq) + info.densidad;
+		info.densidad = deltaT * ALPHA * exp(pow(itv / V_EP, 2)) * (1 - info.densidad / n_eq) + info.densidad;
 
-		if (RADIOS) for (auto& radio : info.poros) {
-			radio = radio + DELTA_T_POROS * DIFF_POROS / (BOLTZMANN * TEMPERATURA) * (
+		if (CALCULAR_RADIOS) for (auto& radio : info.poros) {
+			radio = radio + deltaT * DIFF_POROS / (BOLTZMANN * TEMPERATURA) * (
 				(pow(itv, 2) * F_MAX) / (1 + R_H / (radio + R_T)) +
 				4 * BETA * pow(RADIO_INICIAL / radio, 4) * (1 / radio) + 
 				TERM_TENSION_LINEA + 
@@ -279,6 +262,10 @@ double Poros::getUnRadio() {
 }
 
 void Poros::loop() {
+	const double DELTA_T = 25e-9;
+	const double T_FINAL = 1.5;
+	const int	 PASO_CONSOLA_P = 10000;
+
 	EntradaSalida::printStart("Poros...", false);
 
 	double area = 0;
@@ -307,7 +294,7 @@ void Poros::loop() {
 
 	//FILE* filePoros = fopen("salida/poros.dat", "w");
 	
-	for (double time = 0; time <= T_FINAL; time += DELTA_T_POROS) {
+	for (double time = 0; time <= T_FINAL; time += DELTA_T) {
 
 		if (it % PASO_CONSOLA_P == 0) {
 			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
@@ -323,7 +310,7 @@ void Poros::loop() {
 			reloj = clock();
 		}
 		
-		iteracion();
+		iteracion(DELTA_T, time);
 
 		it++;
 	}
