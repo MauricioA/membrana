@@ -37,9 +37,12 @@ void Celula::chequearSimetria() {
 	}
 }
 
-void Celula::transporteYPoros() {
-	const double TIEMPO_FINAL = 1;
-	const double DELTA_T = 1e-6;
+void Celula::transportePoros() {
+	const double TIEMPO_FINAL	 = 1;
+	const double DELTA_T_POROS	 = 100e-9;
+	const int	 PASO_TRANSPORTE = 1000;
+	const int	 PASO_DISCO		 = 100000;
+	const int 	 PASO_CONSOLA	 = 10000;
 	
 	Poros poros = Poros(*this);
 	TransporteAreas transporte = TransporteAreas(*this, poros);
@@ -49,16 +52,17 @@ void Celula::transporteYPoros() {
 	int iter = 0;
 	clock_t reloj = 0;
 
-	for (double time = 0; time < TIEMPO_FINAL; time += DELTA_T) {
-		transporte.iteracion(DELTA_T);
-		poros.iteracion();
+	for (double time = 0; time < TIEMPO_FINAL; time += DELTA_T_POROS) {
+		poros.iteracion(DELTA_T_POROS, time);
 
-		// emprolijar esto
-		if (iter % PASO_CONSOLA == 0 /* && iter != 0 */) {
+		if (iter % PASO_TRANSPORTE == 0 && iter != 0) {
+			transporte.iteracion(DELTA_T_POROS * PASO_TRANSPORTE);
+		}
+
+		if (iter % PASO_CONSOLA == 0 && iter != 0) {
 			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
-			cout << time*1e6 << "us\t"
-				<< iter << " iters\t"
-				<< interv / PASO_CONSOLA << "ms/it" << endl;
+			double deltaReal = (double)interv / PASO_CONSOLA * 1000;
+			printf("%.0fms %.4f %.0fus/it\n", time*1e3, poros.getRadioMaximo(), deltaReal);
 
 			if (iter % PASO_DISCO == 0) {
 				EntradaSalida::grabarTransporte(*this, time);
@@ -68,4 +72,8 @@ void Celula::transporteYPoros() {
 		}
 		iter++;
 	}
+}
+
+void Celula::actualizarSigmas() {
+
 }

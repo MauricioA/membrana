@@ -3,7 +3,9 @@
 int main() {
 	Celula celula;
 
-	celula.transporteYPoros();
+	//celula.transportePoros();
+
+	celula.poros();
 
 	return EXIT_SUCCESS;
 }

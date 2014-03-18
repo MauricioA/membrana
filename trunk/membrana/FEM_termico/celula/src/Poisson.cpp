@@ -83,8 +83,7 @@ void Poisson::poisson(Celula &celula, bool verbose) {
 		celula.setSolucion(cholesky.solve(celula.getRhs()));
 
 		EntradaSalida::printEnd(1, verbose);
-		error = EPSILON_POISSON * .5;
-		//TODO siempre hace una sola iteración
+		error = EPSILON_POISSON * .5;	//siempre hace 1 iteración
 	}
 
 	EntradaSalida::printStart("Corriente y campo...", verbose);

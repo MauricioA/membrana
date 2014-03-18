@@ -99,8 +99,6 @@ namespace declaraciones {
 	const int 	 NESPS				= 4;
 	const int 	 NGAUSS 			= 2;
 	const int 	 NDIM 				= 2;
-	const int	 PASO_DISCO			= 1000;
-	const int 	 PASO_CONSOLA 		= 100;
 	const double EPSILON_DIST		= 1e-9;
 	const double TOLER_AREA 		= 1e-6;
 	const double TOLER_MASA 		= 1e-12;
@@ -112,7 +110,7 @@ namespace declaraciones {
 	const double T_CTE				= 310;			// K
 	const double EPSILON_TRANSPORTE	= 78.5;			// cte dieléctrica del agua
 	const double EPSILON_0			= 8.85e-12;		// cte de permitividad C**2 / (N m**2)
-	const double CONCENT_H2O 		= 3.34e10;		// at/(um**3)
+	const double CONCENT_H2O 		= 3.34e10;		// at um**-3
 	const double RSA 				= 0.5;
 	const double CONCENT_MINIMO 	= 1e-8;
 	const double CLAVE 				= FARADAY / (R_CTE * T_CTE);
@@ -130,35 +128,35 @@ namespace declaraciones {
 		H_,	OH,	NA,	CL,
 	};
 
-	const double CONCENTRACION_INICIAL_INTRA[] = {	// at*m**-3
-		23.95,	
-		23.95,	
-		96.32e6,
-		96.32e6,
+	const double CONCENTRACION_INICIAL_INTRA[] = {	// at um**-3
+		23.95,		// H
+		23.95,		// OH
+		96.32e6,	// NA
+		96.32e6,	// CL
 	};
 
-	const double CONCENTRACION_INICIAL_EXTRA[] = {	// at*m**-3
-		60.20,
-		60.20,
-		96.32e6,
-		96.32e6,
+	const double CONCENTRACION_INICIAL_EXTRA[] = {	// at um**-3
+		60.20,		// H
+		60.20,		// OH
+		96.32e6,	// NA
+		96.32e6,	// CL
 	};
 
-	const double CONCENTRACION_ANODO[] = {		// En at/(um**3)
+	const double CONCENTRACION_ANODO[] = {			// at um**-3
 		1.5e7,		// H
 		0,			// OH
 		1e12,		// NA
 		0,			// CL
 	};
 
-	const double CONCENTRACION_CATODO[] = {		// En at/(um**3)
+	const double CONCENTRACION_CATODO[] = {			// at um**-3
 		0,			// H
 		1.806e7,	// OH
 		0,			// NA
 		0,			// CL
 	};
 
-	const double DIFUSION[] = {	//um**2 / s
+	const double DIFUSION[] = {	// um**2 / s
 		12500,		// H
 		 7050,		// OH
 		 1780,		// NA
