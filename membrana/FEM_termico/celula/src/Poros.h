@@ -2,6 +2,7 @@
 #define POROS_H_
 
 #include <unordered_map>
+#include <utility>
 #include "Celula.h"
 #include "declaraciones.h"
 
@@ -22,7 +23,9 @@ public:
 		double densidad;
 		double tita;
 		double area;
-		vector<double> poros;
+		vector<pair<double, double>> porosGrandes;	// <radio, tiempo de creación>
+		int porosChicos;
+		double radioChico;
 	};
 
 	double getProporsionArea(int iElem);
@@ -30,6 +33,12 @@ public:
 	double getRadioMaximo();
 
 	double dameSegundoITV(double tiempo);
+
+	int getNPoros();
+
+	int getNPorosChicos();
+
+	int getNPorosGrandes();
 
 private:
 	Celula* _celula;
@@ -56,7 +65,7 @@ private:
 	
 	double tau;
 
-	int getNPoros();
+	double inline actualizarRadio(double radio, double deltaT, double tensionEfectiva, double itv);
 
 };
 

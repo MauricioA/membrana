@@ -80,7 +80,9 @@ Poros::Poros(Celula& celula) {
 				double tita1 = min(titas[0], titas[1]);
 				double tita2 = max(titas[0], titas[1]);
 				info.area = 2 * M_PI * pow(getCelula().radio, 2) * (cos(tita1) - cos(tita2));
-				assert(info.area == info.area);
+				assert(info.area == info.area && info.area > 0);
+				info.porosChicos = 0;
+				info.radioChico = RADIO_INICIAL;
 				valores.push_back(info);
 			}
 		}
@@ -176,8 +178,12 @@ bool Poros::esNodoInterno(Nodo nodo) {
 void Poros::iteracion(double deltaT, double tiempo) {
 	double areaPoros = 0;
 
-	for (auto& info : valores) for (auto& radio : info.poros) {
-		areaPoros += M_PI * pow(radio, 2);
+	for (auto& info : valores) {
+		for (auto& poro : info.porosGrandes) {
+			areaPoros += M_PI * pow(poro.first, 2);
+		}
+
+		areaPoros += info.porosChicos * M_PI * pow(info.radioChico, 2);
 	}
 
 	double factorPulso = 1;
@@ -198,37 +204,73 @@ void Poros::iteracion(double deltaT, double tiempo) {
 
 		itv = factorPulso * (itv1 + itv2) / 2;
 
+		if (CALCULAR_RADIOS) {
+			/* Actualizo los radios de los poros grandes */
+			for (auto& poro : info.porosGrandes) {
+				poro.first = actualizarRadio(poro.first, deltaT, tensionEfectiva, itv);
+			}
+
+			/* Muevo a chicos los poros grandes con poco radio y bastante antigüedad */
+			for (uint i = 0; i < info.porosGrandes.size(); i++) {
+				auto poro = info.porosGrandes[i];
+				if ((poro.first < 1e-3) && (tiempo - poro.second > 1e-6)) {
+					info.porosGrandes.erase(info.porosGrandes.begin() + i);
+					info.porosChicos++;
+					i--;
+				}
+			}
+
+			/* Actualizo el radio de los poros chicos */
+			if (info.porosChicos > 0) {
+				info.radioChico = actualizarRadio(info.radioChico, deltaT, tensionEfectiva, itv);
+			}
+		}
+
+		/* Calculo densidad */
 		double n_eq = DENSIDAD_EQ * exp(CONST_Q * pow(itv / V_EP, 2));
 		info.densidad = deltaT * ALPHA * exp(pow(itv / V_EP, 2)) * (1 - info.densidad / n_eq) + info.densidad;
 
-		if (CALCULAR_RADIOS) for (auto& radio : info.poros) {
-			radio = radio + deltaT * DIFF_POROS / (BOLTZMANN * TEMPERATURA) * (
-				(pow(itv, 2) * F_MAX) / (1 + R_H / (radio + R_T)) +
-				4 * BETA * pow(RADIO_INICIAL / radio, 4) * (1 / radio) + 
-				TERM_TENSION_LINEA + 
-				2 * M_PI * tensionEfectiva * radio
-			);
-		}
-
-		int porosNuevos = getPorosEnTita(info) - info.poros.size();
+		int porosNuevos = getPorosEnTita(info) - info.porosGrandes.size() - info.porosChicos;
 		assert(porosNuevos >= 0);
 
+		/* Agrego poros nuevos */
 		for (int i = 0; i < porosNuevos; i++) {
-			info.poros.push_back(RADIO_INICIAL);
+			info.porosGrandes.push_back({RADIO_INICIAL, tiempo});
 		}
 	}
+}
+
+double inline Poros::actualizarRadio(double radio, double deltaT, double tensionEfectiva, double itv) {
+	return radio + deltaT * DIFF_POROS / (BOLTZMANN * TEMPERATURA) * (
+		(pow(itv, 2) * F_MAX) / (1 + R_H / (radio + R_T)) +
+		4 * BETA * pow(RADIO_INICIAL / radio, 4) * (1 / radio) +
+		TERM_TENSION_LINEA +
+		2 * M_PI * tensionEfectiva * radio
+	);
 }
 
 int Poros::getPorosEnTita(InfoAngulo& info) {
 	return (int) (info.area * info.densidad);
 }
 
-int Poros::getNPoros() {
+int Poros::getNPorosChicos() {
 	int kPoros = 0;
-	for (uint i = 0; i < valores.size(); i++) {
-		kPoros += valores[i].poros.size();
+	for (auto& info : valores) {
+		kPoros += info.porosChicos;
 	}
 	return kPoros;
+}
+
+int Poros::getNPorosGrandes() {
+	int kPoros = 0;
+	for (auto& info : valores) {
+		kPoros += info.porosGrandes.size();
+	}
+	return kPoros;
+}
+
+int Poros::getNPoros() {
+	return getNPorosChicos() + getNPorosGrandes();
 }
 
 double Poros::getDensidadPromedio() {
@@ -244,8 +286,11 @@ double Poros::getDensidadPromedio() {
 double Poros::getRadioMaximo() {
 	double rMax = 0;
 
-	for (auto& info : valores) for (auto& poro : info.poros) {
-		rMax = max(poro, rMax);
+	for (auto& info : valores) {
+		for (auto& poro : info.porosGrandes) {
+			rMax = max(poro.first, rMax);
+		}
+		rMax = max(info.radioChico, rMax);
 	}
 
 	return rMax;
@@ -254,8 +299,8 @@ double Poros::getRadioMaximo() {
 /* Radio del primer poro del depolarizado */
 double Poros::getUnRadio() {
 	InfoAngulo& info = valores[valores.size() - 1];
-	if (info.poros.size() > 0) {
-		return info.poros[0];
+	if (info.porosGrandes.size() > 0) {
+		return info.porosGrandes[0].first;
 	} else {
 		return 0;
 	}
@@ -335,9 +380,12 @@ void Poros::loop() {
 double Poros::getProporsionArea(int iElem) {
 	InfoAngulo& info = InfoAngulo(*mapa[iElem]);
 	double areaP = 0;
-	for (auto& poro : info.poros) {
-		areaP += poro;
+	for (auto& poro : info.porosGrandes) {
+		areaP += M_PI * pow(poro.first, 2);
 	}
+	areaP += info.porosChicos * M_PI * pow(info.radioChico, 2);
+	assert(areaP < info.area);
+
 	return areaP / info.area;
 }
 
