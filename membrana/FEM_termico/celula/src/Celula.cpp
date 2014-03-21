@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <cassert>
 #include <iostream>
 #include "Celula.h"
@@ -35,23 +37,45 @@ void Celula::chequearSimetria() {
 	}
 }
 
+void actualizarSigmas(Celula& celula, Poros& poros) {
+	//const double SIGMA_PORO = 150e-9;	// sigma de la sol que llena el poro
+	const double SIGMA_PORO = 2e-6;	// sigma de la sol que llena el poro
+
+	for (int i = 0; i < celula.nElems; i++) {
+		Elemento& elem = celula.getElementos()[i];
+		if (elem.material == MEMBRANA) {
+			double areas = poros.getProporsionArea(i);
+			elem.sigma = celula.sigmas[MEMBRANA] * (1 - areas) + SIGMA_PORO * areas;
+		}
+	}
+}
+
 void Celula::transportePoros() {
-	const double TIEMPO_FINAL	 = 1;
-	const double DELTA_T_POROS	 = 100e-9;
+	//const double TIEMPO_FINAL	 = 1;
+	//const double DELTA_T_POROS	 = 100e-9;
+
+	const double TIEMPO_FINAL	 = 1e-3;
+	const double DELTA_T_POROS	 = 1e-9;
 	const int	 PASO_TRANSPORTE = 1000;
 	const int	 PASO_DISCO		 = 100000;
-	const int 	 PASO_CONSOLA	 = 10000;
-	
+	const int 	 PASO_CONSOLA	 = 100;
+
 	Poros poros = Poros(*this);
 	TransporteAreas transporte = TransporteAreas(*this, poros);
 	
-	Poisson::poisson(*this);
-
 	int iter = 0;
 	clock_t reloj = 0;
 
+	//FILE* file = fopen("salida/tension.csv", "w");
+
 	for (double time = 0; time < TIEMPO_FINAL; time += DELTA_T_POROS) {
+		Poisson::poisson(*this, false);
+
 		poros.iteracion(DELTA_T_POROS, time);
+
+		actualizarSigmas(*this, poros);
+
+		//fprintf(file, "%e, %f\n", time, poros.dameSegundoITV(time));
 
 		if (iter % PASO_TRANSPORTE == 0 && iter != 0) {
 			transporte.iteracion(DELTA_T_POROS * PASO_TRANSPORTE);
@@ -59,8 +83,8 @@ void Celula::transportePoros() {
 
 		if (iter % PASO_CONSOLA == 0 && iter != 0) {
 			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
-			double deltaReal = (double)interv / PASO_CONSOLA * 1000;
-			printf("%.0fms %.4f %.0fus/it\n", time*1e3, poros.getRadioMaximo(), deltaReal);
+			double deltaReal = (double)interv / PASO_CONSOLA;/* *1000;*/
+			printf("%.1fus %.4e %.0fms/it\n", time*1e6, poros.getRadioMaximo(), deltaReal);
 
 			if (iter % PASO_DISCO == 0) {
 				EntradaSalida::grabarTransporte(*this, time);
@@ -70,8 +94,6 @@ void Celula::transportePoros() {
 		}
 		iter++;
 	}
-}
 
-void Celula::actualizarSigmas() {
-
+	//fclose(file);
 }
