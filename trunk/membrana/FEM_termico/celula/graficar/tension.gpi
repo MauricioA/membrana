@@ -1,0 +1,10 @@
+set terminal png
+
+set xlabel "Tiempo us"
+set ylabel "ITV [V]"
+
+set xrange [0:4]
+
+set output "itv.png"
+
+plot "tension.csv" using ($1 * 1e6):($2) with lines title "tensión"
