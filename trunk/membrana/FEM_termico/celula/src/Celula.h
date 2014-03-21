@@ -1,5 +1,5 @@
-#ifndef PROBLEMA_H_
-#define PROBLEMA_H_
+#ifndef CELULA_H_
+#define CELULA_H_
 
 #include <Eigen/Sparse>
 #include <vector>
@@ -19,8 +19,6 @@ public:
 	void poros();
 
 	void transportePoros();
-
-	void actualizarSigmas();
 
 	void chequearSimetria();
 

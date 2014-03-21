@@ -1,9 +1,9 @@
 import re
 
-SCALE_X = 1e-6
-SCALE_Y = 1e-6
+SCALE_X = 5
+SCALE_Y = 5
 ENTRADA = "grande.msh"
-SALIDA = "salida.msh"
+SALIDA  = "50.msh"
 
 fem = open(ENTRADA)
 lines = fem.readlines()

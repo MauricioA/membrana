@@ -30,7 +30,7 @@ const double GAMA 				= 1.8e-5;		// 1.8e-11 J m**-1
 const double SIGMA_P			= 2e-2;			// 2e-2 J m**-2
 const double SIGMA_0			= 1e-6;			// 1e-6 J m**-2
 const double TEMPERATURA 		= 310;			// 37ºC
-const double CAPACITANCIA		= 1e-13;		//10e-2 F m**-2
+const double CAPACITANCIA		= 1e-14;		// 1e-2 F m**-2
 const double BOLTZMANN			= 1.3806488e-11;// cte de Boltzmann 1.3806488e-23 [J K**-1]
 const double CONST_Q			= pow((RADIO_MIN_ENERGIA / RADIO_INICIAL), 2);
 const double TERM_TENSION_LINEA = - 2 * M_PI * GAMA;
@@ -182,7 +182,7 @@ void Poros::iteracion(double deltaT, double tiempo) {
 
 	double factorPulso = 1;
 	if (CALCULAR_CAPACITANCIA) {
-		factorPulso = (1 - exp(-tiempo / tau));
+		factorPulso = 1 - exp(-tiempo / tau);
 	}
 
 	double tensionEfectiva = 2 * SIGMA_P - (2 * SIGMA_P - SIGMA_0) / pow(1 - areaPoros / getCelula().area, 2);
@@ -339,4 +339,21 @@ double Poros::getProporsionArea(int iElem) {
 		areaP += poro;
 	}
 	return areaP / info.area;
+}
+
+double Poros::dameSegundoITV(double tiempo) {
+	double factorPulso = 1;
+	if (CALCULAR_CAPACITANCIA) {
+		factorPulso = (1 - exp(-tiempo / tau));
+	}
+
+	InfoAngulo& info = valores[1];
+
+	double itv1 = getCelula().getSolucion()[info.nodosExternos[0]] -
+		getCelula().getSolucion()[info.nodosInternos[0]];
+
+	double itv2 = getCelula().getSolucion()[info.nodosExternos[1]] -
+		getCelula().getSolucion()[info.nodosInternos[1]];
+
+	return factorPulso * (itv1 + itv2) / 2;
 }

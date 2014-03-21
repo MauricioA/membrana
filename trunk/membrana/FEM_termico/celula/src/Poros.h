@@ -29,6 +29,8 @@ public:
 
 	double getRadioMaximo();
 
+	double dameSegundoITV(double tiempo);
+
 private:
 	Celula* _celula;
 

@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>1d07a748-092c-4b4c-87b9-b33509613499</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>depolarizado.py</StartupFile>
+    <StartupFile>scaleMesh.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
