@@ -51,30 +51,30 @@ void actualizarSigmas(Celula& celula, Poros& poros) {
 
 void Celula::transportePoros() {
 	const double TIEMPO_FINAL	 = 1e-3;
-	const double DELTA_T	 = 1e-9;
-	const int	 PASO_TRANSPORTE = 1000;
-	const int	 PASO_DISCO		 = 100000;
+	const int	 PASO_DISCO		 = 100;
 	const int 	 PASO_CONSOLA	 = 100;
+	const int	 PASO_TRANSPORTE = 100;
 
 	Poros poros = Poros(*this);
 	TransporteAreas transporte = TransporteAreas(*this, poros);
 	
 	int iter = 0;
 	clock_t reloj = 0;
+	double deltaT = 1e-9;
 
-	FILE* file = fopen("salida/tension.csv", "w");
+	//FILE* file = fopen("salida/nporos.csv", "w");
 
-	for (double time = 0; time < TIEMPO_FINAL; time += DELTA_T) {
+	for (double time = 0; time < TIEMPO_FINAL; time += deltaT) {
 		Poisson::poisson(*this, false);
 
-		poros.iteracion(DELTA_T, time);
+		poros.iteracion(deltaT, time);
 
 		actualizarSigmas(*this, poros);
 
-		//fprintf(file, "%e, %f\n", time, poros.dameSegundoITV(time));
+		//fprintf(file, "%e, %d\n", time, poros.getNPoros());
 
 		if (iter % PASO_TRANSPORTE == 0 && iter != 0) {
-			transporte.iteracion(DELTA_T * PASO_TRANSPORTE);
+			transporte.iteracion(deltaT * PASO_TRANSPORTE);
 		}
 
 		if (iter % PASO_CONSOLA == 0 && iter != 0) {
@@ -84,7 +84,7 @@ void Celula::transportePoros() {
 				time*1e6, poros.getRadioMaximo(), poros.getNPoros(), poros.getNPorosChicos(), deltaReal);
 
 			if (iter % PASO_DISCO == 0) {
-				EntradaSalida::grabarTransporte(*this, time);
+				EntradaSalida::grabarTransporte(*this, time, false);
 			}
 
 			reloj = clock();
@@ -92,5 +92,5 @@ void Celula::transportePoros() {
 		iter++;
 	}
 
-	fclose(file);
+	//fclose(file);
 }

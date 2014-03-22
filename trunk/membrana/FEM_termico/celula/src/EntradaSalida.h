@@ -14,7 +14,7 @@ public:
 
 	static void printEnd(int tabs=2, bool verbose=true);
 
-	static void grabarTransporte(Celula& cel, double time);
+	static void grabarTransporte(Celula& cel, double time, bool verbose=true);
 
 private:
 	static clock_t start;

@@ -222,8 +222,8 @@ void EntradaSalida::printEnd(int tabs, bool verbose) {
 	}
 }
 
-void EntradaSalida::grabarTransporte(Celula& cel, double time) {
-	EntradaSalida::printStart("Grabando en disco...");
+void EntradaSalida::grabarTransporte(Celula& cel, double time, bool verbose) {
+	if (verbose) EntradaSalida::printStart("Grabando en disco...");
 
 	ios_base::open_mode flags = firstWrite ? ios::out : ios::app;
 	historial.open(RUTA_HISTORIAL.c_str(), flags);
@@ -262,5 +262,5 @@ void EntradaSalida::grabarTransporte(Celula& cel, double time) {
 	ph.close();
 
 	firstWrite = false;
-	EntradaSalida::printEnd();
+	if (verbose) EntradaSalida::printEnd();
 }

@@ -13,6 +13,7 @@
 
 const bool   CALCULAR_RADIOS		= true;
 const bool	 CALCULAR_CAPACITANCIA	= true;
+const bool	 POROS_CHICOS			= false;
 
 // um!! J -> 1e12, N -> 1e6 - esta testeado
 const double DENSIDAD_INICIAL	= 0;
@@ -210,19 +211,21 @@ void Poros::iteracion(double deltaT, double tiempo) {
 				poro.first = actualizarRadio(poro.first, deltaT, tensionEfectiva, itv);
 			}
 
-			/* Muevo a chicos los poros grandes con poco radio y bastante antigüedad */
-			for (uint i = 0; i < info.porosGrandes.size(); i++) {
-				auto poro = info.porosGrandes[i];
-				if ((poro.first < 1e-3) && (tiempo - poro.second > 1e-6)) {
-					info.porosGrandes.erase(info.porosGrandes.begin() + i);
-					info.porosChicos++;
-					i--;
+			if (POROS_CHICOS) {
+				/* Muevo a chicos los poros grandes con poco radio y bastante antigüedad */
+				for (uint i = 0; i < info.porosGrandes.size(); i++) {
+					auto poro = info.porosGrandes[i];
+					if ((poro.first < 1e-3) && (tiempo - poro.second > 1e-6)) {
+						info.porosGrandes.erase(info.porosGrandes.begin() + i);
+						info.porosChicos++;
+						i--;
+					}
 				}
-			}
 
-			/* Actualizo el radio de los poros chicos */
-			if (info.porosChicos > 0) {
-				info.radioChico = actualizarRadio(info.radioChico, deltaT, tensionEfectiva, itv);
+				/* Actualizo el radio de los poros chicos */
+				if (info.porosChicos > 0) {
+					info.radioChico = actualizarRadio(info.radioChico, deltaT, tensionEfectiva, itv);
+				}
 			}
 		}
 
@@ -384,6 +387,16 @@ double Poros::getProporsionArea(int iElem) {
 		areaP += M_PI * pow(poro.first, 2);
 	}
 	areaP += info.porosChicos * M_PI * pow(info.radioChico, 2);
+
+	if (areaP > info.area) {
+		double a = 0;
+		//for (auto& poro : info.porosGrandes) {
+		//	a += M_PI * pow(poro.first, 2);
+		//	printf("%f\n", a);
+		//}
+		printf("%f %f %f\n", info.area, areaP, info.radioChico);
+	}
+
 	assert(areaP < info.area);
 
 	return areaP / info.area;
