@@ -389,16 +389,10 @@ double Poros::getProporsionArea(int iElem) {
 	areaP += info.porosChicos * M_PI * pow(info.radioChico, 2);
 
 	if (areaP > info.area) {
-		double a = 0;
-		//for (auto& poro : info.porosGrandes) {
-		//	a += M_PI * pow(poro.first, 2);
-		//	printf("%f\n", a);
-		//}
 		printf("%f %f %f\n", info.area, areaP, info.radioChico);
 	}
 
 	assert(areaP < info.area);
-
 	return areaP / info.area;
 }
 
