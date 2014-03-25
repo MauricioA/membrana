@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
 #include <cassert>
 #include <fstream>
@@ -14,8 +16,16 @@ using namespace std;
 
 ofstream historial;
 ofstream ph;
+FILE*    fPoros;
+//FILE*    fVolts;
 clock_t  EntradaSalida::start;
-bool	 EntradaSalida::firstWrite = true;
+bool	 EntradaSalida::firstWriteTransporte = true;
+bool	 EntradaSalida::firstWritePoros		 = true;
+
+const string RUTA_HISTORIAL = "salida/historia.dat";
+const string RUTA_PH		= "salida/ph.dat";
+const char*	 RUTA_POROS		= "salida/poros.dat";
+//const char*	 RUTA_VOLTS		= "salida/volts.dat";
 
 void EntradaSalida::leerInput(Celula& celula) {
 	printStart("Leyendo archivos...", true);
@@ -225,14 +235,14 @@ void EntradaSalida::printEnd(int tabs, bool verbose) {
 void EntradaSalida::grabarTransporte(Celula& cel, double time, bool verbose) {
 	if (verbose) EntradaSalida::printStart("Grabando en disco...");
 
-	ios_base::open_mode flags = firstWrite ? ios::out : ios::app;
+	ios_base::open_mode flags = firstWriteTransporte ? ios::out : ios::app;
 	historial.open(RUTA_HISTORIAL.c_str(), flags);
 	ph.open(RUTA_PH.c_str(), flags);
 
 	assert(historial.is_open() && ph.is_open());
 	ostringstream histSS, phSS;
 
-	if (firstWrite) {
+	if (firstWriteTransporte) {
 		histSS << cel.nNodes << "\n";
 		phSS   << cel.nNodes << "\n";
 	}
@@ -261,6 +271,37 @@ void EntradaSalida::grabarTransporte(Celula& cel, double time, bool verbose) {
 	historial.close();
 	ph.close();
 
-	firstWrite = false;
+	firstWriteTransporte = false;
+	if (verbose) EntradaSalida::printEnd();
+}
+
+// TODO imprimir voltajes
+void EntradaSalida::grabarRadio(Celula& celula, Poros& radios, double time, bool verbose) {
+	if (verbose) EntradaSalida::printStart("Grabando en disco...");
+	
+	char* flags = firstWritePoros ? "w" : "a";
+	fPoros = fopen(RUTA_POROS, flags);
+	//fVolts = fopen(RUTA_VOLTS, flags);
+	assert(fPoros > 0);
+	//assert(fVolts > 0);
+
+	fprintf(fPoros, "paso %.9f %d\n", time, radios.getNPoros());
+	//fprintf(fVolts, "paso %.6e %d\n", time, radios.getValores().size());
+
+	for (auto& info : radios.getValores()) {
+		for (auto& radio : info.porosGrandes) {
+			fprintf(fPoros, "%.6f %.6e\n", info.tita, radio.first);
+		}
+
+		for (int i = 0; i < info.porosChicos; i++) {
+			fprintf(fPoros, "%.6f %.6e\n", info.tita, info.radioChico);
+		}
+
+		//fprintf(fVolts, "%.6f %.6f\n", info.tita, info.itv);
+	}
+
+	fclose(fPoros);
+	//fclose(fVolts);
+	firstWritePoros = false;
 	if (verbose) EntradaSalida::printEnd();
 }

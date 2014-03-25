@@ -40,6 +40,10 @@ public:
 
 	int getNPorosGrandes();
 
+	inline vector<InfoAngulo>& getValores() {
+		return valores;
+	}
+
 private:
 	Celula* _celula;
 

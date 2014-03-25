@@ -1,8 +1,9 @@
 #ifndef ENTRADASALIDA_H_
 #define ENTRADASALIDA_H_
 
-#include "Celula.h"
 #include <ctime>
+#include "Celula.h"
+#include "Poros.h"
 
 class EntradaSalida {
 public:
@@ -16,10 +17,14 @@ public:
 
 	static void grabarTransporte(Celula& cel, double time, bool verbose=true);
 
+	static void grabarRadio(Celula& celula, Poros& radios, double time, bool verbose=true);
+
 private:
 	static clock_t start;
 
-	static bool firstWrite;
+	static bool firstWriteTransporte;
+
+	static bool firstWritePoros;
 
 	static void leerMalla(Celula& celula, string malla);
 

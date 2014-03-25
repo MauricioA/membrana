@@ -33,8 +33,7 @@ namespace declaraciones {
 	const double RSA 				= 0.5;
 	const double CONCENT_MINIMO 	= 1e-8;
 	const double CLAVE 				= FARADAY / (R_CTE * T_CTE);
-	const string RUTA_HISTORIAL		= "salida/historia.dat";
-	const string RUTA_PH			= "salida/ph.dat";
+	const double CONCENT			= 6.02214129e23 * 1e-15;
 
 	const double GAUSSPT[] = {
 		-1 / sqrt(3.),
@@ -47,27 +46,18 @@ namespace declaraciones {
 		H_,	OH,	NA,	CL,
 	};
 
-	//pasar esto!!
-	/*Concentración de Na +
-	Extracel: 142 mMolar
-	Intracel : 14 mMolar
-
-	Concentración de Cl -
-	Extracel : 108 mMolar
-	Intracel : 4 mMolar
-*/
 	const double CONCENTRACION_INICIAL_INTRA[] = {	// at um**-3
-		23.95,		// H
-		23.95,		// OH
-		96.32e6,	// NA
-		96.32e6,	// CL
+		CONCENT * 0.3978e-7,	// H  .3978e-7 M
+		CONCENT * 0.3978e-7,	// OH .3978e-7 M
+		CONCENT * 142e-3,		// NA 142 mM
+		CONCENT * 108e-3,		// CL 108 mM
 	};
 
 	const double CONCENTRACION_INICIAL_EXTRA[] = {	// at um**-3
-		60.20,		// H
-		60.20,		// OH
-		96.32e6,	// NA
-		96.32e6,	// CL
+		CONCENT *  1e-7,		// H  1e-7 M
+		CONCENT *  1e-7,		// OH 1e-7 M
+		CONCENT * 14e-3,		// NA 14 mM
+		CONCENT *  4e-3,		// CL  4 mM
 	};
 
 	const double CONCENTRACION_ANODO[] = {			// at um**-3
@@ -97,10 +87,6 @@ namespace declaraciones {
 		+1,			// NA
 		-1,			// CL
 	};
-
-	/***************************/
-
-
 
 	enum Material {
 		EXTERNO,
