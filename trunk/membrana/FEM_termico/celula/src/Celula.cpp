@@ -49,47 +49,62 @@ void actualizarSigmas(Celula& celula, Poros& poros) {
 	}
 }
 
-//TODO: poisson 
 void Celula::transportePoros() {
-	const double TIEMPO_FINAL	 = 1e-3;
-	const int	 PASO_DISCO_TRANS= 300;
+	const double TIEMPO_FINAL	 = 20e-3;
+	const int	 PASO_DISCO_TRANS= 2000;
 	const int	 PASO_DISCO_PORO = 500;
-	const int 	 PASO_CONSOLA	 = 100;
+	const int 	 PASO_CONSOLA	 = 500;
 	const int	 PASO_TRANSPORTE = 100;
+	const int	 PASO_POISSON	 = 10;
 
 	Poros poros = Poros(*this);
 	TransporteAreas transporte = TransporteAreas(*this, poros);
 	
-	int iter = 0;
+	int itCons = 0, itTransD = 0, itPoroD = PASO_DISCO_PORO, itTrans = 0, itPoiss = PASO_POISSON;
 	clock_t reloj = 0;
 	double deltaT = 1e-9;
 
 	for (double time = 0; time < TIEMPO_FINAL; time += deltaT) {
-		Poisson::poisson(*this, false);
+		
+		/* Imprimo por cosola */
+		if (itCons == PASO_CONSOLA) {
+			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
+			double deltaReal = (double)interv / PASO_CONSOLA;
+			reloj = clock();
+			printf("%.1fus %.4e %d %d %.3e  %.1f ms/it\n",	time*1e6, poros.getRadioMaximo(), 
+				poros.getNPoros(), poros.getNPorosChicos(), deltaT, deltaReal);
+			itCons = 0;
+		}
+		
+		/* Grabo disco transporte */
+		if (itTransD == PASO_DISCO_TRANS) {
+			EntradaSalida::grabarTransporte(*this, time, false);
+			itTransD = 0;
+		}
+
+		/* Grabo disco poros */
+		if (itPoroD == PASO_DISCO_PORO) {
+			EntradaSalida::grabarRadio(*this, poros, time, false);
+			itPoroD = 0;
+		}
+		
+		if (itPoiss == PASO_POISSON) {
+			Poisson::poisson(*this, false);
+			itPoiss = 0;
+		}
 
 		poros.iteracion(deltaT, time);
 
 		actualizarSigmas(*this, poros);
 
-		if (iter % PASO_TRANSPORTE == 0 && iter != 0) {
+		if (itTrans == PASO_TRANSPORTE) {
 			transporte.iteracion(deltaT * PASO_TRANSPORTE);
+			itTrans = 0;
 		}
 
-		if (iter % PASO_CONSOLA == 0 && iter != 0) {
-			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
-			double deltaReal = (double)interv / PASO_CONSOLA;
-			printf("%.1fus %.4e %d %d %.0fms/it\n", 
-				time*1e6, poros.getRadioMaximo(), poros.getNPoros(), poros.getNPorosChicos(), deltaReal);
+		/* Agrando deltaT */
+		//if (time > 30e-6 && deltaT < 0.1e-6) deltaT += 25e-15;
 
-			if (iter % PASO_DISCO_TRANS == 0) {
-				EntradaSalida::grabarTransporte(*this, time, false);
-			}
-			if (iter % PASO_DISCO_PORO == 0) {
-				EntradaSalida::grabarRadio(*this, poros, time, false);
-			}
-
-			reloj = clock();
-		}
-		iter++;
-	}
+		itCons++; itTransD++; itPoroD++; itTrans++, itPoiss++;
+	} //tita 2.86
 }

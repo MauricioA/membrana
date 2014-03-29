@@ -204,11 +204,22 @@ void Poros::iteracion(double deltaT, double tiempo) {
 			getCelula().getSolucion()[info.nodosInternos[1]];
 
 		itv = factorPulso * (itv1 + itv2) / 2;
+		bool neg = false;
 
 		if (CALCULAR_RADIOS) {
 			/* Actualizo los radios de los poros grandes */
 			for (auto& poro : info.porosGrandes) {
 				poro.first = actualizarRadio(poro.first, deltaT, tensionEfectiva, itv);
+				if (poro.first < 0) neg = true;
+			}
+
+			/* Acá hay gato encerrado */
+			if (neg) for (uint i = 0; i < info.porosGrandes.size(); i++) {
+				if (info.porosGrandes[i].first < 0) {
+					info.porosGrandes.erase(info.porosGrandes.begin() + i);
+					i--;
+					printf("PORO NEGATIVO BORRADO!\n");
+				}
 			}
 
 			if (POROS_CHICOS) {
@@ -234,7 +245,7 @@ void Poros::iteracion(double deltaT, double tiempo) {
 		info.densidad = deltaT * ALPHA * exp(pow(itv / V_EP, 2)) * (1 - info.densidad / n_eq) + info.densidad;
 
 		int porosNuevos = getPorosEnTita(info) - info.porosGrandes.size() - info.porosChicos;
-		assert(porosNuevos >= 0);
+		//assert(porosNuevos >= 0);
 
 		/* Agrego poros nuevos */
 		for (int i = 0; i < porosNuevos; i++) {
@@ -389,7 +400,15 @@ double Poros::getProporsionArea(int iElem) {
 	areaP += info.porosChicos * M_PI * pow(info.radioChico, 2);
 
 	if (areaP > info.area) {
-		printf("%f %f %f\n", info.area, areaP, info.radioChico);
+		for (auto poro : info.porosGrandes) {
+			printf("%e %e\n", poro.first, poro.second);
+		}
+		double itv1 = getCelula().getSolucion()[info.nodosExternos[0]] -
+			getCelula().getSolucion()[info.nodosInternos[0]];
+		double itv2 = getCelula().getSolucion()[info.nodosExternos[1]] -
+			getCelula().getSolucion()[info.nodosInternos[1]];
+		printf("%f %f %e\n", itv1, itv2, tau);
+		printf("%f %f %d %d %f\n", info.area, areaP, info.porosGrandes.size(), info.porosChicos, info.tita);
 	}
 
 	assert(areaP < info.area);

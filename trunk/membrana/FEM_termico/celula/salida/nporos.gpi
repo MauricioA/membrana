@@ -1,0 +1,10 @@
+set terminal png
+
+set xlabel "Tiempo us"
+set ylabel "nporos"
+
+set xrange [0:10]
+
+set output "nporos.png"
+
+plot "nporos.dat" using ($1 * 1e6):($2) with lines title "nporos"

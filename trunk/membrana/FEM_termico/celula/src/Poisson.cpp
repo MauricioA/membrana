@@ -5,9 +5,6 @@
 
 using namespace std;
 
-//TODO multiplicar corriente para obtener por m o cm
-//TODO comparar resultados de campo para tri y quad con fortran
-
 void Poisson::poisson(Celula &celula, bool verbose) {
 	celula.getRhs().resize(celula.nNodes);
 	celula.getRhs().fill(0);
@@ -80,8 +77,15 @@ void Poisson::poisson(Celula &celula, bool verbose) {
 		/* Resolución */
 		EntradaSalida::printStart("Resolviendo poisson...", verbose);
 
-		SimplicialLDLT<SparseMatrix<double>> cholesky(celula.getMatriz());
-		celula.setSolucion(cholesky.solve(celula.getRhs()));
+		//SimplicialLDLT<SparseMatrix<double>> cholesky(celula.getMatriz());
+		//celula.setSolucion(cholesky.solve(celula.getRhs()));
+
+		ConjugateGradient<SparseMatrix<double>> solver(celula.getMatriz());
+		solver.setTolerance(1e-6);
+		celula.setSolucion(solver.solveWithGuess(celula.getRhs(), celula.getSolucion()));
+
+		assert(solver.info() == Success);
+		//cout << solver.error() << " " << solver.iterations() << endl;
 
 		EntradaSalida::printEnd(1, verbose);
 		error = EPSILON_POISSON * .5;	//siempre hace 1 iteración
