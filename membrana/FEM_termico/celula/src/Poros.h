@@ -32,13 +32,13 @@ public:
 
 	double getRadioMaximo();
 
-	double dameSegundoITV(double tiempo);
-
 	int getNPoros();
 
 	int getNPorosChicos();
 
 	int getNPorosGrandes();
+
+	vector<pair<double, double>> Poros::getITVs(double tiempo);
 
 	inline vector<InfoAngulo>& getValores() {
 		return valores;
@@ -66,8 +66,12 @@ private:
 	double getDensidadPromedio();
 
 	double getUnRadio();
+
+	double getITV(InfoAngulo& info);
 	
 	double tau;
+
+	double factorPulso;
 
 	double inline actualizarRadio(double radio, double deltaT, double tensionEfectiva, double itv);
 

@@ -33,6 +33,8 @@ public:
 	double area;
 	double sigmas[3];
 
+	string salida;
+
 	VectorXd concentraciones[NESPS];
 	VectorXd anteriores[NESPS];
 

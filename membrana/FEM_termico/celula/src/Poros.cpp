@@ -8,7 +8,6 @@
 #include "Poros.h"
 #include "EntradaSalida.h"
 
-//TODO poros chicos
 //TODO vrest, poros iniciales
 
 const bool   CALCULAR_RADIOS		= true;
@@ -48,6 +47,7 @@ Poros::Poros(Celula& celula) {
 
 	_celula = &celula;
 	tau = celula.radio * CAPACITANCIA * (1 / celula.sigmas[INTERNO] + 1 / (2 * celula.sigmas[EXTERNO]));
+	factorPulso = 1;
 
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
 		Elemento elem = celula.getElementos()[iElem];
@@ -187,7 +187,6 @@ void Poros::iteracion(double deltaT, double tiempo) {
 		areaPoros += info.porosChicos * M_PI * pow(info.radioChico, 2);
 	}
 
-	double factorPulso = 1;
 	if (CALCULAR_CAPACITANCIA) {
 		factorPulso = 1 - exp(-tiempo / tau);
 	}
@@ -195,15 +194,7 @@ void Poros::iteracion(double deltaT, double tiempo) {
 	double tensionEfectiva = 2 * SIGMA_P - (2 * SIGMA_P - SIGMA_0) / pow(1 - areaPoros / getCelula().area, 2);
 
 	for (auto& info : valores) {
-		double itv;
-
-		double itv1 = getCelula().getSolucion()[info.nodosExternos[0]] -
-			getCelula().getSolucion()[info.nodosInternos[0]];
-
-		double itv2 = getCelula().getSolucion()[info.nodosExternos[1]] -
-			getCelula().getSolucion()[info.nodosInternos[1]];
-
-		itv = factorPulso * (itv1 + itv2) / 2;
+		double itv = getITV(info);
 		bool neg = false;
 
 		if (CALCULAR_RADIOS) {
@@ -245,13 +236,23 @@ void Poros::iteracion(double deltaT, double tiempo) {
 		info.densidad = deltaT * ALPHA * exp(pow(itv / V_EP, 2)) * (1 - info.densidad / n_eq) + info.densidad;
 
 		int porosNuevos = getPorosEnTita(info) - info.porosGrandes.size() - info.porosChicos;
-		//assert(porosNuevos >= 0);
+		assert(porosNuevos >= 0);
 
 		/* Agrego poros nuevos */
 		for (int i = 0; i < porosNuevos; i++) {
 			info.porosGrandes.push_back({RADIO_INICIAL, tiempo});
 		}
 	}
+}
+
+double Poros::getITV(InfoAngulo& info) {
+	double itv1 = getCelula().getSolucion()[info.nodosExternos[0]] -
+		getCelula().getSolucion()[info.nodosInternos[0]];
+
+	double itv2 = getCelula().getSolucion()[info.nodosExternos[1]] -
+		getCelula().getSolucion()[info.nodosInternos[1]];
+
+	return factorPulso * (itv1 + itv2) / 2;
 }
 
 double inline Poros::actualizarRadio(double radio, double deltaT, double tensionEfectiva, double itv) {
@@ -320,6 +321,7 @@ double Poros::getUnRadio() {
 	}
 }
 
+//@deprecated
 void Poros::loop() {
 	const double DELTA_T = 25e-9;
 	const double T_FINAL = 1.5;
@@ -332,39 +334,17 @@ void Poros::loop() {
 		area += info.area;
 	}
 	printf("area total: %e\n", area);
-
-	printf("tita, itv\n");
-	for (uint i = 0; i < valores.size(); i++) {
-		InfoAngulo info = valores[i];
-		double itv1 = getCelula().getSolucion()[info.nodosExternos[0]] -
-				getCelula().getSolucion()[info.nodosInternos[0]];
-
-		double itv2 = getCelula().getSolucion()[info.nodosExternos[1]] -
-				getCelula().getSolucion()[info.nodosInternos[1]];
-
-		double itv = (itv1 + itv2) / 2;
-		printf("%f, %f\n", info.tita, itv);
-	}
-
 	fflush(stdout);
 
 	clock_t reloj = 0;
 	int it = 0;
 
-	//FILE* filePoros = fopen("salida/poros.dat", "w");
-	
 	for (double time = 0; time <= T_FINAL; time += DELTA_T) {
-
 		if (it % PASO_CONSOLA_P == 0) {
 			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
 			double deltaReal = (double)interv / PASO_CONSOLA_P * 1000;
 			printf("%.6f, %d, %.4e, %.0fus/it\n", time, getNPoros(), getRadioMaximo(), deltaReal);
 			fflush(stdout);
-			
-			//fprintf(filePoros, "%e %d\n", time, getNPoros());
-			//for (auto& info : valores) for (auto& poro : info.poros) {
-			//	fprintf(filePoros, "%e %e\n", info.tita, poro);
-			//}
 
 			reloj = clock();
 		}
@@ -374,19 +354,6 @@ void Poros::loop() {
 		it++;
 	}
 
-	//fclose(filePoros);
-
-	/*FILE* file;
-	file = fopen("temp.csv", "w");
-
-	for (auto  &info : valores) {
-		for (uint p = 0; p < info.poros.size(); p++) {
-			fprintf(file, "%e\n", info.poros[p]);
-		}
-	}
-
-	fclose(file);*/
-	
 	EntradaSalida::printEnd(3, false);
 }
 
@@ -399,15 +366,13 @@ double Poros::getProporsionArea(int iElem) {
 	}
 	areaP += info.porosChicos * M_PI * pow(info.radioChico, 2);
 
+	/* Si hubo algún error */
 	if (areaP > info.area) {
 		for (auto poro : info.porosGrandes) {
 			printf("%e %e\n", poro.first, poro.second);
 		}
-		double itv1 = getCelula().getSolucion()[info.nodosExternos[0]] -
-			getCelula().getSolucion()[info.nodosInternos[0]];
-		double itv2 = getCelula().getSolucion()[info.nodosExternos[1]] -
-			getCelula().getSolucion()[info.nodosInternos[1]];
-		printf("%f %f %e\n", itv1, itv2, tau);
+		double itv = getITV(info);
+		printf("%f\n", itv);
 		printf("%f %f %d %d %f\n", info.area, areaP, info.porosGrandes.size(), info.porosChicos, info.tita);
 	}
 
@@ -415,19 +380,10 @@ double Poros::getProporsionArea(int iElem) {
 	return areaP / info.area;
 }
 
-double Poros::dameSegundoITV(double tiempo) {
-	double factorPulso = 1;
-	if (CALCULAR_CAPACITANCIA) {
-		factorPulso = (1 - exp(-tiempo / tau));
+vector<pair<double, double>> Poros::getITVs(double tiempo) {
+	vector<pair<double, double>> result;
+	for (auto& info : valores) {
+		result.push_back(pair<double, double> { info.tita, getITV(info) });
 	}
-
-	InfoAngulo& info = valores[1];
-
-	double itv1 = getCelula().getSolucion()[info.nodosExternos[0]] -
-		getCelula().getSolucion()[info.nodosInternos[0]];
-
-	double itv2 = getCelula().getSolucion()[info.nodosExternos[1]] -
-		getCelula().getSolucion()[info.nodosInternos[1]];
-
-	return factorPulso * (itv1 + itv2) / 2;
+	return result;
 }
