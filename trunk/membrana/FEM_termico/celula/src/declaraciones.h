@@ -22,7 +22,6 @@ namespace declaraciones {
 	const double TOLER_AREA 		= 1e-6;
 	const double TOLER_MASA 		= 1e-12;
 	const double TOLER_DIST 		= 1e-3;
-	const double EPSILON_POISSON	= 1e-3;
 	const double TIERRA				= 0;
 	const double FARADAY 			= 96485.34;		// C/mol
 	const double R_CTE				= 8.314; 		// J/K/mol

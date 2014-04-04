@@ -9,7 +9,7 @@ class EntradaSalida {
 public:
 	static void leerInput(Celula& celula);
 
-	static void grabarPoisson(Celula& celula);
+	static void grabarPoisson(Celula& celula, bool verbose=false);
 
 	static void printStart(string message, bool verbose=true);
 
@@ -19,12 +19,16 @@ public:
 
 	static void grabarRadio(Celula& celula, Poros& radios, double time, bool verbose=true);
 
+	static void grabarITV(Celula& celula, Poros& poros, double time);
+
 private:
 	static clock_t start;
 
 	static bool firstWriteTransporte;
 
 	static bool firstWritePoros;
+
+	static bool firstWriteITV;
 
 	static void leerMalla(Celula& celula, string malla);
 

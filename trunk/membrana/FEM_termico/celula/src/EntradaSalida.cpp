@@ -4,15 +4,11 @@
 #include <cassert>
 #include <fstream>
 #include <cfloat>
+#include <direct.h>
 #include "Celula.h"
 #include "EntradaSalida.h"
 
 using namespace std;
-
-//TODO carpeta de salida
-//TODO archivo input por parámetros
-//TODO ignorar bien los comentarios
-//TODO asserts en leermalla
 
 ofstream historial;
 ofstream ph;
@@ -20,10 +16,7 @@ FILE*    fPoros;
 clock_t  EntradaSalida::start;
 bool	 EntradaSalida::firstWriteTransporte = true;
 bool	 EntradaSalida::firstWritePoros		 = true;
-
-const string RUTA_HISTORIAL = "salida/historia.dat";
-const string RUTA_PH		= "salida/ph.dat";
-const char*	 RUTA_POROS		= "salida/poros.dat";
+bool	 EntradaSalida::firstWriteITV		 = true;
 
 void EntradaSalida::leerInput(Celula& celula) {
 	printStart("Leyendo archivos...", true);
@@ -31,7 +24,6 @@ void EntradaSalida::leerInput(Celula& celula) {
 	string s, line, malla;
 	vector<int> dirichV, dirichT;
 	ifstream input("input.in", ifstream::in);
-
 	assert(input.is_open());
 
 	while (getline(input, line)) {
@@ -49,6 +41,8 @@ void EntradaSalida::leerInput(Celula& celula) {
 			} else {
 				assert(false);
 			}
+		} else if (line.find("salida") != string::npos) {
+			iss >> s >> celula.salida;
 		} else if (line.find("sigint") != string::npos) {
 			iss >> s >> celula.sigmas[INTERNO];
 		} else if (line.find("sigext") != string::npos) {
@@ -80,6 +74,8 @@ void EntradaSalida::leerInput(Celula& celula) {
 			celula.getNodos()[i].esTierra = true;
 		}
 	}
+
+	_mkdir(celula.salida.c_str());
 
 	printEnd();
 }
@@ -166,11 +162,11 @@ void EntradaSalida::dameLinea(ifstream& archivo, istringstream& iss) {
 	iss.str(line);
 }
 
-void EntradaSalida::grabarPoisson(Celula& celula) {
-	printStart("Grabando...", true);
+void EntradaSalida::grabarPoisson(Celula& celula, bool verbose) {
+	if (verbose) printStart("Grabando...", true);
 
 	/* Tensión */
-	ofstream tension("tension.csv", ofstream::out);
+	ofstream tension((celula.salida + "/tension.csv").c_str(), ofstream::out);
 
 	tension << "X, Y, V";
 
@@ -183,8 +179,8 @@ void EntradaSalida::grabarPoisson(Celula& celula) {
 
 	/* Corriente y campo */
 	if (celula.nodpel == 3) {
-		ofstream corriente("corriente.csv", ofstream::out);
-		ofstream campo("campo.csv", ofstream::out);
+		ofstream corriente((celula.salida + "/corriente.csv").c_str(), ofstream::out);
+		ofstream campo((celula.salida + "/campo.csv").c_str(), ofstream::out);
 
 		corriente << "X, Y, corriente";
 		campo 	  << "X, Y, campo";
@@ -211,7 +207,7 @@ void EntradaSalida::grabarPoisson(Celula& celula) {
 		campo.close();
 	}
 
-	printEnd(3);
+	if (verbose) printEnd(3);
 }
 
 void EntradaSalida::printStart(string message, bool verbose) {
@@ -234,41 +230,41 @@ void EntradaSalida::grabarTransporte(Celula& cel, double time, bool verbose) {
 	if (verbose) EntradaSalida::printStart("Grabando en disco...");
 
 	ios_base::open_mode flags = firstWriteTransporte ? ios::out : ios::app;
-	historial.open(RUTA_HISTORIAL.c_str(), flags);
-	//ph.open(RUTA_PH.c_str(), flags);
+	historial.open((cel.salida + "/transporte.dat").c_str(), flags);
+	ph.open((cel.salida + "/ph.dat").c_str(), flags);
 
 	assert(historial.is_open());
-	//assert(ph.is_open());
+	assert(ph.is_open());
 	ostringstream histSS, phSS;
 
 	if (firstWriteTransporte) {
 		histSS << cel.nNodes << "\n";
-		//phSS   << cel.nNodes << "\n";
+		phSS   << cel.nNodes << "\n";
 	}
 	histSS << "paso: " << time << "\n";
-	//phSS   << "paso: " << time << "\n";
+	phSS   << "paso: " << time << "\n";
 
 	for (int jNodo = 0; jNodo < cel.nNodes; jNodo++) {
 		Nodo nodo = cel.getNodos()[jNodo];
 
 		histSS << jNodo+1 << "\t" << nodo.x << "\t" << nodo.y << "\t" << cel.getSolucion()[jNodo];
-		//phSS   << jNodo+1 << "\t" << nodo.x << "\t" << nodo.y << "\t" << cel.getSolucion()[jNodo];
+		phSS   << jNodo+1 << "\t" << nodo.x << "\t" << nodo.y << "\t" << cel.getSolucion()[jNodo];
 
 		for (int esp = 0; esp < NESPS; esp++) {
 			histSS << "\t" << cel.concentraciones[esp][jNodo];
 		}
 
-		//phSS << "\t" << cel.phAux[H_][jNodo] << "\t" << cel.phAux[OH][jNodo];
+		phSS << "\t" << cel.phAux[H_][jNodo] << "\t" << cel.phAux[OH][jNodo];
 
 		histSS << "\n";
-		//phSS   << "\n";
+		phSS   << "\n";
 	}
 
 	historial << histSS.str();
-	//ph << phSS.str();
+	ph << phSS.str();
 
 	historial.close();
-	//ph.close();
+	ph.close();
 
 	firstWriteTransporte = false;
 	if (verbose) EntradaSalida::printEnd();
@@ -278,7 +274,7 @@ void EntradaSalida::grabarRadio(Celula& celula, Poros& radios, double time, bool
 	if (verbose) EntradaSalida::printStart("Grabando en disco...");
 	
 	char* flags = firstWritePoros ? "w" : "a";
-	fPoros = fopen(RUTA_POROS, flags);
+	fPoros = fopen((celula.salida + "/poros.dat").c_str(), flags);
 	assert(fPoros > 0);
 
 	fprintf(fPoros, "paso %.9f %d\n", time, radios.getNPoros());
@@ -296,4 +292,21 @@ void EntradaSalida::grabarRadio(Celula& celula, Poros& radios, double time, bool
 	fclose(fPoros);
 	firstWritePoros = false;
 	if (verbose) EntradaSalida::printEnd();
+}
+
+void EntradaSalida::grabarITV(Celula& celula, Poros& poros, double time) {
+	char* flags = firstWriteITV ? "w" : "a";
+	FILE* file = fopen((celula.salida + "/itv.dat").c_str(), flags);
+	assert(file > 0);
+
+	vector<pair<double, double>> valores;
+
+	fprintf(file, "paso %.9f %d\n", time, valores.size());
+
+	for (auto& info : valores) {
+		fprintf(file, "%.9f, %.9f\n", info.first, info.second);
+	}
+
+	fclose(file);
+	firstWriteITV = false;
 }
