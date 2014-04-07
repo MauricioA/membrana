@@ -17,6 +17,7 @@ clock_t  EntradaSalida::start;
 bool	 EntradaSalida::firstWriteTransporte = true;
 bool	 EntradaSalida::firstWritePoros		 = true;
 bool	 EntradaSalida::firstWriteITV		 = true;
+bool	 EntradaSalida::firstWritePoisson	 = true;
 
 void EntradaSalida::leerInput(Celula& celula) {
 	printStart("Leyendo archivos...", true);
@@ -162,51 +163,46 @@ void EntradaSalida::dameLinea(ifstream& archivo, istringstream& iss) {
 	iss.str(line);
 }
 
-void EntradaSalida::grabarPoisson(Celula& celula, bool verbose) {
+void EntradaSalida::grabarPoisson(Celula& celula, double time, bool verbose) {
 	if (verbose) printStart("Grabando...", true);
 
 	/* Tensión */
-	ofstream tension((celula.salida + "/tension.csv").c_str(), ofstream::out);
+	ios_base::open_mode flags = firstWritePoisson ? ios::out : ios::app;
+	ofstream tension((celula.salida + "/tension.dat").c_str(), flags);
 
-	tension << "X, Y, V";
+	tension << "paso: " << time << " " << celula.nNodes << "\n";
 
 	for (int iNodo = 0; iNodo < celula.nNodes; iNodo++) {
 		Nodo nodo = celula.getNodos()[iNodo];
-		tension << "\n" << nodo.x << ", " << nodo.y << ", " << celula.getSolucion()[iNodo];
+		tension << nodo.x << ", " << nodo.y << ", " << celula.getSolucion()[iNodo] << "\n";
 	}
 
 	tension.close();
 
-	/* Corriente y campo */
-	if (celula.nodpel == 3) {
-		ofstream corriente((celula.salida + "/corriente.csv").c_str(), ofstream::out);
-		ofstream campo((celula.salida + "/campo.csv").c_str(), ofstream::out);
+	/* Campo y corriente */
+	ofstream campo_corriente((celula.salida + "/campo_corriente.dat").c_str(), flags);
 
-		corriente << "X, Y, corriente";
-		campo 	  << "X, Y, campo";
+	campo_corriente << "paso: " << time << " " << celula.nElems << "\n";
 
-		for (int k = 0; k < celula.nElems; k++) {
-			double corr = sqrt(pow(celula.getGradElem()[k].x, 2) + pow(celula.getGradElem()[k].y, 2));
-			double camp = sqrt(pow(celula.getCorrElem()[k].x, 2) + pow(celula.getCorrElem()[k].y, 2));
-			double xMed = 0.0, yMed = 0.0;
+	for (int k = 0; k < celula.nElems; k++) {
+		double corr = sqrt(pow(celula.getGradElem()[k].x, 2) + pow(celula.getGradElem()[k].y, 2));
+		double camp = sqrt(pow(celula.getCorrElem()[k].x, 2) + pow(celula.getCorrElem()[k].y, 2));
+		double xMed = 0.0, yMed = 0.0;
 
-			for (int j = 0; j < celula.nodpel; j++) {
-				int jNodo = celula.getElementos()[k][j];
-				xMed += celula.getNodos()[jNodo].x;
-				yMed += celula.getNodos()[jNodo].y;
-			}
-
-			xMed /= celula.nodpel;
-			yMed /= celula.nodpel;
-
-			corriente << "\n" << xMed << ", " << yMed << ", " << corr;
-			campo 	  << "\n" << xMed << ", " << yMed << ", " << camp;
+		for (int j = 0; j < celula.nodpel; j++) {
+			int jNodo = celula.getElementos()[k][j];
+			xMed += celula.getNodos()[jNodo].x;
+			yMed += celula.getNodos()[jNodo].y;
 		}
 
-		corriente.close();
-		campo.close();
+		xMed /= celula.nodpel;
+		yMed /= celula.nodpel;
+
+		campo_corriente << xMed << " " << yMed << " " << camp << " " << corr << "\n";
 	}
 
+	campo_corriente.close();
+	firstWritePoisson = false;
 	if (verbose) printEnd(3);
 }
 
@@ -299,7 +295,7 @@ void EntradaSalida::grabarITV(Celula& celula, Poros& poros, double time) {
 	FILE* file = fopen((celula.salida + "/itv.dat").c_str(), flags);
 	assert(file > 0);
 
-	vector<pair<double, double>> valores;
+	vector<pair<double, double>> valores = poros.getITVs(time);
 
 	fprintf(file, "paso %.9f %d\n", time, valores.size());
 

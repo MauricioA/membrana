@@ -63,6 +63,7 @@ void Transporte::iteracion(double deltaT) {
 	double num = 0, den = 0;
 	Celula& celula = getCelula();
 
+	#pragma omp parallel for num_threads(2)
 	for (int esp = 0; esp < NESPS; esp++) {
 		concentracion(esp, deltaT);
 	}
@@ -195,6 +196,11 @@ void Transporte::concentracion(int esp, double deltaT) {
 	double esm[MAXNPEL][MAXNPEL];
 	vector<Triplet<double>> triplets;
 
+	//borrar!
+	VectorXd rhs;
+	rhs.resize(celula.nNodes);
+	rhs.fill(0);
+
 	for (int i = 0; i < celula.nNodes; i++) celula.getRhs()[i] = 0;
 
 	for (uint kElem = 0; kElem < celula.getElementos().size(); kElem++) {
@@ -214,7 +220,6 @@ void Transporte::concentracion(int esp, double deltaT) {
 			mas[i] = celula.getMasas()[iNodo];
 		}
 
-		//double sigma = celula.sigmas[elem.material];
 		double sigma = elem.sigma;
 
 		if (elem.material == MEMBRANA) {
@@ -260,7 +265,8 @@ void Transporte::concentracion(int esp, double deltaT) {
 		for (int i = 0; i < celula.nodpel; i++) {
 			int iNodo = elem[i];
 
-			celula.getRhs()[iNodo] += ef[i];
+			//celula.getRhs()[iNodo] += ef[i];
+			rhs[iNodo] += ef[i];
 
 			for (int j = 0; j < celula.nodpel; j++) {
 				int jNodo = elem[j];
@@ -269,11 +275,16 @@ void Transporte::concentracion(int esp, double deltaT) {
 		}
 	}
 
-	celula.getMatriz().resize(celula.nNodes, celula.nNodes);
-	celula.getMatriz().setFromTriplets(triplets.begin(), triplets.end());
+	//celula.getMatriz().resize(celula.nNodes, celula.nNodes);
+	//celula.getMatriz().setFromTriplets(triplets.begin(), triplets.end());
 
-	BiCGSTAB<SparseMatrix<double>> solver(celula.getMatriz());
-	celula.concentraciones[esp] = solver.solve(celula.getRhs());
+	SparseMatrix<double> matriz(celula.nNodes, celula.nNodes);
+	matriz.setFromTriplets(triplets.begin(), triplets.end());
+
+	BiCGSTAB<SparseMatrix<double>> solver(matriz);
+	//solver.setTolerance(1e-9);
+	//celula.concentraciones[esp] = solver.solve(celula.getRhs());
+	celula.concentraciones[esp] = solver.solveWithGuess(rhs, celula.anteriores[esp]);
 
 	assert(solver.info() == Success);
 }

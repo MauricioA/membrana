@@ -49,34 +49,38 @@ void actualizarSigmas(Celula& celula, Poros& poros) {
 	}
 }
 
-//TODO optimizar transporte si consume mucho tiempo
-//TODO OpenMP: dynamic schedule y sections, ver private y shared y flush, armado
-// ver valores iniciales y sigma de la sol que llena el poro antes de correr
+// REVERTIR 25us!!
+// TODO optimizar transporte! (paralelizar, solve with guess, método, tolerancia)
+// TODO ver valores iniciales y sigma de la sol que llena el poro antes de correr
 void Celula::transportePoros() {
 	const double TIEMPO_FINAL	= 20e-3;
 	const double DELTA_T		= 1e-9;
 
-	const int PASO_DISCO_POISSON_1	= 10;
-	const int PASO_DISCO_POISSON_2	= 1000;
-	const int PASO_DISCO_PORO_1		= 10;
-	const int PASO_DISCO_PORO_2		= 1000;
-	const int PASO_DISCO_TRANSPORTE = 10000;
 	const int PASO_POISSON_1		= 1;
 	const int PASO_POISSON_2		= 10;
+	const int PASO_POISSON_3		= 50;
+	const int PASO_DISCO_POISSON_1	= 10;
+	const int PASO_DISCO_POISSON_2	= 1000;
+	const int PASO_DISCO_ITV_1		= 10;
+	const int PASO_DISCO_ITV_2		= 100;
+	const int PASO_DISCO_PORO_1		= 10;
+	const int PASO_DISCO_PORO_2		= 1000;
 	const int PASO_TRANSPORTE		= 100;
 	const int PASO_CONSOLA			= 1000;
+	const int PASO_DISCO_TRANSPORTE = 10000;
 
 	int paso_disco_poisson = PASO_DISCO_POISSON_1;
+	int paso_disco_itv = PASO_DISCO_ITV_1;
 	int paso_disco_poro = PASO_DISCO_PORO_1;
 	int paso_poisson = PASO_POISSON_1;
 
 	Poros poros = Poros(*this);
 	TransporteAreas transporte = TransporteAreas(*this, poros);
 	
-	int it_consola = 0, it_disco_trans = 0, it_trans = 0; 
+	int it_consola = 0, it_disco_trans = 0, it_trans = 0, it_disco_itv = paso_disco_itv; 
 	int it_poiss = paso_poisson, it_disco_poro = paso_disco_poro, it_disco_poisson = 0;
 	clock_t reloj = 0;
-	bool start = true;
+	int fase = 0;
 
 	for (double time = 0; time < TIEMPO_FINAL; time += DELTA_T) {
 		
@@ -85,29 +89,34 @@ void Celula::transportePoros() {
 			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
 			double deltaReal = (double)interv / PASO_CONSOLA;
 			reloj = clock();
-			printf("%.1fus %.4e %d %d  %.2f ms/it\n",	time*1e6, poros.getRadioMaximo(), 
+			printf("%.1fus %.2e %d %d  %.2f ms/it\n",	time*1e6, poros.getRadioMaximo(), 
 				poros.getNPoros(), poros.getNPorosChicos(), deltaReal);
 			it_consola = 0;
 		}
 	
-		/* Grabo disco poisson */
-		if (it_disco_poisson == paso_disco_poisson) {
-			EntradaSalida::grabarPoisson(*this);
-			EntradaSalida::grabarITV(*this, poros, time);
-			it_disco_poisson = 0;
-		}
+		///* Grabo disco poisson */
+		//if (it_disco_poisson == paso_disco_poisson) {
+		//	EntradaSalida::grabarPoisson(*this, time);
+		//	it_disco_poisson = 0;
+		//}
 
-		/* Grabo disco poros */
-		if (it_disco_poro == paso_disco_poro) {
-			EntradaSalida::grabarRadio(*this, poros, time, false);
-			it_disco_poro = 0;
-		}
+		///* Grabo disco itv */
+		//if (it_disco_poisson == paso_disco_itv) {
+		//	EntradaSalida::grabarITV(*this, poros, time);
+		//	it_disco_poisson = 0;
+		//}
 
-		/* Grabo disco transporte */
-		if (it_disco_trans == PASO_DISCO_TRANSPORTE) {
-			EntradaSalida::grabarTransporte(*this, time, false);
-			it_disco_trans = 0;
-		}
+		///* Grabo disco poros */
+		//if (it_disco_poro == paso_disco_poro) {
+		//	EntradaSalida::grabarRadio(*this, poros, time, false);
+		//	it_disco_poro = 0;
+		//}
+
+		///* Grabo disco transporte */
+		//if (it_disco_trans == PASO_DISCO_TRANSPORTE) {
+		//	EntradaSalida::grabarTransporte(*this, time, false);
+		//	it_disco_trans = 0;
+		//}
 		
 		if (it_poiss == paso_poisson) {
 			Poisson::poisson(*this);
@@ -124,13 +133,19 @@ void Celula::transportePoros() {
 		}
 
 		/* Actualizo pasos */
-		if (start && time > 10e-6) {
-			start = false;
-			paso_disco_poro = PASO_DISCO_PORO_2;
+		if (fase == 0 && time > 10e-6) {
+			fase = 1;
 			paso_poisson = PASO_POISSON_2;
+			paso_disco_poro = PASO_DISCO_PORO_2;
+			paso_disco_poisson = PASO_DISCO_POISSON_2;
+			paso_disco_itv = PASO_DISCO_ITV_2;
+			//} else if (fase == 1 && time > 100e-6) {
+		} else if (fase == 1 && time > 11e-6) {
+			fase = 3;
+			paso_poisson = PASO_POISSON_3;
 		}
 
 		it_consola++; it_disco_trans++; it_disco_poro++; 
-		it_trans++, it_poiss++; it_disco_poisson++;
+		it_trans++, it_poiss++; it_disco_poisson++; it_disco_itv++;
 	}
 }
