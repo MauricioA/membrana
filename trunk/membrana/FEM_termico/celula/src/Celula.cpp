@@ -49,9 +49,7 @@ void actualizarSigmas(Celula& celula, Poros& poros) {
 	}
 }
 
-// REVERTIR 25us!!
-// TODO optimizar transporte! (paralelizar, solve with guess, método, tolerancia)
-// TODO ver valores iniciales y sigma de la sol que llena el poro antes de correr
+// TODO ver valores iniciales y sigma de la sol
 void Celula::transportePoros() {
 	const double TIEMPO_FINAL	= 20e-3;
 	const double DELTA_T		= 1e-9;
@@ -94,29 +92,29 @@ void Celula::transportePoros() {
 			it_consola = 0;
 		}
 	
-		///* Grabo disco poisson */
-		//if (it_disco_poisson == paso_disco_poisson) {
-		//	EntradaSalida::grabarPoisson(*this, time);
-		//	it_disco_poisson = 0;
-		//}
+		/* Grabo disco poisson */
+		if (it_disco_poisson == paso_disco_poisson) {
+			EntradaSalida::grabarPoisson(*this, time);
+			it_disco_poisson = 0;
+		}
 
-		///* Grabo disco itv */
-		//if (it_disco_poisson == paso_disco_itv) {
-		//	EntradaSalida::grabarITV(*this, poros, time);
-		//	it_disco_poisson = 0;
-		//}
+		/* Grabo disco itv */
+		if (it_disco_poisson == paso_disco_itv) {
+			EntradaSalida::grabarITV(*this, poros, time);
+			it_disco_poisson = 0;
+		}
 
-		///* Grabo disco poros */
-		//if (it_disco_poro == paso_disco_poro) {
-		//	EntradaSalida::grabarRadio(*this, poros, time, false);
-		//	it_disco_poro = 0;
-		//}
+		/* Grabo disco poros */
+		if (it_disco_poro == paso_disco_poro) {
+			EntradaSalida::grabarRadio(*this, poros, time, false);
+			it_disco_poro = 0;
+		}
 
-		///* Grabo disco transporte */
-		//if (it_disco_trans == PASO_DISCO_TRANSPORTE) {
-		//	EntradaSalida::grabarTransporte(*this, time, false);
-		//	it_disco_trans = 0;
-		//}
+		/* Grabo disco transporte */
+		if (it_disco_trans == PASO_DISCO_TRANSPORTE) {
+			EntradaSalida::grabarTransporte(*this, time, false);
+			it_disco_trans = 0;
+		}
 		
 		if (it_poiss == paso_poisson) {
 			Poisson::poisson(*this);
@@ -139,8 +137,7 @@ void Celula::transportePoros() {
 			paso_disco_poro = PASO_DISCO_PORO_2;
 			paso_disco_poisson = PASO_DISCO_POISSON_2;
 			paso_disco_itv = PASO_DISCO_ITV_2;
-			//} else if (fase == 1 && time > 100e-6) {
-		} else if (fase == 1 && time > 11e-6) {
+		} else if (fase == 1 && time > 100e-6) {
 			fase = 3;
 			paso_poisson = PASO_POISSON_3;
 		}
