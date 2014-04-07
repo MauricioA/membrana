@@ -1,5 +1,4 @@
 #include "Celula.h"
-#include <direct.h>
 
 int main() {
 	Celula celula;

@@ -8,11 +8,9 @@
 #include "Poros.h"
 #include "EntradaSalida.h"
 
-//TODO vrest, poros iniciales
-
 const bool   CALCULAR_RADIOS		= true;
 const bool	 CALCULAR_CAPACITANCIA	= true;
-const bool	 POROS_CHICOS			= false;
+const bool	 POROS_CHICOS			= true;
 
 // um!! J -> 1e12, N -> 1e6 - esta testeado
 const double DENSIDAD_INICIAL	= 0;
