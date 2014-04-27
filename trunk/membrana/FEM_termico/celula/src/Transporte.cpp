@@ -196,7 +196,6 @@ void Transporte::concentracion(int esp, double deltaT) {
 	double esm[MAXNPEL][MAXNPEL];
 	vector<Triplet<double>> triplets;
 
-	//borrar!
 	VectorXd rhs;
 	rhs.resize(celula.nNodes);
 	rhs.fill(0);
