@@ -5,6 +5,7 @@
 
 using namespace std;
 
+//TODO poner omp if
 void Poisson::poisson(Celula &celula) {
 	celula.getRhs().resize(celula.nNodes);
 	celula.getRhs().fill(0);
@@ -63,12 +64,9 @@ void Poisson::poisson(Celula &celula) {
 
 			/* Ensamblado */
 			for (int i = 0; i < celula.nodpel; i++) {
-				//celula.getRhs()[elemento[i]] += ef[i];
 				local_rhs[elemento[i]] += ef[i];
 
 				for (int j = 0; j < celula.nodpel; j++) {
-					//global_triplets.push_back(Triplet<double>(elemento[i], elemento[j], esm[i][j]));
-
 					global_triplets[elemIdx * celula.nodpel * celula.nodpel + i * celula.nodpel + j] 
 						= Triplet<double>(elemento[i], elemento[j], esm[i][j]);
 				}

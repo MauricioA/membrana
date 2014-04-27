@@ -5,6 +5,6 @@ salida: salida/test8	# directorio de salida
 sigint:		150e-9	# condutividad de la zona intraelular [S/um]
 sigext:		200e-9	# condutividad de la zona extra
 sigmem:		500e-15	# condutividad de la membrana
-potencial:  8
+potencial:  16
 radio: 		10
 ancho: 		5e-3	# ancho de la membrana
