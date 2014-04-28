@@ -1,0 +1,80 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{multirow}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+
+%opening
+\title{LRTA* sobre Sokoban}
+\author{Mauricio Alfonso}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+% \newpage
+
+\section{Teoría}
+%donde van todoas las ecuaciones y teoria
+
+\subsection{Potencial eléctrico}
+%TODO ver tamanio de fuente math
+
+ohm?\\
+
+\begin{equation}
+	\sigma_{elem} \nabla^{2} \phi = 0 
+\end{equation}
+
+\subsection{transporte (plank?)}
+
+\begin{equation}
+	\frac{\sigma C_i}{\sigma t} = -\nabla \cdot j_i
+\end{equation}
+
+\begin{equation}
+	j_i = -\mu_i C_i \nabla \phi - D_i \nabla C_i + C_i
+\end{equation}
+
+de donde sale esto??
+
+\subsection{generación de poros}
+\begin{equation}
+	\frac{dN}{dt} = \alpha e^{(V_m/V_{ep})^2} \left( 1 - \frac{N}{N_0 e^{q \left(V_m/V_{ep} \right) ^2}} \right)
+\end{equation}
+
+
+
+\section{Método Numérico / Implementación}
+%en donde se explica un poco elmenetos finitos y como mallamos, y como resolvemos.
+
+Se resolvieron los sistemas eléctrico y de transporte usando el método de elementos finitos y el de generación de poros usando diferencias finitas.
+
+\subsection{Mallado}
+Para reducir la cantidad de elementos se modeló la célula como un sólido de revolución con coordenadas cilíndricas. Se generaron mallas con elementos cuadrilaterales usando el programa AutoMesh-2D, con elementos de menor tamaño en las zonas de cercanas a la membrana celular por ser de mayor interés.
+TODO falta biblio
+
+\subsection{Método de Elementos Finitos}
+breve explicación de elementos finitos (falta leer?)
+
+\subsection{Potencial eléctrico}
+
+\subsection{Transporte de especies}
+
+\subsection{Diferencias finitas}
+
+\subsection{Generación de poros}
+
+%ordenar mejor todo
+
+
+\section{Resultados}
+
+\section{Conclusiones}
+
+
+\end{document}
