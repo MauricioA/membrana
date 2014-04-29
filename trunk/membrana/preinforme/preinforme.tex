@@ -5,7 +5,7 @@
 \usepackage{graphicx}
 
 %opening
-\title{LRTA* sobre Sokoban}
+\title{TITULO}
 \author{Mauricio Alfonso}
 
 \begin{document}
@@ -13,6 +13,8 @@
 \maketitle
 
 \begin{abstract}
+TODO
+TODO ACHICAR EL MARGEN
 
 \end{abstract}
 
@@ -26,17 +28,17 @@
 
 ohm?\\
 
-\begin{equation}
+\begin{equation} \label{eq:poisson}
 	\sigma_{elem} \nabla^{2} \phi = 0 
 \end{equation}
 
 \subsection{transporte (plank?)}
 
-\begin{equation}
+\begin{equation} \label{eq:trans1}
 	\frac{\sigma C_i}{\sigma t} = -\nabla \cdot j_i
 \end{equation}
 
-\begin{equation}
+\begin{equation} \label{eq:trans2}
 	j_i = -\mu_i C_i \nabla \phi - D_i \nabla C_i + C_i
 \end{equation}
 
@@ -48,28 +50,68 @@ de donde sale esto??
 \end{equation}
 
 
-
 \section{Método Numérico / Implementación}
 %en donde se explica un poco elmenetos finitos y como mallamos, y como resolvemos.
 
-Se resolvieron los sistemas eléctrico y de transporte usando el método de elementos finitos y el de generación de poros usando diferencias finitas.
+%hay que explicar:
+%	+ que se resolvió usando FEM y FDM
+%	+ que es en 2D con coordenadas cilíndricas
+%	+ que se resolvieron ecuaciones de campo eléctrico, de transporte de especies y de generación de poros
 
-\subsection{Mallado}
-Para reducir la cantidad de elementos se modeló la célula como un sólido de revolución con coordenadas cilíndricas. Se generaron mallas con elementos cuadrilaterales usando el programa AutoMesh-2D, con elementos de menor tamaño en las zonas de cercanas a la membrana celular por ser de mayor interés.
-TODO falta biblio
+Se modeló una célula esférica como un sólido de revolución, para así trabajar con una malla bidimensional usando un sistema de coordenadas cilíndricas. Se resolvieron las ecuaciones diferenciales mencionadas anteriormente usando los métodos de elementos finitos y diferencias finitas. El trabajo fue implementado en \texttt{C++}.
+
+\subsection{Método de Diferencias Finitas}
+TODO
 
 \subsection{Método de Elementos Finitos}
-breve explicación de elementos finitos (falta leer?)
+breve explicación de elementos finitos 
+\\LO DEJO PARA EL FINAL DE HOY
+
+\subsection{Descomposición de Cholesky}
+
+\subsection{Descomposición BiCGSTAB}
+
+\subsection{Mallado}
+Se generaron mallas con elementos cuadrilaterales de tamaño variable usando el programa AutoMesh-2D. Se malló de manera que los elementos cercanos a la membrana celular sean de menor tamaño, por ser ésta la zona de mayor interés. 
+
+\\TODO mencionar reducción del ancho de banda
+\\TODO falta dibujo de malla
+\\TODO falta biblio http://www.automesh2d.com/
 
 \subsection{Potencial eléctrico}
+%hay que explicar:
+%	+ fem/eigen
+%	+ cholesky
+%  	+ sparse
+%	+ openMP
+
+La ecuación \ref{eq:poisson} se resolvió usando el método de elementos finitos. Para resolver el sistema de ecuaciones generado se usó la librería de álgebra lineal Eigen para \texttt{C++}. El sistema se resolvió usando el método de descomposición de Cholesky, aprovechando que la matriz de rigidez generada es simétrica definida positiva. Se usaron estructuras para representar matrices esparsas provistas por la librería Eigen, para aprovechar la poca densidad de elementos en la matriz de rigidez. Para acelerar la generación de la matriz de rigidez y vector de masa (???) se usó la interfaz OpenMP, paralelizando en varios threads el proceso de recorrer todos los elementos, encontrar los valores correspondientes y ensamblarlos.
+
+\\TODO falta biblio eigen http://eigen.tuxfamily.org/
+\\TODO biblio cholesky
+\\TODO biblio SDP
+\\TODO biblio openmp
 
 \subsection{Transporte de especies}
+%hay que explicar:
+%	+ intro
+%	+ método
+%	+ openmp
 
-\subsection{Diferencias finitas}
+Las ecuaciones de \ref{eq:trans1} y \ref{eq:trans2} también fueron resueltas con el método de elementos finitos. Para eso se resolvieron 4 sistemas distintos, uno por cada especie. Las matrices de rigidez generadas no son simétricas definidas positivas, a diferencia de las generadas al resolver la ecuación de Poisson; por esta razón se resuelven usando el método iterativo de bi gradientes conjugados estabilizado sin precondicionador. Para acelerar la resolución se usa OpenMP resolviendo en threads separados las iteraciones de cada especie.
+
+\\TODO biblio bicgstab
 
 \subsection{Generación de poros}
+%hay que explicar:
+%	- general
+%	- poros chicos
 
-%ordenar mejor todo
+Las ecuaciones \ref{eq:poros1} y \ref{eq:poros2} de generación y radio de los poros se resuelven con el método de diferencias finitas. 
+
+\subsection{Acoplamiento}
+
+TODO mencionar openMP
 
 
 \section{Resultados}
