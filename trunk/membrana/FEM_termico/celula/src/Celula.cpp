@@ -87,7 +87,7 @@ void Celula::transportePoros() {
 			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
 			double deltaReal = (double)interv / PASO_CONSOLA;
 			reloj = clock();
-			printf("%.1fus %.2e %d %d  %.2f ms/it\n",	time*1e6, poros.getRadioMaximo(), 
+			printf("%.1fus %.2e %d %d  %.2f ms/it\n", time*1e6, poros.getRadioMaximo(), 
 				poros.getNPoros(), poros.getNPorosChicos(), deltaReal);
 			it_consola = 0;
 		}
