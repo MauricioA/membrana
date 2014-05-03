@@ -34,6 +34,7 @@ ohm?\\
 
 \subsection{transporte (plank?)}
 
+DEBERIA DECIR DELTA
 \begin{equation} \label{eq:trans1}
 	\frac{\sigma C_i}{\sigma t} = -\nabla \cdot j_i
 \end{equation}
@@ -44,11 +45,16 @@ ohm?\\
 
 de donde sale esto??
 
+DEBERIA DECIR DELTA
 \subsection{generación de poros}
 \begin{equation}
 	\frac{dN}{dt} = \alpha e^{(V_m/V_{ep})^2} \left( 1 - \frac{N}{N_0 e^{q \left(V_m/V_{ep} \right) ^2}} \right)
 \end{equation}
 
+%EN LA DE RADIOS A LA CONSTANTE R_T HAY QUE CAMBIARLE EL NOMBRE por R_A!
+
+
+TODO: ECUACIÓN DE ACTUALIZACIÓN DE SIGMAS EN LA MEMBRANA!
 
 \section{Método Numérico / Implementación}
 %en donde se explica un poco elmenetos finitos y como mallamos, y como resolvemos.
@@ -60,21 +66,23 @@ de donde sale esto??
 
 Se modeló una célula esférica como un sólido de revolución, para así trabajar con una malla bidimensional usando un sistema de coordenadas cilíndricas. Se resolvieron las ecuaciones diferenciales mencionadas anteriormente usando los métodos de elementos finitos y diferencias finitas. El trabajo fue implementado en \texttt{C++}.
 
-\subsection{Método de Diferencias Finitas}
-TODO
+%\subsection{Método de Diferencias Finitas}
 
 \subsection{Método de Elementos Finitos}
 breve explicación de elementos finitos 
-\\LO DEJO PARA EL FINAL DE HOY
+\\LO DEJO PARA EL FINAL
 
-\subsection{Descomposición de Cholesky}
-
-\subsection{Descomposición BiCGSTAB}
+%\subsection{Descomposición de Cholesky}
+%maybe
+%
+%\subsection{Descomposición BiCGSTAB}
+%maybe
+%
+%\subsection{OpenMP}
+%maybe
 
 \subsection{Mallado}
-Se generaron mallas con elementos cuadrilaterales de tamaño variable usando el programa AutoMesh-2D. Se malló de manera que los elementos cercanos a la membrana celular sean de menor tamaño, por ser ésta la zona de mayor interés. 
-
-\\TODO mencionar reducción del ancho de banda
+Se generaron mallas con elementos cuadrilaterales de tamaño variable usando el programa AutoMesh-2D. Se malló de manera que los elementos cercanos a la membrana celular sean de menor tamaño, por ser ésta la zona de mayor interés. Los elementos fueron numerados por AutoMesh-2D de manera tal de reducir el ancho de banda de la matriz de rigidez usada posteriormente en el método de elementos finitos.\\
 \\TODO falta dibujo de malla
 \\TODO falta biblio http://www.automesh2d.com/
 
@@ -85,8 +93,7 @@ Se generaron mallas con elementos cuadrilaterales de tamaño variable usando el 
 %  	+ sparse
 %	+ openMP
 
-La ecuación \ref{eq:poisson} se resolvió usando el método de elementos finitos. Para resolver el sistema de ecuaciones generado se usó la librería de álgebra lineal Eigen para \texttt{C++}. El sistema se resolvió usando el método de descomposición de Cholesky, aprovechando que la matriz de rigidez generada es simétrica definida positiva. Se usaron estructuras para representar matrices esparsas provistas por la librería Eigen, para aprovechar la poca densidad de elementos en la matriz de rigidez. Para acelerar la generación de la matriz de rigidez y vector de masa (???) se usó la interfaz OpenMP, paralelizando en varios threads el proceso de recorrer todos los elementos, encontrar los valores correspondientes y ensamblarlos.
-
+La ecuación \ref{eq:poisson} se resolvió usando el método de elementos finitos. Para resolver el sistema de ecuaciones generado se usó la librería de álgebra lineal Eigen para \texttt{C++}. El sistema se resolvió usando el método de descomposición de Cholesky, aprovechando que la matriz de rigidez generada es simétrica definida positiva. Se usaron estructuras para representar matrices esparsas provistas por la librería Eigen, para aprovechar la poca densidad de elementos en la matriz de rigidez. Para acelerar la generación de la matriz de rigidez y vector de masa (???) se usó la interfaz OpenMP, paralelizando en varios threads el proceso de recorrer todos los elementos, encontrar los valores correspondientes y ensamblarlos.\\
 \\TODO falta biblio eigen http://eigen.tuxfamily.org/
 \\TODO biblio cholesky
 \\TODO biblio SDP
@@ -98,21 +105,45 @@ La ecuación \ref{eq:poisson} se resolvió usando el método de elementos finito
 %	+ método
 %	+ openmp
 
-Las ecuaciones de \ref{eq:trans1} y \ref{eq:trans2} también fueron resueltas con el método de elementos finitos. Para eso se resolvieron 4 sistemas distintos, uno por cada especie. Las matrices de rigidez generadas no son simétricas definidas positivas, a diferencia de las generadas al resolver la ecuación de Poisson; por esta razón se resuelven usando el método iterativo de bi gradientes conjugados estabilizado sin precondicionador. Para acelerar la resolución se usa OpenMP resolviendo en threads separados las iteraciones de cada especie.
-
+Las ecuaciones de \ref{eq:trans1} y \ref{eq:trans2} también fueron resueltas con el método de elementos finitos. Para eso se resolvieron 4 sistemas distintos, uno por cada especie. Las matrices de rigidez generadas no son simétricas definidas positivas, a diferencia de las generadas al resolver la ecuación de Poisson; por esta razón se resuelven usando el método iterativo de bi gradientes conjugados estabilizado sin precondicionador. Para acelerar la resolución se usa OpenMP resolviendo en threads separados las iteraciones de cada especie.\\
 \\TODO biblio bicgstab
 
 \subsection{Generación de poros}
 %hay que explicar:
-%	- general
-%	- poros chicos
+%	+ exactamente como se discretiza usando diferencias finitas!
+%	+ mencionar capacitancia
+%	+ poros chicos
 
-Las ecuaciones \ref{eq:poros1} y \ref{eq:poros2} de generación y radio de los poros se resuelven con el método de diferencias finitas. 
+Las ecuaciones de generación de poros se resolvieron con el método de diferencias finitas. La ecuación \ref{eq:poros-crea} se discretizó como
+
+\begin{equation} \label{eq:poros-crea-disc}
+	\frac{N_{t+1} - N_{t}}{\Delta_t} = \alpha e^{(V_m/V_{ep})^2} \left( 1 - \frac{N_{t}}{N_0 e^{q \left(V_m / V_{ep} \right) ^2}} \right)
+\end{equation}
+
+y la ecuación \ref{eq:poros-radio} como
+
+\begin{equation} \label{eq:poros-radio-disc}
+	\frac{r_{t+1} - r_t}{\Delta_t} = \frac{D}{kT} \left( \frac{V_m^2 F_{max}}{1+r_h / (r+r_a)} + \frac{4 \beta}{r_t} \left(\frac{r_*}{r_t}\right)^4 - 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r_t \right)
+\end{equation}
+
+%Las discretizaciones se aplican a cada ángulo $\theta$ discreto en cada paso temporal. Los potenciales transmembrana $V_m$ de cada ángulo discreto se obtienen de la ecuación \ref{eq:capacit}, que tiene en cuenta la capacitancia de la célula y los valores obtenidos al resolver el sistema de potencial eléctrico. \\
+
+En cada paso temporal y por cada ángulo $\theta$ discreto se crean tantos poros como indique la ecuación \ref{eq:poros-crea-disc} con radio inicial $r_*$, y se actualizan los radios de los poros existentes según la ecuación \ref{eq:poros-radio-disc}, aplicada a cada poro individual. Para esto se guarda por cada ángulo discreto un vector con el radio de cada uno de los poros. La cantidad de poros en cada ángulo discreto se calcula como la densidad obtenida multiplicada por el área de la zona esférica, calculada como 
+
+\begin{equation}
+	A = 2 \pi \alpha^2 (cos(\theta_1) - cos(\theta_2))
+\end{equation}
+
+siendo $\alpha$ el radio de la célula y $\theta_1$ y $\theta_2$ los ángulos que delimitan la zona esférica.\\
+
+Para mejorar los tiempos de ejecución se consideran todos los poros con radio muy pequeño y con cierta antigüedad como iguales en vez de tratarlos individualmente, mientras que a los poros grandes o recién creados se los trata individualmente, aplicando la ecuación \ref{eq:poros-radio-disc} a cada uno. Los potenciales transmembrana $V_m$ de cada ángulo discreto en cada paso temporal se obtienen de la ecuación \ref{eq:capacit}, que tiene en cuenta las soluciones del sistema de potencial eléctrico y la capacitancia de la célula.\\
 
 \subsection{Acoplamiento}
+Las ecuaciones de potencial, transporte y poros se acoplaron en un ciclo principal. Luego de cada iteración de las ecuaciones de poros se alteran los valores de conductividad de los elementos pertenecientes a la membrana celular según la ecuación \ref{eq:actual-sigma}. Esto hace que la próxima ejecución de la ecuación de potencial eléctrico genere resultados diferentes, y esto a su vez altera las ejecuciones posteriores de las ecuaciones de transporte y nuevamente las de poros por alterar el potencial transmembrana.\\
 
-TODO mencionar openMP
+Las distintas ecuaciones se ejecutan con distintos pasos temporales, necesitando las ecuaciones de poros un paso temporal muy pequeño, las de potencial un paso más grande y las de transporte un paso aún más grande. Debido a que al comienzo del pulso eléctrico se crean muchos poros y cambia muy rápidamente el voltaje transmembrana, los valores del paso temporal se eligieron más pequeños para los primeros instantes y más grandes para los instantes posteriores cuando el sistema se estabiliza.\\
 
+FALTA PONER LOS VALORES EXACTOS DE DELTA T!!
 
 \section{Resultados}
 
