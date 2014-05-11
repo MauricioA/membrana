@@ -63,7 +63,7 @@ void Transporte::iteracion(double deltaT) {
 	double num = 0, den = 0;
 	Celula& celula = getCelula();
 
-	#pragma omp parallel for num_threads(2)
+	#pragma omp parallel for num_threads(celula.threads)
 	for (int esp = 0; esp < NESPS; esp++) {
 		concentracion(esp, deltaT);
 	}
@@ -263,8 +263,6 @@ void Transporte::concentracion(int esp, double deltaT) {
 
 		for (int i = 0; i < celula.nodpel; i++) {
 			int iNodo = elem[i];
-
-			//celula.getRhs()[iNodo] += ef[i];
 			rhs[iNodo] += ef[i];
 
 			for (int j = 0; j < celula.nodpel; j++) {

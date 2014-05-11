@@ -24,32 +24,12 @@ void Celula::poisson() {
 	EntradaSalida::grabarPoisson(*this);
 }
 
-void Celula::poros() {
-	Poisson::poisson(*this);
-
-	Poros poros(*this);
-	poros.loop();
-}
-
 void Celula::chequearSimetria() {
 	for (int i = 0; i < nNodes; i++) for (int j = i; j < nNodes; j++) {
 		assert(abs(matriz.coeff(i, j) - matriz.coeff(j, i)) < 1e-12);
 	}
 }
 
-void actualizarSigmas(Celula& celula, Poros& poros) {
-	const double SIGMA_PORO = 150e-9;	// sigma de la sol que llena el poro
-
-	for (int i = 0; i < celula.nElems; i++) {
-		Elemento& elem = celula.getElementos()[i];
-		if (elem.material == MEMBRANA) {
-			double areas = poros.getProporsionArea(i);
-			elem.sigma = celula.sigmas[MEMBRANA] * (1 - areas) + SIGMA_PORO * areas;
-		}
-	}
-}
-
-// TODO ver valores iniciales y sigma de la sol
 void Celula::transportePoros() {
 	const double TIEMPO_FINAL	= 20e-3;
 	const double DELTA_T		= 1e-9;
@@ -122,8 +102,6 @@ void Celula::transportePoros() {
 		}
 
 		poros.iteracion(DELTA_T, time);
-
-		actualizarSigmas(*this, poros);
 
 		if (it_trans == PASO_TRANSPORTE) {
 			transporte.iteracion(DELTA_T * PASO_TRANSPORTE);

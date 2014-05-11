@@ -5,14 +5,13 @@
 
 using namespace std;
 
-//TODO poner omp if
 void Poisson::poisson(Celula &celula) {
 	celula.getRhs().resize(celula.nNodes);
 	celula.getRhs().fill(0);
 	celula.getSolucion().resize(celula.nNodes);
 	vector<Triplet<double>> global_triplets(celula.nElems * celula.nodpel * celula.nodpel);
 
-	#pragma omp parallel num_threads(2)
+	#pragma omp parallel num_threads(celula.threads)
 	{
 		VectorXd local_rhs;
 		local_rhs.resize(celula.nNodes);
@@ -63,12 +62,12 @@ void Poisson::poisson(Celula &celula) {
 			}
 
 			/* Ensamblado */
+			uint indT = elemIdx * celula.nodpel * celula.nodpel;
 			for (int i = 0; i < celula.nodpel; i++) {
 				local_rhs[elemento[i]] += ef[i];
 
 				for (int j = 0; j < celula.nodpel; j++) {
-					global_triplets[elemIdx * celula.nodpel * celula.nodpel + i * celula.nodpel + j] 
-						= Triplet<double>(elemento[i], elemento[j], esm[i][j]);
+					global_triplets[indT++] = Triplet<double>(elemento[i], elemento[j], esm[i][j]);
 				}
 			}
 		}
@@ -94,81 +93,6 @@ void Poisson::poisson(Celula &celula) {
 	campo(celula);
 	corriente(celula);
 }
-
-//void Poisson::poisson(Celula &celula) {
-//	celula.getRhs().resize(celula.nNodes);
-//	celula.getRhs().fill(0);
-//	celula.getSolucion().resize(celula.nNodes);
-//	vector<Triplet<double>> triplets(celula.nElems * celula.nodpel * celula.nodpel);
-//		
-//	for (int elemIdx = 0; elemIdx < celula.nElems; elemIdx++) {
-//		Elemento elemento = celula.getElementos()[elemIdx];
-//		double sigma = elemento.sigma;
-//		double ef[MAXNPEL];
-//
-//		Double2D pos[MAXNPEL];
-//		double esm[MAXNPEL][MAXNPEL];
-//
-//		for (int i = 0; i < celula.nodpel; i++) {
-//			int j = elemento[i];
-//			pos[i].x = celula.getNodos()[j].x;
-//			pos[i].y = celula.getNodos()[j].y;
-//			ef[i] = 0.0;
-//		}
-//
-//		Armado::armadoPoisson(pos, sigma, celula.nodpel, esm);
-//
-//		/* Condiciones de contorno */
-//		for (int i = 0; i < celula.nodpel; i++) {
-//			Nodo nodo = celula.getNodos()[elemento[i]];
-//			double adiag = esm[i][i];
-//
-//			if (nodo.esTierra) {
-//				for (int j = 0; j < celula.nodpel; j++) {
-//					esm[i][j] = 0.0;
-//					ef[j] -= esm[j][i] * TIERRA;
-//					esm[j][i] = 0.0;
-//				}
-//				esm[i][i] = adiag;
-//				ef[i] = adiag * TIERRA;
-//			}
-//
-//			if (nodo.esPotencia) {
-//				for (int j = 0; j < celula.nodpel; j++) {
-//					esm[i][j] = 0.0;
-//					ef[j] -= esm[j][i] * celula.potencial;
-//					esm[j][i] = 0.0;
-//				}
-//				esm[i][i] = adiag;
-//				ef[i] = adiag * celula.potencial;
-//			}
-//		}
-//
-//		/* Ensamblado */
-//		for (int i = 0; i < celula.nodpel; i++) {
-//			celula.getRhs()[elemento[i]] += ef[i];
-//
-//			for (int j = 0; j < celula.nodpel; j++) {
-//				triplets.push_back(Triplet<double>(elemento[i], elemento[j], esm[i][j]));
-//			}
-//		}
-//	}
-//
-//	celula.getMatriz().resize(celula.nNodes, celula.nNodes);
-//	celula.getMatriz().setFromTriplets(triplets.begin(), triplets.end());
-//
-//	/* Resolución */
-//	SimplicialLDLT<SparseMatrix<double>> cholesky(celula.getMatriz());
-//	celula.setSolucion(cholesky.solve(celula.getRhs()));
-//
-//	//ConjugateGradient<SparseMatrix<double>> solver(celula.getMatriz());
-//	//solver.setTolerance(1e-10);
-//	//celula.setSolucion(solver.solveWithGuess(celula.getRhs(), celula.getSolucion()));
-//	//assert(solver.info() == Success);
-//
-//	campo(celula);
-//	corriente(celula);
-//}
 
 void Poisson::campo(Celula &celula) {
 	switch (celula.nodpel) {

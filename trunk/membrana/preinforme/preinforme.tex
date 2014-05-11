@@ -5,7 +5,7 @@
 \usepackage{graphicx}
 
 %opening
-\title{TITULO}
+\title{Modelado de Electroporación Celular}
 \author{Mauricio Alfonso}
 
 \begin{document}
@@ -13,24 +13,33 @@
 \maketitle
 
 \begin{abstract}
-TODO
-TODO ACHICAR EL MARGEN
+TODO after introducción\\
+
+TODO achicar el margen\\
 
 \end{abstract}
 
 % \newpage
 
+\section{Introducción}
+%completa para después, pero primero explicar brevemente motivos que nos guían, etc
+%explicar electroporación
+%tipos de tratamientos
+%lo que se hace en este trabajo
+TODO lo dejo para después
+
+
 \section{Teoría}
 %donde van todoas las ecuaciones y teoria
+%faltaría una introducción
 
 \subsection{Potencial eléctrico}
 %TODO ver tamanio de fuente math
 
-ohm?\\
-
 \begin{equation} \label{eq:poisson}
 	\sigma_{elem} \nabla^{2} \phi = 0 
 \end{equation}
+%sale de fem for electromagnetics pg88
 
 \subsection{transporte (plank?)}
 
@@ -52,6 +61,7 @@ DEBERIA DECIR DELTA
 \end{equation}
 
 %EN LA DE RADIOS A LA CONSTANTE R_T HAY QUE CAMBIARLE EL NOMBRE por R_A!
+%HABRIA QUE PONER UNA TABLA CON VALORES? EN RESULTADOS O  ANTES?
 
 
 TODO: ECUACIÓN DE ACTUALIZACIÓN DE SIGMAS EN LA MEMBRANA!
@@ -98,6 +108,7 @@ La ecuación \ref{eq:poisson} se resolvió usando el método de elementos finito
 \\TODO biblio cholesky
 \\TODO biblio SDP
 \\TODO biblio openmp
+\\TODO condiciones de borde (dirichlete y neumann)
 
 \subsection{Transporte de especies}
 %hay que explicar:
