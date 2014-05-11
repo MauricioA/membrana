@@ -15,8 +15,6 @@ public:
 
 	void iteracion(double deltaT, double tiempo);
 
-	void loop();
-
 	struct InfoAngulo {
 		int nodosInternos[2];
 		int nodosExternos[2];
@@ -38,7 +36,7 @@ public:
 
 	int getNPorosGrandes();
 
-	vector<pair<double, double>> Poros::getITVs(double tiempo);
+	vector<pair<double, double>> getITVs(double tiempo);
 
 	inline vector<InfoAngulo>& getValores() {
 		return valores;
@@ -74,6 +72,8 @@ private:
 	double factorPulso;
 
 	double inline actualizarRadio(double radio, double deltaT, double tensionEfectiva, double itv);
+
+	void actualizarSigmas();
 
 };
 

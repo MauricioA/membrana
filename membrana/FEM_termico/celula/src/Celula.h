@@ -16,8 +16,6 @@ public:
 
 	void poisson();
 
-	void poros();
-
 	void transportePoros();
 
 	void chequearSimetria();
@@ -25,6 +23,7 @@ public:
 	int nodpel;
 	int nElems;
 	int nNodes;
+	int threads;
 
 	double potencial;
 	double radio;

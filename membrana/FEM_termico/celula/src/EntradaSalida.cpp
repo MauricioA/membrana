@@ -56,6 +56,8 @@ void EntradaSalida::leerInput(Celula& celula) {
 			iss >> s >> celula.radio;
 		} else if (line.find("ancho") != string::npos) {
 			iss >> s >> celula.ancho;
+		} else if (line.find("threads") != string::npos) {
+			iss >> s >> celula.threads;
 		}
 	}
 

@@ -27,6 +27,7 @@ const double BETA 				= 1.4e-19;		// Repulsión estérica [J]
 const double GAMA 				= 1.8e-5;		// 1.8e-11 J m**-1
 const double SIGMA_P			= 2e-2;			// 2e-2 J m**-2
 const double SIGMA_0			= 1e-6;			// 1e-6 J m**-2
+const double SIGMA_PORO			= 2e-6;			// sigma de la sol que llena el poro (2 S/m)
 const double TEMPERATURA 		= 310;			// 37ºC
 const double CAPACITANCIA		= 1e-14;		// 1e-2 F m**-2
 const double BOLTZMANN			= 1.3806488e-11;// cte de Boltzmann 1.3806488e-23 [J K**-1]
@@ -234,13 +235,24 @@ void Poros::iteracion(double deltaT, double tiempo) {
 		info.densidad = deltaT * ALPHA * exp(pow(itv / V_EP, 2)) * (1 - info.densidad / n_eq) + info.densidad;
 
 		int porosNuevos = getPorosEnTita(info) - info.porosGrandes.size() - info.porosChicos;
-		assert(porosNuevos >= 0);
 
 		/* Agrego poros nuevos */
 		for (int i = 0; i < porosNuevos; i++) {
 			info.porosGrandes.push_back({RADIO_INICIAL, tiempo});
 		}
+
+		/* Si se sellaron algunos poros, borro de los poros chicos */
+		if (porosNuevos < 0) {
+			if (info.porosChicos >= -porosNuevos) {
+				info.porosChicos -= -porosNuevos;
+			} else {
+				assert(false);
+			}
+		}
 	}
+
+	/* Actualizo las conductividades de la membrana */
+	actualizarSigmas();
 }
 
 double Poros::getITV(InfoAngulo& info) {
@@ -319,42 +331,6 @@ double Poros::getUnRadio() {
 	}
 }
 
-//@deprecated
-void Poros::loop() {
-	const double DELTA_T = 25e-9;
-	const double T_FINAL = 1.5;
-	const int	 PASO_CONSOLA_P = 10000;
-
-	EntradaSalida::printStart("Poros...", false);
-
-	double area = 0;
-	for (auto& info : valores) {
-		area += info.area;
-	}
-	printf("area total: %e\n", area);
-	fflush(stdout);
-
-	clock_t reloj = 0;
-	int it = 0;
-
-	for (double time = 0; time <= T_FINAL; time += DELTA_T) {
-		if (it % PASO_CONSOLA_P == 0) {
-			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
-			double deltaReal = (double)interv / PASO_CONSOLA_P * 1000;
-			printf("%.6f, %d, %.4e, %.0fus/it\n", time, getNPoros(), getRadioMaximo(), deltaReal);
-			fflush(stdout);
-
-			reloj = clock();
-		}
-		
-		iteracion(DELTA_T, time);
-
-		it++;
-	}
-
-	EntradaSalida::printEnd(3, false);
-}
-
 /* Fracción del area correspondiente a un elemento de la membrana ocupada por poros */
 double Poros::getProporsionArea(int iElem) {
 	InfoAngulo& info = InfoAngulo(*mapa[iElem]);
@@ -384,4 +360,14 @@ vector<pair<double, double>> Poros::getITVs(double tiempo) {
 		result.push_back(pair<double, double> { info.tita, getITV(info) });
 	}
 	return result;
+}
+
+void Poros::actualizarSigmas() {
+	for (int i = 0; i < getCelula().nElems; i++) {
+		Elemento& elem = getCelula().getElementos()[i];
+		if (elem.material == MEMBRANA) {
+			double areas = getProporsionArea(i);
+			elem.sigma = getCelula().sigmas[MEMBRANA] * (1 - areas) + SIGMA_PORO * areas;
+		}
+	}
 }

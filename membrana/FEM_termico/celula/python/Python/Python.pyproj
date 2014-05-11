@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>1d07a748-092c-4b4c-87b9-b33509613499</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>curva.py</StartupFile>
+    <StartupFile>merge.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,11 +22,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="generar_prm.py" />
     <Compile Include="depolarizado.py" />
     <Compile Include="areaTotal.py" />
     <Compile Include="digest.py" />
     <Compile Include="curva.py" />
     <Compile Include="poros.py" />
+    <Compile Include="merge.py" />
     <Compile Include="scaleMesh.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
