@@ -23,20 +23,19 @@ namespace declaraciones {
 	const double TOLER_MASA 		= 1e-12;
 	const double TOLER_DIST 		= 1e-3;
 	const double TIERRA				= 0;
-	const double FARADAY 			= 96485.34;		// C/mol
-	const double R_CTE				= 8.314; 		// J/K/mol
-	const double T_CTE				= 310;			// K
+	const double FARADAY 			= 96485.34;		// C/mol cte. de Faraday
+	const double R_CTE				= 8.314; 		// J/K/mol cte. de gases
+	const double T_CTE				= 310;			// K temperatura
 	const double EPSILON_TRANSPORTE	= 78.5;			// cte dieléctrica del agua
 	const double EPSILON_0			= 8.85e-12;		// cte de permitividad C**2 / (N m**2)
 	const double CONCENT_H2O 		= 3.34e10;		// at um**-3
 	const double RSA 				= 0.5;
 	const double CONCENT_MINIMO 	= 1e-8;
-	const double CLAVE 				= FARADAY / (R_CTE * T_CTE);
 	const double CONCENT			= 6.02214129e23 * 1e-15;
 
 	const double GAUSSPT[] = {
-		-1 / sqrt(3.),
-		 1 / sqrt(3.),
+		-1 / sqrt(3.0),
+		 1 / sqrt(3.0),
 	};
 
 	const double GAUSSWT[] = { 1, 1 };
