@@ -81,14 +81,15 @@ void Poisson::poisson(Celula &celula) {
 	celula.getMatriz().resize(celula.nNodes, celula.nNodes);
 	celula.getMatriz().setFromTriplets(global_triplets.begin(), global_triplets.end());
 
-	/* Resolución */
-	SimplicialLDLT<SparseMatrix<double>> cholesky(celula.getMatriz());
-	celula.setSolucion(cholesky.solve(celula.getRhs()));
+	/* Resolución con Cholesky */
+	//SimplicialLDLT<SparseMatrix<double>> cholesky(celula.getMatriz());
+	//celula.setSolucion(cholesky.solve(celula.getRhs()));
 
-	//ConjugateGradient<SparseMatrix<double>> solver(celula.getMatriz());
-	//solver.setTolerance(1e-10);
-	//celula.setSolucion(solver.solveWithGuess(celula.getRhs(), celula.getSolucion()));
-	//assert(solver.info() == Success);
+	/* Resolución con gradientes conjugados */
+	ConjugateGradient<SparseMatrix<double>> solver(celula.getMatriz());
+	solver.setTolerance(1e-10);
+	celula.setSolucion(solver.solveWithGuess(celula.getRhs(), celula.getSolucion()));
+	assert(solver.info() == Success);
 
 	campo(celula);
 	corriente(celula);

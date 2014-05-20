@@ -58,6 +58,8 @@ out.write("%s\n" % nPuntos)
 for i in range(1, nPuntos+1):
 	out.write('%s %s %s\n' % (i, puntos[i][0], puntos[i][1]))
 
+out.write('%s\n' % len(doms))
+
 doms = [externos, membrana, internos]
 
 for i in range(len(doms)):
