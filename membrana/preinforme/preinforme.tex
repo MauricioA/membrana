@@ -3,6 +3,7 @@
 \usepackage{multirow}
 \usepackage{indentfirst}
 \usepackage{graphicx}
+\usepackage{amsmath}
 
 %opening
 \title{Modelado de Electroporación Celular}
@@ -12,13 +13,14 @@
 
 \maketitle
 
+%TODO achicar el margen\\
+%TODO sacar guiones en fin de línea
+%TODO ver espacio en pdf
+%TODO ver tamanio de fuente math?
+
 \begin{abstract}
 
-TODO after introducción\\
-
-TODO achicar el margen\\
-
-TODO sacar guiones en fin de línea
+%TODO after introducción\\
 
 \end{abstract}
 
@@ -29,14 +31,13 @@ TODO sacar guiones en fin de línea
 %explicar electroporación
 %tipos de tratamientos
 %lo que se hace en este trabajo
-TODO lo dejo para después
+%TODO lo dejo para después
 
 \section{Teoría}
 %donde van todoas las ecuaciones y teoria
 %faltaría una introducción
 
 \subsection{Potencial eléctrico}
-%TODO ver tamanio de fuente math
 
 El potencial eléctrico se calcula según la ecuación 
 
@@ -64,7 +65,7 @@ Para el transporte de especies se usa la ecuación de conservación de masa de N
 
 donde $C_i$ representa la concentración de la especie $i$, $D_i$ el coeficiente de difusión de la especie $i$, $z_i$ la valencia de la especie $i$, $F$ la constante de Faraday, $R$ la constante de los gases y $T$ la temperatura.\\
 
-TODO condiciones de borde bien gracias
+%TODO condiciones de borde bien gracias
 
 \subsection{Generación de poros}
 Para la generación de poros hidrofílicos se sigue la ecuación diferencial 
@@ -90,11 +91,15 @@ donde $r$ es el radio de un poro, $D$ es el coeficiente de difusión para los po
 
 donde $\sigma^\prime$ es la tensión de la interfase hidrocarburo-agua, $\sigma_0$ es la tensión de la bicapa sin poros, $A_p$ es la suma de las áreas de todos los poros en la célula, y $A$ es el área de la célula. En la ecuación \ref{eq:poros-radio}, el primer término corresponde a la fuerza eléctrica inducida por el potencial transmembrana, el segundo a la repulsión estérica, el tercero a la tensión de línea que actúa en el perímetro del poro y el cuarto a la tensión superficial de la célula.\\
 
-Por otra parte se asume que el potencial transmembrana no 
-TODO capacitancia
+Por otra parte se asume que la membrana celular se carga como un capacitor y una resistencia en paralelo. De esta manera el potencial transmembrana no aumenta bruscamente al iniciarse el pulso eléctrico, si no que crece de manera paulatina según la ecuación: 
 
-TODO tabla de valores
+\begin{equation} \label{eq:capacit}
+	V_m = V_p (1 - e^{-t/\tau}) \textrm{, con  } \tau = \alpha C_m \left( \frac{1}{\sigma_i} + \frac{1}{2 \sigma_o} \right)
+\end{equation}
 
+donde $V_m$ es el potencial transmembrana en un punto de la superficie de la célula, $V_p$ es el potencial obtenido por las ecuaciones de potencial eléctrico descritas en las sección anterior en ése mismo punto, $t$ es el tiempo transcurrido desde el comienzo del pulso eléctrico, $\alpha$ es el radio de la célula, $C_m$ es la capacitancia superficial de la célula y $\sigma_i$ y $\sigma_o$ las conductancias intra y extracelulares respectivamente.\\
+
+%TODO tabla de valores
 
 \section{Método Numérico / Implementación}
 %en donde se explica un poco elmenetos finitos y como mallamos, y como resolvemos.
@@ -107,24 +112,37 @@ TODO tabla de valores
 Se modeló una célula esférica como un sólido de revolución, para así trabajar con una malla bidimensional usando un sistema de coordenadas cilíndricas. Se resolvieron las ecuaciones diferenciales mencionadas anteriormente usando los métodos de elementos finitos y diferencias finitas. El trabajo fue implementado en \texttt{C++}.
 
 %\subsection{Método de Diferencias Finitas}
+%maybe
 
 \subsection{Método de Elementos Finitos}
-breve explicación de elementos finitos 
-\\LO DEJO PARA EL FINAL
+%TODO toda esta subsección 
 
-%\subsection{Descomposición de Cholesky}
-%maybe
+%breve explicación de elementos finitos 
 %
-%\subsection{Descomposición BiCGSTAB}
-%maybe
+%El método de elementos finitos (FEM) sirve para resolver ecuaciones diferenciales de manera aproximada, discretizando el dominio en zonas pequeñas y disjuntas llamadas elementos. 
+%TODO ELEMENTOS Y NODOS. 
+%Para cada uno de estos elementos se arman pequeños sistemas de ecuaciones que resuelven el
 %
-%\subsection{OpenMP}
-%maybe
+%1 - Se discretiza en elementos (aka mallado)
+%2 - Para cada elemento se desarrolla un sistema de ecuaciones, que relaciona los valores en los nodos (soluciones a la ecuación)
+%3 - se ensamblan las matricitas 
+%4 - se agregan condiciones de borde (puede ir en 2 directamente)
+%5 - se resuelve toda la cosa
+%6 - funciones de forma bien gracias
+
+%explicar mejor como son los elementos
+
+%TODO \subsection{Descomposición de Cholesky}
+
+%TODO \subsection{Descomposición BiCGSTAB}
+
+%TODO \subsection{OpenMP}
 
 \subsection{Mallado}
 Se generaron mallas con elementos cuadrilaterales de tamaño variable usando el programa AutoMesh-2D. Se malló de manera que los elementos cercanos a la membrana celular sean de menor tamaño, por ser ésta la zona de mayor interés. Los elementos fueron numerados por AutoMesh-2D de manera tal de reducir el ancho de banda de la matriz de rigidez usada posteriormente en el método de elementos finitos.\\
-\\TODO falta dibujo de malla
-\\TODO falta biblio http://www.automesh2d.com/
+
+%TODO falta dibujo de malla
+%TODO falta biblio http://www.automesh2d.com/
 
 \subsection{Potencial eléctrico}
 %hay que explicar:
@@ -133,12 +151,14 @@ Se generaron mallas con elementos cuadrilaterales de tamaño variable usando el 
 %  	+ sparse
 %	+ openMP
 
-La ecuación \ref{eq:poisson} se resolvió usando el método de elementos finitos. Para resolver el sistema de ecuaciones generado se usó la librería de álgebra lineal Eigen para \texttt{C++}. El sistema se resolvió usando el método de descomposición de Cholesky, aprovechando que la matriz de rigidez generada es simétrica definida positiva. Se usaron estructuras para representar matrices esparsas provistas por la librería Eigen, para aprovechar la poca densidad de elementos en la matriz de rigidez. Para acelerar la generación de la matriz de rigidez y vector de masa (???) se usó la interfaz OpenMP, paralelizando en varios threads el proceso de recorrer todos los elementos, encontrar los valores correspondientes y ensamblarlos.\\
-\\TODO falta biblio eigen http://eigen.tuxfamily.org/
-\\TODO biblio cholesky
-\\TODO biblio SDP
-\\TODO biblio openmp
-\\TODO condiciones de borde (dirichlet y neumann)
+La ecuación \ref{eq:poisson} se resolvió usando el método de elementos finitos. Para resolver el sistema de ecuaciones generado se usó la librería de álgebra lineal Eigen para \texttt{C++}. El sistema se resolvió usando el método de descomposición de Cholesky, aprovechando que la matriz de rigidez generada es simétrica definida positiva. Se usaron estructuras para representar matrices esparsas provistas por la librería Eigen, para aprovechar la poca densidad de elementos en la matriz de rigidez. Para acelerar la generación de la matriz de rigidez se usó la interfaz OpenMP, paralelizando en varios threads el proceso de recorrer todos los elementos, encontrar los valores correspondientes y ensamblarlos.\\
+
+%TODO explicar como se generan las ecuaciones!
+%TODO falta biblio eigen http://eigen.tuxfamily.org/
+%TODO biblio cholesky
+%TODO biblio SDP
+%TODO biblio openmp
+%TODO condiciones de borde (dirichlet y neumann)
 
 \subsection{Transporte de especies}
 %hay que explicar:
@@ -146,8 +166,10 @@ La ecuación \ref{eq:poisson} se resolvió usando el método de elementos finito
 %	+ método
 %	+ openmp
 
-Las ecuaciones de \ref{eq:trans1} y \ref{eq:trans2} también fueron resueltas con el método de elementos finitos. Para eso se resolvieron 4 sistemas distintos, uno por cada especie. Las matrices de rigidez generadas no son simétricas definidas positivas, a diferencia de las generadas al resolver la ecuación de Poisson; por esta razón se resuelven usando el método iterativo de bi gradientes conjugados estabilizado sin precondicionador. Para acelerar la resolución se usa OpenMP resolviendo en threads separados las iteraciones de cada especie.\\
-\\TODO biblio bicgstab
+La ecuación de \ref{eq:trans} también fue resuelta con el método de elementos finitos. Para eso se resolvieron 4 sistemas distintos, uno por cada especie. Los sistemas de ecuaciones fueron resueltos usando el método el método iterativo de bi gradientes conjugados estabilizado sin precondicionador, dado que las matrices generadas no son simétricas definidas positivas, a diferencia de las generadas al resolver la ecuación de Poisson para el potencial eléctrico. Para acelerar la resolución se usa OpenMP resolviendo en threads separados las iteraciones de cada especie.\\
+
+%TODO explicar como se generan las ecuaciones!
+%TODO biblio bicgstab
 
 \subsection{Generación de poros}
 %hay que explicar:
@@ -167,11 +189,9 @@ y la ecuación \ref{eq:poros-radio} como
 	\frac{r_{t+1} - r_t}{\Delta_t} = \frac{D}{kT} \left( \frac{V_m^2 F_{max}}{1+r_h / (r_t+r_a)} + \frac{4 \beta}{r_t} \left(\frac{r_*}{r_t}\right)^4 - 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r_t \right)
 \end{equation}
 
-%Las discretizaciones se aplican a cada ángulo $\theta$ discreto en cada paso temporal. Los potenciales transmembrana $V_m$ de cada ángulo discreto se obtienen de la ecuación \ref{eq:capacit}, que tiene en cuenta la capacitancia de la célula y los valores obtenidos al resolver el sistema de potencial eléctrico. \\
-
 En cada paso temporal y por cada ángulo $\theta$ discreto se crean tantos poros como indique la ecuación \ref{eq:poros-crea-disc} con radio inicial $r_*$, y se actualizan los radios de los poros existentes según la ecuación \ref{eq:poros-radio-disc}, aplicada a cada poro individual. Para esto se guarda por cada ángulo discreto un vector con el radio de cada uno de los poros. La cantidad de poros en cada ángulo discreto se calcula como la densidad obtenida multiplicada por el área de la zona esférica, calculada como 
 
-\begin{equation}
+\begin{equation} \label{eq:area}
 	A = 2 \pi \alpha^2 (cos(\theta_1) - cos(\theta_2))
 \end{equation}
 
@@ -180,11 +200,19 @@ siendo $\alpha$ el radio de la célula y $\theta_1$ y $\theta_2$ los ángulos qu
 Para mejorar los tiempos de ejecución se consideran todos los poros con radio muy pequeño y con cierta antigüedad como iguales en vez de tratarlos individualmente, mientras que a los poros grandes o recién creados se los trata individualmente, aplicando la ecuación \ref{eq:poros-radio-disc} a cada uno. Los potenciales transmembrana $V_m$ de cada ángulo discreto en cada paso temporal se obtienen de la ecuación \ref{eq:capacit}, que tiene en cuenta las soluciones del sistema de potencial eléctrico y la capacitancia de la célula.\\
 
 \subsection{Acoplamiento}
-Las ecuaciones de potencial, transporte y poros se acoplaron en un ciclo principal. Luego de cada iteración de las ecuaciones de poros se alteran los valores de conductividad de los elementos pertenecientes a la membrana celular según la ecuación \ref{eq:actual-sigma}. Esto hace que la próxima ejecución de la ecuación de potencial eléctrico genere resultados diferentes, y esto a su vez altera las ejecuciones posteriores de las ecuaciones de transporte y nuevamente las de poros por alterar el potencial transmembrana.\\
+Las ecuaciones de potencial, transporte y poros se acoplaron en un ciclo principal. Luego de cada iteración de las ecuaciones de poros se alteran los valores de conductividad de los elementos pertenecientes a la membrana celular según la ecuación 
+
+\begin{equation} \begin{split}
+	\sigma_{\textrm{\tiny elem}} = \sigma_m (1 - p) + \sigma_p p, \\ \textrm{con } p = \frac{ \sum\limits_{r \in R} \pi r^2 }{A_s}
+\end{split} \end{equation} 
+
+donde $\sigma_{\textrm{\tiny elem}}$ es la conductividad de una zona esférica de la membrana, $\sigma_m$ es la conductividad de la membrana cuando no hay poros, $\sigma_p$ es la conductividad del líquido que llena los poros, y $p$ representa la proporción de la superficie (en la zona esférica actual) ocupada por los poros, con $R$ un conjunto con todos los radios de los poros en ésa zona y $A_s$ el área de la zona, calculada según la ecuación \ref{eq:area}.\\
+
+Esto hace que la próxima ejecución de la ecuación de potencial eléctrico genere resultados diferentes, y esto a su vez altera las ejecuciones posteriores de las ecuaciones de transporte y nuevamente las de poros por alterar el potencial transmembrana.\\
 
 Las distintas ecuaciones se ejecutan con distintos pasos temporales, necesitando las ecuaciones de poros un paso temporal muy pequeño, las de potencial un paso más grande y las de transporte un paso aún más grande. Debido a que al comienzo del pulso eléctrico se crean muchos poros y cambia muy rápidamente el voltaje transmembrana, los valores del paso temporal se eligieron más pequeños para los primeros instantes y más grandes para los instantes posteriores cuando el sistema se estabiliza.\\
 
-FALTA PONER LOS VALORES EXACTOS DE DELTA T!!
+%FALTA PONER LOS VALORES EXACTOS DE DELTA T!! ??
 
 \section{Resultados}
 
