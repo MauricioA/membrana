@@ -27,6 +27,7 @@
     <Compile Include="areaTotal.py" />
     <Compile Include="digest.py" />
     <Compile Include="curva.py" />
+    <Compile Include="itv_plot.py" />
     <Compile Include="poros.py" />
     <Compile Include="merge.py" />
     <Compile Include="scaleMesh.py" />
