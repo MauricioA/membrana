@@ -238,16 +238,13 @@ void Poros::iteracion(double deltaT, double tiempo) {
 
 		/* Agrego poros nuevos */
 		for (int i = 0; i < porosNuevos; i++) {
-			info.porosGrandes.push_back({RADIO_INICIAL, tiempo});
+			info.porosGrandes.push_back({ RADIO_INICIAL, tiempo });
 		}
-
+		
 		/* Si se sellaron algunos poros, borro de los poros chicos */
 		if (porosNuevos < 0) {
-			if (info.porosChicos >= -porosNuevos) {
-				info.porosChicos -= -porosNuevos;
-			} else {
-				assert(false);
-			}
+			info.porosChicos += porosNuevos;
+			assert(info.porosChicos >= 0);
 		}
 	}
 
@@ -267,7 +264,7 @@ double Poros::getITV(InfoAngulo& info) {
 
 double inline Poros::actualizarRadio(double radio, double deltaT, double tensionEfectiva, double itv) {
 	return radio + deltaT * DIFF_POROS / (BOLTZMANN * TEMPERATURA) * (
-		pow(itv, 2) * F_MAX) / (1 + R_H / (radio + R_T) +
+		(pow(itv, 2) * F_MAX) / (1 + R_H / (radio + R_T)) +
 		4 * BETA * pow(RADIO_INICIAL / radio, 4) * (1 / radio) +
 		TERM_TENSION_LINEA +
 		2 * M_PI * tensionEfectiva * radio

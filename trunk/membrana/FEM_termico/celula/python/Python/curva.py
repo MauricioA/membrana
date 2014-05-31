@@ -1,9 +1,6 @@
 ENTRADA = "start.txt"
 SALIDA = "start.0.txt"
 
-#ENTRADA = "end.txt"
-#SALIDA = "end.0.txt"
-
 fi = open(ENTRADA)
 fo = open(SALIDA, "w")
 line = fi.readline()

@@ -27,7 +27,7 @@ namespace declaraciones {
 	const double R_CTE				= 8.314; 		// J/K/mol cte. de gases
 	const double T_CTE				= 310;			// K temperatura
 	const double EPSILON_TRANSPORTE	= 78.5;			// cte dieléctrica del agua
-	const double EPSILON_0			= 8.85e-12;		// cte de permitividad C**2 / (N m**2)
+	const double EPSILON_0			= 8.85e-12;		// cte de permisividad C**2 / (N m**2)
 	const double CONCENT_H2O 		= 3.34e10;		// at um**-3
 	const double RSA 				= 0.5;
 	const double CONCENT_MINIMO 	= 1e-8;

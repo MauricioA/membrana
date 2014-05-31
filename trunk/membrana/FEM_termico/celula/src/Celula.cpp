@@ -55,7 +55,7 @@ void Celula::transportePoros() {
 	Poros poros = Poros(*this);
 	TransporteAreas transporte = TransporteAreas(*this, poros);
 	
-	int it_consola = 0, it_disco_trans = 0, it_trans = 0, it_disco_itv = paso_disco_itv; 
+	int it_consola = 0, it_disco_trans = 0, it_trans = 0, it_disco_itv = paso_disco_itv-1; 
 	int it_poiss = paso_poisson, it_disco_poro = paso_disco_poro, it_disco_poisson = 0;
 	clock_t reloj = 0;
 	int fase = 0;
@@ -79,10 +79,10 @@ void Celula::transportePoros() {
 		}
 
 		/* Grabo disco itv */
-		if (it_disco_poisson == paso_disco_itv) {
-			EntradaSalida::grabarITV(*this, poros, time);
-			it_disco_poisson = 0;
-		}
+		//if (it_disco_itv == paso_disco_itv) {
+		//	EntradaSalida::grabarITV(*this, poros, time);
+		//	it_disco_itv = 0;
+		//}
 
 		/* Grabo disco poros */
 		if (it_disco_poro == paso_disco_poro) {
