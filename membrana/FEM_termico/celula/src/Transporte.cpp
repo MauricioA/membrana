@@ -227,7 +227,7 @@ void Transporte::concentracion(int esp, double deltaT) {
 			difElem = DIFUSION[esp];
 		}
 
-		double mu = -difElem * (FARADAY / R_CTE * T_CTE) * CARGA[esp] * celula.getGradElem()[kElem].y;
+		double mu = -difElem * (FARADAY / (R_CTE * T_CTE)) * CARGA[esp] * celula.getGradElem()[kElem].y;
 
 		double landa = 1;
 		double qe = 0;
@@ -276,7 +276,6 @@ void Transporte::concentracion(int esp, double deltaT) {
 	matriz.setFromTriplets(triplets.begin(), triplets.end());
 
 	BiCGSTAB<SparseMatrix<double>> solver(matriz);
-	//solver.setTolerance(1e-9);
 	celula.concentraciones[esp] = solver.solveWithGuess(rhs, celula.anteriores[esp]);
 
 	assert(solver.info() == Success);

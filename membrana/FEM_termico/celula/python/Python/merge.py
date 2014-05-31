@@ -1,6 +1,6 @@
 import argparse, re
 
-#Para convertir del merged generado por Automesh2d al formato usado y cambiar escalar
+#Para convertir del merged generado por Automesh2d al formato usado y cambiar escala
 
 ENTRADA = "50_128_merged.msh"
 SALIDA  = "50_128.msh"
