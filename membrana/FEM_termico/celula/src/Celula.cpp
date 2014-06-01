@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <cassert>
 #include <iostream>
 #include "Celula.h"
@@ -13,15 +11,17 @@ Celula::Celula() {
 	potencial = 0;
 	nNodes = nElems = nodpel  = 0;
 	alto = radio = ancho = 0;
-
-	EntradaSalida::leerInput(*this);
-
+	_entradaSalida = new EntradaSalida(*this);
 	area = 4 * M_PI * pow(radio, 2);
+}
+
+Celula::~Celula() {
+	delete _entradaSalida;
 }
 
 void Celula::poisson() {
 	Poisson::poisson(*this);
-	EntradaSalida::grabarPoisson(*this);
+	getEntradaSalida().grabarPoisson();
 }
 
 void Celula::chequearSimetria() {
@@ -30,6 +30,7 @@ void Celula::chequearSimetria() {
 	}
 }
 
+/* Loop principal */
 void Celula::transportePoros() {
 	const double TIEMPO_FINAL	= 20e-3;
 	const double DELTA_T		= 1e-9;
@@ -53,6 +54,7 @@ void Celula::transportePoros() {
 	int paso_poisson = PASO_POISSON_1;
 
 	Poros poros = Poros(*this);
+
 	TransporteAreas transporte = TransporteAreas(*this, poros);
 	
 	int it_consola = 0, it_disco_trans = 0, it_trans = 0, it_disco_itv = paso_disco_itv-1; 
@@ -60,7 +62,7 @@ void Celula::transportePoros() {
 	clock_t reloj = 0;
 	int fase = 0;
 
-	for (double time = 0; time < TIEMPO_FINAL; time += DELTA_T) {
+	for (time = 0; time < TIEMPO_FINAL; time += DELTA_T) {
 		
 		/* Imprimo por consola */
 		if (it_consola == PASO_CONSOLA) {
@@ -74,25 +76,25 @@ void Celula::transportePoros() {
 	
 		/* Grabo disco poisson */
 		if (it_disco_poisson == paso_disco_poisson) {
-			EntradaSalida::grabarPoisson(*this, time);
+			getEntradaSalida().grabarPoisson();
 			it_disco_poisson = 0;
 		}
 
 		/* Grabo disco itv */
-		//if (it_disco_itv == paso_disco_itv) {
-		//	EntradaSalida::grabarITV(*this, poros, time);
-		//	it_disco_itv = 0;
-		//}
+		if (it_disco_itv == paso_disco_itv) {
+			getEntradaSalida().grabarITV(poros);
+			it_disco_itv = 0;
+		}
 
 		/* Grabo disco poros */
 		if (it_disco_poro == paso_disco_poro) {
-			EntradaSalida::grabarRadio(*this, poros, time, false);
+			getEntradaSalida().grabarRadios(poros);
 			it_disco_poro = 0;
 		}
 
 		/* Grabo disco transporte */
 		if (it_disco_trans == PASO_DISCO_TRANSPORTE) {
-			EntradaSalida::grabarTransporte(*this, time, false);
+			getEntradaSalida().grabarTransporte();
 			it_disco_trans = 0;
 		}
 		
@@ -101,7 +103,7 @@ void Celula::transportePoros() {
 			it_poiss = 0;
 		}
 
-		poros.iteracion(DELTA_T, time);
+		poros.iteracion(DELTA_T);
 
 		if (it_trans == PASO_TRANSPORTE) {
 			transporte.iteracion(DELTA_T * PASO_TRANSPORTE);

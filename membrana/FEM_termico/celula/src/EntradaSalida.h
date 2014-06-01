@@ -2,39 +2,47 @@
 #define ENTRADASALIDA_H_
 
 #include <ctime>
-#include "Celula.h"
 #include "Poros.h"
+
+class Celula;
 
 class EntradaSalida {
 public:
-	static void leerInput(Celula& celula);
+	EntradaSalida(Celula& celula);
 
-	static void grabarPoisson(Celula& celula, double tiempo=0, bool verbose=false);
+	~EntradaSalida();
 
-	static void printStart(string message, bool verbose=true);
+	void leerInput();
 
-	static void printEnd(int tabs=2, bool verbose=true);
+	void grabarPoisson(bool verbose=false);
 
-	static void grabarTransporte(Celula& cel, double time, bool verbose=true);
+	void printStart(string message, bool verbose=true);
 
-	static void grabarRadio(Celula& celula, Poros& radios, double time, bool verbose=true);
+	void printEnd(int tabs=2, bool verbose=true);
 
-	static void grabarITV(Celula& celula, Poros& poros, double time);
+	void grabarTransporte(bool verbose=false);
+
+	void grabarRadios(Poros& radios, bool verbose=false);
+
+	void grabarITV(Poros& poros);
 
 private:
-	static clock_t start;
+	Celula* _celula;
 
-	static bool firstWriteTransporte;
+	FILE* ftension;
+	FILE* fitv;
+	FILE* fcampo;
+	FILE* fporos;
+	FILE* ftransporte;
+	FILE* fph;
 
-	static bool firstWritePoros;
+	clock_t start;
 
-	static bool firstWriteITV;
+	inline Celula& getCelula();
 
-	static bool firstWritePoisson;
+	void leerMalla(string malla);
 
-	static void leerMalla(Celula& celula, string malla);
-
-	static void dameLinea(ifstream& archivo, istringstream& iss);
+	void dameLinea(ifstream& archivo, istringstream& iss);
 
 };
 

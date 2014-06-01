@@ -9,10 +9,14 @@ using namespace std;
 using namespace Eigen;
 using namespace declaraciones;
 
+class EntradaSalida;
+
 //TODO poner en nodos y elementos todo
 class Celula {
 public:
 	Celula();
+
+	~Celula();
 
 	void poisson();
 
@@ -30,6 +34,7 @@ public:
 	double alto;
 	double ancho;
 	double area;
+	double time;
 	double sigmas[3];
 
 	string salida;
@@ -40,6 +45,10 @@ public:
 	vector<double> phAux[NESPS];
 
 	SparseMatrix<double> matrizTrans[NESPS];
+
+	inline EntradaSalida& getEntradaSalida() {
+		return *_entradaSalida;
+	}
 
 	inline vector<Nodo>& getNodos() {
 		return nodos;
@@ -90,6 +99,8 @@ private:
 	vector<Elemento> elementos;
 	vector<Double2D> gradElem;
 	vector<Double2D> corrElem;
+
+	EntradaSalida* _entradaSalida;
 
 	SparseMatrix<double> matriz;
 
