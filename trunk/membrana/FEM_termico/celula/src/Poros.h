@@ -13,7 +13,7 @@ class Poros {
 public:
 	Poros(Celula& celula);
 
-	void iteracion(double deltaT, double tiempo);
+	void iteracion(double deltaT);
 
 	struct InfoAngulo {
 		int nodosInternos[2];

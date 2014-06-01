@@ -175,8 +175,9 @@ bool Poros::esNodoInterno(Nodo nodo) {
 	return (abs(radio - getCelula().radio) < TOLER_DIST_POROS);
 }
 
-void Poros::iteracion(double deltaT, double tiempo) {
+void Poros::iteracion(double deltaT) {
 	double areaPoros = 0;
+	double tiempo = getCelula().time;
 
 	for (auto& info : valores) {
 		for (auto& poro : info.porosGrandes) {
