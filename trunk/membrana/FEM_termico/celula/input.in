@@ -1,11 +1,11 @@
-malla: 	 inputs/25_64.msh
+malla: 	 inputs/10_64.msh
 nodpel:	 quad
-salida:  salida/25-64/200KVm		#directorio de salida * 2.5
-threads: 4
+salida:  salida/10-64/200KVm		#directorio de salida * 1
+threads: 1
 
 sigint:		150e-9	# condutividad de la zona intraelular [S/um]
 sigext:		200e-9	# condutividad de la zona extra
 sigmem:		500e-15	# condutividad de la membrana
-potencial:  50
-radio: 		25
+potencial:  20
+radio: 		10
 ancho: 		5e-3	# ancho de la membrana
