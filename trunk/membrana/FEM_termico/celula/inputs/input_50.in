@@ -1,9 +1,0 @@
-malla: 	FALTA LA MALLA!
-nodpel:	quad
-
-sigint:		455e-9	# condutividad de la zona intraelular [S/um]
-sigext:	      5e-6	# condutividad de la zona extra
-sigmem:		500e-15	# condutividad de la membrana
-potencial:  4	ESTO ESTÁ MAL!
-radio: 		50	
-ancho: 		5e-3	# ancho de la membrana
