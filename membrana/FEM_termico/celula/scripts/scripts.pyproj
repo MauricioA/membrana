@@ -17,9 +17,11 @@
   <ItemGroup>
     <Compile Include="areaTotal.py" />
     <Compile Include="curva.py" />
+    <Compile Include="curvas_trans.py" />
     <Compile Include="depolarizado.py" />
     <Compile Include="digest.py" />
     <Compile Include="generar_prm.py" />
+    <Compile Include="histo_poros.py" />
     <Compile Include="itv_plot.py" />
     <Compile Include="itv_tita.py" />
     <Compile Include="merge.py" />
