@@ -1,33 +1,30 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from pylab import *
 import pylab
 import os
 
 #para generar graficos de itv vs tiempo de itv.csv
 
 MAXTIME = 20e-3
-FOLDERS = [
-	#"../salida/10-64/",
-	"../salida/25-64/",
+NLINEAS = 7
+FOLDERS = [		# (ruta, radio, cant(angulos))
+	("../salida/10-64/", 10, 63),
+	("../salida/25-64/", 25, 64),
+	("../salida/50-64/", 50, 64),
 ]
 
-ANGLES = [
-	0.0245429305,
-	0.564503713,
-	1.05537859,
-	1.59533926,
-	2.08621406,
-	2.62617492,
-	3.11704972,
-]
 
-for folder in FOLDERS:
+for (folder, radio, mesh) in FOLDERS:
 	for dir in os.listdir(folder):
 		if dir[-3:] == ".7z" or dir[-4:] == ".tmp": continue
 		file = "%s%s/itv.csv" % (folder, dir)
 		
 		times = []
-		itvss = [[] for x in ANGLES]
+		itvss = [[] for x in range(NLINEAS)]
+		iis = [int(round(((mesh-1) * i) / (NLINEAS-1), 0)) for i in range(NLINEAS)]
+		angles = [0 for x in range(NLINEAS)]
+		first = True
 		
 		with open(file) as f:
 			for line in f:
@@ -36,34 +33,69 @@ for folder in FOLDERS:
 				angle = float(spl[1])
 				itv = float(spl[2])
 				if time > MAXTIME: break
-				for i in range(len(ANGLES)):
-					ang = ANGLES[i]
-					if abs(angle - ang) < 1e-6:
-						itvss[i].append(itv)
-						if i == 0: times.append(time)
+				
+				if first or abs(time - lasttime) > 1e-12:
+					i = 0
+					first = False
+				else:
+					i += 1
+
+				lasttime = time
+
+				if i in iis:
+					pos = iis.index(i)
+					if i==0: times.append(time)
+					itvss[pos].append(itv)
+					angles[pos] = angle
 
 			times = np.array(times)
 
+			#import pdb; pdb.set_trace()
+
 			plt.clf()
+			i = 0
+			fig, ax = plt.subplots()
 			for itvs in itvss:
-				assert len(itvs) == len(times)
+				
+				if not len(itvs) == len(times):
+					print '%s %s' % (len(itvs), len(times))
+					assert False
+				
 				itvs = np.array(itvs)
-				plt.plot(times*1e6, itvs)
+				ax.plot(times*1e6, itvs, label = "%.0f deg" % (angles[i] * 57.2957795))
+				i += 1
+
+			legend = ax.legend()
+			for label in legend.get_texts():
+				label.set_fontsize('small')
 
 			plt.ylabel('TMV [V]')
 			plt.xlabel('Tiempo [us]')
 			plt.xlim(0, 10)
-			pylab.savefig('itvs/itv-time-lin-%s-%s.png' % (folder, dir), bbox_inches='tight')
+			pylab.savefig(
+				 'itvs/itv-time-lin-%s-%s-%s.png' % (radio, mesh, dir), 
+				 bbox_inches='tight'
+			)
+			print "ploted"
 
 			plt.clf()
+			i = 0
+			fig, ax = plt.subplots()
 			for itvs in itvss:
 				assert len(itvs) == len(times)
 				itvs = np.array(itvs)
-				plt.semilogx(times*1e3, itvs)
+				plt.semilogx(times, itvs, label = "%.0f deg" % (angles[i] * 57.2957795))
+				i += 1
+
+			legend = ax.legend()
+			for label in legend.get_texts():
+				label.set_fontsize('small')
 
 			plt.ylabel('TMV [V]')
-			plt.xlabel('Tiempo [ms]')
+			plt.xlabel('Tiempo [s]')
 			plt.xlim(0, 20e-3)
-			pylab.savefig('itvs/itv-time-log-%s-%s.png' % (folder, dir), bbox_inches='tight')
-			
-
+			pylab.savefig(
+				 'itvs/itv-time-log-%s-%s-%s.png' % (radio, mesh, dir), 
+				 bbox_inches='tight'
+			)
+			print "ploted"

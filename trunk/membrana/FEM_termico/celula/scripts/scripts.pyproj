@@ -21,6 +21,7 @@
     <Compile Include="digest.py" />
     <Compile Include="generar_prm.py" />
     <Compile Include="itv_plot.py" />
+    <Compile Include="itv_tita.py" />
     <Compile Include="merge.py" />
     <Compile Include="poros.py" />
     <Compile Include="scaleMesh.py" />
