@@ -3,6 +3,7 @@
 
 #include <Eigen/Sparse>
 #include <vector>
+#include <memory>
 #include "declaraciones.h"
 
 using namespace std;
@@ -100,7 +101,9 @@ private:
 	vector<Double2D> gradElem;
 	vector<Double2D> corrElem;
 
-	EntradaSalida* _entradaSalida;
+	//EntradaSalida* _entradaSalida;
+
+	unique_ptr<EntradaSalida> _entradaSalida;
 
 	SparseMatrix<double> matriz;
 

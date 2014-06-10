@@ -10,6 +10,7 @@ FOLDERS = [		# (ruta, radio, cant(angulos))
 	("../salida/10-64/", 10, 63),
 	("../salida/25-64/", 25, 64),
 	("../salida/50-64/", 50, 64),
+	("../salida/25-128/", 25, 128),
 ]
 
 ESPECIES = ['H', 'OH', 'NA', 'CL']
@@ -68,8 +69,9 @@ for (folder, radio, mesh) in FOLDERS:
 				fig, ax = plt.subplots()
 				plt.semilogy(firstYs, firstCs[esp], 'bo')
 				plt.semilogy(lastsYs, lastsCs[esp], 'ro')
-				pylab.savefig('curvas/curv-%s-%s-%s-%s.png' % (ESPECIES[esp], radio, mesh, dir))
-				sys.stdout.write('.')
+				filename = 'curvas/curv-%s-%s-%s-%s.png' % (ESPECIES[esp], radio, mesh, dir)
+				pylab.savefig(filename)
+				sys.stdout.write('plotted %s\n' % filename)
 				sys.stdout.flush()
 
 sys.stdout.write('\n')

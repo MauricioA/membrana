@@ -37,6 +37,7 @@ EntradaSalida::~EntradaSalida() {
 	fclose(fporos);
 	fclose(ftransporte);
 	fclose(fph);
+	cout << "IO destruido" << endl;
 }
 
 inline Celula& EntradaSalida::getCelula() {
