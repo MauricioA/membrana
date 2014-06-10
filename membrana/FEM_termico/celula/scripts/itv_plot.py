@@ -12,6 +12,7 @@ FOLDERS = [		# (ruta, radio, cant(angulos))
 	("../salida/10-64/", 10, 63),
 	("../salida/25-64/", 25, 64),
 	("../salida/50-64/", 50, 64),
+	("../salida/25-128/", 25, 128),
 ]
 
 

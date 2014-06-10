@@ -11,23 +11,17 @@ Celula::Celula() {
 	potencial = 0;
 	nNodes = nElems = nodpel  = 0;
 	alto = radio = ancho = 0;
-	_entradaSalida = new EntradaSalida(*this);
+	_entradaSalida = make_unique<EntradaSalida>(*this);
 	area = 4 * M_PI * pow(radio, 2);
 }
 
 Celula::~Celula() {
-	delete _entradaSalida;
+	cout << "celula destruída" << endl;
 }
 
 void Celula::poisson() {
 	Poisson::poisson(*this);
 	getEntradaSalida().grabarPoisson();
-}
-
-void Celula::chequearSimetria() {
-	for (int i = 0; i < nNodes; i++) for (int j = i; j < nNodes; j++) {
-		assert(abs(matriz.coeff(i, j) - matriz.coeff(j, i)) < 1e-12);
-	}
 }
 
 /* Loop principal */
