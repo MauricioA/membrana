@@ -58,14 +58,14 @@ for (folder, radio, mesh) in FOLDERS:
 			fig, ax = plt.subplots()
 
 			for i in range(len(TIMES)):
-				ax.plot(angles[i], itvs[i], label = '%.0fus' % (TIMES[i]*1e6))
+				ax.plot(angles[i], itvs[i], label = '%.0f$\\mu$s' % (TIMES[i]*1e6))
 
 			legend = ax.legend()
 			#for label in legend.get_texts():
 			#	label.set_fonstize('small')
 
-			ax.set_ylabel('TMV [V]')
-			ax.set_xlabel('Tita')
+			ax.set_ylabel('ITV [V]')
+			ax.set_xlabel('$\\Theta$ [rad]')
 			ax.set_xlim(0, np.pi)
 
 			pylab.savefig(

@@ -49,8 +49,9 @@ for (folder, radio, mesh) in FOLDERS:
 				plt.clf()
 			
 				pylab.hist(radios, 40)
+				plt.xlabel('Radio [$\\mu$m]')
 				pylab.savefig('poros/hist-radios-%s-%s-%s-%s.png' % (TIME, radio, mesh, dir))
-
+				
 				sys.stdout.write('.')
 				sys.stdout.flush()
 
