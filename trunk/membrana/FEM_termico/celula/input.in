@@ -1,7 +1,9 @@
 malla: 	 inputs/25_64.msh
 nodpel:	 quad
-salida:  salida/NEW-25-64/120KVm-		#directorio de salida * 2.5
+salida:  salida/NEW-25-64/120KVm-		#directorio de salida
 threads: 1
+
+# revisar los sigmas y el que llena el poro!!
 
 sigint:		150e-9	# condutividad de la zona intraelular [S/um]
 sigext:		200e-9	# condutividad de la zona extra

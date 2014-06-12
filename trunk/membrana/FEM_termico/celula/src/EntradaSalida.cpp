@@ -37,7 +37,6 @@ EntradaSalida::~EntradaSalida() {
 	fclose(fporos);
 	fclose(ftransporte);
 	fclose(fph);
-	cout << "IO destruido" << endl;
 }
 
 inline Celula& EntradaSalida::getCelula() {
@@ -268,7 +267,7 @@ void EntradaSalida::grabarTransporte(bool verbose) {
 		fprintf(fph, "\n");
 	}
 
-	if (verbose) EntradaSalida::printEnd();
+	if (verbose) EntradaSalida::printEnd(); 
 }
 
 void EntradaSalida::grabarRadios(Poros& radios, bool verbose) {

@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 import matplotlib.pyplot as plt
 import numpy as np
 from pylab import *
@@ -14,7 +16,6 @@ FOLDERS = [		# (ruta, radio, cant(angulos))
 	("../salida/50-64/", 50, 64),
 	("../salida/25-128/", 25, 128),
 ]
-
 
 for (folder, radio, mesh) in FOLDERS:
 	for dir in os.listdir(folder):
@@ -63,16 +64,17 @@ for (folder, radio, mesh) in FOLDERS:
 					assert False
 				
 				itvs = np.array(itvs)
-				ax.plot(times*1e6, itvs, label = "%.0f deg" % (angles[i] * 57.2957795))
+				ax.plot(times*1e6, itvs, label = '%.0f$^\circ$' % (angles[i] * 57.2957795))
 				i += 1
 
 			legend = ax.legend()
 			for label in legend.get_texts():
 				label.set_fontsize('small')
 
-			plt.ylabel('TMV [V]')
-			plt.xlabel('Tiempo [us]')
+			plt.ylabel('ITV [V]')
+			plt.xlabel('Tiempo [$\\mu$s]')
 			plt.xlim(0, 10)
+			
 			pylab.savefig(
 				 'itvs/itv-time-lin-%s-%s-%s.png' % (radio, mesh, dir), 
 				 bbox_inches='tight'
@@ -85,14 +87,14 @@ for (folder, radio, mesh) in FOLDERS:
 			for itvs in itvss:
 				assert len(itvs) == len(times)
 				itvs = np.array(itvs)
-				plt.semilogx(times, itvs, label = "%.0f deg" % (angles[i] * 57.2957795))
+				plt.semilogx(times, itvs, label = '%.0f$^\circ$' % (angles[i] * 57.2957795))
 				i += 1
 
 			legend = ax.legend()
 			for label in legend.get_texts():
 				label.set_fontsize('small')
 
-			plt.ylabel('TMV [V]')
+			plt.ylabel('ITV [V]')
 			plt.xlabel('Tiempo [s]')
 			plt.xlim(0, 20e-3)
 			pylab.savefig(

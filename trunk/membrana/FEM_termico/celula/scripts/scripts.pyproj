@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4803af4f-070c-4d81-8aec-d34c7940064d}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>histo_poros.py</StartupFile>
+    <StartupFile>curvas_trans.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
