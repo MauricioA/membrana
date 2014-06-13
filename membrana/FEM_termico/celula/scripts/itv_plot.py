@@ -17,6 +17,8 @@ FOLDERS = [		# (ruta, radio, cant(angulos))
 	("../salida/25-128/", 25, 128),
 ]
 
+font = { 'size': 16 }
+
 for (folder, radio, mesh) in FOLDERS:
 	for dir in os.listdir(folder):
 		if dir[-3:] == ".7z" or dir[-4:] == ".tmp": continue
@@ -71,8 +73,8 @@ for (folder, radio, mesh) in FOLDERS:
 			for label in legend.get_texts():
 				label.set_fontsize('small')
 
-			plt.ylabel('ITV [V]')
-			plt.xlabel('Tiempo [$\\mu$s]')
+			plt.ylabel('ITV [V]', fontdict=font)
+			plt.xlabel('Tiempo [$\\mu$s]', fontdict=font)
 			plt.xlim(0, 10)
 			
 			pylab.savefig(
@@ -94,8 +96,8 @@ for (folder, radio, mesh) in FOLDERS:
 			for label in legend.get_texts():
 				label.set_fontsize('small')
 
-			plt.ylabel('ITV [V]')
-			plt.xlabel('Tiempo [s]')
+			plt.ylabel('ITV [V]', fontdict=font)
+			plt.xlabel('Tiempo [s]', fontdict=font)
 			plt.xlim(0, 20e-3)
 			pylab.savefig(
 				 'itvs/itv-time-log-%s-%s-%s.png' % (radio, mesh, dir), 
