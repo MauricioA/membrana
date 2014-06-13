@@ -32,10 +32,8 @@
 \newcommand{\kvm}{$\si{\kilo\volt\per\metre}$}
 \newcommand{\usec}{$\si{\micro\second}$}
 
-%TODO label duplicado. revisar!
 %TODO poner formato al texto
-%TODO terminar de escribir introducción.
-%TODO terminar de escribir conclusiones.
+%TODO escribir más. Explicar al menos qué es tita
 %TODO poner imagen célula
 %TODO poner imágenes de la grilla!!
 %TODO bibliografía!!
@@ -339,6 +337,20 @@ Las distintas ecuaciones se ejecutan con distintos pasos temporales, necesitando
 
 \subsection{Potencial Transmembrana}
 
+
+En las figuras \ref{fig:itv-lin-10-63-40} a \ref{fig:itv-lin-50-64-200} se puede ver el potencial transmembrana (ITV) para distintos valores de ángulo $\theta$ durante los primeros 10 \usec para células de diferentes tamaños y diferentes campos eléctricos. Se puede observar el mismo patrón en varios casos:
+\begin{itemize}
+	\item En una primera etapa la tensión sube al iniciarse el pulso. Esto no se da de manera inmediata debido a que la membrana se carga como un capacitor. El ITV crece de manera más rápida en las regiones celulares cercanas a los polos, mientras que en las regiones cercanas al ecuador casi no deja de ser cero.
+	\item Al alcanzar un pico de tensión, el ITV comienza a disminuir. Esto se debe a que los valores altos de tensión alcanzados crearon poros que aumentan significativamente la conductividad de la membrana, reduciendo su caída de tensión. Este proceso se da de manera más precipitada en las regiones cercanas a los polos, y más lentamente en las regiones cercanas al ecuador. 
+%	\item Los potenciales parecen acercarse a un valor de equilibrio. En las regiones cercanas a los polos el valor de TMV final llega a ser menor al de otras regiones, al contrario de la primera etapa.
+\end{itemize}
+
+Este proceso no se nota cuando el campo eléctrico y el radio de la célula son muy chicos, como en la figura \ref{fig:itv-lin-10-63-40} debido a que no se alcanza el potencial necesario para generar poros que reduzcan la conductividad de la membrana.\\
+
+Un fenómeno interesante que se nota es que en los casos en los que el potencial necesario sí fue alcanzado, un incremento en el campo eléctrico aplicado parece prácticamente no influir en los valores de ITV alcanzados, pero sí en la velocidad en la que se produce el proceso descrito: por ejemplo en la figura \ref{fig:itv-lin-25-64-40} el pico de tensión se alcanza cerca de los 4 \usec con un campo eléctrico de 40 \kvm, mientras que en la figura \ref{fig:itv-lin-25-64-80}, para la misma célula pero un campo de 80 \kvm, el pico se alcanza entre los 1 y 2 \usec, y para la figura \ref{fig:itv-lin-25-64-160} el pico se alcanza aún más temprano al aumentar el campo eléctrico. Sin embargo en todos estos casos el potencial transmembrana alcanzado casi no varía, influyendo el potencial aplicado solo en la velocidad en la que se producen las variaciones de ITV.\\
+
+\clearpage
+
 %\newcommand{\imagenPos}[4] {
 %	\begin{figure}[#4]
 %		\caption{#2}
@@ -360,78 +372,38 @@ Las distintas ecuaciones se ejecutan con distintos pasos temporales, necesitando
 %		{!hp}
 %}
 
-\newcommand{\imagenDoble}[6]{
-\begin{figure}
-	\makebox[\textwidth][c] {
-		\centering
-		\begin{minipage}[!h]{.45\paperwidth}
-			\centering
-			\includegraphics[width=1\textwidth]{{#1}}
-			\caption{#2}
-			\label{fig:{#3}}			
-		\end{minipage}\hfill
-		
-		\begin{minipage}[!h]{.45\paperwidth}
-			\centering
-			\includegraphics[width=1\textwidth]{{#4}}
-			\caption{#5}
-			\label{fig:{#6}}
-		\end{minipage}\hfill
-	}
-\end{figure}
-}
+%\newcommand{\imagenDoble}[6]{
+%\begin{figure}
+%	\makebox[\textwidth][c] {
+%		\centering
+%		\begin{minipage}[!h]{.45\paperwidth}
+%			\centering
+%			\includegraphics[width=1\textwidth]{{#1}}
+%			\caption{#2}
+%			\label{fig:{#3}}			
+%		\end{minipage}\hfill
+%		
+%		\begin{minipage}[!h]{.45\paperwidth}
+%			\centering
+%			\includegraphics[width=1\textwidth]{{#4}}
+%			\caption{#5}
+%			\label{fig:{#6}}
+%		\end{minipage}\hfill
+%	}
+%\end{figure}
+%}
 
-\newcommand{\imagenDobleTop}[6]{
-\begin{figure}[p!]
-	\makebox[\textwidth][c] {
-		\centering
-		\begin{minipage}[t]{.45\paperwidth}
-			\centering
-			\label{fig:#3}
-			\includegraphics[width=1\textwidth]{#1}
-			\caption{#2}
-		\end{minipage}\hfill
-		\begin{minipage}[t]{.45\paperwidth}
-			\centering
-			\label{fig:#6}
-			\includegraphics[width=1\textwidth]{#4}
-			\caption{#5}
-		\end{minipage}\hfill
-	}
-\end{figure}
-}
-
-\newcommand{\imagenDobleBottom}[6]{
-\begin{figure}[p!]
-	\makebox[\textwidth][c] {
-		\centering
-		\begin{minipage}[b]{.45\paperwidth}
-			\centering
-			\label{fig:#3}
-			\includegraphics[width=1\textwidth]{#1}
-			\caption{#2}
-		\end{minipage}\hfill
-		\begin{minipage}[b]{.45\paperwidth}
-			\centering
-			\label{fig:#6}
-			\includegraphics[width=1\textwidth]{#4}
-			\caption{#5}
-		\end{minipage}\hfill
-	}
-\end{figure}
-}
-
-\newcommand{\itvLinDoble}[6]{
-	\imagenDoble
-		{itv-time-lin-#1-#2-#3KVm}{ITV al inicio para E=#3KV/m y $\alpha$=#1$\mu$m}{itv-lin-#1-#2-#3}
-		{itv-time-lin-#4-#5-#6KVm}{ITV al inicio para E=#6KV/m y $\alpha$=#4$\mu$m}{itv-lin-#4-#5-#6}
-}
-
-\newcommand{\itvLinDobleExtra}[6]{
-	\imagenDoble
-		{itv-time-lin-#1-#2-#3KVm}{ITV al inicio para E=#3KV/m y $\alpha$=#1$\mu$m con malla de pocos elementos}{itv-lin-#1-#2-#3}
-		{itv-time-lin-#4-#5-#6KVm}{ITV al inicio para E=#6KV/m y $\alpha$=#4$\mu$m con malla de muchos elementos}{itv-lin-#4-#5-#6}
-}
+%\newcommand{\itvLinDoble}[6]{
+%	\imagenDoble
+%		{itv-time-lin-#1-#2-#3KVm}{ITV al inicio para E=#3KV/m y $\alpha$=#1$\mu$m}{itv-lin-#1-#2-#3}
+%		{itv-time-lin-#4-#5-#6KVm}{ITV al inicio para E=#6KV/m y $\alpha$=#4$\mu$m}{itv-lin-#4-#5-#6}
+%}
+%
+%\newcommand{\itvLinDobleExtra}[6]{
+%	\imagenDoble
+%		{itv-time-lin-#1-#2-#3KVm}{ITV al inicio para E=#3KV/m y $\alpha$=#1$\mu$m con malla de pocos elementos}{itv-lin-#1-#2-#3}
+%		{itv-time-lin-#4-#5-#6KVm}{ITV al inicio para E=#6KV/m y $\alpha$=#4$\mu$m con malla de muchos elementos}{itv-lin-#4-#5-#6}
+%}
 
 %\newpage
 %\itvLin{10}{63}{40}
@@ -523,21 +495,23 @@ Las distintas ecuaciones se ejecutan con distintos pasos temporales, necesitando
 \itvLinNew{50}{64}{40}{50}{64}{80}
 \itvLinNew{50}{64}{160}{50}{64}{200}
 
+\newpage
+\clearpage
+
 %discusión:
 %\newpage
 
-En las figuras \ref{fig:itv-lin-10-63-40} a \ref{fig:itv-lin-50-64-200} se puede ver el potencial transmembrana (ITV) para distintos valores de ángulo $\theta$ durante los primeros 10 \usec para células de diferentes tamaños y diferentes campos eléctricos. Se puede observar el mismo patrón en varios casos:
-\begin{itemize}
-	\item En una primera etapa la tensión sube al iniciarse el pulso. Esto no se da de manera inmediata debido a que la membrana se carga como un capacitor. El ITV crece de manera más rápida en las regiones celulares cercanas a los polos, mientras que en las regiones cercanas al ecuador casi no deja de ser cero.
-	\item Al alcanzar un pico de tensión, el ITV comienza a disminuir. Esto se debe a que los valores altos de tensión alcanzados crearon poros que aumentan significativamente la conductividad de la membrana, reduciendo su caída de tensión. Este proceso se da de manera más precipitada en las regiones cercanas a los polos, y más lentamente en las regiones cercanas al ecuador. 
-%	\item Los potenciales parecen acercarse a un valor de equilibrio. En las regiones cercanas a los polos el valor de TMV final llega a ser menor al de otras regiones, al contrario de la primera etapa.
-\end{itemize}
-
-Este proceso no se nota cuando el campo eléctrico y el radio de la célula son muy chicos, como en la figura \ref{fig:itv-lin-10-63-40} debido a que no se alcanza el potencial necesario para generar poros que reduzcan la conductividad de la membrana.\\
-
-Un fenómeno interesante que se nota es que en los casos en los que el potencial necesario sí fue alcanzado, un incremento en el campo eléctrico aplicado parece prácticamente no influir en los valores de ITV alcanzados, pero sí en la velocidad en la que se produce el proceso descrito: por ejemplo en la figura \ref{fig:itv-lin-25-64-40} el pico de tensión se alcanza cerca de los 4 \usec con un campo eléctrico de 40 \kvm, mientras que en la figura \ref{fig:itv-lin-25-64-80}, para la misma célula pero un campo de 80 \kvm, el pico se alcanza entre los 1 y 2 \usec, y para la figura \ref{fig:itv-lin-25-64-160} el pico se alcanza aún más temprano al aumentar el campo eléctrico. Sin embargo en todos estos casos el potencial transmembrana alcanzado casi no varía, influyendo el potencial aplicado solo en la velocidad en la que se producen las variaciones de ITV.\\
-
 %TODO mencionar 128!!
+
+\newpage
+En las figuras \ref{fig:itv-log-10-63-40} a \ref{fig:itv-log-50-64-200} se graficó lo mismo que en las figuras anteriores, pero sobre todo el pulso de 20 ms y con una escala logarítmica para el tiempo. Se observa que las regiones cercanas al ecuador no dejan de tener un potencial muy cercano a cero durante todo el pulso, mientras que las regiones más alejadas del ecuador terminan alcanzando valores muy similares entre sí: positivos para las regiones del hemisferio hiperpolarizado ($\theta$ menor a 90 grados) y negativos para las regiones del hemisferio depolarizado ($\theta$ mayor a 90 grados).\\
+
+Se observa también en la figura \ref{fig:itv-log-10-63-40} que si el radio de la célula y el campo eléctrico son muy pequeños, el potencial transmembrana no alcanza nunca el valor suficiente como para generar poros y reducir aumentar la conductancia y así el ITV.\\
+
+En las figuras \ref{fig:itv-tita-10-63-40} a \ref{fig:itv-tita-50-64-200} se observa el voltaje transmembrana en función del ángulo $\theta$, en diferentes instantes para diferentes radios y potenciales aplicados.  
+
+%TODO mencionar comparación con fórmula del coseno! poner primero cos en teoría
+%TODO mencionar que 
 
 %acá van las imgns itv log
 
@@ -567,7 +541,7 @@ Un fenómeno interesante que se nota es que en los casos en los que el potencial
 		
 		\begin{minipage}[!h]{.45\paperwidth}
 			\centering
-			\includegraphics[width=1\textwidth]{itv-time-lin-#4-#5-#6KVm}
+			\includegraphics[width=1\textwidth]{itv-time-log-#4-#5-#6KVm}
 			\caption{ITV durante el pulso para E=#6KV/m y $\alpha$=#4$\mu$m (escala logarítmica)}
 			\label{fig:itv-log-#4-#5-#6}			
 		\end{minipage}\hfill
@@ -591,17 +565,13 @@ Un fenómeno interesante que se nota es que en los casos en los que el potencial
 %\itvLog{50}{64}{160}
 %\itvLog{50}{64}{200}
 
+%\clearpage\newpage
 \itvLogDoble{10}{63}{40}{10}{63}{80}
 \itvLogDoble{10}{63}{120}{10}{63}{160}
 \itvLogDoble{25}{64}{40}{25}{64}{80}
 \itvLogDoble{25}{64}{160}{25}{128}{160}
 \itvLogDoble{50}{64}{40}{50}{64}{80}
 \itvLogDoble{50}{64}{160}{50}{64}{200}
-
-%\newpage
-En las figuras \ref{fig:itv-log-10-63-40} a \ref{fig:itv-log-50-64-200} se graficó lo mismo que en las figuras anteriores, pero sobre todo el pulso de 20 ms y con una escala logarítmica para el tiempo. Se observa que las regiones cercanas al ecuador no dejan de tener un potencial muy cercano a cero durante todo el pulso, mientras que las regiones más alejadas del ecuador terminan alcanzando valores muy similares entre sí: positivos para las regiones del hemisferio hiperpolarizado ($\theta$ menor a 90 grados) y negativos para las regiones del hemisferio depolarizado ($\theta$ mayor a 90 grados).
-
-%Se observa también en ??? que si el radio de la célula y el campo eléctrico son muy pequeños, el potencial transmembrana no alcanza nunca 
 
 %acá van las imgs de itv vs tita
 
@@ -628,10 +598,31 @@ En las figuras \ref{fig:itv-log-10-63-40} a \ref{fig:itv-log-50-64-200} se grafi
 %\itvTita{50}{64}{200}
 %\newpage
 
+%\newcommand{\itvTitaDoble}[6]{
+%	\imagenDoble
+%		{itv-tita-#1-#2-#3KVm}{ITV según ángulo $\theta$ para E=#3KV/m y $\alpha$=#1$\mu$m}{itv-tita-#1-#2-#3}
+%		{itv-tita-#4-#5-#6KVm}{ITV según ángulo $\theta$ para E=#6KV/m y $\alpha$=#4$\mu$m}{itv-tita-#4-#5-#6}
+%}
+
 \newcommand{\itvTitaDoble}[6]{
-	\imagenDoble
-		{itv-tita-#1-#2-#3KVm}{ITV según ángulo $\theta$ para E=#3KV/m y $\alpha$=#1$\mu$m}{itv-tita-#1-#2-#3}
-		{itv-tita-#4-#5-#6KVm}{ITV según ángulo $\theta$ para E=#6KV/m y $\alpha$=#4$\mu$m}{itv-tita-#4-#5-#6}
+\begin{figure}[!h]
+	\makebox[\textwidth][c] {
+		\centering
+		\begin{minipage}[!h]{.45\paperwidth}
+			\centering
+			\includegraphics[width=1\textwidth]{itv-tita-#1-#2-#3KVm}
+			\caption{ITV según ángulo $\theta$ para E=#3KV/m y $\alpha$=#1$\mu$m}
+			\label{fig:itv-tita-#1-#2-#3}			
+		\end{minipage}\hfill
+		
+		\begin{minipage}[!h]{.45\paperwidth}
+			\centering
+			\includegraphics[width=1\textwidth]{itv-tita-#4-#5-#6KVm}
+			\caption{ITV según ángulo $\theta$ para E=#6KV/m y $\alpha$=#4$\mu$m}
+			\label{fig:itv-tita-#4-#5-#6}			
+		\end{minipage}\hfill
+	}
+\end{figure}
 }
 
 \itvTitaDoble{10}{63}{40}{10}{63}{80}
@@ -643,28 +634,67 @@ En las figuras \ref{fig:itv-log-10-63-40} a \ref{fig:itv-log-50-64-200} se grafi
 \itvTitaDoble{50}{64}{40}{50}{64}{80}
 \itvTitaDoble{50}{64}{160}{50}{64}{200}
 
-En las figuras ?? se observa el voltaje transmembrana en función del ángulo tita, en diferentes instantes. 
-Acá falta chamuyar algo.
-
-%TODO mencionar comparación con fórmula del coseno?
-%TODO mencionar aumento lineal del itv respecto del radio
-
 %acá van las imgs de histogramas de poros
 
-\newcommand{\histoDoble}[7]{
-	\imagenDoble
-		{hist-radios-#4-#1-#2-#3KVm}{Distribución de radios en los poros grandes para E=#3KV/m y $\alpha$=#1$\mu$m en t=#5}{histo-#1-#2-#3-#4}
-		{hist-radios-#6-#1-#2-#3KVm}{Distribución de radios en los poros grandes para E=#3KV/m y $\alpha$=#1$\mu$m en t=#7}{histo-#1-#2-#3-#6}
+%\clearpage
+\subsection{Poros}
+
+En las figuras 37 a 48 fueron realizados histogramas con la distribución de los radios de los poros grandes generados en distintos instantes y para distintos campos eléctricos aplicados y distintos radios. Sólo fueron graficados los poros grandes (mayores a 1 $\si{\micro\metre}$), que son los de interés. Se observa que si bien se crean muchos poros, éstos se sellan rápidamente con el paso del tiempo: a los 5 ms del pulso en todos los casos la cantidad de poros es mucho menor en instantes anteriores, aunque los pocos poros grandes que siguen existiendo parecen tener mayor radio que la mayoría de los poros en los instantes anteriores. La corta vida de la mayoría de los poros parece deberse a que la alta densidad de los primeros instantes reduce significativamente la conductancia de la membrana, y por lo tanto el ITV necesario para mantener los poros abiertos.
+
+%\newcommand{\histoDoble}[7]{
+%	\imagenDoble
+%		{hist-radios-#4-#1-#2-#3KVm}{Distribución de radios en los poros grandes para E=#3KV/m y $\alpha$=#1$\mu$m en t=#5}{histo-#1-#2-#3-#4}
+%		{hist-radios-#6-#1-#2-#3KVm}{Distribución de radios en los poros grandes para E=#3KV/m y $\alpha$=#1$\mu$m en t=#7}{histo-#1-#2-#3-#6}
+%}
+
+\newcommand{\imagenDobleTop}[6]{
+\begin{figure}[h]
+	\makebox[\textwidth][c] {
+		\centering
+		\begin{minipage}[t]{.45\paperwidth}
+			\centering
+			\label{fig:#3}
+			\includegraphics[width=1\textwidth]{#1}
+			\caption{#2}
+		\end{minipage}\hfill
+		\begin{minipage}[t]{.45\paperwidth}
+			\centering
+			\label{fig:#6}
+			\includegraphics[width=1\textwidth]{#4}
+			\caption{#5}
+		\end{minipage}\hfill
+	}
+\end{figure}
+}
+
+\newcommand{\imagenDobleBottom}[6]{
+\begin{figure}[h]
+	\makebox[\textwidth][c] {
+		\centering
+		\begin{minipage}[b]{.45\paperwidth}
+			\centering
+			\label{fig:#3}
+			\includegraphics[width=1\textwidth]{#1}
+			\caption{#2}
+		\end{minipage}\hfill
+		\begin{minipage}[b]{.45\paperwidth}
+			\centering
+			\label{fig:#6}
+			\includegraphics[width=1\textwidth]{#4}
+			\caption{#5}
+		\end{minipage}\hfill
+	}
+\end{figure}
 }
 
 \newcommand{\histoQuad}[3]{
 	\newpage
 	\imagenDobleTop
-		{hist-radios-5e-6-#1-#2-#3KVm}{Distribución de radios en los poros para E=#3KV/m y $\alpha$=#1$\mu$m en t=\num{5e-6}s}{histo-#1-#2-#3-30e-6}
-		{hist-radios-100e-6-#1-#2-#3KVm}{Distribución de radios en los poros para E=#3KV/m y $\alpha$=#1$\mu$m en t=\num{100e-6}s}{histo-#1-#2-#3-1e-3}
+		{hist-radios-5e-6-#1-#2-#3KVm}{Distribución de radios en los poros grandes para E=#3KV/m y $\alpha$=#1$\mu$m en t=5\usec}{histo-#1-#2-#3-30e-6}
+		{hist-radios-100e-6-#1-#2-#3KVm}{Distribución de radios en los poros grandes para E=#3KV/m y $\alpha$=#1$\mu$m en t=100\usec}{histo-#1-#2-#3-1e-3}
 	\imagenDobleBottom
-		{hist-radios-1e-3-#1-#2-#3KVm}{Distribución de radios en los poros para E=#3KV/m y $\alpha$=#1$\mu$m en t=\num{1e-3}s}{histo-#1-#2-#3-8e-3}
-		{hist-radios-5e-3-#1-#2-#3KVm}{Distribución de radios en los poros para E=#3KV/m y $\alpha$=#1$\mu$m en t=\num{5e-3}s}{histo-#1-#2-#3-19e-3}
+		{hist-radios-1e-3-#1-#2-#3KVm}{Distribución de radios en los poros grandes para E=#3KV/m y $\alpha$=#1$\mu$m en t=1 ms}{histo-#1-#2-#3-8e-3}
+		{hist-radios-5e-3-#1-#2-#3KVm}{Distribución de radios en los poros grandes para E=#3KV/m y $\alpha$=#1$\mu$m en t=5 ms}{histo-#1-#2-#3-19e-3}
 }
 
 %\histoQuad{10}{63}{40}
@@ -701,12 +731,27 @@ Acá falta chamuyar algo.
 %\histoDoble{50}{64}{120}{50}{64}{160}
 %\histoDoble{50}{64}{200}{50}{64}{200}
 
-En las figuras ?? fueron realizados histogramas con la distribución de los radios de los poros generados en distintos instantes y para distintos campos eléctricos aplicados y distintos radios. 
-faltaría poner algo más
+\clearpage
+\subsection{Transporte de especies}
+Se graficaron en las figuras 49 a 76 las concentraciones de las especies de interés en escala logarítmica para curvas de nivel r = 0, con los valores iniciales en azul y finales (luego del pulso de 20 ms) en rojo, ambos en escala logarítmica. Los valores de Y centrales corresponden al interior de la célula.
 
-%TODO MENCIONAR QUE LOS POROS SE CIERRAN, ENTONCES TRASNP NO SIRVE? CONCLUS?
+%TODO COMPLETAR NUMEROS AL FINAL!!!!
 
-Transporte (curvas)
+\begin{itemize}
+	\item[\h] 
+	Se observa en las figuras ??? que el ión hidrógeno ingresa muy fácilmente a la célula, obteniendo concentraciones muy altas, con varios órdenes de magnitud mayores a las iniciales.
+Se observa también que el potencial aplicado incide considerablemente en la densidad de \h en el interior de la célula. 
+
+	\item[\oh]
+	Se observa que se logra también el ingreso del grandes cantidades del anión hidróxido a la célula, en particular en las regiones depolarizadas, pero se requiere una campo eléctrico más grande. Por ejemplo, para una célula de 25 $\si{\micro\metre}$ se requieren 120 \kvm para lograr el ingreso en concentraciones significativas, mientras que para el anión hidrógeno bastaban 80 \kvm.
+	
+	\item[\na]	
+	Se nota que el ingreso del catión sodio a la célula es mucho menor a los anteriores, requiriendo de potenciales mayores, al menos para un solo pulso de 20 ms. Para células de 25 o 50 $\si{\micro\metre}$ de radio se requiere un campo eléctrico de 200 \kvm para lograr un ingreso significativo al interior, obteniendo incluso en ese caso concentraciones menores a las iniciales en las regiones hiperpolarizadas. 
+	
+	\item[\cl]
+	Para células de 25 $\si{\micro\metre}$ o 50 $\si{\micro\metre}$ el anión cloruro ingresa en la célula con campos eléctricos de 160 \kvm  o  200 \kvm, con concentraciones mayores en el segundo caso y concentraciones mayores a las iniciales en toda la célula. Potenciales menores no producen el ingreso en cantidades significativas, e incluso reducen las concentraciones en algunas regiones.
+\end{itemize}
+
 
 % {radio}{malla}{voltaje}
 \newcommand{\curvaQuad}[3]{
@@ -735,41 +780,18 @@ Transporte (curvas)
 \curvaQuad{50}{64}{160}
 \curvaQuad{50}{64}{200}
 
-
-
-Se graficaron las concentraciones de las especies de interés en escala logarítmica para curvas de nivel r = 0, con los valores iniciales en azul y finales (luego del pulso de 20ms) en rojo, ambos en escala logarítmica. Los valores de radio centrales (donde las concentraciones iniciales son menores al resto) corresponden al interior de la célula.
-
-H+
-
-Se observa en las figuras ??? que el catión hidrógeno ingresa muy fácilmente a la célula, obteniendo concentraciones muy altas, con varios órdenes de magnitud mayores a las iniciales.
-Se observa también que el potencial aplicado incide considerablemente en la densidad de H+ en el interior de la célula. 
-
-OH-
-
-Se observa que se logra también el ingreso del grandes cantidades del anión hidróxido a la célula, en particular en las regiones depolarizadas, pero se requiere una campo eléctrico más grande. Por ejemplo, para 25-64 se requieren 120KV/m para lograr el ingreso en concentraciones significativas, mientras que para el anión hidrógeno bastaban 80KVm.
-
-Na+
-
-Se nota que el ingreso del catión sodio a la célula es mucho menor a los anteriores, requiriendo de potenciales mayores, al menos para un solo pulso de 20ms. Para células de 25 o 50 um de radio se requiere un campo eléctrico de 200Kvm para lograr un ingreso significativo al interior, obteniendo incluso en ese caso concentraciones menores a las iniciales en las regiones hiperpolarizadas. 
-
-Cl-
-
-Para células de 25um o 50um el anión cloruro ingresa en la célula con campos eléctricos de 160Kvm  200kvm, con concentraciones mayores en el segundo caso y concentraciones mayores a las iniciales en toda la célula. Potenciales menores no producen el ingreso en cantidades significativas, e incluso reducen las concentraciones en algunas regiones.
-
-
-\newpage
+\newpage\clearpage
 \section{Conclusiones y trabajo futuro}
 
 Del trabajo realizado se concluye que es posible ingresar las especies de interés al interior de la célula con la ayuda de un pulso eléctrico para generar poros en la membrana celular e impulsar la migración de las especies. Sin embargo es necesario el uso de campos eléctricos con potencial muy alto para lograr el ingreso del sodio y cloruro a la célula, al menos para un único pulso de 20 ms. \\
 
-%TODO más conclusiones 
-FALTA PONER ALGO MÁS!!!!\\
+Se tiene como primer resultado interesante que una vez alcanzado un potencial aplicado mínimo para generar poros, aplicar potenciales más grandes no aumenta el ITV, sino que sólo reduce el tiempo necesario para que la célula alcance equilibrio entre el ITV y la densidad y tamaño de poros. Es decir, un mayor voltaje en los electrodos no produce un mayor ITV (una vez alcanzado un valor mínimo).\\
 
-Para el potencial transmembrana al comienzo del puso se combinan los potenciales obtenidos por la ecuación de potencial eléctrico (\ref{eq:poisson}) con la fórmula \ref{eq:capacit} de carga de un capacitor. Esto significa que los potenciales obtenidos por el método de elementos finitos, usado para el transporte de especies, difieren de los potenciales usados para la creación y crecimiento de poros, usando dos sistemas de ecuaciones dos potenciales diferentes para un mismo instante, pudiendo afectar la precisión de los resultados. Sin embargo el efecto de la capacitancia de la membrana celular solo afecta durante los primeros microsegundos del pulso, como puede observarse en las imágenes de TMV en función del tiempo, en los cuáles el transporte de especies es casi nulo. Dado que la capacitancia de la célula no es muy grande, el valor de $(1 - e^{(-t/\tau)})$ en la fórmula \ref{eq:capacit} se hace rápidamente muy cercano a 1, y el efecto de la capacitancia se vuelve despreciable, eliminándose la discrepancia entre los potenciales usados para resolver la evolución de los poros y el transporte de especies. A pesar de no parecer influir mucho en el resultado la discrepancia, queda pendiente para el futuro obtener los resultados de potencial en todo el dominio modelando un sistema que tenga en cuenta la capacitancia de la membrana directamente en vez de usar la ecuación \ref{eq:poisson}.\\
+Otro resultado interesante es que la mayoría de los poros grandes creados permanecen abiertos por un tiempo muy pequeño y mucho antes de que las especies estudiadas lleguen a la membrana celular. Esto quiere decir que se produce una permeabilización considerable en la membrana, pero no parece servir al ingreso de especies. Otros tipos de pulsos podrían solucionar este problema, haciendo coincidir la llegada de las especies a la membrana con la creación de los poros.\\
+
+Para el potencial transmembrana al comienzo del pulso se combinan los potenciales obtenidos por la ecuación de potencial eléctrico (\ref{eq:poisson}) con la fórmula \ref{eq:capacit} de carga de un capacitor. Esto significa que los potenciales obtenidos por el método de elementos finitos, usado para el transporte de especies, difieren de los potenciales usados para la creación y crecimiento de poros, usando dos sistemas de ecuaciones dos potenciales diferentes para un mismo instante, pudiendo afectar la precisión de los resultados. Sin embargo el efecto de la capacitancia de la membrana celular solo afecta durante los primeros microsegundos del pulso, como puede observarse en las imágenes de ITV en función del tiempo, en los cuáles el transporte de especies es casi nulo. Dado que la capacitancia de la célula no es muy grande, el valor de $(1 - e^{(-t/\tau)})$ en la fórmula \ref{eq:capacit} se hace rápidamente muy cercano a 1, y el efecto de la capacitancia se vuelve despreciable, eliminándose la discrepancia entre los potenciales usados para resolver la evolución de los poros y el transporte de especies. Sin embrago queda pendiente para el futuro obtener los resultados de potencial en todo el dominio modelando un sistema que tenga en cuenta la capacitancia de la membrana directamente en vez de usar la ecuación \ref{eq:poisson}.\\
 
 También queda pendiente simular distintos tipos de pulsos, en vez de variar sólo su potencial. Es posible que las especies Na+ y Cl- ingresen al interior de la célula en mayores concentraciones o con campos eléctricos menores si se aplican pulsos de mayor duración o si se simulan varios pulsos en vez de uno solo. \\
-
-
 
 \end{document}
 
