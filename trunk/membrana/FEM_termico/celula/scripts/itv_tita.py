@@ -14,6 +14,8 @@ FOLDERS = [		# (ruta, radio, cant(angulos))
 	("../salida/25-128/", 25, 128),
 ]
 
+font = { 'size': 16 }
+
 TIMES = [1e-6, 2e-6, 4e-6, 16e-6]
 
 for (folder, radio, mesh) in FOLDERS:
@@ -64,8 +66,8 @@ for (folder, radio, mesh) in FOLDERS:
 			#for label in legend.get_texts():
 			#	label.set_fonstize('small')
 
-			ax.set_ylabel('ITV [V]')
-			ax.set_xlabel('$\\Theta$ [rad]')
+			ax.set_ylabel('ITV [V]', fontdict=font)
+			ax.set_xlabel('$\\theta$ [rad]', fontdict=font)
 			ax.set_xlim(0, np.pi)
 
 			pylab.savefig(

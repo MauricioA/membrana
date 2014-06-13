@@ -15,6 +15,7 @@ FOLDERS = [		# (ruta, radio, cant(angulos))
 
 ESPECIES = ['H', 'OH', 'NA', 'CL']
 esps_latex = ['H$^+$', 'OH$^-$', 'Na$^+$', 'Cl$^-$']
+font = { 'size': 16 }
 
 for (folder, radio, mesh) in FOLDERS:
 	for dir in os.listdir(folder):
@@ -70,8 +71,8 @@ for (folder, radio, mesh) in FOLDERS:
 				fig, ax = plt.subplots()
 				plt.semilogy(firstYs, firstCs[esp], 'bo')
 				plt.semilogy(lastsYs, lastsCs[esp], 'ro')
-				plt.xlabel('Y [$\\mu$m]')
-				plt.ylabel('%s [at $\\mu$m$^{-3}$]' % esps_latex[esp])
+				plt.xlabel('Y [$\\mu$m]', fontdict=font)
+				plt.ylabel('%s [at $\\mu$m$^{-3}$]' % esps_latex[esp], fontdict=font)
 
 				max = np.amax(firstYs)
 				plt.axvline(x=max/5 * 2, color="gray", ls='--')
