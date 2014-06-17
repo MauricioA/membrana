@@ -16,6 +16,7 @@
 %\usepackage{wrapfig}
 \usepackage{siunitx}
 \usepackage[version=3]{mhchem}
+\usepackage{multicol}
 
 \graphicspath{ 
 	{../../FEM_termico/celula/scripts/itvs/}
@@ -29,6 +30,10 @@
 \author{Mauricio Alfonso}
 \institute{DC - FCEyN - UBA}
 %\date[11.2013]{SegInf, 2c - 2013}
+
+%TODO poner subsections en cada frame!
+%TODO sacar lo que sobre (explicaciones de cada constante, etc)
+%TODO badboxes
 
 \begin{document}
 	\newcommand{\h}{\ce{H^+}}
@@ -53,22 +58,30 @@
 		}
 	
 	\section{Mallado}
-		\frame{
-			\begin{itemize}
-				\item Coordenadas cilíndricas (2D)
-				\item Elementos cuadrilaterales
-				\item Programa AutoMesh2D para generar mallas
-				\item 2 mallas diferentes: una de 1930 elementos y otra de 7439 elementos
-			\end{itemize}
+		\frame{	
+			\begin{multicols}{2}
+				\begin{itemize}
+					\item Coordenadas cilíndricas (2D)
+					\item Elementos cuadrilaterales
+					\item Programa AutoMesh2D para generar mallas
+					\item 2 mallas diferentes: una de 1930 elementos y otra de 7439 elementos
+				\end{itemize}
+			\columnbreak
+				\begin{center}
+					%\includegraphics[keepaspectratio,width=.6\textwidth]{grande} \\
+					\includegraphics[keepaspectratio, height = 0.95\textheight]{grande} \\
+					%Ejemplo de malla
+				\end{center}
+			\end{multicols}
 		}
 		
-		\frame{
-			\begin{center}
-				%\includegraphics[keepaspectratio,width=.6\textwidth]{grande} \\
-				\includegraphics[keepaspectratio, height = \textheight]{grande} \\
-				%Ejemplo de malla
-			\end{center}
-		}
+%		\frame{
+%			\begin{center}
+%				%\includegraphics[keepaspectratio,width=.6\textwidth]{grande} \\
+%				\includegraphics[keepaspectratio, height = \textheight]{grande} \\
+%				%Ejemplo de malla
+%			\end{center}
+%		}
 	
 		\frame{
 			\begin{center}
@@ -153,154 +166,60 @@
 		}
 
 	\section{Resultados}
-		\frame{
-			
-		}	
+		\subsection{ITV vs tiempo (inicio)} \frame{
+			\begin{multicols}{2}
+				\begin{figure}
+					\includegraphics[keepaspectratio, width=0.5\textwidth]
+						{itv-time-lin-25-64-40KVm}
+					\caption{Para $\alpha$ = 25\si{\micro\metre} y 40\kvm}				
+				\end{figure}
+			\columnbreak
+				\begin{figure}
+					\includegraphics[keepaspectratio, width=0.5\textwidth]
+						{itv-time-lin-25-64-80KVm}
+					\caption{Para $\alpha$ = 25\si{\micro\metre} y 80\kvm}
+				\end{figure}
+			\end{multicols}
+		}
+				
+		\subsection{ITV vs ángulo (pulso)} \frame{ 
+			\begin{center}
+				\begin{figure}
+					\includegraphics[keepaspectratio, height=0.85\textheight]
+						{itv-time-log-25-64-160KVm}					
+					\caption{Pulso entero para para $\alpha$ = 25\si{\micro\metre} y 160\kvm}
+				\end{figure}
+			\end{center}
+		}
+		
+		\subsection{ITV vs ángulo} \frame{
+			\begin{center}
+				\begin{figure}
+					\includegraphics[keepaspectratio, height=0.85\textheight]
+						{itv-tita-50-64-80KVm}					
+					\caption{$\alpha$ = 50\si{\micro\metre} y 80\kvm}
+				\end{figure}
+			\end{center}
+		}
+		
+		\subsection{Distribución de poros grandes según radio} \frame{
+			\begin{multicols}{2}
+				\begin{figure}
+					\includegraphics[keepaspectratio, width=0.56\textwidth]
+						{hist-radios-5e-6-50-64-160KVm}
+					\caption{Para $\alpha$ = 50\si{\micro\metre}, 40\kvm y t = 5 \usec}
+				\end{figure}
+			\columnbreak
+				\begin{figure}
+					\includegraphics[keepaspectratio, width=0.56\textwidth]
+						{hist-radios-5e-3-50-64-160KVm}
+					\caption{Para $\alpha$ = 50\si{\micro\metre} y 160\kvm  y t = 5 \si{\milli\second}}
+				\end{figure}
+			\end{multicols}
+		}
+					
+		
 		
 	\section{Trabajo Pendiente}
-	
-
-	\section{Herramientas y ambiente}
-	    \frame{
-    	    \begin{itemize}
-        	    \item Android SDK\footnote{\url{https://developer.android.com/sdk/index.html}}
-                \item Genymotion Android emulator\footnote{\url{http://www.genymotion.com}}
-                \item Eclipse plugins para ambas cosas.
-            \end{itemize}
-        }
-        
-        \section{Animal}
-
-        \frame{
-            \begin{block}{Descripci\'on del malware}
-                Animal es un malware de Android que busca fotos en la tarjeta SD de la v\'ctima y las sube a un servidor.
-            \end{block}
-            \begin{block}{Permisos requeridos}
-                El \'unico permiso que requiere es acceso a internet (\texttt{android.permission.INTERNET}).
-            \end{block} 
-        }
-
-        \subsection{Information leakage / control}
-        \frame{
-            \begin{block}{C\'omo funciona?}
-                    \begin{enumerate}
-                        \item Abre una actividad\footnote{\url{http://developer.android.com/reference/android/app/Activity.html}} que busca archivos de im\'agenes en los directorios \texttt{DCIM/Camera}, \texttt{Pictures} y \texttt{Downloads} de la tarjeta SD del celular. 
-                        \item Lanza conexiones \texttt{HTTP} sobre las  que se env\'ian los archivos a nuestro servidor (\texttt{Servercito}).
-                        \item La direcci\'on de \texttt{Servercito} est\'a hardcodeada en el c\'odigo y las im\'agenes se convierten a base64 y se mandan usando los par\'ametros de url de un POST HTTP. 
-                    \end{enumerate}
-            \end{block}
-        }
-
-        \frame{
-            \begin{itemize}
-                \item (Sinatra rb) restfull 
-                    \begin{item}
-                    \item distribuible
-                    \item facil de mantener
-                    \item extensible
-                    \end{item}
-                \item Operaciones GET y POST
-                    \begin{itemize}
-                        \item obtener contactos, fotos, etc
-                        \item pushear comandos
-                        \item dormirse, despertarse ?
-                    \end{itemize}
-                \item 
-                    
-            \end{itemize}
-    }
-
-        \frame{
-            \begin{block}{Problemas que encontramos}
-                    Intentamos en principio subir las fotos en base 64 a pastebin y poner una ``clave'' como nombre de las subidas, para poder encontrarlas con facilidad de manera an\'onima sin tener que exponer la direcci\'on de nuestro servidor, pero nos encontramos con 2 limitaciones importantes de pastebin: 
-                    \begin{itemize}
-                        \item Un l\'imite de tamaño de 0.5 MB nos limita a fotos muy chicas o a achicar las fotos existentes                      
-                        \item Un l\'imite de 10 subidas por d\'ia.
-                    \end{itemize}
-            \end{block}
-        }
-
-%        \frame{
-%pepe
-%\begin{lstlisting}
-%#!/usr/bin/ruby
-%require 'sinatra'
-%get '/contacts' do | res| ...
-%post '/upload' do ...
-%post '/key' do ...
-%
-%\end{lstlisting}
-%
-%        }
-
-
-        \frame{
-            \begin{block}{Mejoras a\'un no implementadas}
-                    \begin{itemize}
-                        \item Camuflar la aplicaci\'on para que aparente ser bien intencionada. Actualmente solo muestra una pantalla en blanco. $\rightarrow$ Podr\'iamos simular que se produjo un error y la aplicaci\'on no funciona, mientras sigue subiendo las fotos en segundo plano.
-                        \item Si la v\'ictima no est\'a conectado a una red wi-fi $\rightarrow$ quedarse esperando y subir las fotos cuando s\'i lo est\'e (en segundo plano).
-                        \item Buscar im\'agenes en todo el \'arbol de directorios, no s\'olo las carpetas t\'ipicas de fotos (la v\'ictima podr\'ia guardarlas en cualquier lado.)
-                        \item Filtrar fotos por tamaño o nombre, de manera de subir solo aquellas que aparenten haber sido sacadas con la c\'amara del celular, y no todas las im\'agenes que se encuentren.
-                    \end{itemize}
-            \end{block}
-        }
-        
-        
-        \section{Animalazo}
-        
-        \frame{
-            \begin{block}{Descripci\'on del malware}
-                Animalazo es un malware de Android que roba los contactos de la v\'ctima y los sube a un servidor.
-            \end{block}
-            \begin{block}{Permisos requeridos}
-                El \'unico permiso que requiere es acceso de lectura a la los contactos (\texttt{android.permission.READ\_CONTACTS}).
-            \end{block} 
-        }
-
-        \frame{
-            \begin{block}{C\'omo funciona?}
-                    \begin{enumerate}
-                        \item Una aplicaci\'on inofensiva invita al usuario a pelear por salvar a los animales, mostrando dos perritos corriendo.
-                        \item Cuando el usuario hace click en el bot\'on para ``ayudar'':
-                        \begin{itemize}
-                            \item Se leen los contactos y se encodean en base64.
-                            \item se crea un Intent\footnote{\url{http://developer.android.com/reference/android/content/Intent.html}} que abre un browser como si se estuviese visitando una p\'agina.
-                            \item Se hace un GET a un server controlado por el atacante, enviando por los par\'ametros del GET los contactos encodeados (hay limitaciones de tama\~no)
-                            \item El server malicioso responde con un Redirect (302) a google, como si nada hubiera pasado.
-                        \end{itemize}
-                    \end{enumerate}
-            \end{block}
-        }
-
-        \frame{
-            \begin{block}{Problemas que encontramos}
-                    A veces la aplicaci\'on no enviaba los contactos, pensamos que tenia cacheada la URL del Intent. Despu\'es nos dimos cuenta que los distintos estados de la aplicaci\'on eran relevantes: \texttt{onCreate()}, \texttt{onStart()}, \texttt{onResume()}. Afinando mejor pudimos entender cual era el problema.
-            \end{block}
-        }
-
-        \frame{
-            \begin{block}{Mejoras a\'un no implementadas}
-                    \begin{itemize}
-                        \item Limitacion en el tama\~no de los URIs utilizados para extraer la informaci\'on. Aunque no est\'a definido este l\'imite de manera expl\'icita en el RFC2616\footnote{\url{http://www.faqs.org/rfcs/rfc2616.html}} hay limitaciones en las implementaciones.
-                    \end{itemize}
-            \end{block}
-        }
-
-        
-        \section{Animal Keyboard + FunWithAnimals}
-
-        \frame{
-            \begin{block}{Descripci\'on del malware}
-                \emph{Animal Keyboard} es un teclado de Android que ofrece un tab de emoticones para incentivar a los usuarios a instalarlo. No tiene ning\'un permiso extra, por lo que por s\'i solo es inofensivo. \emph{Al combinarse con la instalaci\'on de la aplicaci\'on FunWithAnimals, ambas act\'uan como keylogger mediante IPC}. 
-            \end{block}
-            \begin{block}{Permisos requeridos}
-                \begin{itemize}
-                    \item \texttt{android.permission.BIND\_INPUT\_METHOD} para el teclado (como cualquier otro)
-                    \item \texttt{android.permission.INTERNET} para FunWithAnimals.\\ 
-                    {\small Al registrar un teclado nuevo, Android advierte que \'este podr\'ia robarse tu informaci\'on. Por esto  muchas aplicaci\'ones de este tipo no incluyen permisos de internet para generar m\'as confianza\footnote{\url{http://cdn.cultofandroid.com/wp-content/uploads/2013/02/light\_flow\_1.jpg})}}.
-                \end{itemize}
-            \end{block} 
-        }
-
 
 \end{document}
