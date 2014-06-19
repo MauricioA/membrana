@@ -32,8 +32,7 @@
 \newcommand{\kvm}{$\si{\kilo\volt\per\metre}$}
 \newcommand{\usec}{$\si{\micro\second}$}
 
-%TODO NEW cambios mails ale.
-%TODO NEW ver r* en explicación poros-radio
+%TODO NEW mail: bibliografia, explicar mejor bordes
 %TODO escribir más. Explicar al menos qué es tita
 %TODO poner imagen célula
 %TODO poner imágenes de la grilla!!
@@ -110,9 +109,21 @@ Para el transporte de especies se usa la ecuación de conservación de masa de N
 	\frac{\partial C_i}{\partial t} = \nabla \cdot \left( D_i \nabla C_i + D_i z_i \frac{F}{R T} C_i \nabla \phi \right)
 \end{equation}
 
-donde $C_i$ representa la concentración de la especie $i$, $D_i$ el coeficiente de difusión de la especie $i$, $z_i$ la valencia de la especie $i$, $F$ la constante de Faraday, $R$ la constante de los gases y $T$ la temperatura. Esta ecuación tiene en cuenta la difusión de las partículas pero también el efecto que puede tener el campo eléctrico.\\
+donde $C_i$, $D_i$ y $z_i$ representan la concentración, el coeficiente de difusión y la valencia 
+respectivamente de la especie $i$, para $i$ alguna de las especies mencionadas en al introducción
+(\h, \oh, \na y \cl).
+$F$ es la constante de Faraday, $R$ la constante de los gases y $T$ la temperatura. 
+Esta ecuación tiene en cuenta la difusión de las partículas pero también el efecto que puede tener el campo eléctrico.\\
+
+%donde $C_i$ representa la concentración de la especie $i$, $D_i$ el coeficiente de difusión de la 
+%especie $i$, $z_i$ la valencia de la especie $i$, $F$ la constante de Faraday, $R$ la constante de los gases y $T$ la temperatura. Esta ecuación tiene en cuenta la difusión de las partículas pero también el efecto que puede tener el campo eléctrico.\\
 
 %TODO explicar un poco más de esta ecuación
+
+			Como condición de borde se tiene que 
+			\begin{equation}
+				-D_i (\nabla C_i \cdot \mathbf{n}) = 0
+			\end{equation}
 
 \subsection{Generación de poros}
 Con el ITV se crean poros hidrofílicos en la membrana. La densidad de poros se calcula según la ecuación diferencial  

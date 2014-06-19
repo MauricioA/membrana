@@ -191,8 +191,6 @@
 %			Donde $r$ es el radio de un poro, $D$ es el coeficiente de difusión para los poros, $k$ es la constante de Boltzmann, $T$ la temperatura absoluta, $V_m$ el potencial transmembrana, $F_{max}$ la máxima fuerza eléctrica para $V_m$ de 1V, $r_h$ y $r_a$ son constantes usadas para la velocidad de advección, $\beta$ es la energía de repulsión estérica, $\gamma$ es la energía del perímetro de los poros, y $\sigma_{\textrm{\tiny eff}}$ es la tensión efectiva de la membrana, $\sigma^\prime$ es la tensión de la interfase hidrocarburo-agua, $\sigma_0$ es la tensión de la bicapa sin poros, $A_p$ es la suma de las áreas de todos los poros en la célula, y $A$ es el área de la célula. 
 %		}
 
-%FALTA EXPLICAR LAS CONSTANTES DE LOS POROS!!!!
-
 		\subsection{Transporte de especies} \frame{
 			Transporte de especies: ecuación de Nernst-Planck
 			\begin{center}
@@ -205,8 +203,11 @@
 				especie $i$, para $i$ alguna de las especies mencionadas (\h, \oh, \na, \cl).
 			\newline \newline		
 			$F$ y $R$ son las constantes de Faraday y de los gases y $T$ la temperatura.
-			
-			%TODO condiciones de borde, bien gracias
+			\newline \newline
+			Como condición de borde se tiene que 
+%			\begin{center}
+				$-D_i (\nabla C_i \cdot \mathbf{n}) = 0$
+%			\end{center}
 		}
 		
 		\subsection{Acoplamiento} \frame{
