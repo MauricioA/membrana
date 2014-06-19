@@ -93,7 +93,7 @@
 				$\sigma_{e} \nabla^2 \phi = 0$
 			\end{center}			
 
-			Con $\phi$ es el potencial eléctrico y $\sigma_{e}$ la conductividad del material.
+			Con $\phi$ el potencial eléctrico y $\sigma_{e}$ la conductividad del material.
 			Condiciones de borde de Dirichlet en los electrodos y Neumann en los otros bordes.\\
 			
 %			El potencial transmembrana (ITV) debería aproximarse a:
@@ -212,22 +212,19 @@
 		\subsection{Acoplamiento} \frame{
 			La conductividad de la membrana se recalcula según el área ocupada por los poros		
 			\begin{center}
-				$\sigma_{\textrm{\tiny elem}} = \sigma_m (1 - p) + \sigma_p p$
+				$\sigma_{e} = \sigma_m (1 - p) + \sigma_p p$
 			\end{center}
-			donde $p$ es la proporción ocupada por poros de una zona esférica de la membrana.
+			donde $p$ es la proporción ocupada por poros de una zona esférica de la membrana. 
+			$\sigma_m$ y $\sigma_p$ son las conductividades de la membrana sin poros y del líquido 
+			que llena el poro
 			\newline \newline
 			Lo mismo se hace con la difusión:
 			\begin{center}
-				$D_{i, \textrm{\tiny elem}} = D_i (1 - p) + D_p$
+				$D_{i, e} = D_i (1 - p) + D_p$
 			\end{center}
 
-%				Los poros aumentan la conductividad y difusión de la membrana: las regiones con más
-%					\\ ESTO NO SE COMO EXPLICARLO
-%					
-					
-%				La conductividad y la difusión en la membrana se calculan como el promedio
-%					pesado entre la conductividad y difusión de la membrana sin poros y 
-%					del líquido que llena los poros, con la proporción 
+			$D_m$ y $D_p$ son las conductividades de la membrana sin poros y del líquido 
+			que llena el poro
 		}
 
 	\section{Implementación}
