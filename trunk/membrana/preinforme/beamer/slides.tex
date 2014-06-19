@@ -31,9 +31,7 @@
 \institute{DC - FCEyN - UBA}
 %\date[11.2013]{SegInf, 2c - 2013}
 
-%TODO explicar como se acoplan entre sí!! (como influyen los poros en la conductividad y difusión)
-%TODO poner subsections en cada frame!
-%TODO sacar lo que sobre (explicaciones de cada constante, etc)
+%TODO borde en transporte (clandestina); ver mails
 %TODO badboxes
 %TODO delaunay
 
@@ -87,9 +85,15 @@
 	\section{Teoría}
 		\subsection{Potencial Eléctrico} \frame{
 			Potencial eléctrico:
+%			\begin{center}
+%				$\nabla \sigma_{e} \cdot (\nabla \phi) = 0$
+%			\end{center}
+
 			\begin{center}
-				$\nabla \sigma_{elem} \cdot (\nabla \phi) = 0$
-			\end{center}
+				$\sigma_{e} \nabla^2 \phi = 0$
+			\end{center}			
+
+			Con $\phi$ es el potencial eléctrico y $\sigma_{e}$ la conductividad del material.
 			Condiciones de borde de Dirichlet en los electrodos y Neumann en los otros bordes.\\
 			
 %			El potencial transmembrana (ITV) debería aproximarse a:
@@ -104,6 +108,9 @@
 			\begin{center}
 				$\textrm{con } \tau = \alpha C_m \left( \frac{1}{\sigma_i} + \frac{1}{2 \sigma_o} \right)$
 			\end{center}
+			
+			Con $\alpha$ el radio, $C_m$ la capacitancia de la membrana y $\sigma_i$ y $\sigma_o$ las
+			conductividades interna y externa.
 		}
 	
 		\subsection{Densidad de poros} \frame{
