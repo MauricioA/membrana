@@ -2,12 +2,12 @@ import argparse, re
 
 #Para convertir del merged generado por Automesh2d al formato usado y cambiar escala
 
-ENTRADA = "50_128_merged.msh"
-SALIDA  = "50_128.msh"
+ENTRADA = "64.msh"
+SALIDA  = "50_64_cls.msh"
 ESCALA  = 100
-RADIO   = 50
-ANCHO   = 250
-ALTO    = 500
+RADIO   = 25
+ANCHO   = 50
+ALTO    = 100
 MEMB    = 5e-3
 
 centerX = 0
@@ -58,9 +58,9 @@ out.write("%s\n" % nPuntos)
 for i in range(1, nPuntos+1):
 	out.write('%s %s %s\n' % (i, puntos[i][0], puntos[i][1]))
 
-out.write('%s\n' % len(doms))
-
 doms = [externos, membrana, internos]
+
+out.write('%s\n' % len(doms))
 
 for i in range(len(doms)):
 	out.write('%s %s\n' % (i+1, len(doms[i])-1))

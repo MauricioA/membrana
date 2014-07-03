@@ -11,18 +11,22 @@ import os
 MAXTIME = 20e-3
 NLINEAS = 7
 FOLDERS = [		# (ruta, radio, cant(angulos))
-	("../salida/10-64/", 10, 63),
-	("../salida/25-64/", 25, 64),
-	("../salida/50-64/", 50, 64),
-	("../salida/25-128/", 25, 128),
+	#("../salida/10-64/", 10, 63),
+	#("../salida/25-64/", 25, 64),
+	#("../salida/50-64/", 50, 64),
+	#("../salida/25-128/", 25, 128),
+	#('../salida/ph7/25_64_cls/', 25, 64),
+	('../salida/ph7/10_d/', 10, 64),
 ]
 
 font = { 'size': 16 }
 
 for (folder, radio, mesh) in FOLDERS:
-	for dir in os.listdir(folder):
-		if dir[-3:] == ".7z" or dir[-4:] == ".tmp": continue
-		file = "%s%s/itv.csv" % (folder, dir)
+	#for dir in os.listdir(folder):
+	#	if dir[-3:] == ".7z" or dir[-4:] == ".tmp": continue
+	#	file = "%s%s/itv.csv" % (folder, dir)
+	
+		file = '%s/itv.csv' % folder
 		
 		times = []
 		itvss = [[] for x in range(NLINEAS)]
@@ -78,7 +82,8 @@ for (folder, radio, mesh) in FOLDERS:
 			plt.xlim(0, 10)
 			
 			pylab.savefig(
-				 'itvs/itv-time-lin-%s-%s-%s.png' % (radio, mesh, dir), 
+				 #'itvs/itv-time-lin-%s-%s-%s.png' % (radio, mesh, dir), 
+				 'itvs/ph7/lin-%s-%s-%s.png' % (radio, mesh, '50KVm'), 
 				 bbox_inches='tight'
 			)
 			print "ploted"
@@ -100,7 +105,8 @@ for (folder, radio, mesh) in FOLDERS:
 			plt.xlabel('Tiempo [s]', fontdict=font)
 			plt.xlim(0, 20e-3)
 			pylab.savefig(
-				 'itvs/itv-time-log-%s-%s-%s.png' % (radio, mesh, dir), 
+				 #'itvs/itv-time-log-%s-%s-%s.png' % (radio, mesh, dir), 
+				 'itvs/ph7/log-%s-%s-%s.png' % (radio, mesh, '50KVm'), 
 				 bbox_inches='tight'
 			)
 			print "ploted"

@@ -58,18 +58,18 @@ namespace declaraciones {
 		CONCENT *  4e-3,		// CL  4 mM
 	};
 
-	const double CONCENTRACION_ANODO[] = {			// at um**-3
-		1.5e7,		// H
-		0,			// OH
-		1e12,		// NA
-		0,			// CL
+	const double CONCENTRACION_ANODO[] = {		// at um**-3
+		CONCENT *  1e-7,		// H  1e-7 M
+		CONCENT *  1e-7,		// OH 1e-7 M
+		CONCENT * 14e-3,		// NA 14 mM
+		CONCENT *  4e-3,		// CL  4 mM
 	};
 
-	const double CONCENTRACION_CATODO[] = {			// at um**-3
-		0,			// H
-		1.806e7,	// OH
-		0,			// NA
-		0,			// CL
+	const double CONCENTRACION_CATODO[] = {		// at um**-3
+		CONCENT *  1e-7,		// H  1e-7 M
+		CONCENT *  1e-7,		// OH 1e-7 M
+		CONCENT * 14e-3,		// NA 14 mM
+		CONCENT *  4e-3,		// CL  4 mM
 	};
 
 	const double DIFUSION[] = {	// um**2 / s
