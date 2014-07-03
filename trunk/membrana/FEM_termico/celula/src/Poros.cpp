@@ -284,6 +284,12 @@ int Poros::getNPorosChicos() {
 	return kPoros;
 }
 
+//int Poros::getNPorosChicos() {
+//	return accumulate(valores.begin(), valores.end(), 0, [](int i, InfoAngulo info) {
+//		return i + info.porosChicos;
+//	});
+//}
+
 int Poros::getNPorosGrandes() {
 	int kPoros = 0;
 	for (auto& info : valores) {

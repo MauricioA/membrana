@@ -15,9 +15,7 @@ Celula::Celula() {
 	area = 4 * M_PI * pow(radio, 2);
 }
 
-Celula::~Celula() {
-	cout << "celula destruída" << endl;
-}
+Celula::~Celula() {}
 
 void Celula::poisson() {
 	Poisson::poisson(*this);
@@ -41,7 +39,7 @@ void Celula::transportePoros() {
 	const int PASO_DISCO_PORO_1		= 10;
 	const int PASO_DISCO_PORO_2		= 1000;
 	const int PASO_DISCO_PORO_3		= 10000;
-	const int PASO_TRANSPORTE		= 100;
+	const int PASO_TRANSPORTE		= 25;
 	const int PASO_CONSOLA			= 1000;
 	const int PASO_DISCO_TRANS_1	= 10000;
 	const int PASO_DISCO_TRANS_2	= 100000;

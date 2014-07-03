@@ -10,6 +10,8 @@
 
 using namespace std;
 
+//TODO copiar el input.in al dir de salida!
+
 EntradaSalida::EntradaSalida(Celula& celula) {
 	_celula = &celula;
 

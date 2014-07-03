@@ -1,9 +1,9 @@
 # Para generar archivos .prm para AutoMesh2D sin la malla 1d ni 2d
 
 SALIDA = "generado.prm"
-ALTO_orig = 500
-ANCHO_orig = 250
-RADIO_orig = 50
+ALTO_orig = 100
+ANCHO_orig = 50
+RADIO_orig = 25
 MEMBRANA_orig = 5e-3
 ESCALA = 100
 

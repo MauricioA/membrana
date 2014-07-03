@@ -7,10 +7,12 @@ import sys, os, pdb
 #para generar curvas de nivel de transporte sobre transporte.csv
 
 FOLDERS = [		# (ruta, radio, cant(angulos))
-	("../salida/10-64/", 10, 63),
-	("../salida/25-64/", 25, 64),
-	("../salida/50-64/", 50, 64),
-	("../salida/25-128/", 25, 128),
+	#("../salida/10-64/", 10, 63),
+	#("../salida/25-64/", 25, 64),
+	#("../salida/50-64/", 50, 64),
+	#("../salida/25-128/", 25, 128),
+	("../salida/ph7/25/", 25, 64),
+	("../salida/ph7/25_128/", 25, 128),
 ]
 
 ESPECIES = ['H', 'OH', 'NA', 'CL']
@@ -18,10 +20,12 @@ esps_latex = ['H$^+$', 'OH$^-$', 'Na$^+$', 'Cl$^-$']
 font = { 'size': 16 }
 
 for (folder, radio, mesh) in FOLDERS:
-	for dir in os.listdir(folder):
-		if dir[-3:] == ".7z" or dir[-4:] == ".tmp": continue
-		file = "%s%s/transporte.csv" % (folder, dir)
-		
+	#for dir in os.listdir(folder):
+	#	if dir[-3:] == ".7z" or dir[-4:] == ".tmp": continue
+	#	file = "%s%s/transporte.csv" % (folder, dir)
+	
+		file = '%s/transporte.csv' % folder
+
 		with open(file) as f:
 			first = next(f).decode()
 			f.seek(-1024, 2)
@@ -78,7 +82,8 @@ for (folder, radio, mesh) in FOLDERS:
 				plt.axvline(x=max/5 * 2, color="gray", ls='--')
 				plt.axvline(x=max/5 * 3, color="gray", ls='--')
 				
-				filename = 'curvas/curv-%s-%s-%s-%s.png' % (ESPECIES[esp], radio, mesh, dir)
+				#filename = 'curvas/curv-%s-%s-%s-%s.png' % (ESPECIES[esp], radio, mesh, dir)
+				filename = 'curvas/ph7/%s-%s-%sKvm-%s.png' % (radio, mesh, 50, ESPECIES[esp])
 				pylab.savefig(filename)
 				sys.stdout.write('plotted %s\n' % filename)
 				sys.stdout.flush()

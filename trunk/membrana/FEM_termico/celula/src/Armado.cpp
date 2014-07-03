@@ -15,6 +15,8 @@ void Armado::armadoPoisson(Double2D pos[], double sigma, int nodpel, double esm[
 		double ef[MAXNPEL];
 		armado4(pos, sigma, 0, false, 0, 0, esm, ef, NULL, NULL);
 		break;
+	default: 
+		assert(false);
 	}
 }
 
@@ -171,15 +173,14 @@ void Armado::armadoTransporte(int nodpel, Double2D pos[], double sigma, double q
 	for (int i = 0; i < nodpel; i++) for (int j = 0; j < nodpel; j++) est[i][j] = 0;
 
 	switch (nodpel) {
-		case 3: {
-			armadoTransporte3(pos, sigma, qe, landa, mu, mas, sol, esm, ef, est);
-			break;
-		} case 4: {
-			armado4(pos, sigma, qe, true, landa, mu, esm, ef, est, mas);
-			break;
-		} default: {
-			assert(false);
-		}
+	case 3:
+		armadoTransporte3(pos, sigma, qe, landa, mu, mas, sol, esm, ef, est);
+		break;
+	case 4:
+		armado4(pos, sigma, qe, true, landa, mu, esm, ef, est, mas);
+		break;
+	default: 
+		assert(false);
 	}
 
 	for (int k = 0; k < nodpel; k++) {
