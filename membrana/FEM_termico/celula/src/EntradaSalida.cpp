@@ -11,31 +11,32 @@
 using namespace std;
 
 //TODO copiar el input.in al dir de salida!
+//TODO generar carpetas recursivamente
 
 EntradaSalida::EntradaSalida(Celula& celula) {
 	_celula = &celula;
 
 	leerInput();
 
-	ftension	= fopen((getCelula().salida + "/tension.csv").c_str(), "w");
+	//ftension	= fopen((getCelula().salida + "/tension.csv").c_str(), "w");
 	fitv		= fopen((getCelula().salida + "/itv.csv").c_str(), "w");
-	fcampo		= fopen((getCelula().salida + "/campo-corriente.csv").c_str(), "w");
+	//fcampo		= fopen((getCelula().salida + "/campo-corriente.csv").c_str(), "w");
 	fporos		= fopen((getCelula().salida + "/poros.csv").c_str(), "w");
 	ftransporte = fopen((getCelula().salida + "/transporte.csv").c_str(), "w");
 	fph			= fopen((getCelula().salida + "/ph.csv").c_str(), "w");
 
-	assert(ftension > 0);
+	//assert(ftension > 0);
+	//assert(fcampo > 0);
 	assert(fitv > 0);
-	assert(fcampo > 0);
 	assert(fporos > 0);
 	assert(ftransporte > 0);
 	assert(fph > 0);
 }
 
 EntradaSalida::~EntradaSalida() {
-	fclose(ftension);
+	//fclose(ftension);
+	//fclose(fcampo);
 	fclose(fitv);
-	fclose(fcampo);
 	fclose(fporos);
 	fclose(ftransporte);
 	fclose(fph);
@@ -105,8 +106,10 @@ void EntradaSalida::leerInput() {
 	}
 
 	_mkdir(getCelula().salida.c_str());
+	_mkdir((getCelula().salida + "/tension").c_str());
+	_mkdir((getCelula().salida + "/campo").c_str());
 
-	printEnd();
+	printEnd(1);
 }
 
 void EntradaSalida::leerMalla(string malla) {
@@ -197,38 +200,90 @@ void EntradaSalida::dameLinea(ifstream& archivo, istringstream& iss) {
 	iss.str(line);
 }
 
+//void EntradaSalida::grabarPoisson(bool verbose) {
+//	printStart("Grabando...", verbose);
+//
+//	double time = getCelula().time;
+//	int nodpel = getCelula().nodpel;
+//	int nNodes = getCelula().nNodes;
+//	int nElems = getCelula().nElems;
+//
+//	/* Tensión */
+//	for (int iNodo = 0; iNodo < nNodes; iNodo++) {
+//		Nodo nodo = getCelula().getNodos()[iNodo];
+//		fprintf(ftension, "%g,%.6g,%.6g,%.8g\n", time, nodo.x, nodo.y, getCelula().getSolucion()[iNodo]);
+//	}
+//
+//	/* Campo y corriente */
+//	for (int k = 0; k < nElems; k++) {
+//		double corr = sqrt(pow(getCelula().getGradElem()[k].x, 2) + pow(getCelula().getGradElem()[k].y, 2));
+//		double camp = sqrt(pow(getCelula().getCorrElem()[k].x, 2) + pow(getCelula().getCorrElem()[k].y, 2));
+//		double xMed = 0, yMed = 0;
+//
+//		for (int j = 0; j < nodpel; j++) {
+//			int jNodo = getCelula().getElementos()[k][j];
+//			xMed += getCelula().getNodos()[jNodo].x;
+//			yMed += getCelula().getNodos()[jNodo].y;
+//		}
+//
+//		xMed /= nodpel;
+//		yMed /= nodpel;
+//
+//		fprintf(fcampo, "%g,%.6g,%.6g,%.9g,%.9g\n", time, xMed, yMed, camp, corr);
+//	}
+//
+//	printEnd(3, verbose);
+//}
+
 void EntradaSalida::grabarPoisson(bool verbose) {
-	if (verbose) printStart("Grabando...", true);
+	printStart("Grabando poisson...", verbose);
+
 	double time = getCelula().time;
 	int nodpel = getCelula().nodpel;
-	int nNodes = getCelula().nNodes;
-	int nElems = getCelula().nElems;
 
-	/* Tensión */
-	for (int iNodo = 0; iNodo < nNodes; iNodo++) {
+	FILE* ftension = fopen((
+		getCelula().salida + "/tension/tension-" + 
+		to_string(nPoisson) + "-" + to_string(time) + ".csv"
+	).c_str(), "w");
+	assert(ftension > 0);
+
+	fprintf(ftension, "         X,          Y,         tension\n");
+	for (int iNodo = 0; iNodo < getCelula().nNodes; iNodo++) {
 		Nodo nodo = getCelula().getNodos()[iNodo];
-		fprintf(ftension, "%g,%.6g,%.6g,%.8g\n", time, nodo.x, nodo.y, getCelula().getSolucion()[iNodo]);
+		fprintf(ftension, "%#10f, %#10f, %#15.9g\n", nodo.x, nodo.y, getCelula().getSolucion()[iNodo]);
 	}
 
-	/* Campo y corriente */
-	for (int k = 0; k < nElems; k++) {
+	fclose(ftension);
+
+	FILE* fcampo = fopen((
+		getCelula().salida + "/campo/campo-" +
+		to_string(nPoisson) + "-" + to_string(time) + ".csv"
+		).c_str(), "w");
+	assert(fcampo > 0);
+
+	fprintf(ftension, "         X,          Y,           campo,        corriente\n");
+
+	for (int k = 0; k < getCelula().nElems; k++) {
 		double corr = sqrt(pow(getCelula().getGradElem()[k].x, 2) + pow(getCelula().getGradElem()[k].y, 2));
 		double camp = sqrt(pow(getCelula().getCorrElem()[k].x, 2) + pow(getCelula().getCorrElem()[k].y, 2));
 		double xMed = 0, yMed = 0;
-
-		for (int j = 0; j < nodpel; j++) {
+	
+		for (int j = 0; j < getCelula().nodpel; j++) {
 			int jNodo = getCelula().getElementos()[k][j];
 			xMed += getCelula().getNodos()[jNodo].x;
 			yMed += getCelula().getNodos()[jNodo].y;
 		}
-
+	
 		xMed /= nodpel;
 		yMed /= nodpel;
-
-		fprintf(fcampo, "%g,%.6g,%.6g,%.9g,%.9g\n", time, xMed, yMed, camp, corr);
+		
+		fprintf(fcampo, "%#10f, %#10f, %#15.9g,  %#15.9g\n", xMed, yMed, camp, corr);
 	}
 
-	if (verbose) printEnd(3);
+	fclose(fcampo);
+
+	nPoisson++;
+	printEnd(verbose);
 }
 
 void EntradaSalida::printStart(string message, bool verbose) {

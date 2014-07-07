@@ -101,8 +101,6 @@ private:
 	vector<Double2D> gradElem;
 	vector<Double2D> corrElem;
 
-	//EntradaSalida* _entradaSalida;
-
 	unique_ptr<EntradaSalida> _entradaSalida;
 
 	SparseMatrix<double> matriz;
