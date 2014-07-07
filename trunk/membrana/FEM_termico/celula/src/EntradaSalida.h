@@ -14,7 +14,7 @@ public:
 
 	void leerInput();
 
-	void grabarPoisson(bool verbose=false);
+	void grabarPoisson(bool verbose=true);
 
 	void printStart(string message, bool verbose=true);
 
@@ -29,14 +29,16 @@ public:
 private:
 	Celula* _celula;
 
-	FILE* ftension;
+	//FILE* ftension;
+	//FILE* fcampo;
 	FILE* fitv;
-	FILE* fcampo;
 	FILE* fporos;
 	FILE* ftransporte;
 	FILE* fph;
 
 	clock_t start;
+
+	int nPoisson = 0;
 
 	inline Celula& getCelula();
 
