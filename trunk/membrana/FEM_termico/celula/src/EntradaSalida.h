@@ -22,7 +22,7 @@ public:
 
 	void grabarTransporte(bool verbose=true);
 
-	void grabarRadios(Poros& radios, bool verbose=false);
+	void grabarPoros(Poros& radios, bool verbose=true);
 
 	void grabarITV(Poros& poros);
 
@@ -32,7 +32,7 @@ private:
 	//FILE* ftension;
 	//FILE* fcampo;
 	FILE* fitv;
-	FILE* fporos;
+	//FILE* fporos;
 	//FILE* ftransporte;
 	//FILE* fph;
 
@@ -40,6 +40,7 @@ private:
 
 	int nPoisson = 0;
 	int nTransporte = 0;
+	int nPoros = 0;
 
 	inline Celula& getCelula();
 
