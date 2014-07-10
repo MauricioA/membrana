@@ -10,6 +10,9 @@
 
 using namespace std;
 
+//TODO ph y transporte en formato nuevo y con molar
+//TODO poros en formato nuevo
+//TODO espacio correcto en itv
 //TODO copiar el input.in al dir de salida!
 //TODO generar carpetas recursivamente
 
@@ -22,15 +25,15 @@ EntradaSalida::EntradaSalida(Celula& celula) {
 	fitv		= fopen((getCelula().salida + "/itv.csv").c_str(), "w");
 	//fcampo		= fopen((getCelula().salida + "/campo-corriente.csv").c_str(), "w");
 	fporos		= fopen((getCelula().salida + "/poros.csv").c_str(), "w");
-	ftransporte = fopen((getCelula().salida + "/transporte.csv").c_str(), "w");
-	fph			= fopen((getCelula().salida + "/ph.csv").c_str(), "w");
+	//ftransporte = fopen((getCelula().salida + "/transporte.csv").c_str(), "w");
+	//fph			= fopen((getCelula().salida + "/ph.csv").c_str(), "w");
 
 	//assert(ftension > 0);
 	//assert(fcampo > 0);
 	assert(fitv > 0);
 	assert(fporos > 0);
-	assert(ftransporte > 0);
-	assert(fph > 0);
+	//assert(ftransporte > 0);
+	//assert(fph > 0);
 }
 
 EntradaSalida::~EntradaSalida() {
@@ -38,8 +41,8 @@ EntradaSalida::~EntradaSalida() {
 	//fclose(fcampo);
 	fclose(fitv);
 	fclose(fporos);
-	fclose(ftransporte);
-	fclose(fph);
+	//fclose(ftransporte);
+	//fclose(fph);
 }
 
 inline Celula& EntradaSalida::getCelula() {
@@ -47,7 +50,7 @@ inline Celula& EntradaSalida::getCelula() {
 }
 
 void EntradaSalida::leerInput() {
-	printStart("Leyendo archivos...", true);
+	printStart("Leyendo archivos... ", true);
 
 	string s, line, malla;
 	vector<int> dirichV, dirichT;
@@ -108,8 +111,9 @@ void EntradaSalida::leerInput() {
 	_mkdir(getCelula().salida.c_str());
 	_mkdir((getCelula().salida + "/tension").c_str());
 	_mkdir((getCelula().salida + "/campo").c_str());
+	_mkdir((getCelula().salida + "/transporte").c_str());
 
-	printEnd(1);
+	printEnd(2, true);
 }
 
 void EntradaSalida::leerMalla(string malla) {
@@ -200,41 +204,6 @@ void EntradaSalida::dameLinea(ifstream& archivo, istringstream& iss) {
 	iss.str(line);
 }
 
-//void EntradaSalida::grabarPoisson(bool verbose) {
-//	printStart("Grabando...", verbose);
-//
-//	double time = getCelula().time;
-//	int nodpel = getCelula().nodpel;
-//	int nNodes = getCelula().nNodes;
-//	int nElems = getCelula().nElems;
-//
-//	/* Tensión */
-//	for (int iNodo = 0; iNodo < nNodes; iNodo++) {
-//		Nodo nodo = getCelula().getNodos()[iNodo];
-//		fprintf(ftension, "%g,%.6g,%.6g,%.8g\n", time, nodo.x, nodo.y, getCelula().getSolucion()[iNodo]);
-//	}
-//
-//	/* Campo y corriente */
-//	for (int k = 0; k < nElems; k++) {
-//		double corr = sqrt(pow(getCelula().getGradElem()[k].x, 2) + pow(getCelula().getGradElem()[k].y, 2));
-//		double camp = sqrt(pow(getCelula().getCorrElem()[k].x, 2) + pow(getCelula().getCorrElem()[k].y, 2));
-//		double xMed = 0, yMed = 0;
-//
-//		for (int j = 0; j < nodpel; j++) {
-//			int jNodo = getCelula().getElementos()[k][j];
-//			xMed += getCelula().getNodos()[jNodo].x;
-//			yMed += getCelula().getNodos()[jNodo].y;
-//		}
-//
-//		xMed /= nodpel;
-//		yMed /= nodpel;
-//
-//		fprintf(fcampo, "%g,%.6g,%.6g,%.9g,%.9g\n", time, xMed, yMed, camp, corr);
-//	}
-//
-//	printEnd(3, verbose);
-//}
-
 void EntradaSalida::grabarPoisson(bool verbose) {
 	printStart("Grabando poisson...", verbose);
 
@@ -245,9 +214,10 @@ void EntradaSalida::grabarPoisson(bool verbose) {
 		getCelula().salida + "/tension/tension-" + 
 		to_string(nPoisson) + "-" + to_string(time) + ".csv"
 	).c_str(), "w");
-	assert(ftension > 0);
 
+	assert(ftension > 0);
 	fprintf(ftension, "         X,          Y,         tension\n");
+
 	for (int iNodo = 0; iNodo < getCelula().nNodes; iNodo++) {
 		Nodo nodo = getCelula().getNodos()[iNodo];
 		fprintf(ftension, "%#10f, %#10f, %#15.9g\n", nodo.x, nodo.y, getCelula().getSolucion()[iNodo]);
@@ -258,10 +228,10 @@ void EntradaSalida::grabarPoisson(bool verbose) {
 	FILE* fcampo = fopen((
 		getCelula().salida + "/campo/campo-" +
 		to_string(nPoisson) + "-" + to_string(time) + ".csv"
-		).c_str(), "w");
+	).c_str(), "w");
+	
 	assert(fcampo > 0);
-
-	fprintf(ftension, "         X,          Y,           campo,        corriente\n");
+	fprintf(ftension, "         X,          Y,           campo,       corriente\n");
 
 	for (int k = 0; k < getCelula().nElems; k++) {
 		double corr = sqrt(pow(getCelula().getGradElem()[k].x, 2) + pow(getCelula().getGradElem()[k].y, 2));
@@ -277,13 +247,13 @@ void EntradaSalida::grabarPoisson(bool verbose) {
 		xMed /= nodpel;
 		yMed /= nodpel;
 		
-		fprintf(fcampo, "%#10f, %#10f, %#15.9g,  %#15.9g\n", xMed, yMed, camp, corr);
+		fprintf(fcampo, "%#10f, %#10f, %#15.9g, %#15.9g\n", xMed, yMed, camp, corr);
 	}
 
 	fclose(fcampo);
 
 	nPoisson++;
-	printEnd(verbose);
+	printEnd(2, verbose);
 }
 
 void EntradaSalida::printStart(string message, bool verbose) {
@@ -302,29 +272,70 @@ void EntradaSalida::printEnd(int tabs, bool verbose) {
 	}
 }
 
+//void EntradaSalida::grabarTransporte(bool verbose) {
+//	if (verbose) EntradaSalida::printStart("Grabando en disco...");
+//	double time = getCelula().time;
+//	int nNodes = getCelula().nNodes;
+//
+//	for (int jNodo = 0; jNodo < nNodes; jNodo++) {
+//		Nodo nodo = getCelula().getNodos()[jNodo];
+//
+//		fprintf(ftransporte, "%g,%.6g,%.6g", time, nodo.x, nodo.y);
+//		fprintf(fph, "%g,%.6g,%.6g", time, nodo.x, nodo.y);
+//
+//		for (int esp = 0; esp < NESPS; esp++) {
+//			fprintf(ftransporte, ",%.9e", getCelula().concentraciones[esp][jNodo]);
+//		}
+//
+//		fprintf(fph, ",%.9e", getCelula().phAux[H_][jNodo]);
+//		fprintf(fph, ",%.9e", getCelula().phAux[OH][jNodo]);
+//
+//		fprintf(ftransporte, "\n");
+//		fprintf(fph, "\n");
+//	}
+//
+//	if (verbose) EntradaSalida::printEnd(); 
+//}
+
 void EntradaSalida::grabarTransporte(bool verbose) {
-	if (verbose) EntradaSalida::printStart("Grabando en disco...");
+	printStart("Grabando transporte...", verbose);
+	
 	double time = getCelula().time;
 	int nNodes = getCelula().nNodes;
 
+	FILE* fpH = fopen((
+		getCelula().salida + "/transporte/pH-" +
+		to_string(nTransporte) + "-" + to_string(time) + ".csv"
+	).c_str(), "w");
+	
+	FILE* fTrans = fopen((
+		getCelula().salida + "/transporte/concent-" +
+		to_string(nTransporte) + "-" + to_string(time) + ".csv"
+	).c_str(), "w");
+	
+	assert(fpH > 0);
+	assert(fTrans > 0);
+
+	fprintf(fpH,    "         X,          Y,           pH_H+,          pH_OH-\n");
+	fprintf(fTrans, "         X,          Y,             Na+,             Cl-\n");
+
 	for (int jNodo = 0; jNodo < nNodes; jNodo++) {
 		Nodo nodo = getCelula().getNodos()[jNodo];
+		
+		double pH_H  = -log10((getCelula().concentraciones[H_][jNodo] + 1e-18) / CONCENT);
+		double ph_OH = -log10((getCelula().concentraciones[OH][jNodo] + 1e-18) / CONCENT);
 
-		fprintf(ftransporte, "%g,%.6g,%.6g", time, nodo.x, nodo.y);
-		fprintf(fph, "%g,%.6g,%.6g", time, nodo.x, nodo.y);
+		double molarNa = getCelula().concentraciones[NA][jNodo] / CONCENT;
+		double molarCl = getCelula().concentraciones[CL][jNodo] / CONCENT;
 
-		for (int esp = 0; esp < NESPS; esp++) {
-			fprintf(ftransporte, ",%.9e", getCelula().concentraciones[esp][jNodo]);
-		}
-
-		fprintf(fph, ",%.9e", getCelula().phAux[H_][jNodo]);
-		fprintf(fph, ",%.9e", getCelula().phAux[OH][jNodo]);
-
-		fprintf(ftransporte, "\n");
-		fprintf(fph, "\n");
+		fprintf(fpH, "%#10f, %#10f, %#15.9g, %#15.9g\n", nodo.x, nodo.y, pH_H, ph_OH);
+		fprintf(fTrans, "%#10f, %#10f, %#15.9g, %#15.9g\n", nodo.x, nodo.y, molarNa, molarCl);
 	}
 
-	if (verbose) EntradaSalida::printEnd(); 
+	fclose(fpH);
+	fclose(fTrans);
+	nTransporte++;
+	printEnd(1, verbose);
 }
 
 void EntradaSalida::grabarRadios(Poros& radios, bool verbose) {

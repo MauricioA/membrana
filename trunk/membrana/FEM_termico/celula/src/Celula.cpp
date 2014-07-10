@@ -41,23 +41,23 @@ void Celula::transportePoros() {
 	const int PASO_DISCO_PORO_3		= 10000;
 	const int PASO_TRANSPORTE		= 25;
 	const int PASO_CONSOLA			= 1000;
-	const int PASO_DISCO_TRANS_1	= 10000;
-	const int PASO_DISCO_TRANS_2	= 100000;
+	//const int PASO_DISCO_TRANS_1	= 10000;
+	//const int PASO_DISCO_TRANS_2	= 100000;
 
-	vector<double> paso_disco{ 0, 5e-3, 10e-3, 15e-3, 19.99e-3, 1 };
+	vector<double> paso_disco{ 0, 1e-6, 2e-6, 5e-3, 10e-3, 15e-3, 19.99e-3, 1 };
 	int pos_disco = 0;
 
 	//int paso_disco_poisson = PASO_DISCO_POISSON_1;
 	int paso_disco_itv = PASO_DISCO_ITV_1;
 	int paso_disco_poro = PASO_DISCO_PORO_1;
-	int paso_disco_transporte = PASO_DISCO_TRANS_1;
+	//int paso_disco_transporte = PASO_DISCO_TRANS_1;
 	int paso_poisson = PASO_POISSON_1;
 
 	Poros poros = Poros(*this);
 
 	TransporteAreas transporte = TransporteAreas(*this, poros);
 	
-	int it_consola = 0, it_disco_trans = 0, it_trans = 0, it_disco_itv = paso_disco_itv-1; 
+	int it_consola = 0, /*it_disco_trans = 0, */it_trans = 0, it_disco_itv = paso_disco_itv-1; 
 	int it_poiss = paso_poisson, it_disco_poro = paso_disco_poro/*, it_disco_poisson = 0*/;
 	clock_t reloj = 0;
 	int fase = 1;
@@ -98,6 +98,7 @@ void Celula::transportePoros() {
 		/* Grabo disco poisson */
 		if (time >= paso_disco[pos_disco]) {
 			getEntradaSalida().grabarPoisson();
+			getEntradaSalida().grabarTransporte();
 			pos_disco++;
 		}
 
@@ -113,11 +114,11 @@ void Celula::transportePoros() {
 			it_disco_poro = 0;
 		}
 
-		/* Grabo disco transporte */
-		if (it_disco_trans == paso_disco_transporte) {
-			getEntradaSalida().grabarTransporte();
-			it_disco_trans = 0;
-		}
+		///* Grabo disco transporte */
+		//if (it_disco_trans == paso_disco_transporte) {
+		//	getEntradaSalida().grabarTransporte();
+		//	it_disco_trans = 0;
+		//}
 
 		/* Actualizo pasos */
 		if (fase == 1 && time > 10e-6) {
@@ -134,10 +135,10 @@ void Celula::transportePoros() {
 			//paso_disco_poisson = PASO_DISCO_POISSON_3;
 			paso_disco_itv = PASO_DISCO_ITV_3;
 			paso_disco_poro = PASO_DISCO_PORO_3;
-			paso_disco_transporte = PASO_DISCO_TRANS_2;
+			//paso_disco_transporte = PASO_DISCO_TRANS_2;
 		}
 
-		it_consola++; it_disco_trans++; it_disco_poro++; 
+		it_consola++; /*it_disco_trans++; */it_disco_poro++; 
 		it_trans++, it_poiss++; /*it_disco_poisson++; */it_disco_itv++;
 	}
 }

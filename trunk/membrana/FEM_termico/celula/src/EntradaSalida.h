@@ -20,7 +20,7 @@ public:
 
 	void printEnd(int tabs=2, bool verbose=true);
 
-	void grabarTransporte(bool verbose=false);
+	void grabarTransporte(bool verbose=true);
 
 	void grabarRadios(Poros& radios, bool verbose=false);
 
@@ -33,12 +33,13 @@ private:
 	//FILE* fcampo;
 	FILE* fitv;
 	FILE* fporos;
-	FILE* ftransporte;
-	FILE* fph;
+	//FILE* ftransporte;
+	//FILE* fph;
 
 	clock_t start;
 
 	int nPoisson = 0;
+	int nTransporte = 0;
 
 	inline Celula& getCelula();
 
