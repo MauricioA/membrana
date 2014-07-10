@@ -43,8 +43,6 @@ public:
 	VectorXd concentraciones[NESPS];
 	VectorXd anteriores[NESPS];
 
-	vector<double> phAux[NESPS];
-
 	SparseMatrix<double> matrizTrans[NESPS];
 
 	inline EntradaSalida& getEntradaSalida() {

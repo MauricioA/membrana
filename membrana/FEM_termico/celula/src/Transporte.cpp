@@ -24,9 +24,6 @@ Transporte::Transporte(Celula& celula) {
 		celula.anteriores[esp].resize(celula.nNodes);
 	}
 
-	celula.phAux[H_].resize(celula.nNodes);
-	celula.phAux[OH].resize(celula.nNodes);
-
 	vector<bool> nodosInternos(celula.nNodes, false);
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
 		Elemento elem = celula.getElementos()[iElem];
@@ -69,9 +66,6 @@ void Transporte::iteracion(double deltaT) {
 	}
 
 	for (int kNodo = 0; kNodo < celula.nNodes; kNodo++) {
-		celula.phAux[H_][kNodo] = -log10((celula.concentraciones[H_][kNodo] + 1e-18) * 1e15 / 6.02e23);
-		celula.phAux[OH][kNodo] = -log10((celula.concentraciones[OH][kNodo] + 1e-18) * 1e15 / 6.02e23);
-
 		for (int esp = 0; esp < NESPS; esp++) {
 			num += pow(celula.concentraciones[esp][kNodo] - celula.anteriores[esp][kNodo], 2);
 			den += pow(celula.concentraciones[esp][kNodo], 2);
