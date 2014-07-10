@@ -10,39 +10,21 @@
 
 using namespace std;
 
-//TODO ph y transporte en formato nuevo y con molar
-//TODO poros en formato nuevo
-//TODO espacio correcto en itv
-//TODO copiar el input.in al dir de salida!
-//TODO generar carpetas recursivamente
-
 EntradaSalida::EntradaSalida(Celula& celula) {
 	_celula = &celula;
-
 	leerInput();
 
-	//ftension	= fopen((getCelula().salida + "/tension.csv").c_str(), "w");
-	fitv		= fopen((getCelula().salida + "/itv.csv").c_str(), "w");
-	//fcampo		= fopen((getCelula().salida + "/campo-corriente.csv").c_str(), "w");
-	fporos		= fopen((getCelula().salida + "/poros.csv").c_str(), "w");
-	//ftransporte = fopen((getCelula().salida + "/transporte.csv").c_str(), "w");
-	//fph			= fopen((getCelula().salida + "/ph.csv").c_str(), "w");
+	/* Copiar input.in */
+	ifstream src("input.in", ios::binary);
+	ofstream dst(getCelula().salida + "/input.in", ios::binary);
+	dst << src.rdbuf();
 
-	//assert(ftension > 0);
-	//assert(fcampo > 0);
+	fitv = fopen((getCelula().salida + "/itv.csv").c_str(), "w");
 	assert(fitv > 0);
-	assert(fporos > 0);
-	//assert(ftransporte > 0);
-	//assert(fph > 0);
 }
 
 EntradaSalida::~EntradaSalida() {
-	//fclose(ftension);
-	//fclose(fcampo);
 	fclose(fitv);
-	fclose(fporos);
-	//fclose(ftransporte);
-	//fclose(fph);
 }
 
 inline Celula& EntradaSalida::getCelula() {
@@ -112,6 +94,7 @@ void EntradaSalida::leerInput() {
 	_mkdir((getCelula().salida + "/tension").c_str());
 	_mkdir((getCelula().salida + "/campo").c_str());
 	_mkdir((getCelula().salida + "/transporte").c_str());
+	_mkdir((getCelula().salida + "/poros").c_str());
 
 	printEnd(2, true);
 }
@@ -272,31 +255,6 @@ void EntradaSalida::printEnd(int tabs, bool verbose) {
 	}
 }
 
-//void EntradaSalida::grabarTransporte(bool verbose) {
-//	if (verbose) EntradaSalida::printStart("Grabando en disco...");
-//	double time = getCelula().time;
-//	int nNodes = getCelula().nNodes;
-//
-//	for (int jNodo = 0; jNodo < nNodes; jNodo++) {
-//		Nodo nodo = getCelula().getNodos()[jNodo];
-//
-//		fprintf(ftransporte, "%g,%.6g,%.6g", time, nodo.x, nodo.y);
-//		fprintf(fph, "%g,%.6g,%.6g", time, nodo.x, nodo.y);
-//
-//		for (int esp = 0; esp < NESPS; esp++) {
-//			fprintf(ftransporte, ",%.9e", getCelula().concentraciones[esp][jNodo]);
-//		}
-//
-//		fprintf(fph, ",%.9e", getCelula().phAux[H_][jNodo]);
-//		fprintf(fph, ",%.9e", getCelula().phAux[OH][jNodo]);
-//
-//		fprintf(ftransporte, "\n");
-//		fprintf(fph, "\n");
-//	}
-//
-//	if (verbose) EntradaSalida::printEnd(); 
-//}
-
 void EntradaSalida::grabarTransporte(bool verbose) {
 	printStart("Grabando transporte...", verbose);
 	
@@ -338,21 +296,31 @@ void EntradaSalida::grabarTransporte(bool verbose) {
 	printEnd(1, verbose);
 }
 
-void EntradaSalida::grabarRadios(Poros& radios, bool verbose) {
-	if (verbose) EntradaSalida::printStart("Grabando en disco...");
+void EntradaSalida::grabarPoros(Poros& radios, bool verbose) {
+	printStart("Grabando poros...", verbose);
 	double time = getCelula().time;
+
+	FILE* fPoros = fopen((
+		getCelula().salida + "/poros/poros-" +
+		to_string(nPoros) + "-" + to_string(time) + ".csv"
+	).c_str(), "w");
+
+	assert(fPoros > 0);
+	fprintf(fPoros, "      tita,           radio\n");
 
 	for (auto& info : radios.getValores()) {
 		for (auto& radio : info.porosGrandes) {
-			fprintf(fporos, "%g,%.6g,%.6e\n", time, info.tita, radio.first);
+			fprintf(fPoros, "%#10f, %#15.9g\n", info.tita, radio.first);
 		}
 
 		for (int i = 0; i < info.porosChicos; i++) {
-			fprintf(fporos, "%g,%.6g,%.6e\n", time, info.tita, info.radioChico);
+			fprintf(fPoros, "%#10f, %#15.9g\n", time, info.tita, info.radioChico);
 		}
 	}
 
-	if (verbose) EntradaSalida::printEnd();
+	nPoros++;
+	fclose(fPoros);
+	printEnd(2, verbose);
 }
 
 void EntradaSalida::grabarITV(Poros& poros) {
@@ -360,6 +328,6 @@ void EntradaSalida::grabarITV(Poros& poros) {
 	vector<pair<double, double>> valores = poros.getITVs(time);
 
 	for (auto& info : valores) {
-		fprintf(fitv, "%g,%.9g,%.9g\n", time, info.first, info.second);
+		fprintf(fitv, "%#10.6g, %#10f, %#10f\n", time, info.first, info.second);
 	}
 }
