@@ -1,10 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
-#include <cassert>
 #include <fstream>
-#include <cfloat>
 #include <direct.h>
+#include <cassert>
+#include <cfloat>
 #include "EntradaSalida.h"
 #include "Celula.h"
 

@@ -3,7 +3,7 @@
 SALIDA = "generado.prm"
 ALTO_orig = 100
 ANCHO_orig = 50
-RADIO_orig = 25
+RADIO_orig = 10
 MEMBRANA_orig = 5e-3
 ESCALA = 100
 

@@ -18,6 +18,7 @@
     <Compile Include="areaTotal.py" />
     <Compile Include="curva.py" />
     <Compile Include="curvas_trans.py" />
+    <Compile Include="deltamax.py" />
     <Compile Include="depolarizado.py" />
     <Compile Include="digest.py" />
     <Compile Include="generar_prm.py" />
