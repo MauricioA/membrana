@@ -1,4 +1,5 @@
 #include <cassert>
+#include <chrono>
 #include <iostream>
 #include "Celula.h"
 #include "EntradaSalida.h"
@@ -6,6 +7,8 @@
 #include "Poisson.h"
 #include "TransporteAreas.h"
 #include "Poros.h"
+
+using namespace std;
 
 Celula::Celula() {
 	potencial = 0;
@@ -36,7 +39,7 @@ void Celula::transportePoros() {
 	const int PASO_TRANSPORTE		= 1000;
 	const int PASO_CONSOLA			= 1000;
 
-	vector<double> paso_disco{ 0, 5e-3, 10e-3, 15e-3, 19.999e-3, 1 };
+	vector<double> paso_disco = { 0, 5e-3, 10e-3, 15e-3, 19.999e-3, 1 };
 	int pos_disco = 0;
 
 	int paso_disco_itv = PASO_DISCO_ITV_1;
@@ -48,7 +51,7 @@ void Celula::transportePoros() {
 	
 	int it_consola = 0, it_trans = 0, it_disco_itv = paso_disco_itv-1; 
 	int it_poiss = paso_poisson;
-	clock_t reloj = 0;
+	auto start = chrono::high_resolution_clock::now();
 	int fase = 1;
 
 	for (time = 0; time < TIEMPO_FINAL; time += DELTA_T) {
@@ -70,10 +73,12 @@ void Celula::transportePoros() {
 
 		/* Imprimo por consola */
 		if (it_consola == PASO_CONSOLA) {
-			int interv = (clock() - reloj) / (CLOCKS_PER_SEC / 1000);
-			double deltaReal = (double)interv / PASO_CONSOLA;
-			reloj = clock();
-			printf("%.1fus %.2e %d %d  %.2f ms/it\n", time*1e6, poros.getRadioMaximo(), 
+			auto end = chrono::high_resolution_clock::now();
+			long long delta_um = chrono::duration_cast<chrono::microseconds>(end - start).count();
+			double deltaReal = delta_um / 1000. / PASO_CONSOLA;
+			start = end;
+
+			printf("%.1fus %.2e %d %d  %.2f ms/it\n", time*1e6, poros.getRadioMaximo(),
 				poros.getNPoros(), poros.getNPorosChicos(), deltaReal);
 			it_consola = 0;
 		}
