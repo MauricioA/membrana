@@ -189,6 +189,7 @@ void Transporte::concentracion(int esp, double deltaT) {
 	Celula& celula = getCelula();
 	double esm[MAXNPEL][MAXNPEL];
 	vector<Triplet<double>> triplets;
+	triplets.reserve(celula.getElementos().size() * celula.nodpel * celula.nodpel);
 
 	VectorXd rhs;
 	rhs.resize(celula.nNodes);

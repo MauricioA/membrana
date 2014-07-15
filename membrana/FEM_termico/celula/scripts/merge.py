@@ -2,8 +2,8 @@ import argparse, re
 
 #Para convertir del merged generado por Automesh2d al formato usado y cambiar escala
 
-ENTRADA = "64.msh"
-SALIDA  = "50_64_cls.msh"
+ENTRADA = "25_128_cls_merged.msh"
+SALIDA  = "25_128_cls.msh"
 ESCALA  = 100
 RADIO   = 25
 ANCHO   = 50

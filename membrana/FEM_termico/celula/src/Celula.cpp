@@ -33,10 +33,10 @@ void Celula::transportePoros() {
 	const int PASO_DISCO_ITV_1		= 10;
 	const int PASO_DISCO_ITV_2		= 100;
 	const int PASO_DISCO_ITV_3		= 1000;
-	const int PASO_TRANSPORTE		= 25;
+	const int PASO_TRANSPORTE		= 1000;
 	const int PASO_CONSOLA			= 1000;
 
-	vector<double> paso_disco{ 0, 5e-3, 10e-3, 15e-3, 19.99e-3, 1 };
+	vector<double> paso_disco{ 0, 5e-3, 10e-3, 15e-3, 19.999e-3, 1 };
 	int pos_disco = 0;
 
 	int paso_disco_itv = PASO_DISCO_ITV_1;

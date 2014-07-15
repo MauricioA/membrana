@@ -1,7 +1,7 @@
-malla: 	 inputs/25_64_cls.msh
+malla: 	 inputs/25_128_cls.msh
 nodpel:	 quad
-salida:  salida/new/25_64_cls		#directorio de salida
-threads: 1
+salida:  salida/new/25_128_cls_t100		#directorio de salida
+threads: 2
 
 # revisar los sigmas y el que llena el poro!!
 sigint:		150e-9	# conductividad de la zona intraelular [S/um]
