@@ -1,7 +1,7 @@
 #ifndef ENTRADASALIDA_H_
 #define ENTRADASALIDA_H_
 
-#include <ctime>
+#include <chrono>
 #include "Poros.h"
 
 class Celula;
@@ -28,15 +28,7 @@ public:
 
 private:
 	Celula* _celula;
-
-	//FILE* ftension;
-	//FILE* fcampo;
 	FILE* fitv;
-	//FILE* fporos;
-	//FILE* ftransporte;
-	//FILE* fph;
-
-	clock_t start;
 
 	int nPoisson = 0;
 	int nTransporte = 0;
@@ -47,6 +39,8 @@ private:
 	void leerMalla(string malla);
 
 	void dameLinea(ifstream& archivo, istringstream& iss);
+
+	chrono::time_point<chrono::high_resolution_clock> start;
 
 };
 

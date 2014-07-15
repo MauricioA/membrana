@@ -241,17 +241,18 @@ void EntradaSalida::grabarPoisson(bool verbose) {
 
 void EntradaSalida::printStart(string message, bool verbose) {
 	if (verbose) {
-		start = clock();
+		start = chrono::high_resolution_clock::now();
 		cout << message << " " << flush;
 	}
 }
 
 void EntradaSalida::printEnd(int tabs, bool verbose) {
 	if (verbose) {
-		int time = (clock() - start) / (CLOCKS_PER_SEC / 1000);
+		auto end = chrono::high_resolution_clock::now();
+		long long delta_ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
 		cout << "OK";
 		for (int i = 0; i < tabs; i++) cout << "\t";
-		cout << time << "ms" << endl;
+		cout << delta_ms << "ms" << endl;
 	}
 }
 
