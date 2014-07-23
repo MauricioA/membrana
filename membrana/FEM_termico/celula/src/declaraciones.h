@@ -44,6 +44,8 @@ namespace declaraciones {
 		H_,	OH,	NA,	CL,
 	};
 
+	enum Estado { ON, OFF };
+
 	const double CONCENTRACION_INICIAL_INTRA[] = {	// at um**-3
 		CONCENT * 0.3978e-7,	// H  .3978e-7 M
 		CONCENT * 0.3978e-7,	// OH .3978e-7 M

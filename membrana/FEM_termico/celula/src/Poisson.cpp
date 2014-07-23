@@ -5,7 +5,10 @@
 
 using namespace std;
 
-void Poisson::poisson(Celula &celula) {
+VectorXd Poisson::global_rhs;
+SparseMatrix<double> Poisson::matriz;
+
+void Poisson::iteracion(Celula &celula) {
 	global_rhs.resize(celula.nNodes);
 	global_rhs.fill(0);
 	celula.potenciales.resize(celula.nNodes);
@@ -180,4 +183,8 @@ void Poisson::corriente(Celula &celula) {
 		celula.corrElem[iElem].x = -elem.sigma * celula.corrElem[iElem].x;
 		celula.corrElem[iElem].y = -elem.sigma * celula.gradElem[iElem].y;
 	}
+}
+
+void Poisson::apagar(Celula &celula) {
+	celula.potenciales.fill(0);
 }

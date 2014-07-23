@@ -5,7 +5,9 @@
 
 class Poisson {
 public:
-	static void poisson(Celula& celula);
+	static void iteracion(Celula& celula);
+
+	static void apagar(Celula& celula);
 
 private:
 	static VectorXd global_rhs;
@@ -19,6 +21,7 @@ private:
 	static void campo4(Celula& celula);
 
 	static void corriente(Celula& celula);
+
 };
 
 #endif /* POISSON_H_ */
