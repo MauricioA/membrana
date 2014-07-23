@@ -8,6 +8,10 @@ public:
 	static void poisson(Celula& celula);
 
 private:
+	static VectorXd global_rhs;
+
+	static SparseMatrix<double> matriz;
+
 	static void campo(Celula& celula);
 
 	static void campo3(Celula& celula);

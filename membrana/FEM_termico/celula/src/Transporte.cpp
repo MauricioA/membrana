@@ -13,20 +13,19 @@ using namespace declaraciones;
 using namespace Eigen;
 using namespace std;
 
-// -DNDEBUG al compilador p/que valla mas rapido
-// TODO es siempre la misma matriz para una especie
+// TODO es siempre la misma matriz para una especie?
 
 Transporte::Transporte(Celula& celula) {
 	_celula = &celula;
 
 	for (int esp = 0; esp < NESPS; esp++) {
 		celula.concentraciones[esp].resize(celula.nNodes);
-		celula.anteriores[esp].resize(celula.nNodes);
+		celula.conc_anteriores[esp].resize(celula.nNodes);
 	}
 
 	vector<bool> nodosInternos(celula.nNodes, false);
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
-		Elemento elem = celula.getElementos()[iElem];
+		Elemento elem = celula.elementos[iElem];
 		Material mat = elem.material;
 
 		if (elem.material == MEMBRANA || elem.material == INTERNO) {
@@ -41,10 +40,10 @@ Transporte::Transporte(Celula& celula) {
 		for (int esp = 0; esp < NESPS; esp++) {
 			if (nodosInternos[iNode]) {
 				celula.concentraciones[esp][iNode] = CONCENTRACION_INICIAL_INTRA[esp];
-				celula.anteriores[esp][iNode] = CONCENTRACION_INICIAL_INTRA[esp];
+				celula.conc_anteriores[esp][iNode] = CONCENTRACION_INICIAL_INTRA[esp];
 			} else {
 				celula.concentraciones[esp][iNode] = CONCENTRACION_INICIAL_EXTRA[esp];
-				celula.anteriores[esp][iNode] = CONCENTRACION_INICIAL_EXTRA[esp];
+				celula.conc_anteriores[esp][iNode] = CONCENTRACION_INICIAL_EXTRA[esp];
 			}
 		}
 	}
@@ -67,17 +66,17 @@ void Transporte::iteracion(double deltaT) {
 
 	for (int kNodo = 0; kNodo < celula.nNodes; kNodo++) {
 		for (int esp = 0; esp < NESPS; esp++) {
-			num += pow(celula.concentraciones[esp][kNodo] - celula.anteriores[esp][kNodo], 2);
+			num += pow(celula.concentraciones[esp][kNodo] - celula.conc_anteriores[esp][kNodo], 2);
 			den += pow(celula.concentraciones[esp][kNodo], 2);
 
 			celula.concentraciones[esp][kNodo] =
 				RSA * celula.concentraciones[esp][kNodo] +
-				(1 - RSA) * celula.anteriores[esp][kNodo];
+				(1 - RSA) * celula.conc_anteriores[esp][kNodo];
 
 			if (celula.concentraciones[esp][kNodo] < CONCENT_MINIMO) {
 				celula.concentraciones[esp][kNodo] = 0;
 			}
-			celula.anteriores[esp][kNodo] = celula.concentraciones[esp][kNodo];
+			celula.conc_anteriores[esp][kNodo] = celula.concentraciones[esp][kNodo];
 		}
 	}
 
@@ -87,8 +86,8 @@ void Transporte::iteracion(double deltaT) {
 
 void Transporte::masaDiag2D() {
 	Celula& celula = getCelula();
-	celula.getMasas().resize(celula.nNodes);
-	for (int i = 0; i < celula.nNodes; i++) celula.getMasas()[i] = 0;
+	masas.resize(celula.nNodes);
+	for (int i = 0; i < celula.nNodes; i++) masas[i] = 0;
 
 	const int NLOCS = 2;
 	const int INOGA[] = {0, 3, 1, 2};
@@ -96,12 +95,12 @@ void Transporte::masaDiag2D() {
 	const double WEIGL[] = { 1.0, 1.0};
 
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
-		Elemento elem = celula.getElementos()[iElem];
+		Elemento elem = celula.elementos[iElem];
 		Nodo nodosElem[MAXNPEL];
 		double rMed = 0;
 
 		for (int i = 0; i < celula.nodpel; i++) {
-			nodosElem[i] = celula.getNodos()[elem[i]];
+			nodosElem[i] = celula.nodos[elem[i]];
 			rMed += nodosElem[i].x;
 		}
 		rMed /= celula.nodpel;
@@ -119,12 +118,11 @@ void Transporte::masaDiag2D() {
 
 				double gpvol = det * M_PI * rMed;
 				for (int i = 0; i < celula.nodpel; i++) {
-					celula.getMasas()[elem[i]] += gpvol;
+					masas[elem[i]] += gpvol;
 				}
 
 				break;
 			} case 4: {
-				/*	subroutine armotodo(nope,x,y,deriv,weigc) */
 				int iGauss = 0;
 				double weigc[MAXNPEL];
 				double posgc[2][MAXNPEL];
@@ -155,7 +153,6 @@ void Transporte::masaDiag2D() {
 					deriv[1][k++][i] = ( 1.0 + s) * 0.25;
 					deriv[1][k++][i] = ( 1.0 - s) * 0.25;
 				}
-				/* end subroutine armotodo */
 
 				for (int i = 0; i < celula.nodpel; i++) {
 					double aJacob[2][2];
@@ -170,7 +167,7 @@ void Transporte::masaDiag2D() {
 
 					double gpDet = aJacob[0][0] * aJacob[1][1] - aJacob[0][1] * aJacob[1][0];
 					double gpVol = weigc[i] * gpDet;
-					celula.getMasas()[elem[i]] += gpVol * 2 * M_PI * rMed;
+					masas[elem[i]] += gpVol * 2 * M_PI * rMed;
 				}
 
 				break;
@@ -180,7 +177,7 @@ void Transporte::masaDiag2D() {
 		}
 	}
 
-	for (auto& masa : celula.getMasas()) {
+	for (auto& masa : masas) {
 		assert(masa > TOLER_MASA);
 	}
 }
@@ -189,16 +186,14 @@ void Transporte::concentracion(int esp, double deltaT) {
 	Celula& celula = getCelula();
 	double esm[MAXNPEL][MAXNPEL];
 	vector<Triplet<double>> triplets;
-	triplets.reserve(celula.getElementos().size() * celula.nodpel * celula.nodpel);
+	triplets.reserve(celula.elementos.size() * celula.nodpel * celula.nodpel);
 
 	VectorXd rhs;
 	rhs.resize(celula.nNodes);
 	rhs.fill(0);
 
-	for (int i = 0; i < celula.nNodes; i++) celula.getRhs()[i] = 0;
-
-	for (uint kElem = 0; kElem < celula.getElementos().size(); kElem++) {
-		Elemento elem = celula.getElementos()[kElem];
+	for (uint kElem = 0; kElem < celula.elementos.size(); kElem++) {
+		Elemento elem = celula.elementos[kElem];
 		Double2D pos[MAXNPEL];
 		double mas[MAXNPEL];
 		double sol[MAXNPEL];
@@ -207,11 +202,11 @@ void Transporte::concentracion(int esp, double deltaT) {
 
 		for (int i = 0; i < celula.nodpel; i++) {
 			int iNodo = elem[i];
-			Nodo nodo = celula.getNodos()[iNodo];
+			Nodo nodo = celula.nodos[iNodo];
 			pos[i].x = nodo.x;
 			pos[i].y = nodo.y;
-			sol[i] = celula.anteriores[esp][iNodo];
-			mas[i] = celula.getMasas()[iNodo];
+			sol[i] = celula.conc_anteriores[esp][iNodo];
+			mas[i] = masas[iNodo];
 		}
 
 		double sigma = elem.sigma;
@@ -222,7 +217,7 @@ void Transporte::concentracion(int esp, double deltaT) {
 			difElem = DIFUSION[esp];
 		}
 
-		double mu = -difElem * (FARADAY / (R_CTE * T_CTE)) * CARGA[esp] * celula.getGradElem()[kElem].y;
+		double mu = -difElem * (FARADAY / (R_CTE * T_CTE)) * CARGA[esp] * celula.gradElem[kElem].y;
 
 		double landa = 1;
 		double qe = 0;
@@ -231,7 +226,7 @@ void Transporte::concentracion(int esp, double deltaT) {
 
 		for (int i = 0; i < celula.nodpel; i++) {
 			int iNodo = elem[i];
-			Nodo nodo = celula.getNodos()[iNodo];
+			Nodo nodo = celula.nodos[iNodo];
 
 			if (nodo.esTierra) {
 				double adiag = esm[i][i];
@@ -271,7 +266,7 @@ void Transporte::concentracion(int esp, double deltaT) {
 	matriz.setFromTriplets(triplets.begin(), triplets.end());
 
 	BiCGSTAB<SparseMatrix<double>> solver(matriz);
-	celula.concentraciones[esp] = solver.solveWithGuess(rhs, celula.anteriores[esp]);
+	celula.concentraciones[esp] = solver.solveWithGuess(rhs, celula.conc_anteriores[esp]);
 
 	assert(solver.info() == Success);
 }

@@ -6,9 +6,9 @@
 using namespace std;
 
 void Poisson::poisson(Celula &celula) {
-	celula.getRhs().resize(celula.nNodes);
-	celula.getRhs().fill(0);
-	celula.getSolucion().resize(celula.nNodes);
+	global_rhs.resize(celula.nNodes);
+	global_rhs.fill(0);
+	celula.potenciales.resize(celula.nNodes);
 	vector<Triplet<double>> global_triplets(celula.nElems * celula.nodpel * celula.nodpel);
 
 	#pragma omp parallel num_threads(celula.threads)
@@ -19,7 +19,7 @@ void Poisson::poisson(Celula &celula) {
 		
 		#pragma omp for
 		for (int elemIdx = 0; elemIdx < celula.nElems; elemIdx++) {
-			Elemento elemento = celula.getElementos()[elemIdx];
+			Elemento elemento = celula.elementos[elemIdx];
 			double sigma = elemento.sigma;
 			double ef[MAXNPEL];
 
@@ -28,8 +28,8 @@ void Poisson::poisson(Celula &celula) {
 
 			for (int i = 0; i < celula.nodpel; i++) {
 				int j = elemento[i];
-				pos[i].x = celula.getNodos()[j].x;
-				pos[i].y = celula.getNodos()[j].y;
+				pos[i].x = celula.nodos[j].x;
+				pos[i].y = celula.nodos[j].y;
 				ef[i] = 0.0;
 			}
 
@@ -37,7 +37,7 @@ void Poisson::poisson(Celula &celula) {
 
 			/* Condiciones de contorno */
 			for (int i = 0; i < celula.nodpel; i++) {
-				Nodo nodo = celula.getNodos()[elemento[i]];
+				Nodo nodo = celula.nodos[elemento[i]];
 				double adiag = esm[i][i];
 
 				if (nodo.esTierra) {
@@ -74,21 +74,21 @@ void Poisson::poisson(Celula &celula) {
 
 		#pragma omp critical(reduce_rhs)
 		for (int i = 0; i < celula.nNodes; i++) {
-			celula.getRhs()[i] += local_rhs[i];
+			global_rhs[i] += local_rhs[i];
 		}
 	}
 
-	celula.getMatriz().resize(celula.nNodes, celula.nNodes);
-	celula.getMatriz().setFromTriplets(global_triplets.begin(), global_triplets.end());
+	matriz.resize(celula.nNodes, celula.nNodes);
+	matriz.setFromTriplets(global_triplets.begin(), global_triplets.end());
 
 	/* Resolución con Cholesky */
-	//SimplicialLDLT<SparseMatrix<double>> cholesky(celula.getMatriz());
-	//celula.setSolucion(cholesky.solve(celula.getRhs()));
+	//SimplicialLDLT<SparseMatrix<double>> cholesky(matriz);
+	//celula.potenciales = cholesky.solve(global_rhs);
 
 	/* Resolución con gradientes conjugados */
-	ConjugateGradient<SparseMatrix<double>> solver(celula.getMatriz());
+	ConjugateGradient<SparseMatrix<double>> solver(matriz);
 	solver.setTolerance(1e-10);
-	celula.setSolucion(solver.solveWithGuess(celula.getRhs(), celula.getSolucion()));
+	celula.potenciales = solver.solveWithGuess(global_rhs, celula.potenciales);
 	assert(solver.info() == Success);
 
 	campo(celula);
@@ -112,33 +112,33 @@ void Poisson::campo3(Celula &celula) {
 	assert(celula.nodpel == 3);
 	Double2D pos[3];
 	double sol[3];
-	celula.getGradElem().resize(celula.nElems);
+	celula.gradElem.resize(celula.nElems);
 
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
-		Elemento elem = celula.getElementos()[iElem];
+		Elemento elem = celula.elementos[iElem];
 		double b[3], c[3];
 
 		for (int i = 0; i < 3; i++) {
 			int iNodo = elem[i];
-			pos[i].x = celula.getNodos()[iNodo].x;
-			pos[i].y = celula.getNodos()[iNodo].y;
-			sol[i] = celula.getSolucion()[iNodo];
+			pos[i].x = celula.nodos[iNodo].x;
+			pos[i].y = celula.nodos[iNodo].y;
+			sol[i] = celula.potenciales[iNodo];
 		}
 
 		double det = Armado::determinante3(pos, b, c);
 
-		celula.getGradElem()[iElem].x = (b[0] * sol[0] + b[1] * sol[1] + b[2] * sol[2]) / det;
-		celula.getGradElem()[iElem].y = (c[0] * sol[0] + c[1] * sol[1] + c[2] * sol[2]) / det;
+		celula.gradElem[iElem].x = (b[0] * sol[0] + b[1] * sol[1] + b[2] * sol[2]) / det;
+		celula.gradElem[iElem].y = (c[0] * sol[0] + c[1] * sol[1] + c[2] * sol[2]) / det;
 	}
 }
 
 void Poisson::campo4(Celula &celula) {
 	assert(celula.nodpel == 4);
 	const int NODPEL = 4;
-	celula.getGradElem().resize(celula.nElems);
+	celula.gradElem.resize(celula.nElems);
 
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
-		Elemento elem = celula.getElementos()[iElem];
+		Elemento elem = celula.elementos[iElem];
 		int kGauss = 0;
 		double phi[2*NGAUSS][4];
 		double dphi[NDIM][2*NGAUSS][4];
@@ -151,9 +151,9 @@ void Poisson::campo4(Celula &celula) {
 
 		for (int i = 0; i < NODPEL; i++) {
 			int iNodo = elem[i];
-			pos[i].x = celula.getNodos()[iNodo].x;
-			pos[i].y = celula.getNodos()[iNodo].y;
-			sol[i] = celula.getSolucion()[i];
+			pos[i].x = celula.nodos[iNodo].x;
+			pos[i].y = celula.nodos[iNodo].y;
+			sol[i] = celula.potenciales[i];
 		}
 
 		for (int i = 0; i < NGAUSS; i++) for (int j = 0; j < NGAUSS; j++) {
@@ -167,17 +167,17 @@ void Poisson::campo4(Celula &celula) {
 			kGauss++;
 		}
 
-		celula.getGradElem()[iElem].x = -eElem.x * 0.25;
-		celula.getGradElem()[iElem].y = -eElem.y * 0.25;
+		celula.gradElem[iElem].x = -eElem.x * 0.25;
+		celula.gradElem[iElem].y = -eElem.y * 0.25;
 	}
 }
 
 void Poisson::corriente(Celula &celula) {
-	celula.getCorrElem().resize(celula.nElems);
+	celula.corrElem.resize(celula.nElems);
 
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
-		Elemento elem = celula.getElementos()[iElem];
-		celula.getCorrElem()[iElem].x = -elem.sigma * celula.getGradElem()[iElem].x;
-		celula.getCorrElem()[iElem].y = -elem.sigma * celula.getGradElem()[iElem].y;
+		Elemento elem = celula.elementos[iElem];
+		celula.corrElem[iElem].x = -elem.sigma * celula.corrElem[iElem].x;
+		celula.corrElem[iElem].y = -elem.sigma * celula.gradElem[iElem].y;
 	}
 }

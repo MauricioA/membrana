@@ -5,6 +5,7 @@
 #include <cassert>
 #include <algorithm>
 #include <cstdio> 
+#include <numeric>
 #include "Poros.h"
 #include "EntradaSalida.h"
 
@@ -40,6 +41,7 @@ inline bool operator<(const Poros::InfoAngulo& lhs, const Poros::InfoAngulo& rhs
 	return lhs.tita < rhs.tita;
 };
 
+/* Todo esto es solo para buscar los elementos de la membrana y llenar el vector valores */
 Poros::Poros(Celula& celula) {
 	assert(celula.nodpel == 4);
 	const int NODPEL = 4;
@@ -49,14 +51,14 @@ Poros::Poros(Celula& celula) {
 	factorPulso = 1;
 
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
-		Elemento elem = celula.getElementos()[iElem];
+		Elemento elem = celula.elementos[iElem];
 
 		/* Chequeo que sea de la membrana y del borde externo */
 		if (elem.material == MEMBRANA) {
 			bool externo = false;
 			for (int i = 0; !externo && i < NODPEL; i++) {
 				int iNod = elem[i];
-				externo = esNodoExterno(celula.getNodos()[iNod]);
+				externo = esNodoExterno(celula.nodos[iNod]);
 			}
 
 			if (externo) {
@@ -66,7 +68,7 @@ Poros::Poros(Celula& celula) {
 
 				for (int i = 0; i < NODPEL; i++) {
 					int iNod = elem[i];
-					Nodo nodo = celula.getNodos()[iNod];
+					Nodo nodo = celula.nodos[iNod];
 					if (esNodoExterno(nodo)) {
 						titas[indice] = getTita(nodo);
 						info.nodosExternos[indice] = iNod;
@@ -92,14 +94,14 @@ Poros::Poros(Celula& celula) {
 	/* Busco los nodos internos de los valores */
 	uint ints = 0;
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
-		Elemento elem = celula.getElementos()[iElem];
+		Elemento elem = celula.elementos[iElem];
 
 		/* Chequeo que sea de la membrana y del borde interno */
 		if (elem.material == MEMBRANA) {
 			bool interno = false;
 			for (int i = 0; !interno && i < NODPEL; i++) {
 				int iNod = elem[i];
-				interno = esNodoInterno(celula.getNodos()[iNod]);
+				interno = esNodoInterno(celula.nodos[iNod]);
 			}
 			
 			double tita = getTita(elem);
@@ -120,7 +122,7 @@ Poros::Poros(Celula& celula) {
 
 						for (int j = 0; j < NODPEL; j++) {
 							int iNod = elem[j];
-							Nodo nodo = celula.getNodos()[iNod];
+							Nodo nodo = celula.nodos[iNod];
 							if (esNodoInterno(nodo)) {
 								internos[indice] = iNod;
 								indice++;
@@ -158,7 +160,7 @@ double Poros::getTita(Elemento elem) {
 	const int NODPEL = 4;
 	double tita = 0;
 	for (int i = 0; i < NODPEL; i++) {
-		tita += getTita(getCelula().getNodos()[elem[i]]);
+		tita += getTita(getCelula().nodos[elem[i]]);
 	}
 	return tita / NODPEL;
 }
@@ -254,11 +256,11 @@ void Poros::iteracion(double deltaT) {
 }
 
 double Poros::getITV(InfoAngulo& info) {
-	double itv1 = getCelula().getSolucion()[info.nodosExternos[0]] -
-		getCelula().getSolucion()[info.nodosInternos[0]];
+	double itv1 = getCelula().potenciales[info.nodosExternos[0]] -
+		getCelula().potenciales[info.nodosInternos[0]];
 
-	double itv2 = getCelula().getSolucion()[info.nodosExternos[1]] -
-		getCelula().getSolucion()[info.nodosInternos[1]];
+	double itv2 = getCelula().potenciales[info.nodosExternos[1]] -
+		getCelula().potenciales[info.nodosInternos[1]];
 
 	return factorPulso * (itv1 + itv2) / 2;
 }
@@ -277,25 +279,15 @@ int Poros::getPorosEnTita(InfoAngulo& info) {
 }
 
 int Poros::getNPorosChicos() {
-	int kPoros = 0;
-	for (auto& info : valores) {
-		kPoros += info.porosChicos;
-	}
-	return kPoros;
+	return accumulate(valores.begin(), valores.end(), 0, [](int i, InfoAngulo info) {
+		return i + info.porosChicos;
+	});
 }
 
-//int Poros::getNPorosChicos() {
-//	return accumulate(valores.begin(), valores.end(), 0, [](int i, InfoAngulo info) {
-//		return i + info.porosChicos;
-//	});
-//}
-
 int Poros::getNPorosGrandes() {
-	int kPoros = 0;
-	for (auto& info : valores) {
-		kPoros += info.porosGrandes.size();
-	}
-	return kPoros;
+	return accumulate(valores.begin(), valores.end(), 0, [](int i, InfoAngulo info) {
+		return i + info.porosGrandes.size();
+	});
 }
 
 int Poros::getNPoros() {
@@ -368,7 +360,7 @@ vector<pair<double, double>> Poros::getITVs(double tiempo) {
 
 void Poros::actualizarSigmas() {
 	for (int i = 0; i < getCelula().nElems; i++) {
-		Elemento& elem = getCelula().getElementos()[i];
+		Elemento& elem = getCelula().elementos[i];
 		if (elem.material == MEMBRANA) {
 			double areas = getProporsionArea(i);
 			elem.sigma = getCelula().sigmas[MEMBRANA] * (1 - areas) + SIGMA_PORO * areas;
