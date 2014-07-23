@@ -34,13 +34,13 @@ private:
 	int nTransporte = 0;
 	int nPoros = 0;
 
+	chrono::time_point<chrono::high_resolution_clock> start;
+
 	inline Celula& getCelula();
 
 	void leerMalla(string malla);
 
 	void dameLinea(ifstream& archivo, istringstream& iss);
-
-	chrono::time_point<chrono::high_resolution_clock> start;
 
 };
 

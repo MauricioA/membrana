@@ -1,12 +1,12 @@
-malla: 	 inputs/25_64_cls.msh
+malla: 	 inputs/10_64.msh
 nodpel:	 quad
-salida:  salida/new/temp_		#directorio de salida
+salida:  salida/new/test
 threads: 1
 
 # revisar los sigmas y el que llena el poro!!
 sigint:		150e-9	# conductividad de la zona intraelular [S/um]
 sigext:		200e-9	# conductividad de la zona extra
 sigmem:		500e-15	# conductividad de la membrana
-potencial:  12		# 120kvm
-radio: 		25
+potencial:  20		# 200kvm
+radio: 		10
 ancho: 		5e-3	# ancho de la membrana

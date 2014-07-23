@@ -78,15 +78,15 @@ void EntradaSalida::leerInput() {
 	leerMalla(malla);
 
 	getCelula().alto = -DBL_MAX;
-	for (auto nodo : getCelula().getNodos()) {
+	for (auto nodo : getCelula().nodos) {
 		getCelula().alto = max(getCelula().alto, nodo.y);
 	}
 
 	for (int i = 0; i < getCelula().nNodes; i++) {
-		if (abs(getCelula().getNodos()[i].y - getCelula().alto) < EPSILON_DIST) {
-			getCelula().getNodos()[i].esPotencia = true;
-		} else if (abs(getCelula().getNodos()[i].y) < EPSILON_DIST) {
-			getCelula().getNodos()[i].esTierra = true;
+		if (abs(getCelula().nodos[i].y - getCelula().alto) < EPSILON_DIST) {
+			getCelula().nodos[i].esPotencia = true;
+		} else if (abs(getCelula().nodos[i].y) < EPSILON_DIST) {
+			getCelula().nodos[i].esTierra = true;
 		}
 	}
 
@@ -112,7 +112,7 @@ void EntradaSalida::leerMalla(string malla) {
 	/* Numero de nodos */
 	dameLinea(stream, iss);
 	iss >> getCelula().nNodes;
-	getCelula().getNodos().reserve(getCelula().nNodes);
+	getCelula().nodos.reserve(getCelula().nNodes);
 
 	/* Nodos */
 	for (int i = 0; i < getCelula().nNodes; i++) {
@@ -123,7 +123,7 @@ void EntradaSalida::leerMalla(string malla) {
 		nodo.y = y;
 		nodo.esPotencia = false;
 		nodo.esTierra = false;
-		getCelula().getNodos().push_back(nodo);
+		getCelula().nodos.push_back(nodo);
 	}
 
 	/* nGrupos */
@@ -140,7 +140,7 @@ void EntradaSalida::leerMalla(string malla) {
 	dameLinea(stream, iss);
 	iss >> n >> elemsInt;
 	getCelula().nElems = elemsExt + elemsMemb + elemsInt;
-	getCelula().getElementos().reserve(getCelula().nElems);
+	getCelula().elementos.reserve(getCelula().nElems);
 
 	/* Elementos extrenos */
 	for (int i = 0; i < elemsExt; i++) {
@@ -148,7 +148,7 @@ void EntradaSalida::leerMalla(string malla) {
 		iss >> n;
 		for (int j = 0; j < getCelula().nodpel; j++) iss >> nod[j];
 		for (int j = 0; j < getCelula().nodpel; j++) nod[j]--;
-		getCelula().getElementos().push_back(Elemento(
+		getCelula().elementos.push_back(Elemento(
 			nod, getCelula().nodpel, EXTERNO, getCelula().sigmas[EXTERNO]
 		));
 	}
@@ -159,7 +159,7 @@ void EntradaSalida::leerMalla(string malla) {
 		iss >> n;
 		for (int j = 0; j < getCelula().nodpel; j++) iss >> nod[j];
 		for (int j = 0; j < getCelula().nodpel; j++) nod[j]--;
-		getCelula().getElementos().push_back(Elemento(
+		getCelula().elementos.push_back(Elemento(
 			nod, getCelula().nodpel, MEMBRANA, getCelula().sigmas[MEMBRANA]
 		));
 	}
@@ -170,7 +170,7 @@ void EntradaSalida::leerMalla(string malla) {
 		iss >> n;
 		for (int j = 0; j < getCelula().nodpel; j++) iss >> nod[j];
 		for (int j = 0; j < getCelula().nodpel; j++) nod[j]--;
-		getCelula().getElementos().push_back(Elemento(
+		getCelula().elementos.push_back(Elemento(
 			nod, getCelula().nodpel, INTERNO, getCelula().sigmas[INTERNO]
 		));
 	}
@@ -202,8 +202,8 @@ void EntradaSalida::grabarPoisson(bool verbose) {
 	fprintf(ftension, "         X,          Y,         tension\n");
 
 	for (int iNodo = 0; iNodo < getCelula().nNodes; iNodo++) {
-		Nodo nodo = getCelula().getNodos()[iNodo];
-		fprintf(ftension, "%#10f, %#10f, %#15.9g\n", nodo.x, nodo.y, getCelula().getSolucion()[iNodo]);
+		Nodo nodo = getCelula().nodos[iNodo];
+		fprintf(ftension, "%#10f, %#10f, %#15.9g\n", nodo.x, nodo.y, getCelula().solucion[iNodo]);
 	}
 
 	fclose(ftension);
@@ -217,14 +217,14 @@ void EntradaSalida::grabarPoisson(bool verbose) {
 	fprintf(ftension, "         X,          Y,           campo,       corriente\n");
 
 	for (int k = 0; k < getCelula().nElems; k++) {
-		double corr = sqrt(pow(getCelula().getGradElem()[k].x, 2) + pow(getCelula().getGradElem()[k].y, 2));
-		double camp = sqrt(pow(getCelula().getCorrElem()[k].x, 2) + pow(getCelula().getCorrElem()[k].y, 2));
+		double corr = sqrt(pow(getCelula().corrElem[k].x, 2) + pow(getCelula().gradElem[k].y, 2));
+		double camp = sqrt(pow(getCelula().corrElem[k].x, 2) + pow(getCelula().corrElem[k].y, 2));
 		double xMed = 0, yMed = 0;
 	
 		for (int j = 0; j < getCelula().nodpel; j++) {
-			int jNodo = getCelula().getElementos()[k][j];
-			xMed += getCelula().getNodos()[jNodo].x;
-			yMed += getCelula().getNodos()[jNodo].y;
+			int jNodo = getCelula().elementos[k][j];
+			xMed += getCelula().nodos[jNodo].x;
+			yMed += getCelula().nodos[jNodo].y;
 		}
 	
 		xMed /= nodpel;
@@ -249,7 +249,7 @@ void EntradaSalida::printStart(string message, bool verbose) {
 void EntradaSalida::printEnd(int tabs, bool verbose) {
 	if (verbose) {
 		auto end = chrono::high_resolution_clock::now();
-		long long delta_ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+		auto delta_ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
 		cout << "OK";
 		for (int i = 0; i < tabs; i++) cout << "\t";
 		cout << delta_ms << "ms" << endl;
@@ -279,7 +279,7 @@ void EntradaSalida::grabarTransporte(bool verbose) {
 	fprintf(fTrans, "         X,          Y,             Na+,             Cl-\n");
 
 	for (int jNodo = 0; jNodo < nNodes; jNodo++) {
-		Nodo nodo = getCelula().getNodos()[jNodo];
+		Nodo nodo = getCelula().nodos[jNodo];
 		
 		double pH_H  = -log10((getCelula().concentraciones[H_][jNodo] + 1e-18) / CONCENT);
 		double ph_OH = -log10((getCelula().concentraciones[OH][jNodo] + 1e-18) / CONCENT);

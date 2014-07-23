@@ -12,6 +12,10 @@ public:
 protected:
 	Celula* _celula;
 
+	vector<double> masas;
+
+	SparseMatrix<double> matrizTrans[NESPS];
+
 	Transporte() {}
 
 	inline Celula& getCelula();
