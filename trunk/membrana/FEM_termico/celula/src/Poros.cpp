@@ -179,7 +179,7 @@ bool Poros::esNodoInterno(Nodo nodo) {
 
 void Poros::iteracion(double deltaT) {
 	double areaPoros = 0;
-	double tiempo = getCelula().time;
+	double tiempo = getCelula().time - comienzoPulso;
 
 	for (auto& info : valores) {
 		for (auto& poro : info.porosGrandes) {
@@ -189,9 +189,7 @@ void Poros::iteracion(double deltaT) {
 		areaPoros += info.porosChicos * M_PI * pow(info.radioChico, 2);
 	}
 
-	if (CALCULAR_CAPACITANCIA) {
-		factorPulso = 1 - exp(-tiempo / tau);
-	}
+	if (CALCULAR_CAPACITANCIA) factorPulso = 1 - exp(-tiempo / tau);
 
 	double tensionEfectiva = 2 * SIGMA_P - (2 * SIGMA_P - SIGMA_0) / pow(1 - areaPoros / getCelula().area, 2);
 
@@ -273,6 +271,10 @@ double inline Poros::actualizarRadio(double radio, double deltaT, double tension
 		2 * M_PI * tensionEfectiva * radio
 	);
 }
+
+void Poros::nuevoPulso() {
+	comienzoPulso = getCelula().time;
+};
 
 int Poros::getPorosEnTita(InfoAngulo& info) {
 	return (int) (info.area * info.densidad);

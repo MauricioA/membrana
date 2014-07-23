@@ -1,12 +1,17 @@
-malla: 	 inputs/10_64.msh
+malla: 	 inputs/10_128.msh
 nodpel:	 quad
-salida:  salida/new/test
+salida:  salida/pulsos/
 threads: 1
 
 # revisar los sigmas y el que llena el poro!!
 sigint:		150e-9	# conductividad de la zona intraelular [S/um]
 sigext:		200e-9	# conductividad de la zona extra
 sigmem:		500e-15	# conductividad de la membrana
-potencial:  20		# 200kvm
+potencial:  12		# 200kvm
 radio: 		10
 ancho: 		5e-3	# ancho de la membrana
+pulsos:		2
+on_time:	20e-3
+off_time:	80e-3
+
+#TODO: npulsos y times en input.in

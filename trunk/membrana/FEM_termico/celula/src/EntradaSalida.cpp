@@ -70,6 +70,12 @@ void EntradaSalida::leerInput() {
 			iss >> s >> getCelula().ancho;
 		} else if (line.find("threads") != string::npos) {
 			iss >> s >> getCelula().threads;
+		} else if (line.find("pulsos") != string::npos) {
+			iss >> s >> getCelula().pulsos;
+		} else if (line.find("on_time") != string::npos) {
+			iss >> s >> getCelula().times[ON];
+		} else if (line.find("off_time") != string::npos) {
+			iss >> s >> getCelula().times[OFF];
 		}
 	}
 
@@ -203,7 +209,7 @@ void EntradaSalida::grabarPoisson(bool verbose) {
 
 	for (int iNodo = 0; iNodo < getCelula().nNodes; iNodo++) {
 		Nodo nodo = getCelula().nodos[iNodo];
-		fprintf(ftension, "%#10f, %#10f, %#15.9g\n", nodo.x, nodo.y, getCelula().solucion[iNodo]);
+		fprintf(ftension, "%#10f, %#10f, %#15.9g\n", nodo.x, nodo.y, getCelula().potenciales[iNodo]);
 	}
 
 	fclose(ftension);

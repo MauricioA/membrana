@@ -38,6 +38,9 @@ public:
 
 	vector<pair<double, double>> getITVs(double tiempo);
 
+	/* Llamar al iniciar un pulso */
+	void nuevoPulso();
+
 	inline vector<InfoAngulo>& getValores() {
 		return valores;
 	}
@@ -67,11 +70,11 @@ private:
 
 	double getITV(InfoAngulo& info);
 	
-	double tau;
-
-	double factorPulso;
-
 	double inline actualizarRadio(double radio, double deltaT, double tensionEfectiva, double itv);
+
+	double tau;
+	double factorPulso;
+	double comienzoPulso = 0;
 
 	void actualizarSigmas();
 

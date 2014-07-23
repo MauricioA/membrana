@@ -19,6 +19,7 @@ public:
 	int nElems;
 	int nNodes;
 	int threads;
+	int pulsos;
 
 	string salida;
 
@@ -28,6 +29,8 @@ public:
 	double ancho;
 	double area;
 	double time;
+	double on_time;
+	double times[2];
 	double sigmas[3];
 
 	vector<Nodo>     nodos;
