@@ -1,6 +1,6 @@
 malla: 	 inputs/10_128.msh
 nodpel:	 quad
-salida:  salida/pulsos/
+salida:  salida/pulsos/temp
 threads: 1
 
 # revisar los sigmas y el que llena el poro!!
@@ -11,7 +11,5 @@ potencial:  12		# 200kvm
 radio: 		10
 ancho: 		5e-3	# ancho de la membrana
 pulsos:		2
-on_time:	20e-3
+on_time:	20e-6
 off_time:	80e-3
-
-#TODO: npulsos y times en input.in
