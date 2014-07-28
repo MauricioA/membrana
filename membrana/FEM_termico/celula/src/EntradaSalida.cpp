@@ -321,7 +321,7 @@ void EntradaSalida::grabarPoros(Poros& radios, bool verbose) {
 		}
 
 		for (int i = 0; i < info.porosChicos; i++) {
-			fprintf(fPoros, "%#10f, %#15.9g\n", time, info.tita, info.radioChico);
+			fprintf(fPoros, "%#10f, %#15.9g %#15.9g\n", time, info.tita, info.radioChico);
 		}
 	}
 
