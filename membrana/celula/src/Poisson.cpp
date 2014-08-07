@@ -1,4 +1,4 @@
-you#include <iostream>
+#include <iostream>
 #include "Poisson.h"
 #include "Armado.h"
 #include "EntradaSalida.h"
