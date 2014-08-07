@@ -2,11 +2,18 @@
 ## Mios
 #################
 
-celula/Debug
-celula/Release
-celula/salida
-/celula/pulsos/temp
-scripts/obj
+celula/salida/pulsos/temp
+
+latex/*/*.aux
+latex/*/*.log
+latex/*/*.nav
+latex/*/*.out
+latex/*/*.snm
+latex/*/*.gz
+latex/*/*.toc
+
+latex/poster/conference_poster_6.pdf
+latex/template/tesis.pdf
 
 #################
 ## Eclipse
