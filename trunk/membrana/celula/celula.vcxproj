@@ -42,7 +42,7 @@
     <IncludePath>C:\Archivos\Membrana\FEM_termico\celula\eigen;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Archivos\Membrana\FEM_termico\celula\eigen;$(IncludePath)</IncludePath>
+    <IncludePath>eigen;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
