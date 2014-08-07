@@ -1,0 +1,77 @@
+*cuatro.GEN
+   Generacion de una malla para describir una pastilla combustible con agua.
+*
+*BACKGROUND_GRID
+8
+1  0.0     0.0 		0.25     1.0  0.0 
+2  0.5     0.0	      0.05     1.0  0.0
+3  0.5     0.6      	0.05     1.0  0.0
+4  0.0     0.6      	0.25     1.0  0.0
+5  0.56    0.0 		0.05     1.0  0.0 
+6  1.0     0.0	      0.25     1.0  0.0
+7  1.0     0.6      	0.25     1.0  0.0
+8  0.56    0.6      	0.05     1.0  0.0
+
+
+4
+1  1 2 3 
+2  1 3 4
+3  5 6 7 
+4  5 7 8
+
+*KEYPOINTS
+10
+1  0.0       0.0
+2  0.5       0.0
+3  0.51      0.0
+4  0.56      0.0
+5  1.0       0.0
+6  1.0       0.6
+7  0.56      0.6
+8  0.51      0.6
+9  0.5       0.6
+10 0.0       0.6
+
+*LINES
+13
+1 LINE 1 2
+2 LINE 2 3
+3 LINE 3 4  
+4 LINE 4 5
+5 LINE 5 6
+6 LINE 6 7
+7 LINE 7 8  
+8 LINE 8 9
+9 LINE 9 10
+10 LINE 10 1
+11 LINE 2 9 
+12 LINE 3 8
+13 LINE 4 7
+
+
+*AREAS
+4
+*AREA_1
+1
+4 1 11 9 10  
+0
+SMOOTH_OFF
+*AREA_2
+2
+4 2 12 8 -11  
+0
+SMOOTH_OFF
+*AREA_3
+3
+4 3 13 7 -12  
+0
+SMOOTH_OFF
+*AREA_4
+4
+4 4 5 6 -13  
+0
+SMOOTH_OFF
+
+
+*END
+

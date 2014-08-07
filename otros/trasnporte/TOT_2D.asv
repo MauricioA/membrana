@@ -1,0 +1,56 @@
+function tot_2d(ndimx,ndimy,dir,ntop);
+% function tot_2d(ii,jj)  ejey-ejex
+
+archivo1=strcat(dir,'catio.dat');
+archivo2=strcat(dir,'anion.dat');
+archivo3=strcat(dir,'proto.dat');
+archivo4=strcat(dir,'poten.dat');
+
+
+fid1 = fopen(archivo1,'rb+');
+fid2 = fopen(archivo2,'rb+');
+fid3 = fopen(archivo3,'rb+');
+fid4 = fopen(archivo4,'rb+');
+
+
+for jj=1:ndimx
+  for kk=1:ndimy
+      xx(kk,jj)=(kk-1)/ndimy;
+      yy(kk,jj)=(jj-1)/ndimx;
+  end
+end
+
+kk=0;
+while(feof(fid1)==0)
+    kk=kk+1
+%    Cat = fscanf(fid1,'%f\n',[ndimx,ndimy]);
+%    Ani = fscanf(fid2,'%f\n',[ndimx,ndimy]);
+%    Pot = fscanf(fid3,'%f\n',[ndimx,ndimy]);
+%    Pro = fscanf(fid4,'%f\n',[ndimx,ndimy]);
+ 
+    Cat = fscanf(fid1,'%f\n',[ndimy,ndimx]);
+    Ani = fscanf(fid2,'%f\n',[ndimy,ndimx]);
+    Pro = fscanf(fid3,'%f\n',[ndimy,ndimx]);
+    Pot = fscanf(fid4,'%f\n',[ndimy,ndimx]);
+
+%subplot(2,2,1);plot3(xx,yy,Cat);  
+%subplot(2,2,2);plot3(xx,yy,Ani);  
+%subplot(2,2,3);plot3(xx,yy,Pro);  
+%subplot(2,2,4);plot3(xx,yy,Pot);  
+Pot
+contour(Pot,100);xlabel('V')  
+
+pause(0.2);
+  
+end
+
+fclose(fid1);
+fclose(fid2);
+fclose(fid3);
+fclose(fid4);
+
+
+
+
+
+ 

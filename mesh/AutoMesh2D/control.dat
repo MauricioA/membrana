@@ -1,0 +1,12 @@
+1  40  40  10  10   4   1   1   1  100
+1---2---3---4---5---6---7---8---9--10
+	Criteria[0] = 1;  //default data (1,2,3)
+	Criteria[1] = 40; //default data (0-100)
+	Criteria[2] = 40; //default data (0-100)
+	Criteria[3] = 10; //default data (0-100)
+	Criteria[4] = 10; //default data (0-100)
+	Criteria[5] = 4;  //4-quad  3-tri (3,4)
+	Criteria[6] = 1;  //0-all-quadrilateral mesh    1-small amount of trianglur elements are allowed to be generated
+	Criteria[7] = 1;  //1-Mesh needs to be optimized    0-no optimization
+	Criteria[8] = 1;  //algorithm for node generation on a line (1,2)
+	Criteria[9] = 100; //Element edges are not larger 100% than the meshSize
