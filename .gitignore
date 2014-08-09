@@ -10,10 +10,10 @@ celula/salida/new/test
 celula/salida/ph7
 celula/salida/pulsos/temp
 celula/salida/pulsos/10_*/
-#celula/salida/pulsos/*.7z
-#celula/salida/new/10_128.7z
-#celula/salida/new/25_128_cls_t100.7z
-#celula/salida/pulsos/10_128.7z
+celula/salida/pulsos/*.7z
+celula/salida/new/10_128.7z
+celula/salida/new/25_128_cls_t100.7z
+celula/salida/pulsos/10_128.7z
 
 latex/*/*.aux
 latex/*/*.log
