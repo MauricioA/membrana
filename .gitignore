@@ -15,14 +15,21 @@ celula/salida/new/10_128.7z
 celula/salida/new/25_128_cls_t100.7z
 celula/salida/pulsos/10_128.7z
 
-latex/*/*.aux
-latex/*/*.log
-latex/*/*.nav
-latex/*/*.out
-latex/*/*.snm
-latex/*/*.gz
-latex/*/*.toc
+*.aux
+*.nav
+*.snm
+*.toc
+*.ppt#
+*.bbl
+*.blg
 
+latex/*/*.log
+latex/*/*.out
+latex/*/*.gz
+
+latex/*/*/*.gz
+
+#pdf incompletos
 latex/poster/conference_poster_6.pdf
 latex/template/tesis.pdf
 

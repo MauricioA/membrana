@@ -14,12 +14,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%HIGH:
-%TODO achicar imágenes (poner en dos columnas)
-%TODO llenar con más información 
-%TODO referencias
-
-%LOW:
+%TODO puede ir: trabajo pendiente, explicación de variables si falta, más texto
+%TODO cambiar las 2 columnas de itv vs tiempo
 %TODO mover logo departamento
 
 %----------------------------------------------------------------------------------------
@@ -48,6 +44,27 @@
 \usepackage[spanish,activeacute]{babel}	%titulos en castellano
 \usepackage[version=3]{mhchem}			%química
 \usepackage{siunitx}					%unidades
+
+%esto es para que no ponga números en las referencias
+\makeatletter
+\renewcommand\@biblabel[1]{}
+\renewenvironment{thebibliography}[1]
+     {\section*{\refname}%
+      \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
+      \list{}%
+           {\leftmargin0pt
+            \@openbib@code
+            \usecounter{enumiv}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \endlist}
+\makeatother
+
 
 \begin{document}
 
@@ -116,7 +133,7 @@ Las simulaciones se realizaron con el método de elementos finitos sobre mallas 
 \section*{Teoría}
 
 %\subsection*{Potencial Eléctrico}
-Potencial eléctrico
+Potencial eléctrico:
 			\begin{equation}
 				\sigma_{e} \nabla^2 \phi = 0
 			\end{equation}
@@ -132,9 +149,9 @@ Potencial eléctrico
 			Se asume que la membrana se carga como un capacitor en paralelo con una resistencia:
 			\begin{equation}
 				V_m = V_p (1 - e^{-t/\tau}),
-			\end{equation}
-			\begin{equation}
-				\textrm{con } \tau = \alpha C_m \left( \frac{1}{\sigma_i} + \frac{1}{2 \sigma_o} \right)
+%			\end{equation}
+%			\begin{equation}
+				\textrm{ con } \tau = \alpha C_m \left( \frac{1}{\sigma_i} + \frac{1}{2 \sigma_o} \right)
 			\end{equation}\\
 			
 %			Con $\alpha$ el radio, $C_m$ la capacitancia de la membrana y $\sigma_i$ y $\sigma_o$ las
@@ -161,13 +178,11 @@ Potencial eléctrico
 	\begin{equation}
 		\frac{\partial r}{\partial t} = \frac{D}{kT} \left( \frac{V_m^2 F_{max}}
 			{1+r_h / (r+r_a)} + \frac{4 \beta}{r} \left(\frac{r_*}{r}\right)^4 
-			- 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r\right), 
-	\end{equation}
-
-	\begin{equation}
-		\textrm{con }\sigma_{\textrm{\tiny eff}} = 2 \sigma^\prime - 
+			- 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r\right),			
+		\textrm{ con }\sigma_{\textrm{\tiny eff}} = 2 \sigma^\prime - 
 			\frac{2 \sigma^\prime - \sigma_0}{(1 - A_p / A)^2}
-	\end{equation}	\\
+	\end{equation}
+	
 	
 
 	%			\begin{center}
@@ -188,7 +203,7 @@ Potencial eléctrico
 %	\newline \newline		
 %	$F$ y $R$ son las constantes de Faraday y de los gases y $T$ la temperatura.
 
-	La conductividad de la membrana se recalcula según el área ocupada por los poros		
+	La conductividad de la membrana se recalcula según el área ocupada por los poros:
 	\begin{equation}
 		\sigma_{e} = \sigma_m (1 - p) + \sigma_p p
 	\end{equation}\\
@@ -204,191 +219,115 @@ Potencial eléctrico
 %	D_m$ y $D_p$ son las conductividades de la membrana sin poros y del líquido 
 %	que llena el poro
 
+\section*{Implementación}
+\begin{multicols}{2}
+	\begin{itemize}
+		\item Métodos de elementos finitos para potencial eléctrico (ecuación de Poisson) y transporte de especies
+		\item Diferencias finitas para generación y evolución de poros
+		\item Implementado en \texttt{C++}
+		\item Malla con coordenadas cilíndricas (2D)
+		\item Elementos cuadrilaterales
+%		\item Librería Eigen para resolver sistemas de ecuaciones
+		\item Descomposiciones Cholesky (para Poisson) y Bi-gradientes conjugados estabilizados (para transporte)
+		\item OpenMP para acelerar llenado de matrices (Poisson) y resolución en transporte
+	\end{itemize}
+
+		\columnbreak
+		\begin{center}
+			\includegraphics[keepaspectratio, height = 0.18\textheight]{grande} 
+			\captionof{figure}{\color{Green}Ejemplo de malla con coordenadas cilíndricas}
+		\end{center}
+
+\end{multicols}
 
 \section*{Resultados}
 
-%\begin{center}\vspace{1cm}
-%\includegraphics[width=0.8\linewidth]{itv-time-lin-25-64-80KVm}
-%\captionof{figure}{\color{Green} ITV vs. tiempo para distintos ángulos para $\alpha$ = 25\si{\micro\metre} y 40\kvm}
-%\end{center}\vspace{1cm}
+\subsection*{Voltaje Transmembrana (ITV)}
+ITV en función del tiempo para diferentes ángulos:
 
-\begin{center}\vspace{1cm}
-\includegraphics[width=0.8\linewidth]{itv-tita-50-64-80KVm}
-\captionof{figure}{\color{Green} ITV vs. ángulo en distintos instantes para $\alpha$ = 25\si{\micro\metre} y 40\kvm}
-\end{center}\vspace{1cm}
+	\begin{multicols}{2}
+		\begin{center}\vspace{1cm}
+			\includegraphics[width=1\linewidth]{itv-time-lin-25-64-40KVm}
+			\captionof{figure}{\color{Green}Para $\alpha$ = 25\si{\micro\metre} y 40\kvm}
+		\end{center}\vspace{1cm}
+	\columnbreak
+		\begin{center}\vspace{1cm}
+			\includegraphics[width=1\linewidth]{itv-time-lin-25-64-80KVm}
+			\captionof{figure}{\color{Green}Para $\alpha$ = 25\si{\micro\metre} y 80\kvm}
+		\end{center}\vspace{1cm}
+	\end{multicols}
 
-\begin{center}\vspace{1cm}
-\includegraphics[width=0.8\linewidth]{hist-radios-5e-6-50-64-120KVm}
-\captionof{figure}{\color{Green} Distribución de poros para $\alpha$ = 50\si{\micro\metre}, 120\kvm en t = 5 \usec}
-\end{center}\vspace{1cm}
+\begin{itemize}
+	\item En una primera etapa la tensión sube al iniciarse el pulso. Esto no se da de manera inmediata debido a que la membrana se carga como un capacitor. El ITV crece de manera más rápida en las regiones celulares cercanas a los polos, mientras que en las regiones cercanas al ecuador casi no deja de ser cero.
+	\item Al alcanzar un pico de tensión, el ITV comienza a disminuir. Esto se debe a que los valores altos de tensión alcanzados crearon poros que aumentan significativamente la conductividad de la membrana, reduciendo su caída de tensión. Este proceso se da de manera más precipitada en las regiones cercanas a los polos, y más lentamente en las regiones cercanas al ecuador. 
+\end{itemize}
+
+\begin{multicols}{2}
+	ITV en función del ángulo para diferentes instantes
+	\begin{center}\vspace{1cm}
+	\includegraphics[width=1\linewidth]{itv-tita-50-64-80KVm}
+	\captionof{figure}{\color{Green} ITV para $\alpha$ = 50\si{\micro\metre} y 80\kvm}
+	\end{center}\vspace{1cm}
+	
+\columnbreak
+	Para que se dé este proceso el campo eléctrico debe alcanzar un umbral mínimo. En los que el potencial necesario fue alcanzado, un incremento en el campo eléctrico aplicado parece prácticamente no influir en los valores de ITV alcanzados, pero sí en la velocidad en la que se produce el proceso descrito. El potencial transmembrana alcanzado casi no varía, influyendo el potencial aplicado solo en la velocidad en la que se producen las variaciones de ITV.\\
+\end{multicols}
+
+
+\subsection*{Distribución de poros grandes según radio para distintos instantes de tiempo}
+	
+\begin{multicols}{2}
+	\begin{center}\vspace{1cm}
+	\includegraphics[width=1\linewidth]{hist-radios-5e-6-50-64-160KVm}
+	\captionof{figure}{\color{Green} Radios de poros con $\alpha$ = 50\si{\micro\metre}, 160\kvm y t = 5 \usec}
+	\end{center}\vspace{1cm}
+
+\columnbreak
+
+	\begin{center}\vspace{1cm}
+	\includegraphics[width=1\linewidth]{hist-radios-5e-3-50-64-160KVm}
+	\captionof{figure}{\color{Green} Radios de poros con $\alpha$ = 50\si{\micro\metre} y 160\kvm  y t = 5 \si{\milli\second}}
+	\end{center}\vspace{1cm}
+\end{multicols}
+
+Sólo los poros grandes (mayores a 1 $\si{\nano\metre}$), son de interés. \\
+Si bien se crean muchos poros, éstos se sellan rápidamente con el paso del tiempo: a los 5 $\si{\milli\second}$ del pulso en todos los casos la cantidad de poros es mucho menor en instantes anteriores, aunque los pocos poros grandes que siguen existiendo suelen tener mayor radio que la mayoría de los poros en los instantes anteriores. La corta vida de la mayoría de los poros puede deberse a que la alta densidad de los primeros instantes reduce significativamente la conductancia de la membrana, y por lo tanto el ITV necesario para mantener los poros abiertos.
+
 
 \section*{Conclusiones}
-			\begin{itemize}
-				\item Se pueden ingresar las especies, pero se necesitan voltajes muy altos,
-					sobre todo para \na y \cl
-				\item Los poros generados disminuyen la conductancia de la membrana, 
-					disminuyendo el ITV
-				\item El voltaje aplicado influye en la velocidad con la que se crean los poros,
-					pero no aumenta el ITV, siempre que se alcance un valor mínimo
-				\item La mayoría de los poros creados se cierran muy rápidamente; antes de que 
-					lleguen las especies, luego no sirven para permeabilizar la membrana
-			\end{itemize}
+	\begin{itemize}
+		\item Se pueden ingresar las especies, pero se necesitan voltajes muy altos,
+			sobre todo para \na y \cl
+		\item Los poros generados disminuyen la conductancia de la membrana, 
+			disminuyendo el ITV
+		\item El voltaje aplicado influye en la velocidad con la que se crean los poros,
+			pero no aumenta el ITV, siempre que se alcance un valor mínimo
+		\item La mayoría de los poros creados se cierran muy rápidamente; antes de que 
+			lleguen las especies, luego no sirven para permeabilizar la membrana
+	\end{itemize}
 
 
+\begin{thebibliography}{9}
 
-%%----------------------------------------------------------------------------------------
-%%	OBJECTIVES
-%%----------------------------------------------------------------------------------------
-%
-%
-%
-%\section*{Main Objectives}
-%
-%\begin{enumerate}
-%\item Lorem ipsum dolor sit amet, consectetur.
-%\item Nullam at mi nisl. Vestibulum est purus, ultricies cursus volutpat sit amet, vestibulum eu.
-%\item Praesent tortor libero, vulputate quis elementum a, iaculis.
-%\item Phasellus a quam mauris, non varius mauris. Fusce tristique, enim tempor varius porta, elit purus commodo velit, pretium mattis ligula nisl nec ante.
-%\item Ut adipiscing accumsan sapien, sit amet pretium.
-%\item Estibulum est purus, ultricies cursus volutpat
-%\item Nullam at mi nisl. Vestibulum est purus, ultricies cursus volutpat sit amet, vestibulum eu.
-%\item Praesent tortor libero, vulputate quis elementum a, iaculis.
-%\end{enumerate}
-%
-%%----------------------------------------------------------------------------------------
-%%	MATERIALS AND METHODS
-%%----------------------------------------------------------------------------------------
-%
-%\section*{Materials and Methods}
-%
-%Fusce magna risus, molestie ut porttitor in, consectetur sed mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque consectetur blandit pellentesque. Sed odio justo, viverra nec porttitor vel, lacinia a nunc. Suspendisse pulvinar euismod arcu, sit amet accumsan enim fermentum quis. In id mauris ut dui feugiat egestas. Vestibulum ac turpis lacinia nisl commodo sagittis eget sit amet sapien.
-%
-%%------------------------------------------------
-%
-%\subsection*{Mathematical Section}
-%
-%Nulla vel nisl sed mauris auctor mollis non sed. 
-%
-%\begin{equation}
-%E = mc^{2}
-%\label{eqn:Einstein}
-%\end{equation}
-%
-%Curabitur mi sem, pulvinar quis aliquam rutrum. (1) edf (2)
-%, $\Omega=[-1,1]^3$, maecenas leo est, ornare at. $z=-1$ edf $z=1$ sed interdum felis dapibus sem. $x$ set $y$ ytruem. 
-%Turpis $j$ amet accumsan enim $y$-lacina; 
-%ref $k$-viverra nec porttitor $x$-lacina. 
-%
-%Vestibulum ac diam a odio tempus congue. Vivamus id enim nisi:
-%
-%\begin{eqnarray}
-%\cos\bar{\phi}_k Q_{j,k+1,t} + Q_{j,k+1,x}+\frac{\sin^2\bar{\phi}_k}{T\cos\bar{\phi}_k} Q_{j,k+1} &=&\nonumber\\ 
-%-\cos\phi_k Q_{j,k,t} + Q_{j,k,x}-\frac{\sin^2\phi_k}{T\cos\phi_k} Q_{j,k}\label{edgek}
-%\end{eqnarray}
-%and
-%\begin{eqnarray}
-%\cos\bar{\phi}_j Q_{j+1,k,t} + Q_{j+1,k,y}+\frac{\sin^2\bar{\phi}_j}{T\cos\bar{\phi}_j} Q_{j+1,k}&=&\nonumber \\
-%-\cos\phi_j Q_{j,k,t} + Q_{j,k,y}-\frac{\sin^2\phi_j}{T\cos\phi_j} Q_{j,k}.\label{edgej}
-%\end{eqnarray} 
-%
-%Nulla sed arcu arcu. Duis et ante gravida orci venenatis tincidunt. Fusce vitae lacinia metus. Pellentesque habitant morbi. $\mathbf{A}\underline{\xi}=\underline{\beta}$ Vim $\underline{\xi}$ enum nidi $3(P+2)^{2}$ lacina. Id feugain $\mathbf{A}$ nun quis; magno.
+\bibitem{puchiar}
+	G. Puchiar, T. Kotnik, B. Valič and D. Miklavčič
+	\emph{Numerical Determination of Transmembrane Voltage Induced on Irregularly Shaped Cells}
+	Annals of Biomedical Engineering
+	April 2006, Volume 34, Issue 4, Pages 642-652
 
-%%----------------------------------------------------------------------------------------
-%%	RESULTS 
-%%----------------------------------------------------------------------------------------
-%
-%\section*{Results}
-%
-%Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan. Aenean vitae risus ante.
-%%
-%\begin{wraptable}{l}{12cm} % Left or right alignment is specified in the first bracket, the width of the table is in the second
-%\begin{tabular}{l l l}
-%\toprule
-%\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-%\midrule
-%Treatment 1 & 0.0003262 & 0.562 \\
-%Treatment 2 & 0.0015681 & 0.910 \\
-%Treatment 3 & 0.0009271 & 0.296 \\
-%\bottomrule
-%\end{tabular}
-%\captionof{table}{\color{Green} Table caption}
-%\end{wraptable}
-%%
-%Phasellus imperdiet, tortor vitae congue bibendum, felis enim sagittis lorem, et volutpat ante orci sagittis mi. Morbi rutrum laoreet semper. Morbi accumsan enim nec tortor consectetur non commodo nisi sollicitudin. Proin sollicitudin. Pellentesque eget orci eros. Fusce ultricies, tellus et pellentesque fringilla, ante massa luctus libero, quis tristique purus urna nec nibh.
-%
-%Nulla ut porttitor enim. Suspendisse venenatis dui eget eros gravida tempor. Mauris feugiat elit et augue placerat ultrices. Morbi accumsan enim nec tortor consectetur non commodo. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tristique adipiscing. Quisque vestibulum eros eu. Phasellus imperdiet, tortor vitae congue bibendum, felis enim sagittis lorem, et volutpat ante orci sagittis mi. Morbi rutrum laoreet semper. Morbi accumsan enim nec tortor consectetur non commodo nisi sollicitudin.
-%
-%\begin{center}\vspace{1cm}
-%\includegraphics[width=0.8\linewidth]{placeholder}
-%\captionof{figure}{\color{Green} Figure caption}
-%\end{center}\vspace{1cm}
-%
-%In hac habitasse platea dictumst. Etiam placerat, risus ac.
-%
-%Adipiscing lectus in magna blandit:
-%
-%\begin{center}\vspace{1cm}
-%\begin{tabular}{l l l l}
-%\toprule
-%\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2} \\
-%\midrule
-%Treatment 1 & 0.0003262 & 0.562 \\
-%Treatment 2 & 0.0015681 & 0.910 \\
-%Treatment 3 & 0.0009271 & 0.296 \\
-%\bottomrule
-%\end{tabular}
-%\captionof{table}{\color{Green} Table caption}
-%\end{center}\vspace{1cm}
-%
-%Vivamus sed nibh ac metus tristique tristique a vitae ante. Sed lobortis mi ut arcu fringilla et adipiscing ligula rutrum. Aenean turpis velit, placerat eget tincidunt nec, ornare in nisl. In placerat.
-%
-%\begin{center}\vspace{1cm}
-%\includegraphics[width=0.8\linewidth]{placeholder}
-%\captionof{figure}{\color{Green} Figure caption}
-%\end{center}\vspace{1cm}
-%
-%%----------------------------------------------------------------------------------------
-%%	CONCLUSIONS
-%%----------------------------------------------------------------------------------------
-%
-%\color{SaddleBrown} % SaddleBrown color for the conclusions to make them stand out
-%
-%\section*{Conclusions}
-%
-%\begin{itemize}
-%\item Pellentesque eget orci eros. Fusce ultricies, tellus et pellentesque fringilla, ante massa luctus libero, quis tristique purus urna nec nibh. Phasellus fermentum rutrum elementum. Nam quis justo lectus.
-%\item Vestibulum sem ante, hendrerit a gravida ac, blandit quis magna.
-%\item Donec sem metus, facilisis at condimentum eget, vehicula ut massa. Morbi consequat, diam sed convallis tincidunt, arcu nunc.
-%\item Nunc at convallis urna. isus ante. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tristique adipiscing.
-%\end{itemize}
-%
-%\color{DarkSlateGray} % Set the color back to DarkSlateGray for the rest of the content
-%
-%%----------------------------------------------------------------------------------------
-%%	FORTHCOMING RESEARCH
-%%----------------------------------------------------------------------------------------
-%
-%\section*{Forthcoming Research}
-%
-%Vivamus molestie, risus tempor vehicula mattis, libero arcu volutpat purus, sed blandit sem nibh eget turpis. Maecenas rutrum dui blandit lorem vulputate gravida. Praesent venenatis mi vel lorem tempor at varius diam sagittis. Nam eu leo id turpis interdum luctus a sed augue. Nam tellus.
-%
-% %----------------------------------------------------------------------------------------
-%%	REFERENCES
-%%----------------------------------------------------------------------------------------
-%
-%\nocite{*} % Print all references regardless of whether they were cited in the poster or not
-%\bibliographystyle{plain} % Plain referencing style
-%\bibliography{sample} % Use the example bibliography file sample.bib
-%
-%%----------------------------------------------------------------------------------------
-%%	ACKNOWLEDGEMENTS
-%%----------------------------------------------------------------------------------------
-%
-%\section*{Acknowledgements}
-%
-%Etiam fermentum, arcu ut gravida fringilla, dolor arcu laoreet justo, ut imperdiet urna arcu a arcu. Donec nec ante a dui tempus consectetur. Cras nisi turpis, dapibus sit amet mattis sed, laoreet.
-%
-%%----------------------------------------------------------------------------------------
+\bibitem{krass}
+	Wanda Krassowska and Petar D. Filev
+	\emph{Modeling Electroporation in a Single Cell}
+	Biophysical Journal
+	Volume 92, Issue 2, 15 January 2007, Pages 404–417
+
+\bibitem{jianbo}
+	Jianbo Lia, Wenchang Tanb, Miao Yua, Hao Lina
+	\emph{The effect of extracellular conductivity on electroporation-mediated molecular delivery}
+	Biochimica et Biophysica Acta 
+	1828 (2013) 461–470
+
+\end{thebibliography}
 
 \end{multicols}
 \end{document}
