@@ -26,7 +26,6 @@ void Celula::poisson() {
 }
 
 /* Loop principal */
-//TODO usar siempre la misma matriz en transporte OFF. no porque cambia la difusion!!
 //TODO print us
 void Celula::transportePoros() {	
 	const double DELTA_T  = 1e-9;

@@ -19,9 +19,11 @@ celula/salida/pulsos/10_128.7z
 *.nav
 *.snm
 *.toc
-*.ppt#
 *.bbl
 *.blg
+
+*.ppt#
+*.docx#
 
 latex/*/*.log
 latex/*/*.out

@@ -14,6 +14,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%TODO agregar alimentos
 %TODO puede ir: trabajo pendiente, explicación de variables si falta, más texto
 %TODO cambiar las 2 columnas de itv vs tiempo
 %TODO mover logo departamento
@@ -85,8 +86,9 @@
 % The widths of these boxes can be easily edited to accommodate your content as you see fit
 
 \begin{minipage}[b]{0.75\linewidth}
-\veryHuge \color{NavyBlue} \textbf{Modelado de Electroporación Celular} \color{Black}\\ % Title
-%\Huge\textit{An Exploration of Complexity}\\[2cm] % Subtitle PUEDE IR UN SUBTITULO
+\Huge \color{NavyBlue} \textbf{Modelado de Electroporación Celular} \color{Black}\\ % Title
+
+%\Huge\textit{An Exploration of Complexity}\\[2cm] % Subtitle 
 %\huge \textbf{John Smith \& James Smith}\\[0.5cm] % Author(s)
 %\huge University and Department Name\\[0.4cm] % University/organization
 %\Large \texttt{john@LaTeXTemplates.com} --- 1 (000) 111 1111\\
@@ -114,7 +116,7 @@
 \begin{center}Introducción\end{center}
 La electroporación reversible es un método consistente en la aplicación de pulsos eléctricos de alta intensidad a una célula con el objetivo de permeabilizar su membrana creando poros, y así permitir el ingreso de drogas o moléculas de ADN a su interior. Esto permite tratar tumores con menores cantidades de drogas, reduciendo los efectos secundarios.\\
 
-En este trabajo se simula una célula esférica a la que se le aplica un pulso eléctrico de 20\si{\milli\second} de duración a través de dos electrodos, y se estudia el ingreso al interior de la célula de 4 especies iónicas: el ión hidrógeno (\h), el hidróxido (\oh), el catión sodio (\na) y el cloruro (\cl). Para eso se tiene en cuenta el campo eléctrico producido por los electrodos, la generación y evolución de poros en la membrana celular producto de la diferencia de potencial entre el interior y exterior de la célula , y la migración de las especies mencionadas, producto de la diferencia de potencial.\\
+En este trabajo se simula una célula esférica a la que se le aplica un pulso eléctrico de 20\si{\milli\second} de duración a través de dos electrodos, y se estudia el ingreso al interior de la célula de 4 especies iónicas: el ión hidrógeno (\h), el hidróxido (\oh), el catión sodio (\na) y el cloruro (\cl). Para eso se tiene en cuenta el campo eléctrico producido por los electrodos, la generación y evolución de poros en la membrana celular producto de la diferencia de potencial entre el interior y exterior de la célula, y la migración de las especies mencionadas, producto de la diferencia de potencial.\\
 
 Las simulaciones se realizaron con el método de elementos finitos sobre mallas bidimensionales que representan el dominio sobre un sistema de coordenadas cilíndricas usando elementos cuadrilaterales.
 
@@ -132,11 +134,23 @@ Las simulaciones se realizaron con el método de elementos finitos sobre mallas 
 
 \section*{Teoría}
 
+%A partir de TEORIA
+%    Desarrolla un poquito los topicos. quiero secir: en vez de potencial electrico, deci: PAra calcular el potencial electrico se resuelve la ecuacion:
+%etc, se entiende.
+%
+%Lo mismo es la ec. de Nerst PLnk: explayate un poco y deci las especies consideradas.
+%
+
 %\subsection*{Potencial Eléctrico}
-Potencial eléctrico:
+%Potencial eléctrico:
+
+	Se calcula el potencial eléctrico en el dominio usando la ecuación de Poisson:
+
 			\begin{equation}
 				\sigma_{e} \nabla^2 \phi = 0
-			\end{equation}
+			\end{equation}\\
+%	donde $\sigma_{e}$ es la conductividad del material.\\
+
 
 %			Con $\phi$ el potencial eléctrico y $\sigma_{e}$ la conductividad del material.
 %			Condiciones de borde de Dirichlet en los electrodos y Neumann en los otros bordes.\\
@@ -146,7 +160,7 @@ Potencial eléctrico:
 %				$V^{\theta} = 1.5 E cos (\theta)$
 %			\end{center}
 
-			Se asume que la membrana se carga como un capacitor en paralelo con una resistencia:
+			Se asume que la membrana celular se carga como un capacitor en paralelo con una resistencia, por lo tanto el potencial transmembrana crece según la ecuación:
 			\begin{equation}
 				V_m = V_p (1 - e^{-t/\tau}),
 %			\end{equation}
@@ -157,13 +171,13 @@ Potencial eléctrico:
 %			Con $\alpha$ el radio, $C_m$ la capacitancia de la membrana y $\sigma_i$ y $\sigma_o$ las
 %			conductividades interna y externa.
 
-	Densidad de poros:
+	El crecimiento de poros en las distintas regiones de la membrana celular se calcula con la ecuación:
 	\begin{equation}
 		\frac{\partial N}{\partial t} = \alpha_c e^{(V_m/V_{ep})^2} 
 			\left( 1 - \frac{N}{N_0 e^{q \left(V_m/V_{ep} \right) ^2}} \right)
-	\end{equation}
-	La densidad depende del ITV en cada región de la célula 
-	(no es constante en toda la superficie).\\
+	\end{equation}\\
+%	La densidad depende del ITV en cada región de la célula 
+%	(no es constante en toda la superficie).\\
 %	\newline 
 	%			$N$ es la densidad de poros, $V_m$ es el ITV, $\alpha_c$ es el coeficiente de creación de poros, 
 	%			$V_{ep}$ es el voltaje característico de electroporación, 
@@ -174,14 +188,14 @@ Potencial eléctrico:
 %	$N$ es la densidad de poros, $V_m$ es el ITV, 
 %	$\alpha_c$, $V_{ep}$, $N_0$ y $q$ constantes.
 
-	Radio de los poros:
+	Cada uno de los poros creados tiene un radio variable que se calcula de manera independiente:
 	\begin{equation}
 		\frac{\partial r}{\partial t} = \frac{D}{kT} \left( \frac{V_m^2 F_{max}}
 			{1+r_h / (r+r_a)} + \frac{4 \beta}{r} \left(\frac{r_*}{r}\right)^4 
 			- 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r\right),			
 		\textrm{ con }\sigma_{\textrm{\tiny eff}} = 2 \sigma^\prime - 
 			\frac{2 \sigma^\prime - \sigma_0}{(1 - A_p / A)^2}
-	\end{equation}
+	\end{equation}\\
 	
 	
 
@@ -190,14 +204,14 @@ Potencial eléctrico:
 	%					\frac{2 \sigma^\prime - \sigma_0}{(1 - A_p / A)^2}	$
 	%			\end{center}
 
-	Se aplica a cada poro por separado.\\
+%	Se aplica a cada poro por separado.\\
 
 
-	Transporte de especies: ecuación de Nernst-Planck
+	Para la concentración de las especies iónicas estudiadas (\h, \oh, \na y \cl) se usa la ecuación de Nernst-Planck que tiene en cuenta la difusión por gradiente de concentración y migración por efecto del campo eléctrico:
 	\begin{equation}
 		\frac{\partial C_i}{\partial t} = \nabla \cdot \left( D_i \nabla C_i + D_i z_i 
 			\frac{F}{R T} C_i \nabla \phi \right)
-	\end{equation}	\\			
+	\end{equation}\\			
 %	donde $C_i$, $D_i$ y $z_i$ son la concentración, la difusión y la valencia de la 
 %		especie $i$, para $i$ alguna de las especies mencionadas (\h, \oh, \na, \cl).
 %	\newline \newline		
@@ -206,11 +220,11 @@ Potencial eléctrico:
 	La conductividad de la membrana se recalcula según el área ocupada por los poros:
 	\begin{equation}
 		\sigma_{e} = \sigma_m (1 - p) + \sigma_p p
-	\end{equation}\\
+	\end{equation}
 %	donde $p$ es la proporción ocupada por poros de una zona esférica de la membrana. 
 %	$\sigma_m$ y $\sigma_p$ son las conductividades de la membrana sin poros y del líquido 
 %	que llena el poro
-%	\newline \newline
+
 	Lo mismo se hace con la difusión:
 	\begin{equation}
 		D_{i, e} = D_i (1 - p) + D_p
@@ -290,22 +304,21 @@ ITV en función del tiempo para diferentes ángulos:
 	\end{center}\vspace{1cm}
 \end{multicols}
 
-Sólo los poros grandes (mayores a 1 $\si{\nano\metre}$), son de interés. \\
-Si bien se crean muchos poros, éstos se sellan rápidamente con el paso del tiempo: a los 5 $\si{\milli\second}$ del pulso en todos los casos la cantidad de poros es mucho menor en instantes anteriores, aunque los pocos poros grandes que siguen existiendo suelen tener mayor radio que la mayoría de los poros en los instantes anteriores. La corta vida de la mayoría de los poros puede deberse a que la alta densidad de los primeros instantes reduce significativamente la conductancia de la membrana, y por lo tanto el ITV necesario para mantener los poros abiertos.
+Sólo los poros grandes (mayores a 1 $\si{\nano\metre}$), son de interés. Si bien se crean muchos poros, éstos se sellan rápidamente con el paso del tiempo: a los 5 $\si{\milli\second}$ del pulso en todos los casos la cantidad de poros es mucho menor en instantes anteriores, aunque los pocos poros grandes que siguen existiendo suelen tener mayor radio que la mayoría de los poros en los instantes anteriores. La corta vida de la mayoría de los poros puede deberse a que la alta densidad de los primeros instantes reduce significativamente la conductancia de la membrana, y por lo tanto el ITV necesario para mantener los poros abiertos.
 
 
-\section*{Conclusiones}
+\section*{Conclusiones}	
 	\begin{itemize}
-		\item Se pueden ingresar las especies, pero se necesitan voltajes muy altos,
-			sobre todo para \na y \cl
+		\item Las especies involucradas ingresan a la célula, pero los iones $\na$ y $\cl$ requieren potenciales muy altos para ingresar (200\si{\kilo\volt\per\metre} para células de 25 o 50 \si{\micro\metre} de radio).
 		\item Los poros generados disminuyen la conductancia de la membrana, 
-			disminuyendo el ITV
+			disminuyendo el ITV.
 		\item El voltaje aplicado influye en la velocidad con la que se crean los poros,
-			pero no aumenta el ITV, siempre que se alcance un valor mínimo
+			pero no aumenta el ITV, siempre que se alcance un valor mínimo, encontrado en  80\si{\kilo\volt\per\metre} para células de 10\si{\micro\metre} de radio en las simulaciones realizadas.
 		\item La mayoría de los poros creados se cierran muy rápidamente; antes de que 
-			lleguen las especies, luego no sirven para permeabilizar la membrana
-	\end{itemize}
+			lleguen las especies, luego no sirven para permeabilizar la membrana.
+		\item Un alto porcentaje de los poros creados se cierran durante el primer milisegundo, por lo que si se pretende permeabilizar la membrana para las especies analizadas, se vuelve esencial repetir el pulso de potencial periódicamente. 
 
+	\end{itemize}
 
 \begin{thebibliography}{9}
 
