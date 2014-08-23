@@ -278,27 +278,39 @@ void EntradaSalida::grabarTransporte(bool verbose) {
 		to_string(nTransporte) + "-" + to_string(time) + ".csv"
 	).c_str(), "w");
 	
+	FILE* fHidro = fopen((
+		getCelula().salida + "/transporte/hidro-" +
+		to_string(nTransporte) + "-" + to_string(time) + ".csv"
+	).c_str(), "w");
+
 	assert(fpH > 0);
 	assert(fTrans > 0);
+	assert(fHidro > 0);
 
 	fprintf(fpH,    "         X,          Y,           pH_H+,          pH_OH-\n");
 	fprintf(fTrans, "         X,          Y,             Na+,             Cl-\n");
+	fprintf(fHidro, "         X,          Y,              H+,             OH-\n");
 
 	for (int jNodo = 0; jNodo < nNodes; jNodo++) {
 		Nodo nodo = getCelula().nodos[jNodo];
 		
-		double pH_H  = -log10((getCelula().concentraciones[H_][jNodo] + 1e-18) / CONCENT);
-		double ph_OH = -log10((getCelula().concentraciones[OH][jNodo] + 1e-18) / CONCENT);
+		double molar_H  = (getCelula().concentraciones[H_][jNodo] + 1e-18) / CONCENT;
+		double molar_OH = (getCelula().concentraciones[OH][jNodo] + 1e-18) / CONCENT;
+
+		double pH_H  = -log10(molar_H);
+		double ph_OH = -log10(molar_OH);
 
 		double molarNa = getCelula().concentraciones[NA][jNodo] / CONCENT;
 		double molarCl = getCelula().concentraciones[CL][jNodo] / CONCENT;
 
 		fprintf(fpH, "%#10f, %#10f, %#15.9g, %#15.9g\n", nodo.x, nodo.y, pH_H, ph_OH);
 		fprintf(fTrans, "%#10f, %#10f, %#15.9g, %#15.9g\n", nodo.x, nodo.y, molarNa, molarCl);
+		fprintf(fHidro, "%#10f, %#10f, %#15.9g, %#15.9g\n", nodo.x, nodo.y, molar_H, molar_OH);
 	}
 
 	fclose(fpH);
 	fclose(fTrans);
+	fclose(fHidro);
 	nTransporte++;
 	printEnd(1, verbose);
 }

@@ -13,8 +13,6 @@ using namespace declaraciones;
 using namespace Eigen;
 using namespace std;
 
-// TODO es siempre la misma matriz para una especie?
-
 Transporte::Transporte(Celula& celula) {
 	_celula = &celula;
 

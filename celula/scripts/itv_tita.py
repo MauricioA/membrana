@@ -71,8 +71,8 @@ for (folder, radio, mesh) in FOLDERS:
 			ax.set_xlim(0, np.pi)
 
 			pylab.savefig(
-				 'itvs/itv-tita-%s-%s-%s.png' % (radio, mesh, dir), 
-				 bbox_inches='tight'
+				'itvs/itv-tita-%s-%s-%s.png' % (radio, mesh, dir), 
+				bbox_inches='tight'
 			)
 
 			sys.stdout.write('.')

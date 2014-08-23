@@ -6,6 +6,13 @@
 
 using namespace std;
 
+const double GAUSSPT[] = {
+	-1 / sqrt(3.0),
+	1 / sqrt(3.0),
+};
+
+const double GAUSSWT[] = { 1, 1 };
+
 void Armado::armadoPoisson(Double2D pos[], double sigma, int nodpel, double esm[][MAXNPEL]) {
 	switch (nodpel) {
 	case 3:

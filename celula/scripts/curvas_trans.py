@@ -82,7 +82,6 @@ for (folder, radio, mesh) in FOLDERS:
 				plt.axvline(x=max/5 * 2, color="gray", ls='--')
 				plt.axvline(x=max/5 * 3, color="gray", ls='--')
 				
-				#filename = 'curvas/curv-%s-%s-%s-%s.png' % (ESPECIES[esp], radio, mesh, dir)
 				filename = 'curvas/ph7/%s-%s-%sKvm-%s.png' % (radio, mesh, 50, ESPECIES[esp])
 				pylab.savefig(filename)
 				sys.stdout.write('plotted %s\n' % filename)

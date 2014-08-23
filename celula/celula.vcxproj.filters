@@ -73,8 +73,5 @@
     <Text Include="input.in">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="inputs\constantes.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>

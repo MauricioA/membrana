@@ -1,15 +1,19 @@
-malla: 	 inputs/10_128.msh
-nodpel:	 quad
-salida:  salida/pulsos/temp
-threads: 1
+#REVERTIR ESTOS CAMBIOS!!!
+#REVERTIR TAMBIEN EN declaraciones.h!!
 
 # revisar los sigmas y el que llena el poro!!
-sigint:		150e-9	# conductividad de la zona intraelular [S/um]
-sigext:		200e-9	# conductividad de la zona extra
+
+malla: 	 inputs/10_128.msh
+nodpel:	 quad
+salida:  salida/pulsos/chinos/valencia
+threads: 1
+
+sigint:		0.5e-6	# conductividad de la zona intraelular [S/um]
+sigext:		0.15e-6	# conductividad de la zona extra
 sigmem:		500e-15	# conductividad de la membrana
-potencial:  12		# 200kvm
+potencial:  16		# 160 kVm = 1.6kV/cm
 radio: 		10
-ancho: 		5e-3	# ancho de la membrana
-pulsos:		2
-on_time:	20e-6
-off_time:	80e-3
+ancho: 		5e-3	# ancho de la membrana [um]
+pulsos:		1
+on_time:	6e-3
+off_time:	10e-3

@@ -10,6 +10,8 @@
 
 using namespace std;
 
+//TODO print us
+
 Celula::Celula() {
 	potencial = 0;
 	nNodes = nElems = nodpel  = 0;
@@ -26,23 +28,29 @@ void Celula::poisson() {
 }
 
 /* Loop principal */
-//TODO print us
 void Celula::transportePoros() {	
 	const double DELTA_T  = 1e-9;
 	
-	const int PASO_POISSON_1		= 1;
-	const int PASO_POISSON_2		= 10;
-	const int PASO_POISSON_3		= 50;
-	const int PASO_DISCO_ITV_1		= 10;
-	const int PASO_DISCO_ITV_2		= 100;
-	const int PASO_DISCO_ITV_3		= 1000;
-	const int PASO_TRANSPORTE		= 1000;
-	const int PASO_CONSOLA			= 1000;
+	const int PASO_POISSON_1	= 1;
+	const int PASO_POISSON_2	= 10;
+	const int PASO_POISSON_3	= 50;
+	const int PASO_DISCO_ITV_1	= 10;
+	const int PASO_DISCO_ITV_2	= 100;
+	const int PASO_DISCO_ITV_3	= 1000;
+	const int PASO_TRANSPORTE	= 1000;
+	const int PASO_CONSOLA		= 1000;
 
 	/* En qué momentos graba a disco */
-	vector<double> paso_disco = { 
+	/*vector<double> paso_disco = { 
 		0, 5e-3, 10e-3, 15e-3, 19.999e-3, 60e-3,
-		100e-3, 105e-3, 110e-3, 115e-3, 119.999e-2, 160e-3,	DBL_MAX,
+		100e-3, 105e-3, 110e-3, 115e-3, 119.999e-3, 160e-3,	
+		200e-3, 205e-3, 210e-3, 215e-3, 219.999e-3, 260e-3,
+		300e-3, 305e-3, 310e-3, 315e-3, 319.999e-3, 360e-3,
+		DBL_MAX,
+	};*/
+	
+	vector<double> paso_disco = {
+		0, 2e-3, 4e-3, 5.999e-3, 8e-3, 10e-3, 12e-3, 15.999e-3, DBL_MAX,
 	};
 
 	int pos_disco = 0;

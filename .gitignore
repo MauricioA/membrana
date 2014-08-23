@@ -14,6 +14,9 @@ celula/salida/pulsos/*.7z
 celula/salida/new/10_128.7z
 celula/salida/new/25_128_cls_t100.7z
 celula/salida/pulsos/10_128.7z
+celula/salida/pulsos/25_128_cls
+celula/salida/pulsos/chinos
+celula/salida/pulsos/temp*
 
 *.aux
 *.nav
