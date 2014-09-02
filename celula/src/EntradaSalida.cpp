@@ -14,17 +14,28 @@ EntradaSalida::EntradaSalida(Celula& celula) {
 	_celula = &celula;
 	leerInput();
 
+	/* Chequear que dir de salida esté vacío */
+	//ifstream f(getCelula().salida + "/input.in");
+	//assert(!f.good());
+	//f.close();
+
 	/* Copiar input.in */
 	ifstream src("input.in", ios::binary);
 	ofstream dst(getCelula().salida + "/input.in", ios::binary);
 	dst << src.rdbuf();
 
 	fitv = fopen((getCelula().salida + "/itv.csv").c_str(), "w");
+	fPAD = fopen((getCelula().salida + "/PAD.csv").c_str(), "w");
+
 	assert(fitv > 0);
+	assert(fPAD > 0);
+
+	fprintf(fPAD, "        time,    max_PAD\n");
 }
 
 EntradaSalida::~EntradaSalida() {
 	fclose(fitv);
+	fclose(fPAD);
 }
 
 inline Celula& EntradaSalida::getCelula() {
@@ -333,7 +344,7 @@ void EntradaSalida::grabarPoros(Poros& radios, bool verbose) {
 		}
 
 		for (int i = 0; i < info.porosChicos; i++) {
-			fprintf(fPoros, "%#10f, %#15.9g %#15.9g\n", time, info.tita, info.radioChico);
+			fprintf(fPoros, "%#10f, %#15.9g\n", info.tita, info.radioChico);
 		}
 	}
 
@@ -349,4 +360,8 @@ void EntradaSalida::grabarITV(Poros& poros) {
 	for (auto& info : valores) {
 		fprintf(fitv, "%#10.6g, %#10f, %#10f\n", time, info.first, info.second);
 	}
+}
+
+void EntradaSalida::grabarPermeabilizacion(Poros& poros) {
+	fprintf(fPAD, "%#10.6g, %10f\n", getCelula().time, poros.getMaxPAD());
 }

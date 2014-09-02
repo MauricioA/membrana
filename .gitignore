@@ -17,6 +17,9 @@ celula/salida/pulsos/10_128.7z
 celula/salida/pulsos/25_128_cls
 celula/salida/pulsos/chinos
 celula/salida/pulsos/temp*
+celula/salida/pulsos/chinos2
+celula/salida/solo_poros
+celula/salida/temp
 
 *.aux
 *.nav

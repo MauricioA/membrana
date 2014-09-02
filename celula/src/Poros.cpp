@@ -1,10 +1,9 @@
-#define _USE_MATH_DEFINES
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <math.h>
+#include <cmath>
 #include <cassert>
+#include <cstdio>
 #include <algorithm>
-#include <cstdio> 
 #include <numeric>
 #include "Poros.h"
 #include "EntradaSalida.h"
@@ -251,6 +250,14 @@ void Poros::iteracion(double deltaT) {
 
 	/* Actualizo las conductividades de la membrana */
 	actualizarSigmas();
+
+	//if (getCelula().time > 1.5e-6) {
+	//	for (auto& info : valores) {
+	//		printf("%f, %g, %d, %g\n", 
+	//			info.tita, info.densidad, info.porosGrandes.size() + info.porosChicos, info.area);
+	//	}
+	//	assert(false);
+	//}
 }
 
 double Poros::getITV(InfoAngulo& info) {
@@ -346,9 +353,9 @@ double Poros::getProporsionArea(int iElem) {
 		double itv = getITV(info);
 		printf("%f\n", itv);
 		printf("%f %f %d %d %f\n", info.area, areaP, info.porosGrandes.size(), info.porosChicos, info.tita);
+		assert(false);
 	}
 
-	assert(areaP < info.area);
 	return areaP / info.area;
 }
 
@@ -361,11 +368,18 @@ vector<pair<double, double>> Poros::getITVs(double tiempo) {
 }
 
 void Poros::actualizarSigmas() {
-	for (int i = 0; i < getCelula().nElems; i++) {
-		Elemento& elem = getCelula().elementos[i];
-		if (elem.material == MEMBRANA) {
-			double areas = getProporsionArea(i);
-			elem.sigma = getCelula().sigmas[MEMBRANA] * (1 - areas) + SIGMA_PORO * areas;
-		}
+	for (auto& x : mapa) {
+		int iElem = x.first;
+		double areas = getProporsionArea(iElem);
+		Elemento& elem = getCelula().elementos[iElem];
+		elem.sigma = getCelula().sigmas[MEMBRANA] * (1 - areas) + SIGMA_PORO * areas;
 	}
+}
+
+double Poros::getMaxPAD() {
+	double result = 0;
+	for (auto& x : mapa) {
+		result = max(result, getProporsionArea(x.first));
+	}
+	return result;
 }

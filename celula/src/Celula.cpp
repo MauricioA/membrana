@@ -10,8 +10,6 @@
 
 using namespace std;
 
-//TODO print us
-
 Celula::Celula() {
 	potencial = 0;
 	nNodes = nElems = nodpel  = 0;
@@ -28,8 +26,9 @@ void Celula::poisson() {
 }
 
 /* Loop principal */
-void Celula::transportePoros() {	
-	const double DELTA_T  = 1e-9;
+void Celula::transportePoros() {
+	//const double DELTA_T  = 1e-9;
+	const double DELTA_T = 0.003e-9;
 	
 	const int PASO_POISSON_1	= 1;
 	const int PASO_POISSON_2	= 10;
@@ -40,6 +39,8 @@ void Celula::transportePoros() {
 	const int PASO_TRANSPORTE	= 1000;
 	const int PASO_CONSOLA		= 1000;
 
+	auto global_start = chrono::high_resolution_clock::now();
+
 	/* En qué momentos graba a disco */
 	/*vector<double> paso_disco = { 
 		0, 5e-3, 10e-3, 15e-3, 19.999e-3, 60e-3,
@@ -49,8 +50,16 @@ void Celula::transportePoros() {
 		DBL_MAX,
 	};*/
 	
+	//vector<double> paso_disco = {
+	//	0, 2e-3, 4e-3, 5.999e-3, 8e-3, 10e-3, 12e-3, 15.999e-3, DBL_MAX,
+	//};
+
+	/*vector<double> paso_disco = {
+		0, 30e-6, 100e-6, .9999e-3, 1,
+	};*/
+
 	vector<double> paso_disco = {
-		0, 2e-3, 4e-3, 5.999e-3, 8e-3, 10e-3, 12e-3, 15.999e-3, DBL_MAX,
+		0, 10e-9, 20e-9, 30e-9, 40e-9, 50e-9, 60e-9, 70e-9, 80e-9, 94.99e-9, 1,
 	};
 
 	int pos_disco = 0;
@@ -119,6 +128,7 @@ void Celula::transportePoros() {
 				/* Grabo disco itv si está ON */
 				if ((estado == ON) && it_disco_itv == paso_disco_itv) {
 					getEntradaSalida().grabarITV(poros);
+					getEntradaSalida().grabarPermeabilizacion(poros);
 					it_disco_itv = 0;
 				}
 
@@ -141,4 +151,10 @@ void Celula::transportePoros() {
 		}
 
 	}
+
+	auto global_end = chrono::high_resolution_clock::now();
+	auto interv = chrono::duration_cast<chrono::seconds>(global_end - global_start);
+
+	cout << "Tiempo total: " << interv.count() / 60 / 60 << "h " 
+		<< (interv.count()/60) % 60 << "m " << interv.count() % 60 << "s\n";
 }

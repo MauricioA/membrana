@@ -26,9 +26,13 @@ public:
 
 	void grabarITV(Poros& poros);
 
+	void grabarPermeabilizacion(Poros& poros);
+
 private:
 	Celula* _celula;
+
 	FILE* fitv;
+	FILE* fPAD;
 
 	int nPoisson = 0;
 	int nTransporte = 0;

@@ -36,6 +36,9 @@ public:
 
 	int getNPorosGrandes();
 
+	/* Máxima permeabilización */
+	double getMaxPAD();
+
 	vector<pair<double, double>> getITVs(double tiempo);
 
 	/* Llamar al iniciar un pulso */
@@ -48,6 +51,7 @@ public:
 private:
 	Celula* _celula;
 
+	/* <Elementos de la membrana, info*> */
 	unordered_map<int, InfoAngulo*> mapa;
 
 	inline Celula& getCelula();

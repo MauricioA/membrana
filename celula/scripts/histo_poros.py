@@ -5,7 +5,7 @@ import pylab
 import sys
 import os
 
-#para generar histogramas de poros sobre poros.csv
+#esto es viejo. usar poros_nuevo.py!!
 
 # (ruta, radio, cant(angulos))
 FOLDERS = [		

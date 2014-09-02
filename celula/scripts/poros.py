@@ -1,3 +1,5 @@
+#esto es viejo. usar poros_nuevo.py
+
 ENTRADA = "../../salida/poros.dat"
 NPOROS  = "../../salida/nporos.dat"
 

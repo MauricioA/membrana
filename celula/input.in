@@ -1,19 +1,16 @@
-#REVERTIR ESTOS CAMBIOS!!!
-#REVERTIR TAMBIEN EN declaraciones.h!!
-
-# revisar los sigmas y el que llena el poro!!
+#revisar sigmas, transporte.h, y celula.cpp (delta_t y descomentar transporte)
 
 malla: 	 inputs/10_128.msh
 nodpel:	 quad
-salida:  salida/pulsos/chinos/valencia
+salida:  salida/pulsos/chinos2/160kvcm_transp/
 threads: 1
 
-sigint:		0.5e-6	# conductividad de la zona intraelular [S/um]
-sigext:		0.15e-6	# conductividad de la zona extra
+sigint:		0.4e-6	# conductividad de la zona intraelular [S/um]
+sigext:		0.5e-6	# conductividad de la zona extra
 sigmem:		500e-15	# conductividad de la membrana
-potencial:  16		# 160 kVm = 1.6kV/cm
+potencial:  1600	# 160 kV/cm
 radio: 		10
 ancho: 		5e-3	# ancho de la membrana [um]
 pulsos:		1
-on_time:	6e-3
-off_time:	10e-3
+on_time:	95e-9
+off_time:	0

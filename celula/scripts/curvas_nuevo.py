@@ -4,7 +4,7 @@ from pylab import *
 import pylab
 import sys, os, pdb
 
-input_folder = "../salida/pulsos/chinos/160kvm/transporte/"
+input_folder = "../salida/pulsos/chinos/valencia_alto/transporte/"
 font = { 'size': 16 }
 labels = { 'H': 'H$^+$', 'OH': 'OH$^-$', 'Na': 'Na$^+$', 'Cl': 'Cl$^-$' }
 
@@ -30,7 +30,7 @@ def getValues(archivo):
 	if 'concent' in archivo:
 		c1_esp = 'Na'
 		c2_esp = 'Cl'
-	elif 'pH' in archivo:
+	elif 'pH' in archivo or 'hidro' in archivo:
 		c1_esp = 'H'
 		c2_esp = 'OH'
 	else: 
@@ -44,6 +44,7 @@ def getValues(archivo):
 
 iniciales_ph  = getValues(input_folder + 'pH-0-0.000000.csv')
 iniciales_con = getValues(input_folder + 'concent-0-0.000000.csv')
+iniciales_hid = getValues(input_folder + 'hidro-0-0.000000.csv')
 
 out_dir = input_folder + 'curvas'
 
@@ -52,8 +53,8 @@ except: pass
 
 entries = os.listdir(input_folder)
 files = filter(lambda x: x.endswith('csv') and 
-	(x.startswith('concent') or x.startswith('pH')) and 
-	not(x.startswith('concent-0-') or x.startswith('pH-0-')), entries)
+	(x.startswith('concent') or x.startswith('pH') or x.startswith('hidro')) and 
+	not(x.startswith('concent-0-') or x.startswith('pH-0-') or x.startswith('hidro-0-')), entries)
 
 for file in files:
 	new_values = getValues(input_folder + file)
@@ -61,11 +62,17 @@ for file in files:
 	if file.startswith('pH'):
 		dicc_inicial = iniciales_ph
 		esps = ['H', 'OH']
-		outfile = file[:-len('.csv')][len('pH'):] + '.png'
+		outfile = '-pH' + file[len('pH'):-len('.csv')] + '.png'
 	elif file.startswith('concent'):
 		dicc_inicial = iniciales_con
 		esps = ['Na', 'Cl']
-		outfile = file[:-len('.csv')][len('concent'):] + '.png'
+		outfile = file[len('concent'):-len('.csv')] + '.png'
+	elif file.startswith('hidro'):
+		dicc_inicial = iniciales_hid
+		esps = ['H', 'OH']
+		outfile = '-hidro' + file[len('hidro'):-len('.csv')] + '.png'
+	else: 
+		assert False
 
 	for esp in esps:
 		#plt.clf()
