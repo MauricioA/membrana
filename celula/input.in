@@ -1,16 +1,16 @@
-#revisar sigmas, transporte.h, y celula.cpp (delta_t y descomentar transporte)
+# revertir concentraciones electrodos (transporte.h)
 
-malla: 	 inputs/10_128.msh
+malla: 	 inputs/50_64.msh
 nodpel:	 quad
-salida:  salida/pulsos/chinos2/160kvcm_transp/
+salida:  salida/poster64/electrodos/150kvm/
 threads: 1
 
-sigint:		0.4e-6	# conductividad de la zona intraelular [S/um]
-sigext:		0.5e-6	# conductividad de la zona extra
-sigmem:		500e-15	# conductividad de la membrana
-potencial:  1600	# 160 kV/cm
-radio: 		10
-ancho: 		5e-3	# ancho de la membrana [um]
+sigint:		0.455e-6	# conductividad de la zona intraelular [S/um]
+sigext:		5e-6		# conductividad de la zona extra
+sigmem:		500e-15		# conductividad de la membrana
+potencial:  75			# 150 kV/m
+radio: 		50
+ancho: 		5e-3		# ancho de la membrana [um]
 pulsos:		1
-on_time:	95e-9
+on_time:	100e-3
 off_time:	0

@@ -256,20 +256,25 @@ Las simulaciones se realizaron con el método de elementos finitos sobre mallas 
 
 \section*{Resultados}
 
-\subsection*{Voltaje Transmembrana (ITV)}
+%\subsection*{Voltaje Transmembrana (ITV)}
 ITV en función del tiempo para diferentes ángulos:
 
-	\begin{multicols}{2}
+%	\begin{multicols}{2}
+%		\begin{center}\vspace{1cm}
+%			\includegraphics[width=1\linewidth]{itv-time-lin-25-64-40KVm}
+%			\captionof{figure}{\color{Green}Para $\alpha$ = 25\si{\micro\metre} y 40\kvm}
+%		\end{center}\vspace{1cm}
+%	\columnbreak
+%		\begin{center}\vspace{1cm}
+%			\includegraphics[width=1\linewidth]{itv-time-lin-25-64-80KVm}
+%			\captionof{figure}{\color{Green}Para $\alpha$ = 25\si{\micro\metre} y 80\kvm}
+%		\end{center}\vspace{1cm}
+%	\end{multicols}
+
 		\begin{center}\vspace{1cm}
-			\includegraphics[width=1\linewidth]{itv-time-lin-25-64-40KVm}
-			\captionof{figure}{\color{Green}Para $\alpha$ = 25\si{\micro\metre} y 40\kvm}
+			\includegraphics[width=1\linewidth]{itv-long}
+			\captionof{figure}{\color{Green}ITV para $\alpha$ = 25\si{\micro\metre} y dos potenciales diferentes}
 		\end{center}\vspace{1cm}
-	\columnbreak
-		\begin{center}\vspace{1cm}
-			\includegraphics[width=1\linewidth]{itv-time-lin-25-64-80KVm}
-			\captionof{figure}{\color{Green}Para $\alpha$ = 25\si{\micro\metre} y 80\kvm}
-		\end{center}\vspace{1cm}
-	\end{multicols}
 
 \begin{itemize}
 	\item En una primera etapa la tensión sube al iniciarse el pulso. Esto no se da de manera inmediata debido a que la membrana se carga como un capacitor. El ITV crece de manera más rápida en las regiones celulares cercanas a los polos, mientras que en las regiones cercanas al ecuador casi no deja de ser cero.
@@ -288,20 +293,39 @@ ITV en función del tiempo para diferentes ángulos:
 \end{multicols}
 
 
-\subsection*{Distribución de poros grandes según radio para distintos instantes de tiempo}
-	
+%\subsection*{Distribución de poros grandes según radio para distintos instantes de tiempo}
+
+
+
 \begin{multicols}{2}
+
+Distribución de poros grandes según radio para distintos instantes de tiempo:
+
+%	\begin{center}\vspace{1cm}
+%	\includegraphics[width=1\linewidth]{hist-radios-5e-6-50-64-160KVm}
+%	\captionof{figure}{\color{Green} Radios de poros con $\alpha$ = 50\si{\micro\metre}, 160\kvm y t = 5 \usec}
+%	\end{center}\vspace{1cm}
+
 	\begin{center}\vspace{1cm}
-	\includegraphics[width=1\linewidth]{hist-radios-5e-6-50-64-160KVm}
+	\includegraphics[width=1\linewidth]{hist-pip}
 	\captionof{figure}{\color{Green} Radios de poros con $\alpha$ = 50\si{\micro\metre}, 160\kvm y t = 5 \usec}
 	\end{center}\vspace{1cm}
 
+
 \columnbreak
 
+Concentración de \cl en el eje de rotación
+
 	\begin{center}\vspace{1cm}
-	\includegraphics[width=1\linewidth]{hist-radios-5e-3-50-64-160KVm}
-	\captionof{figure}{\color{Green} Radios de poros con $\alpha$ = 50\si{\micro\metre} y 160\kvm  y t = 5 \si{\milli\second}}
-	\end{center}\vspace{1cm}
+		\includegraphics[width=1\linewidth]
+		{curv-CL-50-64-160KVm}
+		\captionof{figure}{\color{Green} \cl para $\alpha$ = 25\si{\micro\metre}, 160\kvm}
+	\end{center}
+
+%	\begin{center}\vspace{1cm}
+%	\includegraphics[width=1\linewidth]{hist-radios-5e-3-50-64-160KVm}
+%	\captionof{figure}{\color{Green} Radios de poros con $\alpha$ = 50\si{\micro\metre} y 160\kvm  y t = 5 \si{\milli\second}}
+%	\end{center}\vspace{1cm}
 \end{multicols}
 
 Sólo los poros grandes (mayores a 1 $\si{\nano\metre}$), son de interés. Si bien se crean muchos poros, éstos se sellan rápidamente con el paso del tiempo: a los 5 $\si{\milli\second}$ del pulso en todos los casos la cantidad de poros es mucho menor en instantes anteriores, aunque los pocos poros grandes que siguen existiendo suelen tener mayor radio que la mayoría de los poros en los instantes anteriores. La corta vida de la mayoría de los poros puede deberse a que la alta densidad de los primeros instantes reduce significativamente la conductancia de la membrana, y por lo tanto el ITV necesario para mantener los poros abiertos.

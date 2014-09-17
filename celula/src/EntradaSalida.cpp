@@ -147,6 +147,7 @@ void EntradaSalida::leerMalla(string malla) {
 	int nGrupos;
 	dameLinea(stream, iss);
 	iss >> nGrupos;
+	assert(nGrupos == 3);
 
 	/* Grupos */
 	int elemsExt, elemsMemb, elemsInt;
@@ -305,14 +306,14 @@ void EntradaSalida::grabarTransporte(bool verbose) {
 	for (int jNodo = 0; jNodo < nNodes; jNodo++) {
 		Nodo nodo = getCelula().nodos[jNodo];
 		
-		double molar_H  = (getCelula().concentraciones[H_][jNodo] + 1e-18) / CONCENT;
-		double molar_OH = (getCelula().concentraciones[OH][jNodo] + 1e-18) / CONCENT;
+		double molar_H  = (getCelula().concs[H_][jNodo] + 1e-18) / CONCENT;
+		double molar_OH = (getCelula().concs[OH][jNodo] + 1e-18) / CONCENT;
 
 		double pH_H  = -log10(molar_H);
 		double ph_OH = -log10(molar_OH);
 
-		double molarNa = getCelula().concentraciones[NA][jNodo] / CONCENT;
-		double molarCl = getCelula().concentraciones[CL][jNodo] / CONCENT;
+		double molarNa = getCelula().concs[NA][jNodo] / CONCENT;
+		double molarCl = getCelula().concs[CL][jNodo] / CONCENT;
 
 		fprintf(fpH, "%#10f, %#10f, %#15.9g, %#15.9g\n", nodo.x, nodo.y, pH_H, ph_OH);
 		fprintf(fTrans, "%#10f, %#10f, %#15.9g, %#15.9g\n", nodo.x, nodo.y, molarNa, molarCl);

@@ -85,14 +85,14 @@ void Poisson::iteracion(Celula &celula) {
 	matriz.setFromTriplets(global_triplets.begin(), global_triplets.end());
 
 	/* Resolución con Cholesky */
-	//SimplicialLDLT<SparseMatrix<double>> cholesky(matriz);
-	//celula.potenciales = cholesky.solve(global_rhs);
+	SimplicialLDLT<SparseMatrix<double>> cholesky(matriz);
+	celula.potenciales = cholesky.solve(global_rhs);
 
 	/* Resolución con gradientes conjugados */
-	ConjugateGradient<SparseMatrix<double>> solver(matriz);
-	solver.setTolerance(1e-10);
-	celula.potenciales = solver.solveWithGuess(global_rhs, celula.potenciales);
-	assert(solver.info() == Success);
+	//ConjugateGradient<SparseMatrix<double>> solver(matriz);
+	//solver.setTolerance(1e-12);
+	//celula.potenciales = solver.solveWithGuess(global_rhs, celula.potenciales);
+	//assert(solver.info() == Success);
 
 	campo(celula);
 	corriente(celula);

@@ -1,0 +1,7 @@
+AUTOMESH-2D Copyright by Shandong University,China 2012
+Developed by Dr. Xinwu Ma. E-mail: maxinwu@sdu.edu.cn
+
+This version is only for evaluation purpose!!!!!!!!!!
+
+If you need the library of AUTOMESH-2D, Please purchase it!
+Distribution to third party is not permitted.

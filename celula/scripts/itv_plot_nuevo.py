@@ -12,8 +12,9 @@ MESH = 128		#cant de angulos discretos
 NLINEAS = 7
 MAX_LIN_US = 10
 MAX_LOG_SEG = 1e-3
+MAXTIME = max(MAX_LIN_US, MAX_LOG_SEG)
 FOLDERS = [
-	'../salida/solo_poros/delta_t/',
+	'C:\\Archivos\\Membrana\\celula\\salida\\pulsos\\25_128_cls\\',
 ]
 
 font = { 'size': 16 }

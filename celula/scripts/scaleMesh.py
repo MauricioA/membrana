@@ -1,9 +1,9 @@
 import re
 
-SCALE_X = 5
-SCALE_Y = 5
-ENTRADA = "grande.msh"
-SALIDA  = "50.msh"
+SCALE_X = 1. / 100	#CAMBIAR POR LO QUE CORRESPONDA!
+SCALE_Y = 1. / 100
+ENTRADA = "../inputs/vacio_grande.msh"
+SALIDA  = "../inputs/vacio.msh"
 
 fem = open(ENTRADA)
 lines = fem.readlines()
@@ -21,6 +21,9 @@ for p in range(nPuntos):
     nP = int(reg.groups()[0])
     x = float(reg.groups()[1])
     y = float(reg.groups()[2])
+
+    #nP, x, y = [float(s) for s in lines[i].split(' ')]
+
     assert nP == p+1
     out.write("%d %e %e\n" % (nP, x * SCALE_X, y * SCALE_Y))
     i += 1

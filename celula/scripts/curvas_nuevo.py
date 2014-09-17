@@ -4,7 +4,7 @@ from pylab import *
 import pylab
 import sys, os, pdb
 
-input_folder = "../salida/pulsos/chinos/valencia_alto/transporte/"
+input_folder = '../salida/poster64/dt25/150kvm/transporte/'
 font = { 'size': 16 }
 labels = { 'H': 'H$^+$', 'OH': 'OH$^-$', 'Na': 'Na$^+$', 'Cl': 'Cl$^-$' }
 
@@ -51,10 +51,11 @@ out_dir = input_folder + 'curvas'
 try: os.mkdir(out_dir) 
 except: pass
 
-entries = os.listdir(input_folder)
-files = filter(lambda x: x.endswith('csv') and 
-	(x.startswith('concent') or x.startswith('pH') or x.startswith('hidro')) and 
-	not(x.startswith('concent-0-') or x.startswith('pH-0-') or x.startswith('hidro-0-')), entries)
+files = [
+	x for x in os.listdir(input_folder) 
+	if (x.startswith('concent') or x.startswith('pH') or x.startswith('hidro')) and 
+	not (x.startswith('concent-0-') or x.startswith('pH-0-') or x.startswith('hidro-0-'))
+]
 
 for file in files:
 	new_values = getValues(input_folder + file)

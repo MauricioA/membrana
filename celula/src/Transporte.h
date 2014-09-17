@@ -17,19 +17,34 @@ const double CONCENTRACION_INICIAL_EXTRA[] = {	// at um**-3
 	CONCENT *  4e-3,		// CL  4 mM
 };
 
-const double CONCENTRACION_ANODO[] = {		// at um**-3
-	CONCENT *  1e-7,		// H  1e-7 M
-	CONCENT *  1e-7,		// OH 1e-7 M
-	CONCENT * 14e-3,		// NA 14 mM
-	CONCENT *  4e-3,		// CL  4 mM
+/* CONCENTRACIONES VIEJAS!!!! */
+const double CONCENTRACION_ANODO[] = {			// at um**-3
+	1.5e7,		// H
+	0,			// OH
+	1e12,		// NA
+	0,			// CL
 };
 
-const double CONCENTRACION_CATODO[] = {		// at um**-3
-	CONCENT *  1e-7,		// H  1e-7 M
-	CONCENT *  1e-7,		// OH 1e-7 M
-	CONCENT * 14e-3,		// NA 14 mM
-	CONCENT *  4e-3,		// CL  4 mM
+const double CONCENTRACION_CATODO[] = {			// at um**-3
+	0,			// H
+	1.806e7,	// OH
+	0,			// NA
+	0,			// CL
 };
+
+//const double CONCENTRACION_ANODO[] = {		// at um**-3
+//	CONCENT *  1e-7,		// H  1e-7 M
+//	CONCENT *  1e-7,		// OH 1e-7 M
+//	CONCENT * 14e-3,		// NA 14 mM
+//	CONCENT *  4e-3,		// CL  4 mM
+//};
+//
+//const double CONCENTRACION_CATODO[] = {		// at um**-3
+//	CONCENT *  1e-7,		// H  1e-7 M
+//	CONCENT *  1e-7,		// OH 1e-7 M
+//	CONCENT * 14e-3,		// NA 14 mM
+//	CONCENT *  4e-3,		// CL  4 mM
+//};
 
 const double DIFUSION[] = {	// um**2 / s
 	12500,		// H
@@ -44,42 +59,6 @@ const double CARGA[] = {
 	+1,			// NA
 	-1,			// CL
 };
-
-//valores de paper chinos
-//const double CONCENTRACION_INICIAL_INTRA[] = {	// at um**-3
-//	CONCENT * 220e-9,
-//	CONCENT * 220e-9,
-//	CONCENT * 220e-9,
-//	CONCENT * 220e-9,
-//};
-//
-//const double CONCENTRACION_INICIAL_EXTRA[] = {	// at um**-3
-//	CONCENT *  1e-3,
-//	CONCENT *  1e-3,
-//	CONCENT *  1e-3,
-//	CONCENT *  1e-3,
-//};
-//
-//const double CONCENTRACION_ANODO[] = {		// at um**-3
-//	CONCENT *  1e-3,
-//	CONCENT *  1e-3,
-//	CONCENT *  1e-3,
-//	CONCENT *  1e-3,
-//};
-//
-//const double CONCENTRACION_CATODO[] = {		// at um**-3
-//	CONCENT *  1e-3,
-//	CONCENT *  1e-3,
-//	CONCENT *  1e-3,
-//	CONCENT *  1e-3,
-//};
-//
-//const double CARGA[] = {	//cualquier cosa!!
-//	+2,			// H
-//	-5,			// OH
-//	+2,			// NA
-//	-5,			// CL
-//};
 
 class Transporte {
 public:
@@ -105,5 +84,43 @@ protected:
 	virtual double difusionMembrana(int iElem, int especie) = 0;
 
 };
+
+/* valores de paper chinos
+	const double CONCENTRACION_INICIAL_INTRA[] = {	// at um**-3
+	CONCENT * 220e-9,
+	CONCENT * 220e-9,
+	CONCENT * 220e-9,
+	CONCENT * 220e-9,
+	};
+
+	const double CONCENTRACION_INICIAL_EXTRA[] = {	// at um**-3
+	CONCENT *  1e-3,
+	CONCENT *  1e-3,
+	CONCENT *  1e-3,
+	CONCENT *  1e-3,
+	};
+
+	const double CONCENTRACION_ANODO[] = {		// at um**-3
+	CONCENT *  1e-3,
+	CONCENT *  1e-3,
+	CONCENT *  1e-3,
+	CONCENT *  1e-3,
+	};
+
+	const double CONCENTRACION_CATODO[] = {		// at um**-3
+	CONCENT *  1e-3,
+	CONCENT *  1e-3,
+	CONCENT *  1e-3,
+	CONCENT *  1e-3,
+	};
+
+	const double CARGA[] = {	//cualquier cosa!!
+	+2,			// H
+	-5,			// OH
+	+2,			// NA
+	-5,			// CL
+	};
+*/
+
 
 #endif /* TRANSPORTE_H_ */

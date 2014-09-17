@@ -38,8 +38,8 @@ public:
 	vector<Double2D> gradElem;
 	vector<Double2D> corrElem;
 
-	VectorXd concentraciones[NESPS];
-	VectorXd conc_anteriores[NESPS];
+	VectorXd concs[NESPS];	//concentraciones actuales
+	VectorXd c_ant[NESPS];	//concentraciones iteración anterior
 	VectorXd potenciales;
 
 	Celula();
@@ -57,7 +57,7 @@ public:
 	}
 
 	inline Double2D getCenter() {
-		return Double2D{ 0, alto / 2 };
+		return Double2D { 0, alto / 2 };
 	}
 
 private:

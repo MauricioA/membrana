@@ -20,6 +20,13 @@ celula/salida/pulsos/temp*
 celula/salida/pulsos/chinos2
 celula/salida/solo_poros
 celula/salida/temp
+celula/salida/celula4/*
+celula/salida/electrodos/*
+celula/salida/krass/*
+celula/salida/long/*
+celula/salida/poster64/*
+celula/salida/pulsos/*
+celula/salida/vacio/*
 
 *.aux
 *.nav

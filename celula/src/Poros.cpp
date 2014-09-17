@@ -338,7 +338,7 @@ double Poros::getUnRadio() {
 
 /* Fracción del area correspondiente a un elemento de la membrana ocupada por poros */
 double Poros::getProporsionArea(int iElem) {
-	InfoAngulo& info = InfoAngulo(*mapa[iElem]);
+	InfoAngulo& info = *mapa[iElem];
 	double areaP = 0;
 	for (auto& poro : info.porosGrandes) {
 		areaP += M_PI * pow(poro.first, 2);

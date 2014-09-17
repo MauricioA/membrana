@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4803af4f-070c-4d81-8aec-d34c7940064d}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>itv_plot_nuevo.py</StartupFile>
+    <StartupFile>itv_doble.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -25,9 +25,13 @@
     <Compile Include="generar_prm.py" />
     <Compile Include="histo_poros.py" />
     <Compile Include="itv_plot.py" />
+    <Compile Include="itv_doble.py" />
     <Compile Include="itv_plot_nuevo.py" />
     <Compile Include="itv_tita.py" />
     <Compile Include="merge.py" />
+    <Compile Include="transp_final.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="poros.py" />
     <Compile Include="poros_nuevo.py" />
     <Compile Include="scaleMesh.py" />
