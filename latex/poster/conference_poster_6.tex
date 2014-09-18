@@ -14,11 +14,6 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%TODO agregar alimentos
-%TODO puede ir: trabajo pendiente, explicación de variables si falta, más texto
-%TODO cambiar las 2 columnas de itv vs tiempo
-%TODO mover logo departamento
-
 %----------------------------------------------------------------------------------------
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
@@ -93,9 +88,9 @@
 %\huge University and Department Name\\[0.4cm] % University/organization
 %\Large \texttt{john@LaTeXTemplates.com} --- 1 (000) 111 1111\\
 
-\huge \textbf{Mauricio Alfonso} - LSC, FCEyN\\[0.5cm]
-\huge \textbf{Alejandro Soba} - CSC-CONICET\\[0.5cm]
-\huge \textbf{Guillermo Marshall} - INFIP, CONICET\\[0.5cm]
+\LARGE \textbf{Mauricio Alfonso} - LSC, FCEyN\\[0.5cm]
+\LARGE \textbf{Alejandro Soba} - CSC-CONICET\\[0.5cm]
+\LARGE \textbf{Guillermo Marshall} - INFIP, CONICET\\[0.5cm]
 
 \end{minipage}
 %
@@ -111,9 +106,13 @@
 
 \color{Navy} % Navy color for the abstract
 
+\color{DarkSlateGray}
+
 %\begin{abstract}
-%\large
-\begin{center}Introducción\end{center}
+\small
+
+%\begin{center}Introducción\end{center}
+\section*{Introducción}
 La electroporación reversible es un método consistente en la aplicación de pulsos eléctricos de alta intensidad a una célula con el objetivo de permeabilizar su membrana creando poros, y así permitir el ingreso de drogas o moléculas de ADN a su interior. Esto permite tratar tumores con menores cantidades de drogas, reduciendo los efectos secundarios.\\
 
 En este trabajo se simula una célula esférica a la que se le aplica un pulso eléctrico de 20\si{\milli\second} de duración a través de dos electrodos, y se estudia el ingreso al interior de la célula de 4 especies iónicas: el ión hidrógeno (\h), el hidróxido (\oh), el catión sodio (\na) y el cloruro (\cl). Para eso se tiene en cuenta el campo eléctrico producido por los electrodos, la generación y evolución de poros en la membrana celular producto de la diferencia de potencial entre el interior y exterior de la célula, y la migración de las especies mencionadas, producto de la diferencia de potencial.\\
@@ -130,7 +129,7 @@ Las simulaciones se realizaron con el método de elementos finitos sobre mallas 
 %
 %\textit{Aliquam auctor}, metus id ultrices porta, risus enim cursus sapien, quis iaculis sapien tortor sed odio. Mauris ante orci, euismod vitae tincidunt eu, porta ut neque. Aenean sapien est, viverra vel lacinia nec, venenatis eu nulla. Maecenas ut nunc nibh, et tempus libero. Aenean vitae risus ante. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tristique adipiscing.
 
-\color{DarkSlateGray} % DarkSlateGray color for the rest of the content
+ % DarkSlateGray color for the rest of the content
 
 \section*{Teoría}
 
@@ -249,10 +248,12 @@ Las simulaciones se realizaron con el método de elementos finitos sobre mallas 
 		\columnbreak
 		\begin{center}
 			\includegraphics[keepaspectratio, height = 0.18\textheight]{grande} 
-			\captionof{figure}{\color{Green}Ejemplo de malla con coordenadas cilíndricas}
+			\captionof{figure}{\color{Green}Ejemplo de mallado de un dominio de tres materiales con elementos de 4 nodos}
 		\end{center}
 
 \end{multicols}
+
+\columnbreak
 
 \section*{Resultados}
 
@@ -289,7 +290,7 @@ ITV en función del tiempo para diferentes ángulos:
 	\end{center}\vspace{1cm}
 	
 \columnbreak
-	Para que se dé este proceso el campo eléctrico debe alcanzar un umbral mínimo. En los que el potencial necesario fue alcanzado, un incremento en el campo eléctrico aplicado parece prácticamente no influir en los valores de ITV alcanzados, pero sí en la velocidad en la que se produce el proceso descrito. El potencial transmembrana alcanzado casi no varía, influyendo el potencial aplicado solo en la velocidad en la que se producen las variaciones de ITV.\\
+	Para que se dé este proceso el campo eléctrico debe alcanzar un umbral mínimo. En los casos en los que el potencial necesario fue alcanzado, un incremento en el campo eléctrico aplicado parece prácticamente no influir en los valores de ITV alcanzados, pero sí en la velocidad en la que se produce el proceso descrito. El potencial transmembrana alcanzado casi no varía, influyendo el potencial aplicado solo en la velocidad en la que se producen las variaciones de ITV.\\
 \end{multicols}
 
 
@@ -308,31 +309,53 @@ Distribución de poros grandes según radio para distintos instantes de tiempo:
 
 	\begin{center}\vspace{1cm}
 	\includegraphics[width=1\linewidth]{hist-pip}
-	\captionof{figure}{\color{Green} Radios de poros con $\alpha$ = 50\si{\micro\metre}, 160\kvm y t = 5 \usec}
+	\captionof{figure}{\color{Green} Radios de poros con $\alpha$ = 50\si{\micro\metre}, 160\kvm para t = 5\si{\micro\second}  y 5\si{\milli\second}}
 	\end{center}\vspace{1cm}
 
 
 \columnbreak
-
-Concentración de \cl en el eje de rotación
-
-	\begin{center}\vspace{1cm}
-		\includegraphics[width=1\linewidth]
-		{curv-CL-50-64-160KVm}
-		\captionof{figure}{\color{Green} \cl para $\alpha$ = 25\si{\micro\metre}, 160\kvm}
-	\end{center}
+%
+%Concentración de \cl en el eje de rotación
+%
+%	\begin{center}\vspace{1cm}
+%		\includegraphics[width=1\linewidth]
+%		{curv-CL-50-64-160KVm}
+%		\captionof{figure}{\color{Green} \cl para $\alpha$ = 25\si{\micro\metre}, 160\kvm}
+%	\end{center}
 
 %	\begin{center}\vspace{1cm}
 %	\includegraphics[width=1\linewidth]{hist-radios-5e-3-50-64-160KVm}
 %	\captionof{figure}{\color{Green} Radios de poros con $\alpha$ = 50\si{\micro\metre} y 160\kvm  y t = 5 \si{\milli\second}}
 %	\end{center}\vspace{1cm}
+
+ Concentraciones finales: Se analizó un caso con condiciones en los electrodos fijas y acumulación de especies iónicas en la membrana debido al ITV.
+ 
+\setlength{\columnseprule}{0pt}
+
+\begin{multicols}{2} 
+	\begin{center}\vspace{1cm}
+		\includegraphics[width=1\linewidth]
+		{final-h}
+		\captionof{figure}{\color{Green} Concentración final de \h}
+	\end{center}
+
+\columnbreak
+
+	\begin{center}\vspace{1cm}
+		\includegraphics[width=1\linewidth]
+		{final-oh}
+		\captionof{figure}{\color{Green} Concentración final de \oh}
+	\end{center}
 \end{multicols}
 
-Sólo los poros grandes (mayores a 1 $\si{\nano\metre}$), son de interés. Si bien se crean muchos poros, éstos se sellan rápidamente con el paso del tiempo: a los 5 $\si{\milli\second}$ del pulso en todos los casos la cantidad de poros es mucho menor en instantes anteriores, aunque los pocos poros grandes que siguen existiendo suelen tener mayor radio que la mayoría de los poros en los instantes anteriores. La corta vida de la mayoría de los poros puede deberse a que la alta densidad de los primeros instantes reduce significativamente la conductancia de la membrana, y por lo tanto el ITV necesario para mantener los poros abiertos.
 
+
+
+\end{multicols}
 
 \section*{Conclusiones}	
 	\begin{itemize}
+		\item Sólo los poros grandes (mayores a 1 $\si{\nano\metre}$), son de interés. Si bien se crean muchos poros, éstos se sellan rápidamente con el paso del tiempo: a los 5 $\si{\milli\second}$ del pulso en todos los casos la cantidad de poros es mucho menor en instantes anteriores, aunque los pocos poros grandes que siguen existiendo suelen tener mayor radio que la mayoría de los poros en los instantes anteriores. La corta vida de la mayoría de los poros puede deberse a que la alta densidad de los primeros instantes reduce significativamente la conductancia de la membrana, y por lo tanto el ITV necesario para mantener los poros abiertos.
 		\item Las especies involucradas ingresan a la célula, pero los iones $\na$ y $\cl$ requieren potenciales muy altos para ingresar (200\si{\kilo\volt\per\metre} para células de 25 o 50 \si{\micro\metre} de radio).
 		\item Los poros generados disminuyen la conductancia de la membrana, 
 			disminuyendo el ITV.
@@ -343,6 +366,7 @@ Sólo los poros grandes (mayores a 1 $\si{\nano\metre}$), son de interés. Si bi
 		\item Un alto porcentaje de los poros creados se cierran durante el primer milisegundo, por lo que si se pretende permeabilizar la membrana para las especies analizadas, se vuelve esencial repetir el pulso de potencial periódicamente. 
 
 	\end{itemize}
+
 
 \begin{thebibliography}{9}
 
@@ -367,4 +391,5 @@ Sólo los poros grandes (mayores a 1 $\si{\nano\metre}$), son de interés. Si bi
 \end{thebibliography}
 
 \end{multicols}
+
 \end{document}

@@ -45,7 +45,7 @@ latex/*/*.gz
 latex/*/*/*.gz
 
 #pdf incompletos
-latex/poster/conference_poster_6.pdf
+#latex/poster/conference_poster_6.pdf
 latex/template/tesis.pdf
 
 #################
