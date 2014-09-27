@@ -21,27 +21,16 @@ Transporte::Transporte(Celula& celula) {
 		celula.c_ant[esp].resize(celula.nNodes);
 	}
 
-	vector<bool> nodosInternos(celula.nNodes, false);
-	for (int iElem = 0; iElem < celula.nElems; iElem++) {
-		Elemento elem = celula.elementos[iElem];
-		Material mat = elem.material;
-
-		if (elem.material == MEMBRANA || elem.material == INTERNO) {
-			for (int k = 0; k < celula.nodpel; k++) {
-				int iNode = elem[k];
-				nodosInternos[iNode] = true;
-			}
-		}
-	}
-
-	for (int iNode = 0; iNode < celula.nNodes; iNode++) {
-		for (int esp = 0; esp < NESPS; esp++) {
-			if (nodosInternos[iNode]) {
-				celula.concs[esp][iNode] = CONCENTRACION_INICIAL_INTRA[esp];
-				celula.c_ant[esp][iNode] = CONCENTRACION_INICIAL_INTRA[esp];
-			} else {
-				celula.concs[esp][iNode] = CONCENTRACION_INICIAL_EXTRA[esp];
-				celula.c_ant[esp][iNode] = CONCENTRACION_INICIAL_EXTRA[esp];
+	for (Elemento elem : celula.elementos) {
+		for (int k = 0; k < celula.nodpel; k++) {
+			for (int esp = 0; esp < NESPS; esp++) {
+				if (elem.material == MEMBRANA || elem.material == INTERNO) {
+					celula.concs[esp][elem[k]] = CONCENTRACION_INICIAL_INTRA[esp];
+					celula.c_ant[esp][elem[k]] = CONCENTRACION_INICIAL_INTRA[esp];
+				} else {
+					celula.concs[esp][elem[k]] = CONCENTRACION_INICIAL_EXTRA[esp];
+					celula.c_ant[esp][elem[k]] = CONCENTRACION_INICIAL_EXTRA[esp];
+				}
 			}
 		}
 	}
@@ -71,9 +60,11 @@ void Transporte::iteracion(double deltaT) {
 				RSA * celula.concs[esp][kNodo] +
 				(1 - RSA) * celula.c_ant[esp][kNodo];
 
-			if (celula.concs[esp][kNodo] < CONCENT_MINIMO) {
-				celula.concs[esp][kNodo] = 0;
-			}
+			/* ESTO LO SAQUÉ POR LAS DUDAS! */
+			//if (celula.concs[esp][kNodo] < CONCENT_MINIMO) {
+			//	celula.concs[esp][kNodo] = 0;
+			//}
+
 			celula.c_ant[esp][kNodo] = celula.concs[esp][kNodo];
 		}
 	}
@@ -165,6 +156,8 @@ void Transporte::masaDiag2D() {
 
 					double gpDet = aJacob[0][0] * aJacob[1][1] - aJacob[0][1] * aJacob[1][0];
 					double gpVol = weigc[i] * gpDet;
+					
+					//TODO de donde sale el 2 * M_PI * rMed ???
 					masas[elem[i]] += gpVol * 2 * M_PI * rMed;
 				}
 
@@ -207,8 +200,6 @@ void Transporte::concentracion(int esp, double deltaT) {
 			mas[i] = masas[iNodo];
 		}
 
-		double sigma = elem.sigma;
-
 		if (elem.material == MEMBRANA) {
 			difElem = difusionMembrana(kElem, esp);
 		} else {
@@ -220,7 +211,7 @@ void Transporte::concentracion(int esp, double deltaT) {
 		double landa = 1;
 		double qe = 0;
 
-		Armado::armadoTransporte(celula.nodpel, pos, sigma, qe, landa, mu, mas, sol, esm, ef, deltaT);
+		Armado::armadoTransporte(celula.nodpel, pos, elem.sigma, qe, landa, mu, mas, sol, esm, ef, deltaT);
 
 		for (int i = 0; i < celula.nodpel; i++) {
 			int iNodo = elem[i];

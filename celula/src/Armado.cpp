@@ -8,7 +8,7 @@ using namespace std;
 
 const double GAUSSPT[] = {
 	-1 / sqrt(3.0),
-	1 / sqrt(3.0),
+	+1 / sqrt(3.0),
 };
 
 const double GAUSSWT[] = { 1, 1 };
@@ -97,13 +97,19 @@ void Armado::armado4(Double2D pos[], double sigma, double qe, bool transp, doubl
 		}
 
 		ef[i] += cteI[kGauss] * phi[kGauss][i] * qe;
-	}
 
-	for (int i = 0; i < NODPEL; i++) {
+		/* ESTO ES NUEVO! */
 		if (transp) {
-			est[i][i] += mas[i] * landa;
+			est[i][i] += mas[i] * landa * cteI[kGauss];
 		}
 	}
+
+	/* ESTO LO PUSE ARRIBA!! (no sé por qué estaba acá) */
+	//for (int i = 0; i < NODPEL; i++) {
+	//	if (transp) {
+	//		est[i][i] += mas[i] * landa;
+	//	}
+	//}
 }
 
 double Armado::iteracion4(int i, int j, int kGauss, Double2D pos[4],
@@ -138,7 +144,7 @@ double Armado::iteracion4(int i, int j, int kGauss, Double2D pos[4],
 	dphi[1][kGauss][k++] =  0.5 * sm;
 
 	double aJacob[2][2];
-	for (int k = 0; k < 2; k++) for (int l = 0; l < 2; l++) aJacob[k][l] = 0.0;
+	for (int k = 0; k < 2; k++) for (int l = 0; l < 2; l++) aJacob[k][l] = 0;
 
 	for (k = 0; k < NODPEL; k++) {
 		aJacob[0][0] += dphi[0][kGauss][k] * pos[k].x;

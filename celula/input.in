@@ -1,8 +1,8 @@
 # revertir concentraciones electrodos (transporte.h)
 
-malla: 	 inputs/50_64.msh
+malla: 	 inputs/50_128.msh
 nodpel:	 quad
-salida:  salida/poster64/electrodos/150kvm/
+salida:  salida/correc2/150kvm_elec/
 threads: 1
 
 sigint:		0.455e-6	# conductividad de la zona intraelular [S/um]

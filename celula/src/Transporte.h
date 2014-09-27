@@ -32,6 +32,7 @@ const double CONCENTRACION_CATODO[] = {			// at um**-3
 	0,			// CL
 };
 
+/* Mismos valores en los electrodos que en extra */
 //const double CONCENTRACION_ANODO[] = {		// at um**-3
 //	CONCENT *  1e-7,		// H  1e-7 M
 //	CONCENT *  1e-7,		// OH 1e-7 M
