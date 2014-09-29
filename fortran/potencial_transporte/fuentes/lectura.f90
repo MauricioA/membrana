@@ -59,6 +59,18 @@ do while(textinput /= 'END_DATA')
 				last=leng+1
 			endif
         enddo
+
+ 
+      last=0	 
+	   do while(last<leng)
+			last=last+1
+			if(opcion(1:last)=='NODPEL') then
+				read(opcion(last+1:leng),'(i3)') nodpel
+				write(unit_cont,*) ' NODPEL: ', nodpel
+				last=leng+1
+			endif
+        enddo
+
        last=0	 
 	   do while(last<leng)
 			last=last+1
@@ -132,8 +144,42 @@ do while(textinput /= 'END_DATA')
 				last=leng+1
 			endif
         enddo
-       
-        
+        last=0	 
+	   do while(last<leng)
+			last=last+1
+			if(opcion(1:last)=='RADIOEXT') then
+				read(opcion(last+1:leng),'(e15.5)') radio_ext
+				write(unit_cont,*) ' RADIOEXT: ', radio_ext
+				last=leng+1
+			endif
+        enddo
+        last=0	 
+	   do while(last<leng)
+			last=last+1
+			if(opcion(1:last)=='RADIOINT') then
+				read(opcion(last+1:leng),'(e15.5)') radio_int
+				write(unit_cont,*) ' RADIOINT: ', radio_int
+				last=leng+1
+			endif
+        enddo
+        last=0	 
+	   do while(last<leng)
+			last=last+1
+			if(opcion(1:last)=='LARGO') then
+				read(opcion(last+1:leng),'(e15.5)') largo
+				write(unit_cont,*) ' LARGO: ', largo
+				last=leng+1
+			endif
+        enddo
+          last=0	 
+	   do while(last<leng)
+			last=last+1
+			if(opcion(1:last)=='ANCHO') then
+				read(opcion(last+1:leng),'(e15.5)') ancho
+				write(unit_cont,*) ' ANCHO: ', ancho
+				last=leng+1
+			endif
+        enddo
    enddo
    
 

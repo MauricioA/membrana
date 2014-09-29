@@ -168,11 +168,11 @@ end subroutine campo
 
 
 subroutine campo2d(nnodes,nelements,nodpel,solution,material,conect,coor_x,coor_y,sigmaext,sigmaint,sigmamem,grad_x,grad_y,  &
-      &    gradxel_x,gradxel_y)
+      &    gradxel_x,gradxel_y,vec_tierra,vec_poten)
 
 
 implicit none
-integer :: nnodes,nelements,nodpel,conect(nelements,nodpel),material(nelements)
+integer :: nnodes,nelements,nodpel,conect(nelements,nodpel),material(nelements),vec_tierra(nnodes),vec_poten(nnodes)
 double precision :: grad_x(nnodes),grad_y(nnodes)
 double precision :: gradxel_x(nelements),gradxel_y(nelements)
 
@@ -186,8 +186,8 @@ DOUBLE PRECISION,allocatable :: gausspt(:),gausswt(:)
 DOUBLE PRECISION,allocatable :: phi(:,:),dphi(:,:,:),gxcod(:,:),PHIdX(:,:,:),cteI(:) 
 
 integer kk,jj,i,j,ii,K,NLE,kgaus,I2,ngaus,ndimension,ndime,ndi
-dOUBLE PREcIsION:: t,s,sm,tm,sq,tp,AJACO(2,2),AJACOI(2,2),DPHIX(nodpel),DPHIY(nodpel)
-
+dOUBLE PREcIsION:: t,s,sm,tm,sq,tp,AJACO(2,2),AJACOI(2,2),DPHIX(nodpel),DPHIY(nodpel),denomJ(nnodes)
+dOUBLE PREcIsION:: xmed,ymed
 
      ngaus=2
      ndimension=2
@@ -199,6 +199,10 @@ grad_x=0.0
 grad_y=0.0
 gradxel_x=0.0
 gradxel_y=0.0
+
+
+
+
 
 DO JEL=1,nelements
 
@@ -218,8 +222,9 @@ DO JEL=1,nelements
         X(i)=coor_x(j)
         y(i)=coor_y(j)
         sol(i)=solution(j)
-        Ex(i)=0.0
-        Ey(i)=0.0
+        !sol(i)=x(i)*x(i)*y(i)+ x(i)*y(i)*y(i)  ! test gradiente
+        !Ex(i)=0.0
+        !Ey(i)=0.0
    ENDDO
         
    Ex_el=0
@@ -310,8 +315,8 @@ DO JEL=1,nelements
 
          DO I=1,nodpel
         
-             Ex(i)=Ex(i)+ DPHIX(i)*sol(i)
-             Ey(i)=Ey(i)+ DPHIY(i)*sol(i)
+            ! Ex(i)=Ex(i)+ DPHIX(i)*sol(i)
+            ! Ey(i)=Ey(i)+ DPHIY(i)*sol(i)
              
              Ex_el=Ex_el+ DPHIX(i)*sol(i)
              Ey_el=Ey_el+ DPHIY(i)*sol(i)
@@ -328,8 +333,8 @@ DO JEL=1,nelements
    !     grad_x(j) =  grad_x(j) - Ex(i)*0.25
    !     grad_y(j) =  grad_y(j) - Ey(i)*0.25
    ! enddo
-    gradxel_x(jel) = -Ex_el*0.25
-    gradxel_y(jel) = -Ey_el*0.25
+    gradxel_x(jel) = -Ex_el/real(nodpel)
+    gradxel_y(jel) = -Ey_el/real(nodpel)
     
 
 
@@ -337,11 +342,61 @@ DO JEL=1,nelements
  endif  
 
 
-
-
+   
 
 enddo
 
+
+
+! saco sol elemental
+!do kk=1,nelements
+     
+!     xmed=0
+!     ymed=0
+!     DO I=1,nodpel
+!        ns(I)=conect(kk,I)
+!	    j=NS(I)
+!        Xmed=Xmed + coor_x(j)/real(nodpel)
+!        ymed=ymed + coor_y(j)/real(nodpel)
+       
+!   ENDDO
+!    write(333,*) kk,xmed,ymed,gradxel_x(kk),gradxel_y(kk)
+!enddo
+
+grad_x=0.0
+grad_y=0.0
+denomJ=0
+     
+  do kk=1,nelements
+     DO I=1,nodpel
+        ns(I)=conect(kk,I)
+	    j=NS(I)
+
+        
+        denomJ(j)=denomJ(j)+1
+        
+      
+    enddo
+
+enddo
+
+do kk=1,nelements
+     DO I=1,nodpel
+        ns(I)=conect(kk,I)
+	    j=NS(I)
+
+        
+        grad_x(j)=grad_x(j) - gradxel_x(kk)
+        grad_y(j)=grad_y(j) - gradxel_y(kk)
+    enddo
+
+enddo
+
+
+!saco solucion nodal
+!do kk=1,nnodes 
+!    write(444,*) kk, coor_x(kk), coor_y(kk),grad_x(kk)/denomJ(kk),grad_y(kk)/denomJ(kk)
+!enddo
 
 
 end subroutine campo2d

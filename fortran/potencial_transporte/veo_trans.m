@@ -39,12 +39,16 @@ while(feof(fi)==0)
         
      end
         
-     subplot(2,3,1);plot3(x,y,sol,'k.');
-     subplot(2,3,2);plot3(x,y,ch,'b.');title('H')
-     subplot(2,3,3);plot3(x,y,coh,'r.');title('OH')
-     subplot(2,3,4);plot3(x,y,cna,'k.');title('Na')
-     subplot(2,3,5);plot3(x,y,ccl,'k.');title('Cl')
-     
+     %subplot(2,3,1);plot3(x,y,sol,'k.');
+     %subplot(2,3,2);plot3(x,y,ch,'b.');title('H')
+     %subplot(2,3,3);plot3(x,y,coh,'r.');title('OH')
+     %subplot(2,3,4);plot3(x,y,cna,'k.');title('Na')
+     %subplot(2,3,5);plot3(x,y,ccl,'k.');title('Cl')
+     subplot(2,2,2);plot(yy,ch_t,'.');title('H')
+     subplot(2,2,3);plot(yy,coh_t,'.');title('OH')
+     subplot(2,2,4);plot(yy,cna_t,'.');title('Na')
+     subplot(2,2,1);plot(yy,ccl_t,'.');title('Cl')
+
      pause
      %pause(0.1);
 end

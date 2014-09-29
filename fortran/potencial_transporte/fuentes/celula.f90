@@ -26,6 +26,9 @@ implicit none
     if(nmode==1) then
        write(6,*) ' resuelvo problema electromagnetico'
        call poisson()
+
+       call densidad_poros()
+
     elseif(nmode==2 .or. nmode==3) then
        call transporte()
     endif

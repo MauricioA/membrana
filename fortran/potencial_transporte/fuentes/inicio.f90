@@ -17,5 +17,11 @@ implicit none
     open(unit=unit_coh,file=file_coh2d)
     open(unit=unit_histo,file=file_histo)
     open(unit=unit_ph,file=file_ph)
-    
+    open(unit=unit_cna,file=file_cna2d)
+    open(unit=unit_ccl,file=file_ccl2d)
+    open(unit=unit_den,file=file_den)
+    open(unit=unit_por,file=file_por)
+    open(unit=unit_esta,file=file_esta)
+    open(unit=unit_celda,file=file_celda)
+
 end subroutine inicio

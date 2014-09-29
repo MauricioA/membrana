@@ -98,18 +98,15 @@ void Armado::armado4(Double2D pos[], double sigma, double qe, bool transp, doubl
 
 		ef[i] += cteI[kGauss] * phi[kGauss][i] * qe;
 
-		/* ESTO ES NUEVO! */
-		if (transp) {
-			est[i][i] += mas[i] * landa * cteI[kGauss];
-		}
+		/* Así estaba antes */
+		//if (transp) {
+		//	est[i][i] += mas[i] * landa * cteI[kGauss];
+		//}
 	}
 
-	/* ESTO LO PUSE ARRIBA!! (no sé por qué estaba acá) */
-	//for (int i = 0; i < NODPEL; i++) {
-	//	if (transp) {
-	//		est[i][i] += mas[i] * landa;
-	//	}
-	//}
+	if (transp) for (int i = 0; i < NODPEL; i++) {
+		est[i][i] += mas[i] * landa;
+	}
 }
 
 double Armado::iteracion4(int i, int j, int kGauss, Double2D pos[4],

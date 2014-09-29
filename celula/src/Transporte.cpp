@@ -61,9 +61,9 @@ void Transporte::iteracion(double deltaT) {
 				(1 - RSA) * celula.c_ant[esp][kNodo];
 
 			/* ESTO LO SAQUÉ POR LAS DUDAS! */
-			//if (celula.concs[esp][kNodo] < CONCENT_MINIMO) {
-			//	celula.concs[esp][kNodo] = 0;
-			//}
+			if (celula.concs[esp][kNodo] < CONCENT_MINIMO) {
+				celula.concs[esp][kNodo] = 0;
+			}
 
 			celula.c_ant[esp][kNodo] = celula.concs[esp][kNodo];
 		}
@@ -157,7 +157,6 @@ void Transporte::masaDiag2D() {
 					double gpDet = aJacob[0][0] * aJacob[1][1] - aJacob[0][1] * aJacob[1][0];
 					double gpVol = weigc[i] * gpDet;
 					
-					//TODO de donde sale el 2 * M_PI * rMed ???
 					masas[elem[i]] += gpVol * 2 * M_PI * rMed;
 				}
 

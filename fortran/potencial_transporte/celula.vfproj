@@ -35,8 +35,10 @@
 		<File RelativePath=".\fuentes\def_solver.f90"/>
 		<File RelativePath=".\fuentes\def_transpor.f90"/>
 		<File RelativePath=".\fuentes\def_variables.f90"/>
+		<File RelativePath=".\fuentes\densidad.f90"/>
 		<File RelativePath=".\fuentes\ENSAMBLO.F90"/>
 		<File RelativePath=".\fuentes\finalice.f90"/>
+		<File RelativePath=".\fuentes\grad_concentra.f90"/>
 		<File RelativePath=".\fuentes\inicio.f90"/>
 		<File RelativePath=".\fuentes\lbcg.f90"/>
 		<File RelativePath=".\fuentes\lectura.f90"/>

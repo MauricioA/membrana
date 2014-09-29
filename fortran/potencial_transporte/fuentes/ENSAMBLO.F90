@@ -401,10 +401,15 @@ elseif(nope==4) then
 
          ENDDO
          EF(I)=EF(I) + cteI(kgaus)*PHI(kgaus,I)*QE
-         EST(i,i) = EST(i,i) + mas(i)*LANDA *cteI(kgaus) ! matriz de masa diagonal
+         !EST(i,i) = EST(i,i) + mas(i)*LANDA  
        ENDDO
      
      enddo
+
+     do I=1,NOPE
+         EST(i,i) = EST(i,i) + mas(i)*LANDA  
+     enddo
+
  
  elseif(nope==6) then ! caso 1D
 

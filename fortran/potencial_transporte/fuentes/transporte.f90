@@ -8,7 +8,7 @@ implicit none
 double precision,allocatable :: ch_ant(:),phHaux(:)
 double precision,allocatable :: coh_ant(:),phOHaux(:)
 double precision,allocatable :: ccl_ant(:),cna_ant(:)
-integer :: npaso_kk,nsale,nsale2,i,ki,jj,cadena(10)
+integer :: npaso_kk,nsale,i,ki,jj,kk,j,cadena(10)
 double precision :: tcero,deltat,tt,numer, denom,error,rsa
 
 
@@ -17,17 +17,46 @@ allocate(cna(nnodes),ccl(nnodes),phOHaux(nnodes),phHaux(nnodes))
 allocate(ch_ant(nnodes),coh_ant(nnodes))
 allocate(cna_ant(nnodes),ccl_ant(nnodes))
 
+allocate(grad_ccl_x(nnodes),grad_ccl_y(nnodes))
+allocate(grad_cna_x(nnodes),grad_cna_y(nnodes))
+allocate(grad_coh_x(nnodes),grad_coh_y(nnodes))
+allocate(grad_ch_x(nnodes),grad_ch_y(nnodes))
+
+grad_ccl_x=0.0
+grad_ccl_y=0.0
+grad_cna_x=0.0
+grad_cna_y=0.0
+
+grad_coh_x=0.0
+grad_coh_y=0.0
+
+grad_ch_x=0.0
+grad_ch_y=0.0
+
 
 write(unit_histo,*) nnodes
 write(unit_ph,*) nnodes
        
 call masadiag2d()
 
-
+! inicializo mejor
 ch = ch_inicial
 coh = coh_inicial
-cna = cna_inicial
-ccl = ccl_inicial
+
+do kk=1,nelements
+   
+   do jj=1,nodpel
+      j=conect(kk,jj)
+         cna(j) = cna_inicial
+         ccl(j) = ccl_inicial
+
+      if(material(kk)>1) then
+      !   cna(j) = 0.0
+      !   ccl(j) = 0.0
+      endif
+   enddo
+enddo
+
 
 ch_ant=ch
 coh_ant=coh
@@ -53,15 +82,12 @@ else
 endif
 
 
-
-
 npaso_kk=0
-nsale=10000
-nsale2=500
+nsale=100
 
-tcero=1.0
-deltat=0.000001
-rsa = 0.5
+tcero=0.01
+deltat=1e-5 ! 0.2e-5
+rsa = 0.50
 
 tt=0.0
 
@@ -72,6 +98,7 @@ do while( tt<tcero)
 
    call calculo_carga()
    call poisson()
+
 
    if(nmode==2) then
        do ki=1,nnodes
@@ -87,7 +114,7 @@ do while( tt<tcero)
    call concentraOH_time(tt,deltat,ch_ant,coh_ant,cna_ant,ccl_ant)
    call concentraNa_time(tt,deltat,ch_ant,coh_ant,cna_ant,ccl_ant)
    call concentraCl_time(tt,deltat,ch_ant,coh_ant,cna_ant,ccl_ant)
-
+   
 
    if(nmode==2) then
       do ki=1,nnodes
@@ -109,6 +136,9 @@ do while( tt<tcero)
 
    numer=0.0
    denom=0.0
+   
+   rresist=0.0
+
    do jj=1,nnodes
         numer=numer + (ch(jj)-ch_ant(jj))*(ch(jj)-ch_ant(jj))+ (coh(jj)-coh_ant(jj))*(coh(jj)-coh_ant(jj))  + (cna(jj)-cna_ant(jj))*(cna(jj)-cna_ant(jj))+ (ccl(jj)-ccl_ant(jj))*(ccl(jj)-ccl_ant(jj))
         denom = denom +  ch(jj)*ch(jj) + coh(jj)*coh(jj) +  cna(jj)*cna(jj) + ccl(jj)*ccl(jj)
@@ -127,7 +157,19 @@ do while( tt<tcero)
         cna_ant(jj)=cna(jj)
         ccl_ant(jj)=ccl(jj)
 
+
+        rresist = rresist + ch(jj) + coh(jj) +  cna(jj) +  ccl(jj)
+
+
    enddo
+
+   rresist  = rresist/nnodes
+
+   rresist = rresist*124.2/1000.0 *1e12/6.02e+23 * (1.57e-4)
+   ccurrent = potencial*rresist /(3.14159*50*50)  ! divido por el area en micrones
+
+   write(unit_celda,*) tt,potencial,rresist,ccurrent,currentH,currentCl
+
    error=dsqrt(numer/denom)
 
    if(error>=1e+3) then
@@ -135,13 +177,9 @@ do while( tt<tcero)
        stop ' '
    endif
 
-   if(mod(npaso_kk,nsale2)==0) then
-       write(6,*) 'paso veo: ',tt,error
-   endif
-
    if(mod(npaso_kk,nsale)==0) then
       
-       write(6,*) 'paso escribo: ',tt,error
+       write(6,*) 'paso: ',tt,error
    
        write(unit_histo,*) 'paso: ',tt
        write(unit_ph,*) 'paso: ',tt
@@ -172,7 +210,7 @@ do while( tt<tcero)
 enddo
 
 
-call salida_concentra(ch,coh)
+call salida_concentra(ch,coh,cna,ccl)
 
 call salida_sol(solucion)
 
@@ -202,11 +240,12 @@ DOUBLE PREcIsION:: PI=3.14159
   
   do ielem = 1,nelements
 
-         
+      rmed=0.0   
       do inode = 1,nodpel
          ns(inode)= conect(ielem,inode)
          x(inode) = coor_x(ns(inode))
          y(inode) = coor_y(ns(inode))
+         rmed=rmed+x(inode)/real(nodpel)
       end do
      
      
@@ -253,7 +292,7 @@ DOUBLE PREcIsION:: PI=3.14159
  
              gpvol=  weigc(inode)*gpdet
              
-             masa(ns(inode))=masa(ns(inode))+gpvol
+             masa(ns(inode))=masa(ns(inode))+gpvol*2*PI*rmed
 
       enddo
         

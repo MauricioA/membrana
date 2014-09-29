@@ -17,5 +17,11 @@ implicit none
     close(unit_coh)
     close(unit_histo)
     close(unit_ph)
+    close(unit_den)
+    close(unit_por)
+    close(unit_esta)
+    close(unit_celda)
+
+
     
 end subroutine finalice

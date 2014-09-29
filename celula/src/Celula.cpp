@@ -38,16 +38,16 @@ void Celula::transportePoros() {
 	const int PASO_POROS_3 = 128;
 	const int PASO_POROS_4 = 2048;
 
-	const int PASO_POISSON_1	= 1;
-	const int PASO_POISSON_2	= 10;
-	const int PASO_POISSON_3	= 50;
-	const int PASO_POISSON_4    = 100;
 	//const int PASO_POISSON_1	= 1;
-	//const int PASO_POISSON_2	= 50;
-	//const int PASO_POISSON_3	= 500;
-	//const int PASO_POISSON_4	= 1000;
+	//const int PASO_POISSON_2	= 10;
+	//const int PASO_POISSON_3	= 100;
+	//const int PASO_POISSON_4    = 200;
+	const int PASO_POISSON_1	= 1;
+	const int PASO_POISSON_2	= 50;
+	const int PASO_POISSON_3	= 500;
+	const int PASO_POISSON_4	= 1000;
 
-	const int PASO_TRANSPORTE = 25;
+	const int PASO_TRANSPORTE = 100;
 
 	const int PASO_DISCO_ITV_1	= 10;
 	const int PASO_DISCO_ITV_2	= 100;

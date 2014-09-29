@@ -118,10 +118,13 @@ ncase=1
             if(  vec_tierra(ipoin)/=-1 ) then
 
               ! calculo ch_catodo mediante ecuacion con I
-               current = 0.0
+             ! if(grad_y(ipoin).ne.0.0) then
+             !    ch_catodo = - (R_cte*T_cte/Faraday)* grad_ch_y(ipoin)/grad_y(ipoin)
+             ! endif
 
-              ! ch_catodo = (D_h*chmed + current/Faraday)/(mu+D_h/(hmed*0.5))
-            
+              !if(ch_catodo.lt.0.0) ch_catodo=0.0
+              
+              !ch_catodo =ch_inicial
 
               adiag=ESM(inode,inode)
               do jnode=1,nodpel
@@ -136,14 +139,13 @@ ncase=1
 
 
               ! calculo ch_anodo mediante ecuacion con I
-               current = I_eq* ( exp(-Faraday*(solucion(ipoin)+E_eq)/(2*R_cte*T_cte)) - ch_ant(ipoin)/ch_inicial*exp(Faraday*(solucion(ipoin)+E_eq)/(2*R_cte*T_cte))) 
-               current2 = I2_eq* ( ccl_ant(ipoin)/ccl_inicial * exp(-Faraday*(solucion(ipoin)+E2_eq)/(2*R_cte*T_cte)) - exp(Faraday*(solucion(ipoin)+E2_eq)/(2*R_cte*T_cte))) 
-
-            !  ch_anodo = (D_h*chmed + (current+current2)/Faraday)/(D_h/(hmed)- mu)
+               !currentH = I_eq* ( exp(-Faraday*(solucion(ipoin)+E_eq)/(2*R_cte*T_cte)) - ch_ant(ipoin)/ch_inicial*exp(Faraday*(solucion(ipoin)+E_eq)/(2*R_cte*T_cte))) 
+             
+               ! con Taffel
+               !currentH = 1.32e-8*solucion(ipoin) + 0.3342e-8
+               !ch_anodo = -(R_cte*T_cte/(Faraday*D_h*grad_y(ipoin)))*(currentH/Faraday + D_h*grad_ch_y(ipoin))
               
-            !  if(ipoin==1301) then
-            !     write(1111,*)'anodo H: ', time,ipoin,ch_anodo,current+current2
-            !  endif
+              !ch_anodo = ch_inicial
 
               adiag=ESM(inode,inode)
               do jnode=1,nodpel
@@ -242,6 +244,11 @@ ncase=1
 !enddo ! fin while
 
 !deallocate(ch_ini)
+
+
+
+call grad_concentra(nnodes,nelements,nodpel,ch,material,conect,coor_x,coor_y,grad_ch_x,grad_ch_y)
+
 
 
 end subroutine concentraH_time
@@ -346,7 +353,7 @@ ncase=1
          if(mat==1 ) then
                Doh_el = D_oh
          elseif(mat==2 ) then
-               Doh_el = D_oh*1e-3
+               Doh_el =  D_oh*1e-6
          elseif(mat==3) then
                Doh_el = D_oh
          endif 
@@ -362,7 +369,7 @@ ncase=1
      endif
 
     ! if(ymed>=2.0 .and. ymed <= 98.0 ) then
-        QE =  kwb*Ch2o - kwf* chmed* cohmed 
+     !   QE =  kwb*Ch2o - kwf* chmed* cohmed 
      !   if(qe<0) qe=0
      !endif
      
@@ -374,15 +381,12 @@ ncase=1
             if(  vec_tierra(ipoin)/=-1 ) then
              
                 ! calculo coh_catodo mediante ecuacion con I
-               current = I_eq* ( exp(-Faraday*(solucion(ipoin)+E_eq)/(2*R_cte*T_cte)) - ch_ant(ipoin)/ch_inicial*exp(Faraday*(solucion(ipoin)+E_eq)/(2*R_cte*T_cte))) 
-
-              !coh_catodo = (-D_oh*cohmed + current/Faraday)/(-mu - D_oh/(hmed*0.5))
-               
-
-
-
-              
-             
+                
+                !coh_catodo=0.0
+                !if(grad_y(ipoin).ne.0.0) then
+                !   coh_catodo = (R_cte*T_cte/Faraday)* (D_oh*grad_Coh_y(ipoin)-current/Faraday)/(D_oh*grad_y(ipoin))
+                !endif
+                
               adiag=ESM(inode,inode)
               do jnode=1,nodpel
                  ESM(inode,jnode)=0.0
@@ -395,10 +399,11 @@ ncase=1
             if(  vec_poten(ipoin)/=-1 ) then
 
               ! calculo coh_anodo mediante ecuacion con I
-               current = 0.0
+              !coh_anodo = (R_cte*T_cte/Faraday)* grad_cOh_y(ipoin)/grad_y(ipoin)
+              
+              !if(coh_anodo<0.0) coh_anodo=0.0
 
-             !  coh_anodo = (D_oh*cohmed + current/Faraday)/(D_oh/(hmed*0.5)- mu)
-
+             
               adiag=ESM(inode,inode)
               do jnode=1,nodpel
                  ESM(inode,jnode)=0.0
@@ -499,6 +504,11 @@ ncase=1
 !enddo ! fin while
 
 !deallocate(coh_ini)
+
+
+call grad_concentra(nnodes,nelements,nodpel,coh,material,conect,coor_x,coor_y,grad_coh_x,grad_coh_y)
+
+
 
 end subroutine concentraOH_time
 
@@ -628,10 +638,12 @@ ncase=1
             if(  vec_tierra(ipoin)/=-1 ) then
 
               ! calculo cna_catodo mediante ecuacion con I
-               current = 0.0
+               !cna_catodo=0.0
+               !if(grad_y(ipoin).ne.0.0) then
+               !   cna_catodo = - (R_cte*T_cte/Faraday)* grad_cNa_y(ipoin)/grad_y(ipoin)
+               !endif         
 
-              ! cna_catodo = -(D_na*cnamed + current/Faraday)/(mu-D_na/(hmed*0.5))
-            
+               !if(cna_catodo<0.0) cna_catodo=0.0
 
               adiag=ESM(inode,inode)
               do jnode=1,nodpel
@@ -645,11 +657,9 @@ ncase=1
             if(  vec_poten(ipoin)/=-1 ) then
 
 
-              ! calculo ch_anodo mediante ecuacion con I
-               current = 0.0
-
-            !   cna_anodo = (D_na*cnamed + current/Faraday)/(D_na/(hmed*0.5)+ mu)
-              
+              ! calculo cna_anodo mediante ecuacion con I
+               
+               cna_anodo = - (R_cte*T_cte/Faraday)* grad_cna_y(ipoin)/grad_y(ipoin)
             
 
               adiag=ESM(inode,inode)
@@ -749,6 +759,9 @@ ncase=1
 !enddo ! fin while
 
 !deallocate(ch_ini)
+
+
+call grad_concentra(nnodes,nelements,nodpel,cna,material,conect,coor_x,coor_y,grad_cna_x,grad_cna_y)
 
 
 end subroutine concentraNa_time
@@ -852,7 +865,7 @@ ncase=1
          if(mat==1 ) then
                Dcl_el = D_cl
          elseif(mat==2 ) then
-               Dcl_el =  D_cl*1e-3
+               Dcl_el =  D_cl *1e-3
          elseif(mat==3) then
                Dcl_el = D_cl
          endif 
@@ -878,11 +891,13 @@ ncase=1
             if(  vec_tierra(ipoin)/=-1 ) then
 
               ! calculo ccl_catodo mediante ecuacion con I
-               current = 0.0
-               
-            !   ccl_catodo = -(D_cl*cclmed + current/Faraday)/(mu-D_cl/(hmed*0.5))
-            
-
+             !  ccl_catodo=0.0
+             !  if(grad_y(ipoin).ne.0.0) then
+             !    ccl_catodo = -(R_cte*T_cte/Faraday)* grad_cCl_y(ipoin)/grad_y(ipoin)
+             !  endif
+              
+             ! if(ccl_catodo .lt.0.0)  ccl_catodo=0.0  
+              
               adiag=ESM(inode,inode)
               do jnode=1,nodpel
                  ESM(inode,jnode)=0.0
@@ -896,12 +911,12 @@ ncase=1
 
 
               ! calculo ccl_anodo mediante ecuacion con I
-               current = I_eq* ( exp(-Faraday*(solucion(ipoin)+E_eq)/(2*R_cte*T_cte)) - ch_ant(ipoin)/ch_inicial*exp(Faraday*(solucion(ipoin)+E_eq)/(2*R_cte*T_cte))) 
-               current2 = I2_eq* ( ccl_ant(ipoin)/ccl_inicial * exp(-Faraday*(solucion(ipoin)+E2_eq)/(2*R_cte*T_cte)) - exp(Faraday*(solucion(ipoin)+E2_eq)/(2*R_cte*T_cte))) 
+               currentCl = -I2_eq* ( ccl_ant(ipoin)/ccl_inicial * exp(-Faraday*(solucion(ipoin)+E2_eq)/(2*R_cte*T_cte)) - exp(Faraday*(solucion(ipoin)+E2_eq)/(2*R_cte*T_cte))) 
+             
+               ccl_anodo = (R_cte*T_cte/(Faraday*D_Cl*grad_y(ipoin)))*(currentCl/Faraday + D_Cl*grad_ccl_y(ipoin))
 
-           !   ccl_anodo = (D_cl*cclmed + (current+current2)/Faraday)/(D_cl/(hmed*0.5)- mu)
-
-              
+               !if(ccl_anodo .lt.0.0) 
+                   ccl_anodo=0.0       
             
               adiag=ESM(inode,inode)
               do jnode=1,nodpel
@@ -1001,5 +1016,7 @@ ncase=1
 
 !deallocate(ch_ini)
 
+
+call grad_concentra(nnodes,nelements,nodpel,ccl,material,conect,coor_x,coor_y,grad_ccl_x,grad_ccl_y)
 
 end subroutine concentracl_time

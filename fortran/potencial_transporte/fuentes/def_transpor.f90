@@ -40,24 +40,26 @@ module def_transpor
    double precision ::  Ccl_inicial= 96320000.0        !  at/microm**3   0.16M
 
 
-   ! valore en CC
-   double precision ::  Ch_anodo=1.5E+7        !  at/microm**3   
-   double precision ::  Coh_anodo=0.0        !  at/microm**3   
-   double precision ::  Cna_anodo=1.0E+12        !  at/microm**3   
-   double precision ::  Ccl_anodo=0.0        !  at/microm**3   
+   double precision ::  Ch_anodo=60.20 ! 1.5E+7        !  at/microm**3   
+   double precision ::  Coh_anodo=60.20 ! 0.0        !  at/microm**3   
+   double precision ::  Cna_anodo=96320000.0 !1.0E+12        !  at/microm**3   
+   double precision ::  Ccl_anodo=96320000.0 ! 0.0        !  at/microm**3   
 
-   double precision ::  Ch_catodo=0.0        !  at/microm**3   
-   double precision ::  Coh_catodo= 1.806E+7  !  at/microm**3   
-   double precision ::  Cna_catodo=0.0        !  at/microm**3   
-   double precision ::  Ccl_catodo= 0.0  !  at/microm**3   
+   double precision ::  Ch_catodo=60.20 ! 0.0        !  at/microm**3   
+   double precision ::  Coh_catodo=60.20 !  1.806E+7  !  at/microm**3   
+   double precision ::  Cna_catodo=96320000.0 ! 0.0        !  at/microm**3   
+   double precision ::  Ccl_catodo=96320000.0 !  0.0  !  at/microm**3   
 
 
-   double precision,allocatable :: ch(:)
-   double precision,allocatable :: coh(:)
-   double precision,allocatable :: cna(:)
-   double precision,allocatable :: ccl(:)
+   double precision,allocatable :: ch(:),grad_ch_x(:),grad_ch_y(:)
+   double precision,allocatable :: coh(:),grad_coh_x(:),grad_coh_y(:)
+   double precision,allocatable :: cna(:),grad_cna_x(:),grad_cna_y(:)
+   double precision,allocatable :: ccl(:),grad_ccl_x(:),grad_ccl_y(:)
 
    
    double precision :: Number_clave    
+
+
+   double precision :: ccurrent,rresist,currentCl=0,currentH=0
    
 end module def_transpor

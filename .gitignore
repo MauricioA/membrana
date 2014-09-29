@@ -27,7 +27,7 @@ celula/salida/long/*
 celula/salida/poster64/*
 celula/salida/pulsos/*
 celula/salida/vacio/*
-celula/salida/correc2/*
+celula/salida/correc_t/*
 
 *.aux
 *.nav

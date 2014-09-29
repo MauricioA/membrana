@@ -9,7 +9,7 @@ double precision, allocatable  :: esm_tot(:,:)
 integer :: ns(nodpel)
 integer  NPASO,KK,JEL,I,II,ncase,inode,ipoin,jnode,jj,iaux,keje,jj2,mat,j,iter
 double precision, allocatable :: solucion_ant(:)
-double precision :: error,epsil,denom,numer,sol(nodpel),funsigma1,campoxl,tierra
+double precision :: error,epsil,denom,numer,sol(nodpel),funsigma1,campoxl,tierra,rad,alfa,normalx,normaly
 integer :: nconta,NCOTA
 
 
@@ -46,10 +46,7 @@ do while(error>epsil .and. nconta< NCOTA )
             sigma_el = sigmaint
         endif
         
-        !if(nmode==3) then
-        !    sigma_el=1.0
-        !endif
-
+       
 
 ! jel = elemento actual
 ! nodpel = 3
@@ -175,7 +172,7 @@ enddo ! end while
 !      &    gradxel_x,gradxel_y,gradxel_z)
 if(ndimension==2) then
     call campo2d(nnodes,nelements,nodpel,solucion,material,conect,coor_x,coor_y,sigmaext,sigmaint,sigmamem,grad_x,grad_y,  &
-      &    gradxel_x,gradxel_y)
+      &    gradxel_x,gradxel_y,vec_tierra,vec_poten)
 elseif(ndimension==1) then
     call campo1d(nnodes,nelements,nodpel,solucion,material,conect,coor_x,sigmaext,sigmaint,sigmamem,grad_x,gradxel_x)
 
@@ -184,6 +181,38 @@ endif
 
 if(nmode==1) then
    call salida_sol(solucion)
+
+   ! saco la membrana
+   write(unit_grid,*) 'exterior', nod_mem_ext
+   do kk=1,nod_mem_ext
+       jj=nodos_mem(2,kk)
+       rad = sqrt(coor_x(jj)*coor_x(jj)+(coor_y(jj)-50.0)*(coor_y(jj)-50.0))
+       alfa = atan(coor_x(jj)/(coor_y(jj)-50.0))
+       normalx =  rad*dsin(alfa)
+       normaly =  rad*dcos(alfa)
+       if(alfa<0.0) alfa = alfa + 3.14159
+       write(unit_grid,*) coor_x(jj),coor_y(jj),rad,alfa,solucion(jj),grad_x(jj)*normalx+grad_y(jj)*normaly
+   enddo
+   write(unit_grid,*) 'interior',nod_mem_int
+
+   do kk=1,nod_mem_int
+       jj=nodos_mem(1,kk)
+       rad = sqrt(coor_x(jj)*coor_x(jj)+(coor_y(jj)-50.0)*(coor_y(jj)-50.0))
+       alfa = atan(coor_x(jj)/(coor_y(jj)-50.0))
+       if(alfa<0.0) alfa = alfa + 3.14159
+       normalx =  rad*dsin(alfa)
+       normaly =  rad*dcos(alfa)
+       write(unit_grid,*) coor_x(jj),coor_y(jj),rad,alfa,solucion(jj),grad_x(jj)*normalx+grad_y(jj)*normaly
+   enddo
+
+   write(unit_grid,*) nod_mem_int
+   do kk=1,nod_mem_int
+       jj=nodos_mem(2,kk)
+       ii=nodos_mem(1,kk)
+       poten_tm(kk)= solucion(jj)-solucion(ii)
+       write(unit_grid,*) solucion(jj)-solucion(ii)
+   enddo
+
 endif
 
 deallocate(solucion_ant)

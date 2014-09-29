@@ -160,11 +160,10 @@ void Poisson::campo4(Celula &celula) {
 		}
 
 		for (int i = 0; i < NGAUSS; i++) for (int j = 0; j < NGAUSS; j++) {
-			//REVISAR LAS VARIABLES QUE SE PASAN A ITER4!
 			Armado::iteracion4(i, j, kGauss, pos, phi, dphi, phidX);
 
+			/* Esto está corregido! */
 			for (int k = 0; k < NODPEL; k++) {
-				//ESTO ESTÁ CORREGIDO!
 				eElem.x += phidX[0][kGauss][k] * sol[k];
 				eElem.y += phidX[1][kGauss][k] * sol[k];
 			}
