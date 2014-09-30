@@ -38,6 +38,7 @@ celula/salida/correc_t/*
 
 *.ppt#
 *.docx#
+*.doc#
 
 latex/*/*.log
 latex/*/*.out
@@ -47,6 +48,7 @@ latex/*/*/*.gz
 
 #pdf incompletos
 #latex/poster/conference_poster_6.pdf
+latex/proceeding/proceeding.pdf
 latex/template/tesis.pdf
 
 #################

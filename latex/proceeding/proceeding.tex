@@ -28,19 +28,96 @@
 
 \maketitle
 
+%TODO ver propuesta
 %TODO corregir fecha
 
 \begin{abstract}
-	ABSTRACT acá
+	La electroporación celular consiste en la aplicación de pulsos eléctricos de corta duración y alto potencial a una célula con el objetivo de crear poros en su membrana, logrando así una permeabilización que permita el ingreso de iones o drogas. En este trabajo se realizaron simulaciones de células individuales a las que se les aplican pulsos a través de electrodos. Las simulaciones tienen en cuenta los siguientes fenómenos físicos: el potencial eléctrico en el dominio, la creación de poros en la membrana y la evolución de sus radios y el transporte de cuatro especies iónicas diferentes. Para ello se usó el método de elementos finitos en dos dimensiones con coordenadas cilíndricas, asumiendo la célula como un sólido de revolución.
+	
+	%TODO poner keywords
 \end{abstract}
 
 \section{Introducción}
+%TODO acá un poco de chamuyo de electroporación y sus aplicaciones
+
+%TODO repetir masomenos lo que dice el abstract pero con más detalle. mencionar cuáles son las 4 especies. poner valores (tamaño de la célula, voltaje, duración del pulso, etc)
+
+%TODO mencionar que los electrodos están en el dominio y no afuera, como en otros trabajos.
+
+\subsection{Potencial eléctrico}
+El potencial eléctrico es generado por dos electrodos con una diferencia de potencial constante durante la duración del pulso. Para el cálculo del potencial eléctrico en cada punto del dominio se utiliza la ecuación: 
+
+\begin{equation} \label{eq:poisson}
+	\nabla \sigma_{elem} \cdot (\nabla \phi) = 0 
+\end{equation}
+
+donde $\phi$ representa el potencial eléctrico y $\sigma_{elem}$ la conductividad del material \cite[p.~88]{fem-electro}.\\
+
+Como consecuencia del potencial eléctrico se genera una diferencia de potencial entre el exterior e interior de la membrana celular, llamado potencial transmembrana (ITV). Se tiene en cuenta además que la membrana se carga como un capacitor en paralelo con una resistencia, por lo tanto el ITV crece según la ecuación:
+
+
+\begin{equation} \label{eq:capacit} 
+	ITV = V_p\, (1 - e^{-t/\tau}) , \textrm{ con } \tau = \alpha\, C_m \left( \frac{1}{\sigma_i} + \frac{1}{2 \sigma_o} \right)
+\end{equation}
+
+donde $ITV$ es el potencial transmembrana en un punto de la superficie de la célula, $V_p$ es el potencial obtenido por la ecuación \eqref{eq:poisson}, $t$ es el tiempo transcurrido desde el comienzo del pulso eléctrico, $\alpha$ es el radio de la célula, $C_m$ es la capacitancia superficial de la célula y $\sigma_i$ y $\sigma_o$ las conductancias intra y extracelulares respectivamente \cite{krass}.\\
+
+
+\subsection{Generación de poros}
+%TODO corregir
+Esta diferencia de potencial genera poros hidrofílicos en la membrana. La densidad de poros se calcula con la ecuación:
+
+\begin{equation} \label{eq:poros-crea}
+	\frac{\partial N}{\partial t} = \alpha_c e^{(ITV/V_{ep})^2} \left( 1 - \frac{N}{N_0 e^{q \left(ITV/V_{ep} \right) ^2}} \right)
+\end{equation}
+
+donde $N$ es la densidad de poros en un determinado tiempo y posición de la membrana celular, $\alpha_c$ es el coeficiente de creación de poros, $ITV$ es el potencial transmembrana, $V_{ep}$ es el voltaje característico de electroporación, $N_0$ es la densidad de poros en equilibrio (cuando $ITV = 0$) y $q$ es una constante igual a $(r_m / r*)^2$, donde $r_m$ es el radio de mínima energía para $ITV = 0$ y $r*$ es el radio mínimo de los poros \cite{krass}.\\
+
+Dado que el ITV es diferente en distintas regiones de la superficie celular, también lo es la densidad de poros generados.
+
+\subsection{Radio de los poros}
+Los poros generados según la ecuación \eqref{eq:poros-crea} tienen un radio inicial $r*$ igual a 0.51 \si{\nano\metre}. Este radio no permanece constante sino que varía en el tiempo y depende del ITV y del resto de los poros en la célula. Para cada poro individual su radio se calcula según la ecuación:
+
+\begin{equation} \label{eq:poros-radio}
+	\frac{\partial r}{\partial t} = \frac{D}{kT} \left( \frac{ITV^2 F_{max}}{1+r_h / (r+r_a)} + \frac{4 \beta}{r} \left(\frac{r_*}{r}\right)^4 - 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r\right)
+\end{equation}
+
+donde $r$ es el radio del poro, $D$ es el coeficiente de difusión para los poros, $k$ es la constante de Boltzmann, $T$ la temperatura absoluta, $ITV$ el potencial transmembrana, $F_{max}$ la máxima fuerza eléctrica para $ITV$ de 1V, $r_h$ y $r_a$ son constantes usadas para la velocidad de advección, $\beta$ es la energía de repulsión estérica, $\gamma$ es la energía del perímetro de los poros, y $\sigma_{\textrm{\tiny eff}}$ es la tensión efectiva de la membrana, calculada como
+
+\begin{equation}
+	\sigma_{\textrm{\tiny eff}} = 2 \sigma^\prime - \frac{2 \sigma^\prime - \sigma_0}{(1 - A_p / A)^2}
+\end{equation}
+
+donde $\sigma^\prime$ es la tensión de la interfase hidrocarburo-agua, $\sigma_0$ es la tensión de la bicapa sin poros, $A_p$ es la suma de las áreas de todos los poros en la célula, y $A$ es el área de la célula \cite{krass}. En la ecuación \ref{eq:poros-radio}, el primer término corresponde a la fuerza eléctrica inducida por el potencial transmembrana, el segundo a la repulsión estérica, el tercero a la tensión de línea que actúa en el perímetro del poro y el cuarto a la tensión superficial de la célula.\\
+%TODO si no alcanza el espacio se puede borrar lo último
+
+\subsection{Transporte de especies}
+Se calculan las concentraciones de cuatro especies iónicas: el ión hidrógeno (\h), el hidróxido (\oh), el catión sodio (\na) y el cloruro (\cl). Para ello se tiene en cuenta la difusión producto de las diferencias de concentración y la migración producto del campo eléctrico. Se utiliza la ecuación de conservación de masa de Nernst-Planck:
+
+\begin{equation} \label{eq:trans}
+	\frac{\partial C_i}{\partial t} = \nabla \cdot \left( D_i \nabla C_i + D_i z_i \frac{F}{R T} C_i \nabla \phi \right)
+\end{equation}
+
+donde $C_i$, $D_i$ y $z_i$ representan la concentración, el coeficiente de difusión y la valencia 
+respectivamente de la especie $i$, para $i = $ \h, \oh, \na ó \cl.
+$F$ es la constante de Faraday, $R$ la constante de los gases y $T$ la temperatura \cite{fodava}.\\
+
+\subsection{Acoplamiento}
+Las ecuaciones \eqref{eq:poros-crea} y \eqref{eq:poros-radio} modifican la permeabilidad de la membrana. Por esta razón se re-calculan los valores de conductividad y difusión de las distintas regiones de la membrana como un promedio entre la 
+%TODO explicar esto o poner las fórmulas
 
 \section{Implementación}
+Las simulaciones se realizaron con el método de elementos finitos sobre un dominio de coordenadas cilíndricas. Se generaron mallas bidimensionales con elementos cuadrilaterales usando el programa AutoMesh-2D \cite{automesh}. La mallas utilizadas tienen tres regiones: el líquido extra-celular, el citoplasma y la membrana celular. A diferencia de otros trabajos en los que no se modeló la membrana celular por ser extremadamente fina respecto del resto de la célula o se la modeló con un ancho superior al real, en este trabajo se modeló la membrana con su ancho real de 5 \si{\nano\metre}. Se generaron varias mallas, para células de tamaños entre 10 \si{\micro\metre} y 50 \si{\micro\metre}.\\
+
+Los elementos que forman la malla tienen tamaño variable, siendo los cercanos a la membrana los de menor tamaño por ser la región de mayor interés. El intervalo temporal también es variable, siendo muy pequeño en los primeros microsegundos del pulso y aumentando con el paso del tiempo. A su vez las ecuaciones \eqref{eq:poros-crea} y \eqref{eq:poros-radio} corren con un intervalo temporal muy pequeño mientras que la ecuación \eqref{eq:poisson} tiene un intervalo más grande y la ecuación \eqref{eq:trans} uno aún más grande, por ser los cambios en las concentraciones de especies y el campo eléctrico mucho más lentos que los cambios en los poros de la membrana. 
+
+%TODO mencionar condiciones de borde
 
 \section{Resultados}
+%TODO 
 
 \section{Conclusiones}
+%TODO
 
 \begin{thebibliography}{9}
 
@@ -52,23 +129,23 @@
 %	Annals of Biomedical Engineering
 %	April 2006, Volume 34, Issue 4, Pages 642-652
 %
-%\bibitem{fodava}
-%	Qiong Zheng, Duan Chen and Guo-Wei Wei
-%	\emph{Second-order Poisson Nernst-Planck solver for ion channel transport}
-%	Journal of Computational Physics
-%	Volume 230, Issue 13, 10 June 2011, Pages 5239–5262
-%
-%\bibitem{krass}
-%	Wanda Krassowska and Petar D. Filev
-%	\emph{Modeling Electroporation in a Single Cell}
-%	Biophysical Journal
-%	Volume 92, Issue 2, 15 January 2007, Pages 404–417
-%
-%\bibitem{fem-electro}
-%	Stanley Humphries, Jr.
-%	\emph{Finite-element Methods for Electromagnetics}
-%	2010
-%
+\bibitem{fodava}
+	Qiong Zheng, Duan Chen and Guo-Wei Wei
+	\emph{Second-order Poisson Nernst-Planck solver for ion channel transport}
+	Journal of Computational Physics
+	Volume 230, Issue 13, 10 June 2011, Pages 5239–5262
+
+\bibitem{krass}
+	Wanda Krassowska and Petar D. Filev
+	\emph{Modeling Electroporation in a Single Cell}
+	Biophysical Journal
+	Volume 92, Issue 2, 15 January 2007, Pages 404–417
+
+\bibitem{fem-electro}
+	Stanley Humphries, Jr.
+	\emph{Finite-element Methods for Electromagnetics}
+	2010
+
 %\bibitem{fem}
 %	O.C. Zienkiewicz and R.L. Taylor
 %	\emph{The Finite Element Method Volume I: The Basis}
@@ -80,6 +157,9 @@
 %	Matías Daniel Marino, Dr. Pablo Turjanski, Dr. Nahuel Olaiz
 %	\emph{Electroporación en el tratamiento de tumores: modelos teóricos y experimentales}
 %	2013
+
+\bibitem{automesh}
+	\href{http://www.automesh2d.com/}{http://www.automesh2d.com/}
 
 \end{thebibliography}
 

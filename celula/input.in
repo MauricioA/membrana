@@ -3,7 +3,7 @@
 
 malla: 	 inputs/25_128.msh
 nodpel:	 quad
-salida:  salida/correc_t/electrodos/
+salida:  salida/correc_t/elec_deltat/
 threads: 1
 
 sigint:		0.455e-6	# conductividad de la zona intraelular [S/um]
