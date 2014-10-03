@@ -10,7 +10,7 @@ SparseMatrix<double> Poisson::matriz;
 
 void Poisson::iteracion(Celula &celula) {
 	global_rhs.resize(celula.nNodes);
-	global_rhs.fill(0);
+	global_rhs.fill(0.);
 	celula.potenciales.resize(celula.nNodes);
 	vector<Triplet<double>> global_triplets(celula.nElems * celula.nodpel * celula.nodpel);
 
@@ -18,7 +18,7 @@ void Poisson::iteracion(Celula &celula) {
 	{
 		VectorXd local_rhs;
 		local_rhs.resize(celula.nNodes);
-		local_rhs.fill(0);
+		local_rhs.fill(0.);
 		
 		#pragma omp for
 		for (int elemIdx = 0; elemIdx < celula.nElems; elemIdx++) {
@@ -33,7 +33,7 @@ void Poisson::iteracion(Celula &celula) {
 				int j = elemento[i];
 				pos[i].x = celula.nodos[j].x;
 				pos[i].y = celula.nodos[j].y;
-				ef[i] = 0.0;
+				ef[i] = 0;
 			}
 
 			Armado::armadoPoisson(pos, sigma, celula.nodpel, esm);
@@ -45,9 +45,9 @@ void Poisson::iteracion(Celula &celula) {
 
 				if (nodo.esTierra) {
 					for (int j = 0; j < celula.nodpel; j++) {
-						esm[i][j] = 0.0;
+						esm[i][j] = 0;
 						ef[j] -= esm[j][i] * TIERRA;
-						esm[j][i] = 0.0;
+						esm[j][i] = 0;
 					}
 					esm[i][i] = adiag;
 					ef[i] = adiag * TIERRA;
@@ -55,9 +55,9 @@ void Poisson::iteracion(Celula &celula) {
 
 				if (nodo.esPotencia) {
 					for (int j = 0; j < celula.nodpel; j++) {
-						esm[i][j] = 0.0;
+						esm[i][j] = 0;
 						ef[j] -= esm[j][i] * celula.potencial;
-						esm[j][i] = 0.0;
+						esm[j][i] = 0;
 					}
 					esm[i][i] = adiag;
 					ef[i] = adiag * celula.potencial;
@@ -156,7 +156,7 @@ void Poisson::campo4(Celula &celula) {
 			int iNodo = elem[i];
 			pos[i].x = celula.nodos[iNodo].x;
 			pos[i].y = celula.nodos[iNodo].y;
-			sol[i] = celula.potenciales[i];
+			sol[i] = celula.potenciales[iNodo];
 		}
 
 		for (int i = 0; i < NGAUSS; i++) for (int j = 0; j < NGAUSS; j++) {

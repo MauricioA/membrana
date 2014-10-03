@@ -8,7 +8,7 @@ modo:  3  # modo 1 resuelve solo poisson sobre el dominio.
 	     # modo 2 rseulve el transporte acomplado a poisson por metodo de cambio de variables 
 	     # modo 3 rseulve el transporte acomplado a poisson como en fluidos 
 
-archivo1: celula4.fem  # 50_128.msh  #celula4.fem  # celulaF.fem #transpo.fem  
+archivo1: inputs/celula4.fem  # 50_128.msh  #celula4.fem  # celulaF.fem #transpo.fem  
 
 nodpel: 4
 

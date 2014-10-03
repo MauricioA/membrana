@@ -14,11 +14,6 @@ EntradaSalida::EntradaSalida(Celula& celula) {
 	_celula = &celula;
 	leerInput();
 
-	/* Chequear que dir de salida esté vacío */
-	//ifstream f(getCelula().salida + "/input.in");
-	//assert(!f.good());
-	//f.close();
-
 	/* Copiar input.in */
 	ifstream src("input.in", ios::binary);
 	ofstream dst(getCelula().salida + "/input.in", ios::binary);
@@ -87,6 +82,10 @@ void EntradaSalida::leerInput() {
 			iss >> s >> getCelula().times[ON];
 		} else if (line.find("off_time") != string::npos) {
 			iss >> s >> getCelula().times[OFF];
+		} else if (line.find("poros: true") != string::npos) {
+			getCelula().calcularPoros = true;
+		} else if (line.find("poros: false") != string::npos) {
+			getCelula().calcularPoros = false;
 		}
 	}
 
@@ -279,50 +278,50 @@ void EntradaSalida::grabarTransporte(bool verbose) {
 	
 	double time = getCelula().time;
 	int nNodes = getCelula().nNodes;
+	
+	FILE* fConc = fopen((
+		getCelula().salida + "/transporte/conc-" +
+		to_string(nTransporte) + "-" + to_string(time) + ".csv"
+	).c_str(), "w");
+
+	FILE* fMolar = fopen((
+		getCelula().salida + "/transporte/molar-" +
+		to_string(nTransporte) + "-" + to_string(time) + ".csv"
+	).c_str(), "w");
 
 	FILE* fpH = fopen((
 		getCelula().salida + "/transporte/pH-" +
 		to_string(nTransporte) + "-" + to_string(time) + ".csv"
 	).c_str(), "w");
-	
-	FILE* fTrans = fopen((
-		getCelula().salida + "/transporte/concent-" +
-		to_string(nTransporte) + "-" + to_string(time) + ".csv"
-	).c_str(), "w");
-	
-	FILE* fHidro = fopen((
-		getCelula().salida + "/transporte/hidro-" +
-		to_string(nTransporte) + "-" + to_string(time) + ".csv"
-	).c_str(), "w");
 
+	assert(fConc > 0);
+	assert(fMolar > 0);
 	assert(fpH > 0);
-	assert(fTrans > 0);
-	assert(fHidro > 0);
 
+	fprintf(fConc,  "         X,          Y,              H+,             OH-,             Na+,             Cl-\n");
+	fprintf(fMolar, "         X,          Y,              H+,             OH-,             Na+,             Cl-\n");
 	fprintf(fpH,    "         X,          Y,           pH_H+,          pH_OH-\n");
-	fprintf(fTrans, "         X,          Y,             Na+,             Cl-\n");
-	fprintf(fHidro, "         X,          Y,              H+,             OH-\n");
 
 	for (int jNodo = 0; jNodo < nNodes; jNodo++) {
 		Nodo nodo = getCelula().nodos[jNodo];
-		
-		double molar_H  = (getCelula().concs[H_][jNodo] + 1e-18) / CONCENT;
-		double molar_OH = (getCelula().concs[OH][jNodo] + 1e-18) / CONCENT;
+		double conc[NESPS];
+		double molar[NESPS];
+		double ph[NESPS];
 
-		double pH_H  = -log10(molar_H);
-		double ph_OH = -log10(molar_OH);
+		for (int esp = 0; esp < NESPS; esp++) {
+			conc[esp] = getCelula().concs[esp][jNodo];
+			molar[esp] = (conc[esp] + 1e-18) / CONCENT;
+			ph[esp] = -log10(molar[esp]);
+		}
 
-		double molarNa = getCelula().concs[NA][jNodo] / CONCENT;
-		double molarCl = getCelula().concs[CL][jNodo] / CONCENT;
-
-		fprintf(fpH, "%#10f, %#10f, %#15.9g, %#15.9g\n", nodo.x, nodo.y, pH_H, ph_OH);
-		fprintf(fTrans, "%#10f, %#10f, %#15.9g, %#15.9g\n", nodo.x, nodo.y, molarNa, molarCl);
-		fprintf(fHidro, "%#10f, %#10f, %#15.9g, %#15.9g\n", nodo.x, nodo.y, molar_H, molar_OH);
+		fprintf(fConc,  "%#10f, %#10f, %#15.9g, %#15.9g, %#15.9g, %#15.9g\n", nodo.x, nodo.y, conc[H_], conc[OH], conc[NA], conc[CL]);
+		fprintf(fMolar, "%#10f, %#10f, %#15.9g, %#15.9g, %#15.9g, %#15.9g\n", nodo.x, nodo.y, molar[H_], molar[OH], molar[NA], molar[CL]);
+		fprintf(fpH, "%#10f, %#10f, %#15.9g, %#15.9g\n", nodo.x, nodo.y, ph[H_], ph[OH]);
 	}
 
+	fclose(fConc);
+	fclose(fMolar);
 	fclose(fpH);
-	fclose(fTrans);
-	fclose(fHidro);
 	nTransporte++;
 	printEnd(1, verbose);
 }

@@ -26,8 +26,10 @@ void Celula::poisson() {
 }
 
 /* Loop principal */
+//TODO borrar Transporte especificos
+//TODO borrar valores comentados
 void Celula::transportePoros() {
-	double DELTA_T = 1e-9;
+	double DELTA_T = 1e-5;
 	
 	//const int PASO_POROS_1 = 1;
 	//const int PASO_POROS_2 = 4;
@@ -41,13 +43,14 @@ void Celula::transportePoros() {
 	//const int PASO_POISSON_1	= 1;
 	//const int PASO_POISSON_2	= 10;
 	//const int PASO_POISSON_3	= 100;
-	//const int PASO_POISSON_4    = 200;
+	//const int PASO_POISSON_4  = 200;
 	const int PASO_POISSON_1	= 1;
 	const int PASO_POISSON_2	= 50;
 	const int PASO_POISSON_3	= 500;
 	const int PASO_POISSON_4	= 1000;
 
-	const int PASO_TRANSPORTE = 10;
+	//const int PASO_TRANSPORTE = 10;
+	const int PASO_TRANSPORTE = 1;
 
 	const int PASO_DISCO_ITV_1	= 10;
 	const int PASO_DISCO_ITV_2	= 100;
@@ -57,20 +60,8 @@ void Celula::transportePoros() {
 
 	auto global_start = chrono::high_resolution_clock::now();
 
-	/*vector<double> paso_disco = { 
-		0, 5e-3, 10e-3, 15e-3, 19.999e-3, 60e-3,
-		100e-3, 105e-3, 110e-3, 115e-3, 119.999e-3, 160e-3,	
-		200e-3, 205e-3, 210e-3, 215e-3, 219.999e-3, 260e-3,
-		300e-3, 305e-3, 310e-3, 315e-3, 319.999e-3, 360e-3,
-		DBL_MAX,
-	};*/
-
-	//vector<double> paso_disco = {	//krassowska
-	//	0, 30e-6, 100e-6, .9999e-3, 2e-3, 5e-3, 10e-3, 15e-3, 19.999e-3, 1,
-	//};
-
 	vector<double> paso_disco = {	//long 
-		0, 30e-6, 100e-6, .9999e-3, 2e-3, 5e-3, 10e-3, 15e-3, 19.999e-3,
+		0, 30e-6, 100e-6, .9999e-3, 2e-3, 5e-3, 9.99e-3, 15e-3, 19.999e-3,
 		30e-3, 40e-3, 50e-3,
 		60e-3, 70e-3, 80e-3, 90e-3, 100e-3,
 		200e-3, 300e-3, 400e-3, 499.999e-3, 1,
@@ -79,15 +70,20 @@ void Celula::transportePoros() {
 	int pos_disco = 0;
 	time = 0;
 
-	Poros poros = Poros(*this);
-	TransporteAreas transporte = TransporteAreas(*this, poros);
+	Transporte transporte(*this, calcularPoros);
+	unique_ptr<Poros> poros;
+	
+	if (calcularPoros) {
+		poros = make_unique<Poros>(*this);
+		transporte._poros = poros.get();
+	}
 	
 	for (int pulso = 0; pulso < pulsos; pulso++) {
 
 		for (int estado = ON; estado < 2; estado++) {
 
 			/* Si comienza nuevo pulso le aviso a poros */
-			if (estado == ON) poros.nuevoPulso();
+			if (estado == ON && calcularPoros) poros->nuevoPulso();
 
 			/* Si terminó el pulso le aviso a poisson */
 			if (estado == OFF) Poisson::apagar(*this);
@@ -114,8 +110,8 @@ void Celula::transportePoros() {
 				}
 
 				/* Iteración poros */
-				if (it_poros == paso_poros) {
-					poros.iteracion(DELTA_T);
+				if (it_poros == paso_poros && calcularPoros) {
+					poros->iteracion(DELTA_T);
 					it_poros = 0;
 				}
 
@@ -132,8 +128,13 @@ void Celula::transportePoros() {
 					double delta_ms = interv.count() / 1000. / PASO_CONSOLA;
 					start = end;
 
-					printf("%.1fus %.2e %d %d  %.2f ms/it\n", time*1e6, poros.getRadioMaximo(),
-						poros.getNPoros(), poros.getNPorosChicos(), delta_ms);
+					if (calcularPoros) {
+						printf("%.1fus %.2e %d %d  %.2f ms/it\n", time*1e6, poros->getRadioMaximo(),
+							poros->getNPoros(), poros->getNPorosChicos(), delta_ms);
+					} else {
+						printf("%.1fus %.2f ms/it\n", time*1e6, delta_ms);
+					}
+
 					it_consola = 0;
 				}
 
@@ -141,14 +142,14 @@ void Celula::transportePoros() {
 				if (time >= paso_disco[pos_disco]) {
 					getEntradaSalida().grabarPoisson();
 					getEntradaSalida().grabarTransporte();
-					getEntradaSalida().grabarPoros(poros);
+					if (calcularPoros) getEntradaSalida().grabarPoros(*poros);
 					pos_disco++;
 				}
 
-				/* Grabo disco itv si está ON */
-				if ((estado == ON) && it_disco_itv == paso_disco_itv) {
-					getEntradaSalida().grabarITV(poros);
-					getEntradaSalida().grabarPermeabilizacion(poros);
+				/* Grabo disco itv si está ON (y calcula poros) */
+				if (calcularPoros && (estado == ON) && it_disco_itv == paso_disco_itv) {
+					getEntradaSalida().grabarITV(*poros);
+					getEntradaSalida().grabarPermeabilizacion(*poros);
 					it_disco_itv = 0;
 				}
 

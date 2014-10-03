@@ -13,8 +13,9 @@ using namespace declaraciones;
 using namespace Eigen;
 using namespace std;
 
-Transporte::Transporte(Celula& celula) {
+Transporte::Transporte(Celula& celula, bool calcularPoros) {
 	_celula = &celula;
+	_calcularPoros = calcularPoros;
 
 	for (int esp = 0; esp < NESPS; esp++) {
 		celula.concs[esp].resize(celula.nNodes);
@@ -60,7 +61,6 @@ void Transporte::iteracion(double deltaT) {
 				RSA * celula.concs[esp][kNodo] +
 				(1 - RSA) * celula.c_ant[esp][kNodo];
 
-			/* ESTO LO SAQUÉ POR LAS DUDAS! */
 			if (celula.concs[esp][kNodo] < CONCENT_MINIMO) {
 				celula.concs[esp][kNodo] = 0;
 			}
@@ -79,9 +79,9 @@ void Transporte::masaDiag2D() {
 	for (int i = 0; i < celula.nNodes; i++) masas[i] = 0;
 
 	const int NLOCS = 2;
-	const int INOGA[] = {0, 3, 1, 2};
-	const double POSGL[] = {-1.0, 1.0};
-	const double WEIGL[] = { 1.0, 1.0};
+	const int INOGA[] = { 0, 3, 1, 2 };
+	const double POSGL[] = { -1.0, 1.0 };
+	const double WEIGL[] = { 1.0, 1.0 };
 
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
 		Elemento elem = celula.elementos[iElem];
@@ -257,4 +257,12 @@ void Transporte::concentracion(int esp, double deltaT) {
 	celula.concs[esp] = solver.solveWithGuess(rhs, celula.c_ant[esp]);
 
 	assert(solver.info() == Success);
+}
+
+inline double Transporte::difusionMembrana(int iElem, int especie) {
+	if (_calcularPoros) {
+		return DIFUSION[especie] * (_poros->getProporsionArea(iElem));
+	} else {
+		return DIFUSION[especie] * 1e-3;
+	}
 }

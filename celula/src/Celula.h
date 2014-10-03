@@ -23,6 +23,8 @@ public:
 
 	string salida;
 
+	bool calcularPoros;
+
 	double potencial;
 	double radio;
 	double alto;

@@ -1,17 +1,18 @@
 # revertir concentraciones electrodos (transporte.h)
 # PROBAR SACANDO CONCENT_MINIMO!
 
-malla: 	 inputs/25_128.msh
+malla: 	 inputs/celula4.fem
 nodpel:	 quad
-salida:  salida/correc_t/elec_deltat/
+salida:  salida/empty/temp/
 threads: 1
+poros: false
 
 sigint:		0.455e-6	# conductividad de la zona intraelular [S/um]
 sigext:		5e-6		# conductividad de la zona extra
 sigmem:		500e-15		# conductividad de la membrana
-potencial:  30			# 120 kV/m
-radio: 		25
+potencial:  5			# 
+radio: 		10
 ancho: 		5e-3		# ancho de la membrana [um]
 pulsos:		1
-on_time:	100e-3
+on_time:	10e-3
 off_time:	0

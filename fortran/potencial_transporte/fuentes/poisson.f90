@@ -4,7 +4,7 @@ use def_constantes
 use def_solver
 implicit none
 double precision :: x(nodpel),y(nodpel),z(nodpel),esm(nodpel,nodpel),ef(nodpel),adiag,sigma_el,err,qe
-double precision, allocatable  :: esm_tot(:,:)
+!double precision, allocatable  :: esm_tot(:,:)
 
 integer :: ns(nodpel)
 integer  NPASO,KK,JEL,I,II,ncase,inode,ipoin,jnode,jj,iaux,keje,jj2,mat,j,iter
@@ -12,12 +12,9 @@ double precision, allocatable :: solucion_ant(:)
 double precision :: error,epsil,denom,numer,sol(nodpel),funsigma1,campoxl,tierra,rad,alfa,normalx,normaly
 integer :: nconta,NCOTA
 
-
-
-
 allocate(solucion_ant(nnodes))
 
-esm_tot=0.0
+!esm_tot=0.0
 
 tierra=0.0
 error=1.0
@@ -32,6 +29,7 @@ do while(error>epsil .and. nconta< NCOTA )
     an=0
     ad=0
     rhs=0
+   
         
     DO JEL=1,nelements
 
@@ -138,13 +136,17 @@ do while(error>epsil .and. nconta< NCOTA )
         ENDDO	  
     
 
-    ENDDO
-
+    ENDDO 
      
     solucion=RHS
     iter=0
     err=1.0
     call CG(nnodes,IA,JA,AN,AD,RHS,solucion,toler,itermax,ITER,ERR)
+
+!	do kk = 1, nnodes
+!		write(6,*) solucion(kk)
+!	enddo
+
 
     if(problema=='CEREBRO') then
        error=0.0

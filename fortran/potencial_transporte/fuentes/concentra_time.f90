@@ -109,7 +109,7 @@ ncase=1
     !    QE =  kwb*Ch2o - kwf* chmed* cohmed 
     ! endif
      
-     
+!     write(6,*) gradxel_y(kk)
      
      call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dh_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas)
 
@@ -187,6 +187,17 @@ ncase=1
 	        ENDDO
          ENDDO	  
       elseif(nmode==3) then
+      
+!      write(6,*) ef(1)
+!      write(6,*) ef(2)
+!      write(6,*) ef(3)
+!      write(6,*) ef(4)
+!      
+!      write(6,*) esm(1,1)
+!      write(6,*) esm(2,2)
+!      write(6,*) esm(3,3)
+!      write(6,*) esm(4,4)
+      
          DO II=1,nodpel
             RHS(NS(II))=RHS(NS(II)) + EF(II)
 	        AD(NS(II)) = AD(NS(II)) + ESM(II,II)

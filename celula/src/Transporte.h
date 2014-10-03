@@ -2,12 +2,22 @@
 #define TRANSPORTE_H_
 
 #include "Celula.h"
+#include "Poros.h"
 
+/* Concentraciones diferentes en citoplasma */
+//const double CONCENTRACION_INICIAL_INTRA[] = {	// at um**-3
+//	CONCENT * 0.3978e-7,	// H  .3978e-7 M
+//	CONCENT * 0.3978e-7,	// OH .3978e-7 M
+//	CONCENT * 142e-3,		// NA 142 mM
+//	CONCENT * 108e-3,		// CL 108 mM
+//};
+
+/* Mismos valores adentro que afuera! */
 const double CONCENTRACION_INICIAL_INTRA[] = {	// at um**-3
-	CONCENT * 0.3978e-7,	// H  .3978e-7 M
-	CONCENT * 0.3978e-7,	// OH .3978e-7 M
-	CONCENT * 142e-3,		// NA 142 mM
-	CONCENT * 108e-3,		// CL 108 mM
+	CONCENT *  1e-7,		// H  1e-7 M
+	CONCENT *  1e-7,		// OH 1e-7 M
+	CONCENT * 14e-3,		// NA 14 mM
+	CONCENT *  4e-3,		// CL  4 mM
 };
 
 const double CONCENTRACION_INICIAL_EXTRA[] = {	// at um**-3
@@ -17,35 +27,35 @@ const double CONCENTRACION_INICIAL_EXTRA[] = {	// at um**-3
 	CONCENT *  4e-3,		// CL  4 mM
 };
 
-/* CONCENTRACIONES VIEJAS!!!! */
-const double CONCENTRACION_ANODO[] = {			// at um**-3
-	1.5e7,		// H
-	0,			// OH
-	1e12,		// NA
-	0,			// CL
-};
-
-const double CONCENTRACION_CATODO[] = {			// at um**-3
-	0,			// H
-	1.806e7,	// OH
-	0,			// NA
-	0,			// CL
-};
-
-/* Mismos valores en los electrodos que en extra */
-//const double CONCENTRACION_ANODO[] = {		// at um**-3
-//	CONCENT *  1e-7,		// H  1e-7 M
-//	CONCENT *  1e-7,		// OH 1e-7 M
-//	CONCENT * 14e-3,		// NA 14 mM
-//	CONCENT *  4e-3,		// CL  4 mM
+/* Concentraciones viejas */
+//const double CONCENTRACION_ANODO[] = {			// at um**-3
+//	1.5e7,		// H
+//	0,			// OH
+//	1e12,		// NA
+//	0,			// CL
 //};
 //
-//const double CONCENTRACION_CATODO[] = {		// at um**-3
-//	CONCENT *  1e-7,		// H  1e-7 M
-//	CONCENT *  1e-7,		// OH 1e-7 M
-//	CONCENT * 14e-3,		// NA 14 mM
-//	CONCENT *  4e-3,		// CL  4 mM
+//const double CONCENTRACION_CATODO[] = {			// at um**-3
+//	0,			// H
+//	1.806e7,	// OH
+//	0,			// NA
+//	0,			// CL
 //};
+
+/* Mismos valores en los electrodos que en extra */
+const double CONCENTRACION_ANODO[] = {		// at um**-3
+	CONCENT *  1e-7,		// H  1e-7 M
+	CONCENT *  1e-7,		// OH 1e-7 M
+	CONCENT * 14e-3,		// NA 14 mM
+	CONCENT *  4e-3,		// CL  4 mM
+};
+
+const double CONCENTRACION_CATODO[] = {		// at um**-3
+	CONCENT *  1e-7,		// H  1e-7 M
+	CONCENT *  1e-7,		// OH 1e-7 M
+	CONCENT * 14e-3,		// NA 14 mM
+	CONCENT *  4e-3,		// CL  4 mM
+};
 
 const double DIFUSION[] = {	// um**2 / s
 	12500,		// H
@@ -63,9 +73,13 @@ const double CARGA[] = {
 
 class Transporte {
 public:
-	Transporte(Celula& celula);
+	Transporte(Celula& celula, bool calcularPoros);
 
 	void iteracion(double deltaT);
+
+	bool _calcularPoros;
+	
+	Poros* _poros;
 
 protected:
 	Celula* _celula;
@@ -82,7 +96,7 @@ protected:
 
 	void concentracion(int esp, double deltaT);
 
-	virtual double difusionMembrana(int iElem, int especie) = 0;
+	inline double difusionMembrana(int iElem, int especie);
 
 };
 

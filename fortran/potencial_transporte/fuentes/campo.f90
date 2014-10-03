@@ -226,7 +226,26 @@ DO JEL=1,nelements
         !Ex(i)=0.0
         !Ey(i)=0.0
    ENDDO
-        
+   
+!   write(6,*) 'sol: '
+!   write(6,*) sol(1)
+!   write(6,*) sol(2)
+!   write(6,*) sol(3)
+!   write(6,*) sol(4)
+!   
+!   write(6,*) 'x: '
+!   write(6,*) x(1)
+!   write(6,*) x(2)
+!   write(6,*) x(3)
+!   write(6,*) x(4)
+!   
+!   write(6,*) 'y: '
+!   write(6,*) y(1)
+!   write(6,*) y(2)
+!   write(6,*) y(3)
+!   write(6,*) y(4)
+   
+   
    Ex_el=0
    Ey_el=0
 

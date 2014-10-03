@@ -1,12 +1,11 @@
-#HAY QUE CORREGIR LAS DEPENDENCIAS!!
-
 FC = gfortran
-FLAGS = -O3 -s -ffree-line-length-none
+FLAGS = -O3 -ffree-line-length-none
+#FLAGS = -ffree-line-length-none -g
 
-celula: objs/celula.o objs/CONTROLA.o objs/ENSAMBLO.o objs/inicio.o objs/lectura.o objs/poisson.o objs/campo.o objs/finalice.o objs/lbcg.o objs/leemalla.o objs/salidas.o objs/def_constantes.o objs/def_solver.o objs/def_variables.o objs/def_constantes.mod objs/def_solver.mod objs/def_variables.mod objs/armomalla.o objs/calculo_carga.o objs/concentra_time.o objs/CONTROLA.o objs/def_deforma.o objs/def_transpor.o objs/deforma.o objs/densidad.o objs/grad_concentra.o objs/transporte.o 
-	$(FC) $(FLAGS) -o celula objs/celula.o objs/CONTROLA.o objs/ENSAMBLO.o objs/inicio.o objs/lectura.o objs/poisson.o objs/campo.o objs/finalice.o objs/lbcg.o objs/leemalla.o objs/salidas.o objs/def_constantes.o objs/def_solver.o objs/def_variables.o objs/armomalla.o objs/calculo_carga.o objs/concentra_time.o objs/CONTROLA.o objs/def_deforma.o objs/def_transpor.o objs/deforma.o objs/densidad.o objs/grad_concentra.o objs/transporte.o 
+celula: Makefile objs/celula.o objs/CONTROLA.o objs/ENSAMBLO.o objs/inicio.o objs/lectura.o objs/poisson.o objs/campo.o objs/finalice.o objs/lbcg.o objs/leemalla.o objs/salidas.o objs/def_constantes.o objs/def_solver.o objs/def_variables.o objs/def_constantes.mod objs/def_solver.mod objs/def_variables.mod objs/armomalla.o objs/calculo_carga.o objs/concentra_time.o objs/def_transpor.o objs/grad_concentra.o objs/transporte.o objs/densidad.o
+	$(FC) $(FLAGS) -o celula objs/celula.o objs/CONTROLA.o objs/ENSAMBLO.o objs/inicio.o objs/lectura.o objs/poisson.o objs/campo.o objs/finalice.o objs/lbcg.o objs/leemalla.o objs/salidas.o objs/def_constantes.o objs/def_solver.o objs/def_variables.o objs/armomalla.o objs/calculo_carga.o objs/concentra_time.o objs/def_transpor.o objs/grad_concentra.o objs/transporte.o objs/densidad.o
 
-objs/celula.o: fuentes/celula.f90 objs/def_variables.o
+objs/celula.o: fuentes/celula.f90 objs/def_variables.o objs/def_transpor.o
 	$(FC) $(FLAGS) -c fuentes/celula.f90 -o objs/celula.o -J objs
 
 objs/CONTROLA.o: fuentes/CONTROLA.F90 objs/def_solver.o objs/def_constantes.o
@@ -57,17 +56,14 @@ objs/calculo_carga.o: fuentes/calculo_carga.f90
 objs/concentra_time.o: fuentes/concentra_time.f90
 	$(FC) $(FLAGS) -c fuentes/concentra_time.f90 -o objs/concentra_time.o -J objs
 
-objs/CONTROLA.o: fuentes/CONTROLA.F90
-	$(FC) $(FLAGS) -c fuentes/CONTROLA.F90 -o objs/CONTROLA.o -J objs
-
-objs/def_deforma.o: fuentes/def_deforma.f90
-	$(FC) $(FLAGS) -c fuentes/def_deforma.f90 -o objs/def_deforma.o -J objs
+#objs/def_deforma.o: fuentes/def_deforma.f90 
+#	$(FC) $(FLAGS) -c fuentes/def_deforma.f90 -o objs/def_deforma.o -J objs
 
 objs/def_transpor.o: fuentes/def_transpor.f90
 	$(FC) $(FLAGS) -c fuentes/def_transpor.f90 -o objs/def_transpor.o -J objs
 	
-objs/deforma.o: fuentes/deforma.f90
-	$(FC) $(FLAGS) -c fuentes/deforma.f90 -o objs/deforma.o -J objs
+#objs/deforma.o: fuentes/deforma.f90 objs/def_variables.o
+#	$(FC) $(FLAGS) -c fuentes/deforma.f90 -o objs/deforma.o -J objs
 
 objs/densidad.o: fuentes/densidad.f90
 	$(FC) $(FLAGS) -c fuentes/densidad.f90 -o objs/densidad.o -J objs
@@ -83,3 +79,5 @@ clean:
 
 run: celula
 	./celula
+
+new: clean celula
