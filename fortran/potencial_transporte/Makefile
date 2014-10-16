@@ -2,17 +2,17 @@ FC = gfortran
 FLAGS = -O3 -ffree-line-length-none
 #FLAGS = -ffree-line-length-none -g
 
-celula: Makefile objs/celula.o objs/CONTROLA.o objs/ENSAMBLO.o objs/inicio.o objs/lectura.o objs/poisson.o objs/campo.o objs/finalice.o objs/lbcg.o objs/leemalla.o objs/salidas.o objs/def_constantes.o objs/def_solver.o objs/def_variables.o objs/def_constantes.mod objs/def_solver.mod objs/def_variables.mod objs/armomalla.o objs/calculo_carga.o objs/concentra_time.o objs/def_transpor.o objs/grad_concentra.o objs/transporte.o objs/densidad.o
-	$(FC) $(FLAGS) -o celula objs/celula.o objs/CONTROLA.o objs/ENSAMBLO.o objs/inicio.o objs/lectura.o objs/poisson.o objs/campo.o objs/finalice.o objs/lbcg.o objs/leemalla.o objs/salidas.o objs/def_constantes.o objs/def_solver.o objs/def_variables.o objs/armomalla.o objs/calculo_carga.o objs/concentra_time.o objs/def_transpor.o objs/grad_concentra.o objs/transporte.o objs/densidad.o
+celula: objs/celula.o objs/controla.o objs/ensamblo.o objs/inicio.o objs/lectura.o objs/poisson.o objs/campo.o objs/finalice.o objs/lbcg.o objs/leemalla.o objs/salidas.o objs/def_constantes.o objs/def_solver.o objs/def_variables.o objs/def_constantes.mod objs/def_solver.mod objs/def_variables.mod objs/armomalla.o objs/calculo_carga.o objs/concentra_time.o objs/def_transpor.o objs/grad_concentra.o objs/transporte.o objs/densidad.o
+	$(FC) $(FLAGS) -o celula objs/celula.o objs/controla.o objs/ensamblo.o objs/inicio.o objs/lectura.o objs/poisson.o objs/campo.o objs/finalice.o objs/lbcg.o objs/leemalla.o objs/salidas.o objs/def_constantes.o objs/def_solver.o objs/def_variables.o objs/armomalla.o objs/calculo_carga.o objs/concentra_time.o objs/def_transpor.o objs/grad_concentra.o objs/transporte.o objs/densidad.o
 
 objs/celula.o: fuentes/celula.f90 objs/def_variables.o objs/def_transpor.o
 	$(FC) $(FLAGS) -c fuentes/celula.f90 -o objs/celula.o -J objs
 
-objs/CONTROLA.o: fuentes/CONTROLA.F90 objs/def_solver.o objs/def_constantes.o
-	$(FC) $(FLAGS) -c fuentes/CONTROLA.F90 -o objs/CONTROLA.o -J objs
+objs/controla.o: fuentes/controla.f90 objs/def_solver.o objs/def_constantes.o
+	$(FC) $(FLAGS) -c fuentes/controla.f90 -o objs/controla.o -J objs
 
-objs/ENSAMBLO.o: fuentes/ENSAMBLO.F90
-	$(FC) $(FLAGS) -c fuentes/ENSAMBLO.F90 -o objs/ENSAMBLO.o -J objs
+objs/ensamblo.o: fuentes/ensamblo.f90
+	$(FC) $(FLAGS) -c fuentes/ensamblo.f90 -o objs/ensamblo.o -J objs
 
 objs/inicio.o: fuentes/inicio.f90
 	$(FC) $(FLAGS) -c fuentes/inicio.f90 -o objs/inicio.o -J objs

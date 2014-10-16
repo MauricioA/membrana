@@ -2,10 +2,10 @@
 #include <chrono>
 #include <iostream>
 #include "Celula.h"
+#include "Transporte.h"
 #include "EntradaSalida.h"
 #include "Armado.h"
 #include "Poisson.h"
-#include "TransporteAreas.h"
 #include "Poros.h"
 
 using namespace std;
@@ -26,46 +26,42 @@ void Celula::poisson() {
 }
 
 /* Loop principal */
-//TODO borrar Transporte especificos
-//TODO borrar valores comentados
+//TODO cambiar como los 4 valores por arreglos, hacer variable tmb para consola, 
+//	ver valores mínimos posibles, ver de hacerlo continuo en vez de tener valores fijos (logarítmico?), 
+//	imprimir en us
 void Celula::transportePoros() {
-	double DELTA_T = 1e-5;
+	double DELTA_T = 1e-9;
 	
-	//const int PASO_POROS_1 = 1;
-	//const int PASO_POROS_2 = 4;
-	//const int PASO_POROS_3 = 8;
-	//const int PASO_POROS_4 = 16;
 	const int PASO_POROS_1 = 1;
 	const int PASO_POROS_2 = 8;
 	const int PASO_POROS_3 = 128;
 	const int PASO_POROS_4 = 2048;
 
-	//const int PASO_POISSON_1	= 1;
-	//const int PASO_POISSON_2	= 10;
-	//const int PASO_POISSON_3	= 100;
-	//const int PASO_POISSON_4  = 200;
-	const int PASO_POISSON_1	= 1;
-	const int PASO_POISSON_2	= 50;
-	const int PASO_POISSON_3	= 500;
-	const int PASO_POISSON_4	= 1000;
+	const int PASO_POISSON_1 = 1;
+	const int PASO_POISSON_2 = 10;
+	const int PASO_POISSON_3 = 100;
+	const int PASO_POISSON_4 = 200;
 
-	//const int PASO_TRANSPORTE = 10;
-	const int PASO_TRANSPORTE = 1;
+	const int PASO_TRANSPORTE = 1000;
 
-	const int PASO_DISCO_ITV_1	= 10;
-	const int PASO_DISCO_ITV_2	= 100;
-	const int PASO_DISCO_ITV_3	= 1000;
+	const int PASO_DISCO_ITV_1 = 10;
+	const int PASO_DISCO_ITV_2 = 100;
+	const int PASO_DISCO_ITV_3 = 1000;
 	
-	const int PASO_CONSOLA = 1000;
+	const int PASO_CONSOLA = 2000;
 
 	auto global_start = chrono::high_resolution_clock::now();
 
-	vector<double> paso_disco = {	//long 
-		0, 30e-6, 100e-6, .9999e-3, 2e-3, 5e-3, 9.99e-3, 15e-3, 19.999e-3,
-		30e-3, 40e-3, 50e-3,
-		60e-3, 70e-3, 80e-3, 90e-3, 100e-3,
-		200e-3, 300e-3, 400e-3, 499.999e-3, 1,
-	};
+	//vector<double> paso_disco = {
+	//	0, 30e-6, 100e-6, .9999e-3, 2e-3, 5e-3, 9.99e-3, 15e-3, 19.999e-3,
+	//	30e-3, 40e-3, 50e-3,
+	//	60e-3, 70e-3, 80e-3, 90e-3, 100e-3,
+	//	200e-3, 300e-3, 400e-3, 499.999e-3, 1,
+	//};
+
+	vector<double> paso_disco;	//1 por ms
+	for (int i = 0; i <= 20; i++) paso_disco.push_back(i*1e-3 - 2 * DELTA_T);
+	paso_disco.push_back(1);
 
 	int pos_disco = 0;
 	time = 0;
@@ -93,7 +89,8 @@ void Celula::transportePoros() {
 			int paso_disco_itv = PASO_DISCO_ITV_1;
 			int paso_poisson = PASO_POISSON_1;
 			int paso_poros = PASO_POROS_1;
-			int it_consola = 0, it_trans = 0;
+			int it_trans = PASO_TRANSPORTE;
+			int it_consola = 0;
 			int it_disco_itv = paso_disco_itv-1;
 			int it_poiss = paso_poisson;
 			int it_poros = paso_poros;
@@ -138,7 +135,7 @@ void Celula::transportePoros() {
 					it_consola = 0;
 				}
 
-				/* Grabo disco poisson */
+				/* Grabo disco poisson poros y transporte */
 				if (time >= paso_disco[pos_disco]) {
 					getEntradaSalida().grabarPoisson();
 					getEntradaSalida().grabarTransporte();

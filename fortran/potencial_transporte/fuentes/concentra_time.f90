@@ -187,16 +187,21 @@ ncase=1
 	        ENDDO
          ENDDO	  
       elseif(nmode==3) then
-      
+     
+!	  write(6, *) 'ef:'
 !      write(6,*) ef(1)
 !      write(6,*) ef(2)
 !      write(6,*) ef(3)
 !      write(6,*) ef(4)
 !      
+!      write(6, *) ''
+!      write(6, *) 'esm:'
 !      write(6,*) esm(1,1)
 !      write(6,*) esm(2,2)
 !      write(6,*) esm(3,3)
 !      write(6,*) esm(4,4)
+!      
+!      call exit(0)
       
          DO II=1,nodpel
             RHS(NS(II))=RHS(NS(II)) + EF(II)

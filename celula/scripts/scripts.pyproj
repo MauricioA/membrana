@@ -17,6 +17,7 @@
   <ItemGroup>
     <Compile Include="areaTotal.py" />
     <Compile Include="curva.py" />
+    <Compile Include="curvas_fortran.py" />
     <Compile Include="curvas_nuevo.py" />
     <Compile Include="curvas_trans.py" />
     <Compile Include="deltamax.py" />

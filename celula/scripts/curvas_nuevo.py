@@ -4,92 +4,67 @@ from pylab import *
 import pylab
 import sys, os, pdb
 
-input_folder = '../salida/poster64/dt25/150kvm/transporte/'
+input_folder = '../salida/valores_ale/40k_50_sp/transporte/'
+
 font = { 'size': 16 }
 labels = { 'H': 'H$^+$', 'OH': 'OH$^-$', 'Na': 'Na$^+$', 'Cl': 'Cl$^-$' }
+x_curva = 0
+tolerancia = 1e-6
+nesps = 4
+H, OH, Na, Cl = [i for i in range(4)]
 
-#retorna un dicc con np.array de Y y dos especies segun el archivo
 def getValues(archivo):
 	ys = []
-	c1s = []
-	c2s = []
+	concs = [[] for x in range(nesps)]
 	
 	with open(archivo) as f:
 		for line in f.readlines()[1:]:
-			numbers = [float(x) for x in line.split(',')]
-			x = numbers[0]
-			y = numbers[1]
-			c1 = numbers[2]
-			c2 = numbers[3]
+			x, y, h, oh, na, cl = [float(x) for x in line.split(',')]
 			
-			if abs(x) < 1e-6:
+			if abs(x - x_curva) < tolerancia:
 				ys.append(y)
-				c1s.append(c1)
-				c2s.append(c2)
-
-	if 'concent' in archivo:
-		c1_esp = 'Na'
-		c2_esp = 'Cl'
-	elif 'pH' in archivo or 'hidro' in archivo:
-		c1_esp = 'H'
-		c2_esp = 'OH'
-	else: 
-		assert False
+				concs[H].append(h)
+				concs[OH].append(oh)
+				concs[Na].append(na)
+				concs[Cl].append(cl)
 
 	return {
 		'y': np.array(ys),
-		c1_esp: np.array(c1s),
-		c2_esp: np.array(c2s),
+		'H': np.array(concs[H]),
+		'OH': np.array(concs[OH]),
+		'Na': np.array(concs[Na]),
+		'Cl': np.array(concs[Cl]),
 	}
 
-iniciales_ph  = getValues(input_folder + 'pH-0-0.000000.csv')
-iniciales_con = getValues(input_folder + 'concent-0-0.000000.csv')
-iniciales_hid = getValues(input_folder + 'hidro-0-0.000000.csv')
+iniciales = getValues(input_folder + 'molar-0-0.000000.csv')
 
 out_dir = input_folder + 'curvas'
 
 try: os.mkdir(out_dir) 
 except: pass
 
-files = [
-	x for x in os.listdir(input_folder) 
-	if (x.startswith('concent') or x.startswith('pH') or x.startswith('hidro')) and 
-	not (x.startswith('concent-0-') or x.startswith('pH-0-') or x.startswith('hidro-0-'))
-]
+files = [x for x in os.listdir(input_folder) if (x.startswith('molar'))]
 
 for file in files:
+	nFile = int(file.split('-')[1])
 	new_values = getValues(input_folder + file)
-	
-	if file.startswith('pH'):
-		dicc_inicial = iniciales_ph
-		esps = ['H', 'OH']
-		outfile = '-pH' + file[len('pH'):-len('.csv')] + '.png'
-	elif file.startswith('concent'):
-		dicc_inicial = iniciales_con
-		esps = ['Na', 'Cl']
-		outfile = file[len('concent'):-len('.csv')] + '.png'
-	elif file.startswith('hidro'):
-		dicc_inicial = iniciales_hid
-		esps = ['H', 'OH']
-		outfile = '-hidro' + file[len('hidro'):-len('.csv')] + '.png'
-	else: 
-		assert False
+	esps = ['H', 'OH', 'Na', 'Cl']
 
 	for esp in esps:
-		#plt.clf()
 		fig, ax = plt.subplots()
 		
-		ax.plot(dicc_inicial['y'], dicc_inicial[esp], 'bo')
+		ax.plot(iniciales['y'], iniciales[esp], 'bo')
 		ax.plot(new_values['y'], new_values[esp], 'ro')
-		
-		#plt.xlabel('???', fontdict=font)
-		#plt.ylabel('???', fontdict=font)
 
-		#max = np.amax(ys)
-		#plt.axvline(x=max/5 * 2, color="gray", ls='--')
-		#plt.axvline(x=max/5 * 3, color="gray", ls='--')
+		#plt.semilogy(new_values['y'], new_values[esp], 'ro')
 
-		#pylab.show()
+		#plt.xlabel('', fontdict=font)
+		#plt.ylabel('', fontdict=font)
 
-		pylab.savefig(out_dir + '/' + esp + outfile)
-		print esp + outfile
+		max = np.amax(iniciales['y'])
+		plt.axvline(x=max/5 * 2, color="gray", ls='--')
+		plt.axvline(x=max/5 * 3, color="gray", ls='--')
+
+		outfile = '%s_%02d.png' % (esp, nFile)
+		pylab.savefig('%s/%s' % (out_dir, outfile))
+		print outfile

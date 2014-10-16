@@ -10,6 +10,8 @@
 
 using namespace std;
 
+const double EPSILON_DIST = 1e-9;
+
 EntradaSalida::EntradaSalida(Celula& celula) {
 	_celula = &celula;
 	leerInput();

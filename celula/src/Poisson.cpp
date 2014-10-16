@@ -5,6 +5,8 @@
 
 using namespace std;
 
+const double TIERRA = 0;
+
 VectorXd Poisson::global_rhs;
 SparseMatrix<double> Poisson::matriz;
 

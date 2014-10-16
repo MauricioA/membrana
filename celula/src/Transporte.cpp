@@ -13,6 +13,13 @@ using namespace declaraciones;
 using namespace Eigen;
 using namespace std;
 
+const double TOLER_MASA 	= 1e-12;
+const double FARADAY 		= 96485.34;		// C/mol cte. de Faraday
+const double R_CTE			= 8.314; 		// J/K/mol cte. de gases
+const double T_CTE			= 310;			// K temperatura
+const double RSA 			= 0.5;
+const double CONCENT_MINIMO = 1e-12;
+
 Transporte::Transporte(Celula& celula, bool calcularPoros) {
 	_celula = &celula;
 	_calcularPoros = calcularPoros;
@@ -26,11 +33,11 @@ Transporte::Transporte(Celula& celula, bool calcularPoros) {
 		for (int k = 0; k < celula.nodpel; k++) {
 			for (int esp = 0; esp < NESPS; esp++) {
 				if (elem.material == MEMBRANA || elem.material == INTERNO) {
-					celula.concs[esp][elem[k]] = CONCENTRACION_INICIAL_INTRA[esp];
-					celula.c_ant[esp][elem[k]] = CONCENTRACION_INICIAL_INTRA[esp];
+					celula.concs[esp][elem[k]] = CONC_INICIAL_INTRA[esp];
+					celula.c_ant[esp][elem[k]] = CONC_INICIAL_INTRA[esp];
 				} else {
-					celula.concs[esp][elem[k]] = CONCENTRACION_INICIAL_EXTRA[esp];
-					celula.c_ant[esp][elem[k]] = CONCENTRACION_INICIAL_EXTRA[esp];
+					celula.concs[esp][elem[k]] = CONC_INICIAL_EXTRA[esp];
+					celula.c_ant[esp][elem[k]] = CONC_INICIAL_EXTRA[esp];
 				}
 			}
 		}
@@ -188,7 +195,7 @@ void Transporte::concentracion(int esp, double deltaT) {
 		double mas[MAXNPEL];
 		double sol[MAXNPEL];
 		double ef[MAXNPEL];
-		double difElem;
+		double difusion;
 
 		for (int i = 0; i < celula.nodpel; i++) {
 			int iNodo = elem[i];
@@ -200,17 +207,17 @@ void Transporte::concentracion(int esp, double deltaT) {
 		}
 
 		if (elem.material == MEMBRANA) {
-			difElem = difusionMembrana(kElem, esp);
+			difusion = difusionMembrana(kElem, esp);
 		} else {
-			difElem = DIFUSION[esp];
+			difusion = DIFUSION[esp];
 		}
 
-		double mu = -difElem * (FARADAY / (R_CTE * T_CTE)) * CARGA[esp] * celula.gradElem[kElem].y;
+		double mu = -difusion * (FARADAY / (R_CTE * T_CTE)) * CARGA[esp] * celula.gradElem[kElem].y;
 
 		double landa = 1;
 		double qe = 0;
 
-		Armado::armadoTransporte(celula.nodpel, pos, elem.sigma, qe, landa, mu, mas, sol, esm, ef, deltaT);
+		Armado::armadoTransporte(celula.nodpel, pos, difusion, qe, landa, mu, mas, sol, esm, ef, deltaT);
 
 		for (int i = 0; i < celula.nodpel; i++) {
 			int iNodo = elem[i];
@@ -220,22 +227,22 @@ void Transporte::concentracion(int esp, double deltaT) {
 				double adiag = esm[i][i];
 				for (int j = 0; j < celula.nodpel; j++) {
 					esm[i][j] = 0;
-					ef[j] -= esm[j][i] * CONCENTRACION_CATODO[esp];
+					ef[j] -= esm[j][i] * CONC_CATODO[esp];
 					esm[j][i] = 0;
 				}
 				esm[i][i] = adiag;
-				ef[i] = adiag * CONCENTRACION_CATODO[esp];
+				ef[i] = adiag * CONC_CATODO[esp];
 			}
 
 			if (nodo.esPotencia) {
 				double adiag = esm[i][i];
 				for (int j = 0; j < celula.nodpel; j++) {
 					esm[i][j] = 0;
-					ef[j] -= esm[j][i] * CONCENTRACION_ANODO[esp];
+					ef[j] -= esm[j][i] * CONC_ANODO[esp];
 					esm[j][i] = 0;
 				}
 				esm[i][i] = adiag;
-				ef[i] = adiag * CONCENTRACION_ANODO[esp];
+				ef[i] = adiag * CONC_ANODO[esp];
 			}
 		}
 

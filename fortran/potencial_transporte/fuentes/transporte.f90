@@ -86,6 +86,7 @@ npaso_kk=0
 nsale=100
 
 tcero=0.01
+
 deltat=1e-5 ! 0.2e-5
 rsa = 0.50
 
@@ -96,9 +97,9 @@ do while( tt<tcero)
    tt=tt+deltat
    npaso_kk=npaso_kk+1
 
+	
    call calculo_carga()
    call poisson()
-
 
    if(nmode==2) then
        do ki=1,nnodes
@@ -206,6 +207,8 @@ do while( tt<tcero)
        !endif
    endif
 
+!	call salida_concentra(ch,coh,cna,ccl)
+!	call EXIT(0)
 
 enddo
 

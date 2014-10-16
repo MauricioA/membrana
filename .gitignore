@@ -2,33 +2,14 @@
 ## Míos
 #################
 
-celula/salida/*-64
-celula/salida/*-128
-celula/salida/new/10_*/
-celula/salida/new/25_*/
-celula/salida/new/test
-celula/salida/ph7
-celula/salida/pulsos/temp
-celula/salida/pulsos/10_*/
-celula/salida/pulsos/*.7z
-celula/salida/new/10_128.7z
-celula/salida/new/25_128_cls_t100.7z
-celula/salida/pulsos/10_128.7z
-celula/salida/pulsos/25_128_cls
-celula/salida/pulsos/chinos
-celula/salida/pulsos/temp*
-celula/salida/pulsos/chinos2
-celula/salida/solo_poros
-celula/salida/temp
-celula/salida/celula4/*
-celula/salida/electrodos/*
-celula/salida/krass/*
-celula/salida/long/*
-celula/salida/poster64/*
-celula/salida/pulsos/*
+celula/salida/1_por_ms/*
+celula/salida/100_trans/*
+celula/salida/corregido/*
+celula/salida/old/*
+celula/salida/sin_poros/*
+celula/salida/temp/*
 celula/salida/vacio/*
-celula/salida/correc_t/*
-celula/salida/empty/*
+celula/salida/valores_ale/*
 
 fortran/potencial_transporte/objs/*
 fortran/potencial_transporte/campo.csv
@@ -49,7 +30,9 @@ fortran/potencial_transporte/poros.dat
 fortran/potencial_transporte/results.csv
 fortran/potencial_transporte/saleplano.csv
 fortran/potencial_transporte/SISTEMA.DAT
+fortran/potencial_transporte/curvas/*
 
+celula/scripts/temp/*
 
 *.aux
 *.nav

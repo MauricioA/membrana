@@ -36,14 +36,8 @@
     <ClCompile Include="src\Transporte.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TransporteAreas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\TransporteAreas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Armado.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -60,9 +54,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Transporte.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TransporteNulo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Poros.h">

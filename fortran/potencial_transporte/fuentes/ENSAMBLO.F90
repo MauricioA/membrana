@@ -264,8 +264,6 @@ DOUBLE PREcIsION:: PI=3.14159
 integer ::i,j,Ngaus,kgaus,jj,ii,ndimension,ndime,k,ndi
 DOUBLE PREcIsION:: t,s,sm,tm,sq,tp,AJACO2d(2,2),AJACOI2d(2,2),xhi,jaco1d,jacoi1d
 
- 
-
 
 ESt=0.0
 ESM=0.0

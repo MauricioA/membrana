@@ -82,7 +82,6 @@
     <ClCompile Include="src\Poisson.cpp" />
     <ClCompile Include="src\Poros.cpp" />
     <ClCompile Include="src\Transporte.cpp" />
-    <ClCompile Include="src\TransporteAreas.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Armado.h" />
@@ -92,8 +91,6 @@
     <ClInclude Include="src\Poisson.h" />
     <ClInclude Include="src\Poros.h" />
     <ClInclude Include="src\Transporte.h" />
-    <ClInclude Include="src\TransporteAreas.h" />
-    <ClInclude Include="src\TransporteNulo.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.in" />

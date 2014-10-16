@@ -172,7 +172,7 @@ double Armado::iteracion4(int i, int j, int kGauss, Double2D pos[4],
 	return det;
 }
 
-void Armado::armadoTransporte(int nodpel, Double2D pos[], double sigma, double qe, double landa,
+void Armado::armadoTransporte(int nodpel, Double2D pos[], double difusion, double qe, double landa,
 		double mu, double mas[], double sol[], double esm[][MAXNPEL], double ef[], double deltaT) {
 
 	const double th2 = 0.5;
@@ -184,10 +184,10 @@ void Armado::armadoTransporte(int nodpel, Double2D pos[], double sigma, double q
 
 	switch (nodpel) {
 	case 3:
-		armadoTransporte3(pos, sigma, qe, landa, mu, mas, sol, esm, ef, est);
+		armadoTransporte3(pos, difusion, qe, landa, mu, mas, sol, esm, ef, est);
 		break;
 	case 4:
-		armado4(pos, sigma, qe, true, landa, mu, esm, ef, est, mas);
+		armado4(pos, difusion, qe, true, landa, mu, esm, ef, est, mas);
 		break;
 	default: 
 		assert(false);
