@@ -82,39 +82,38 @@ else
 endif
 
 
-npaso_kk=0
-nsale=100
+npaso_kk = 0
+nsale = 100
 
-tcero=0.01
+tcero = 1e-3
 
-deltat=1e-5 ! 0.2e-5
+deltat = 1e-7
 rsa = 0.50
 
-tt=0.0
+tt = 0.0
 
-do while( tt<tcero)
+do while (tt < tcero)
 
-   tt=tt+deltat
-   npaso_kk=npaso_kk+1
+	tt = tt + deltat
+	npaso_kk = npaso_kk + 1
 
-	
-   call calculo_carga()
-   call poisson()
+	call calculo_carga()
+	call poisson()
 
-   if(nmode==2) then
-       do ki=1,nnodes
-          ch(ki) = ch(ki)*exp(zh*Number_clave*solucion(ki))
-          coh(ki)= coh(ki)*exp(zoh*Number_clave*solucion(ki))
-          ch_ant(ki) = ch_ant(ki)*exp(zh*Number_clave*solucion(ki))
-          coh_ant(ki)= coh_ant(ki)*exp(zoh*Number_clave*solucion(ki))
-       enddo
-   endif
+	if (nmode == 2) then
+		do ki=1,nnodes
+			ch(ki) = ch(ki) * exp(zh * Number_clave * solucion(ki))
+			coh(ki) = coh(ki) * exp(zoh * Number_clave * solucion(ki))
+			ch_ant(ki) = ch_ant(ki) * exp(zh * Number_clave * solucion(ki))
+			coh_ant(ki) = coh_ant(ki) * exp(zoh * Number_clave * solucion(ki))
+		enddo
+	endif
   
    
-   call concentraH_time(tt,deltat,ch_ant,coh_ant,cna_ant,ccl_ant)
-   call concentraOH_time(tt,deltat,ch_ant,coh_ant,cna_ant,ccl_ant)
-   call concentraNa_time(tt,deltat,ch_ant,coh_ant,cna_ant,ccl_ant)
-   call concentraCl_time(tt,deltat,ch_ant,coh_ant,cna_ant,ccl_ant)
+	call concentraH_time (tt, deltat, ch_ant, coh_ant, cna_ant, ccl_ant)
+	call concentraOH_time(tt, deltat, ch_ant, coh_ant, cna_ant, ccl_ant)
+	call concentraNa_time(tt, deltat, ch_ant, coh_ant, cna_ant, ccl_ant)
+	call concentraCl_time(tt, deltat, ch_ant, coh_ant, cna_ant, ccl_ant)
    
 
    if(nmode==2) then

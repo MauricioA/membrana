@@ -1,12 +1,12 @@
 malla: 	 inputs/25_128.msh
 nodpel:	 quad
-salida:  salida/valores_ale/40k_25_sp/_
+salida:  salida/temp/conduc/50e-12/_
 threads: 1
 poros: false
 
 sigint: 200e-9
 sigext: 150e-9
-sigmem: 50e-12
+sigmem: 50e-12		# debería ser 5e-12
 
 potencial:  10			# 40KV/m
 radio: 		25

@@ -11,7 +11,7 @@ labels = { 'H': 'H$^+$', 'OH': 'OH$^-$', 'Na': 'Na$^+$', 'Cl': 'Cl$^-$' }
 x_curva = 0
 tolerancia = 1e-6
 nesps = 1
-H, OH, Na, Cl = [i for i in range(4)]
+H = 0
 
 def getValues(archivo):
 	ys = []

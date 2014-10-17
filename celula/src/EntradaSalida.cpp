@@ -16,6 +16,11 @@ EntradaSalida::EntradaSalida(Celula& celula) {
 	_celula = &celula;
 	leerInput();
 
+	/* Chequear que dir de salida esté vacío */
+	ifstream f(getCelula().salida + "/input.in");
+	assert(!f.good());
+	f.close();
+
 	/* Copiar input.in */
 	ifstream src("input.in", ios::binary);
 	ofstream dst(getCelula().salida + "/input.in", ios::binary);

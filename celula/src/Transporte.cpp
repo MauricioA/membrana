@@ -87,8 +87,8 @@ void Transporte::masaDiag2D() {
 
 	const int NLOCS = 2;
 	const int INOGA[] = { 0, 3, 1, 2 };
-	const double POSGL[] = { -1.0, 1.0 };
-	const double WEIGL[] = { 1.0, 1.0 };
+	const double POSGL[] = { -1.0, +1.0 };
+	const double WEIGL[] = { +1.0, +1.0 };
 
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
 		Elemento elem = celula.elementos[iElem];

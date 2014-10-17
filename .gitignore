@@ -55,6 +55,7 @@ latex/*/*/*.gz
 #latex/poster/conference_poster_6.pdf
 latex/proceeding/proceeding.pdf
 latex/template/tesis.pdf
+latex/preinforme/preinforme.pdf
 
 #################
 ## Eclipse
