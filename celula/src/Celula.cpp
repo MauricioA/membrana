@@ -28,6 +28,7 @@ void Celula::poisson() {
 /* Loop principal */
 //TODO cambiar como los 4 valores por arreglos, hacer variable tmb para consola, 
 //	ver valores mínimos posibles, ver de hacerlo continuo en vez de tener valores fijos (logarítmico?), 
+//  ver si poner delta_ts en vez de pasos (avanzar en cada paso el delta_t minimo)
 //	imprimir en us
 void Celula::transportePoros() {
 	double DELTA_T = 1e-9;
@@ -43,7 +44,7 @@ void Celula::transportePoros() {
 	const int PASO_POISSON_4 = 200;
 
 	//const int PASO_TRANSPORTE = 1000;
-	const int PASO_TRANSPORTE = 100;	//dt = 1e-7
+	const int PASO_TRANSPORTE = 10;		//dt = 1e-8
 
 	const int PASO_DISCO_ITV_1 = 10;
 	const int PASO_DISCO_ITV_2 = 100;

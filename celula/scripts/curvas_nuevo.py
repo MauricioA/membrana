@@ -4,7 +4,7 @@ from pylab import *
 import pylab
 import sys, os, pdb
 
-input_folder = '../salida/temp/conduc/50e-12/transporte/'
+input_folder = '../salida/temp/conduc/100e-12/transporte/'
 
 font = { 'size': 16 }
 labels = { 'H': 'H$^+$', 'OH': 'OH$^-$', 'Na': 'Na$^+$', 'Cl': 'Cl$^-$' }
