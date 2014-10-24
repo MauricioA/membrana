@@ -85,7 +85,7 @@ endif
 npaso_kk = 0
 nsale = 100
 
-tcero = 1e-3
+tcero = 100e-6
 
 deltat = 1e-7
 rsa = 0.50

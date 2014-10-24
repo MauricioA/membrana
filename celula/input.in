@@ -1,6 +1,6 @@
-malla: 	 inputs/25_128.msh
+malla: 	 inputs/50_128.msh
 nodpel:	 quad
-salida:  salida/temp/conduc/dt_1e-8/
+salida:  salida/temp/22.10/1e-7_t/
 threads: 1
 poros: false
 
@@ -8,8 +8,8 @@ sigint: 200e-9
 sigext: 150e-9
 sigmem: 5e-12		# debería ser 5e-12
 
-potencial:  10			# 40KV/m
-radio: 		25
+potencial:  20			# 40KV/m
+radio: 		50
 ancho: 		5e-3		# ancho de la membrana [um]
 pulsos:		1
 on_time:	20e-3

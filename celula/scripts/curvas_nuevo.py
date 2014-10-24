@@ -4,7 +4,7 @@ from pylab import *
 import pylab
 import sys, os, pdb
 
-input_folder = '../salida/temp/conduc/100e-12/transporte/'
+input_folder = '../salida/temp/22.10/1e-7_t/transporte/'
 
 font = { 'size': 16 }
 labels = { 'H': 'H$^+$', 'OH': 'OH$^-$', 'Na': 'Na$^+$', 'Cl': 'Cl$^-$' }
@@ -36,14 +36,14 @@ def getValues(archivo):
 		'Cl': np.array(concs[Cl]),
 	}
 
-iniciales = getValues(input_folder + 'molar-0-0.000000.csv')
+iniciales = getValues(input_folder + 'conc-0-0.000000.csv')
 
 out_dir = input_folder + 'curvas'
 
 try: os.mkdir(out_dir) 
 except: pass
 
-files = [x for x in os.listdir(input_folder) if (x.startswith('molar'))]
+files = [x for x in os.listdir(input_folder) if (x.startswith('conc'))]
 
 for file in files:
 	nFile = int(file.split('-')[1])
@@ -59,7 +59,7 @@ for file in files:
 		#plt.semilogy(new_values['y'], new_values[esp], 'ro')
 
 		#plt.xlabel('', fontdict=font)
-		#plt.ylabel('', fontdict=font)
+		#plt.ylabel('PTM [V]', fontdict=font)
 
 		max = np.amax(iniciales['y'])
 		plt.axvline(x=max/5 * 2, color="gray", ls='--')

@@ -43,8 +43,7 @@ void Celula::transportePoros() {
 	const int PASO_POISSON_3 = 100;
 	const int PASO_POISSON_4 = 200;
 
-	//const int PASO_TRANSPORTE = 1000;
-	const int PASO_TRANSPORTE = 10;		//dt = 1e-8
+	const int PASO_TRANSPORTE = 100;
 
 	const int PASO_DISCO_ITV_1 = 10;
 	const int PASO_DISCO_ITV_2 = 100;
@@ -61,9 +60,11 @@ void Celula::transportePoros() {
 	//	200e-3, 300e-3, 400e-3, 499.999e-3, 1,
 	//};
 
-	vector<double> paso_disco;	//1 por ms
-	for (int i = 0; i <= 20; i++) paso_disco.push_back(i*1e-3 - 2 * DELTA_T);
-	paso_disco.push_back(1);
+	//vector<double> paso_disco;		//1 por ms
+	//for (int i = 0; i <= 20; i++) paso_disco.push_back(i*1e-3 - 2 * DELTA_T);
+	//paso_disco.push_back(1);
+
+	vector<double> paso_disco = { 0, 100e-6, 200e-6, 500e-6, 1e-3, 2e-3, 1, };
 
 	int pos_disco = 0;
 	time = 0;
