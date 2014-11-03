@@ -1,21 +1,21 @@
 malla: 	 inputs/50_128.msh
 nodpel:	 quad
-salida:  salida/temp/22.10/1e-7_t/
-threads: 1
+salida:  salida/fixed/50_128_5v/
+threads: 4
 poros: false
 
 sigint: 200e-9
 sigext: 150e-9
-sigmem: 5e-12		# debería ser 5e-12
+sigmem: 5e-12		# valor real
 
-potencial:  20			# 40KV/m
+potencial:  5			# 10KV/m
 radio: 		50
 ancho: 		5e-3		# ancho de la membrana [um]
 pulsos:		1
 on_time:	20e-3
 off_time:	0
 
-valores viejos:
+valores viejos: (borrar)
 0.455e-6	# conductividad de la zona intraelular [S/um]
 5e-6		# conductividad de la zona extra
 500e-15		# conductividad de la membrana

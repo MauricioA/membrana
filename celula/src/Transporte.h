@@ -8,8 +8,8 @@
 const double CONC_INICIAL_INTRA[] = {	// at um**-3
 	60.20,
 	60.20,
-	96320000.0,
-	96320000.0,
+	96320000.0 / 2,	//la mitad para intra!
+	96320000.0 / 2,	//la mitad para intra!
 };
 
 /* VALORES FORTRAN! */
@@ -86,7 +86,7 @@ const double DIFUSION[] = {	// um**2 / s
 	12500,		// H
 	7050,		// OH
 	1780,		// NA
-	3830,		// CL
+	2720,		// CL
 };
 
 const double CARGA[] = {
@@ -105,6 +105,8 @@ public:
 	bool _calcularPoros;
 	
 	Poros* _poros;
+
+	double error = 0;
 
 protected:
 	Celula* _celula;

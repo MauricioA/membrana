@@ -78,7 +78,7 @@ ncase=1
          if(mat==1 ) then
                Dh_el = D_h*exp(-zh*Number_clave*pot_med)
          elseif(mat==2 ) then
-               Dh_el =  D_h*exp(-zh*Number_clave*pot_med)*1e-3
+               Dh_el =  D_h*exp(-zh*Number_clave*pot_med)*D_eff
          elseif(mat==3) then
                Dh_el = D_h*exp(-zh*Number_clave*pot_med)
          endif 
@@ -89,7 +89,7 @@ ncase=1
          if(mat==1 ) then
                Dh_el = D_h
          elseif(mat==2 ) then
-               Dh_el =  D_h*1e-3
+               Dh_el =  D_h*D_eff     !! ***CAMBIO***
          elseif(mat==3) then
                Dh_el = D_h
          endif 
@@ -97,11 +97,7 @@ ncase=1
      
          landa =1.0
 
-         if(ndimension==2) then
-             mu = -Dh_el*Number_clave*zh*gradxel_y(kk)
-         elseif(ndimension==1) then
-             mu = -Dh_el*Number_clave*zh*gradxel_x(kk)
-         endif
+          mu = Dh_el*Number_clave*zh    !! ***CAMBIO***
 
      endif
      
@@ -109,9 +105,9 @@ ncase=1
     !    QE =  kwb*Ch2o - kwf* chmed* cohmed 
     ! endif
      
-!     write(6,*) gradxel_y(kk)
      
-     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dh_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas)
+     
+     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dh_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,gradxel_x(kk),gradxel_y(kk))   !! ***CAMBIO***
 
      do inode=1,nodpel
             ipoin=NS(inode)
@@ -187,22 +183,6 @@ ncase=1
 	        ENDDO
          ENDDO	  
       elseif(nmode==3) then
-     
-!	  write(6, *) 'ef:'
-!      write(6,*) ef(1)
-!      write(6,*) ef(2)
-!      write(6,*) ef(3)
-!      write(6,*) ef(4)
-!      
-!      write(6, *) ''
-!      write(6, *) 'esm:'
-!      write(6,*) esm(1,1)
-!      write(6,*) esm(2,2)
-!      write(6,*) esm(3,3)
-!      write(6,*) esm(4,4)
-!      
-!      call exit(0)
-      
          DO II=1,nodpel
             RHS(NS(II))=RHS(NS(II)) + EF(II)
 	        AD(NS(II)) = AD(NS(II)) + ESM(II,II)
@@ -358,7 +338,7 @@ ncase=1
          if(mat==1 ) then
                Doh_el = D_oh*exp(-zoh*Number_clave*pot_med)
          elseif(mat==2 ) then
-               Doh_el = D_oh*exp(-zoh*Number_clave*pot_med)*1e-3
+               Doh_el = D_oh*exp(-zoh*Number_clave*pot_med)*D_eff
          elseif(mat==3) then
                Doh_el = D_oh*exp(-zoh*Number_clave*pot_med)
          endif 
@@ -369,18 +349,13 @@ ncase=1
          if(mat==1 ) then
                Doh_el = D_oh
          elseif(mat==2 ) then
-               Doh_el =  D_oh*1e-6
+               Doh_el =  D_oh*D_eff    !! ***CAMBIO***
          elseif(mat==3) then
                Doh_el = D_oh
          endif 
      
          landa=1.0
-          if(ndimension==2) then
-             mu = -Doh_el*Number_clave*zoh*gradxel_y(kk)
-         elseif(ndimension==1) then
-             mu = -Doh_el*Number_clave*zoh*gradxel_x(kk)
-         endif
-
+         mu = Doh_el*Number_clave*zoh   !! ***CAMBIO***
 
      endif
 
@@ -390,7 +365,7 @@ ncase=1
      !endif
      
 
-     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Doh_el,qe,landa,mu,cohdes,Acoef1,Acoef2,mas)
+     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Doh_el,qe,landa,mu,cohdes,Acoef1,Acoef2,mas,gradxel_x(kk),gradxel_y(kk))   !! ***CAMBIO***
 
      do inode=1,nodpel
             ipoin=NS(inode)
@@ -616,7 +591,7 @@ ncase=1
          if(mat==1 ) then
                Dna_el = D_na*exp(-zh*Number_clave*pot_med)
          elseif(mat==2 ) then
-               Dna_el =  D_na*exp(-zh*Number_clave*pot_med)*1e-3
+               Dna_el =  D_na*exp(-zh*Number_clave*pot_med)*D_eff
          elseif(mat==3) then
                Dna_el = D_na*exp(-zh*Number_clave*pot_med)
          endif 
@@ -627,7 +602,7 @@ ncase=1
          if(mat==1 ) then
                Dna_el = D_na
          elseif(mat==2 ) then
-               Dna_el =  D_na*1e-3
+               Dna_el =  D_na*D_eff   !! ***CAMBIO***
          elseif(mat==3) then
                Dna_el = D_na
          endif 
@@ -635,11 +610,7 @@ ncase=1
      
          landa =1.0
 
-          if(ndimension==2) then
-             mu = -Dna_el*Number_clave*zna*gradxel_y(kk)
-         elseif(ndimension==1) then
-             mu = -Dna_el*Number_clave*zna*gradxel_x(kk)
-         endif
+         mu = Dna_el*Number_clave*zna   !! ***CAMBIO***
 
      endif
      
@@ -647,7 +618,7 @@ ncase=1
      
      
      
-     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dna_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas)
+     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dna_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,gradxel_x(kk),gradxel_y(kk))   !! ***CAMBIO***
 
      do inode=1,nodpel
             ipoin=NS(inode)
@@ -675,7 +646,7 @@ ncase=1
 
               ! calculo cna_anodo mediante ecuacion con I
                
-               cna_anodo = - (R_cte*T_cte/Faraday)* grad_cna_y(ipoin)/grad_y(ipoin)
+               !cna_anodo = - (R_cte*T_cte/Faraday)* grad_cna_y(ipoin)/grad_y(ipoin)
             
 
               adiag=ESM(inode,inode)
@@ -870,7 +841,7 @@ ncase=1
          if(mat==1 ) then
                Dcl_el = D_cl*exp(-zcl*Number_clave*pot_med)
          elseif(mat==2 ) then
-               Dcl_el =  D_cl*exp(-zcl*Number_clave*pot_med)*1e-3
+               Dcl_el =  D_cl*exp(-zcl*Number_clave*pot_med)*D_eff
          elseif(mat==3) then
                Dcl_el = D_cl*exp(-zcl*Number_clave*pot_med)
          endif 
@@ -881,18 +852,14 @@ ncase=1
          if(mat==1 ) then
                Dcl_el = D_cl
          elseif(mat==2 ) then
-               Dcl_el =  D_cl *1e-3
+               Dcl_el =  D_cl *D_eff   !! ***CAMBIO***
          elseif(mat==3) then
                Dcl_el = D_cl
          endif 
      
      
          landa =1.0
-         if(ndimension==2) then
-             mu = -Dcl_el*Number_clave*zcl*gradxel_y(kk)
-         elseif(ndimension==1) then
-             mu = -Dcl_el*Number_clave*zcl*gradxel_x(kk)
-         endif
+         mu = Dcl_el*Number_clave*zcl   !! ***CAMBIO***
 
 
      endif
@@ -900,7 +867,7 @@ ncase=1
      QE = 0.0 
      
           
-     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dcl_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas)
+     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dcl_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,gradxel_x(kk),gradxel_y(kk))   !! ***CAMBIO***
 
      do inode=1,nodpel
             ipoin=NS(inode)
@@ -927,12 +894,12 @@ ncase=1
 
 
               ! calculo ccl_anodo mediante ecuacion con I
-               currentCl = -I2_eq* ( ccl_ant(ipoin)/ccl_inicial * exp(-Faraday*(solucion(ipoin)+E2_eq)/(2*R_cte*T_cte)) - exp(Faraday*(solucion(ipoin)+E2_eq)/(2*R_cte*T_cte))) 
+               !currentCl = -I2_eq* ( ccl_ant(ipoin)/ccl_inicial * exp(-Faraday*(solucion(ipoin)+E2_eq)/(2*R_cte*T_cte)) - exp(Faraday*(solucion(ipoin)+E2_eq)/(2*R_cte*T_cte))) 
              
-               ccl_anodo = (R_cte*T_cte/(Faraday*D_Cl*grad_y(ipoin)))*(currentCl/Faraday + D_Cl*grad_ccl_y(ipoin))
+               !ccl_anodo = (R_cte*T_cte/(Faraday*D_Cl*grad_y(ipoin)))*(currentCl/Faraday + D_Cl*grad_ccl_y(ipoin))
 
                !if(ccl_anodo .lt.0.0) 
-                   ccl_anodo=0.0       
+                !   ccl_anodo=0.0       
             
               adiag=ESM(inode,inode)
               do jnode=1,nodpel

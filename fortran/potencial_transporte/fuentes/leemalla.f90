@@ -86,7 +86,7 @@ do kk=1,nnodes
 
 enddo
 
-deallocate(nod_dirichV,nod_dirichT)
+!deallocate(nod_dirichV,nod_dirichT)
 allocate(nod_dirichV(ndirichV),nod_dirichT(ndirichT))
 ndirichV=0
 ndirichT=0

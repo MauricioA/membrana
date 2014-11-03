@@ -43,13 +43,13 @@ void Celula::transportePoros() {
 	const int PASO_POISSON_3 = 100;
 	const int PASO_POISSON_4 = 200;
 
-	const int PASO_TRANSPORTE = 100;
+	const int PASO_TRANSPORTE = 10;
 
 	const int PASO_DISCO_ITV_1 = 10;
 	const int PASO_DISCO_ITV_2 = 100;
 	const int PASO_DISCO_ITV_3 = 1000;
 	
-	const int PASO_CONSOLA = 2000;
+	const int PASO_CONSOLA = 100;
 
 	auto global_start = chrono::high_resolution_clock::now();
 
@@ -106,7 +106,7 @@ void Celula::transportePoros() {
 				/* Iteración poisson, solo si está ON */
 				if ((estado == ON) && (it_poiss == paso_poisson)) {
 					Poisson::iteracion(*this);
-					it_poiss = 0;
+					if (calcularPoros) it_poiss = 0;	//si no hay poros solo correr poisson 1 vez
 				}
 
 				/* Iteración poros */
@@ -129,10 +129,12 @@ void Celula::transportePoros() {
 					start = end;
 
 					if (calcularPoros) {
-						printf("%.1fus %.2e %d %d  %.2f ms/it\n", time*1e6, poros->getRadioMaximo(),
-							poros->getNPoros(), poros->getNPorosChicos(), delta_ms);
+						//printf("%.1fus %.2e %d %d  %.2f ms/it\n", time*1e6, poros->getRadioMaximo(),
+						//	poros->getNPoros(), poros->getNPorosChicos(), delta_ms);
+						printf("%.1fus %d error: %f  %.2f ms/it\n", time*1e6, 
+							poros->getNPoros() + poros->getNPorosChicos(), transporte.error, delta_ms);
 					} else {
-						printf("%.1fus %.2f ms/it\n", time*1e6, delta_ms);
+						printf("%.1fus %f  %.2f ms/it\n", time*1e6, transporte.error, delta_ms);
 					}
 
 					it_consola = 0;

@@ -65,7 +65,9 @@ integer :: unit_data=1,  &! data de entrada
    &       unit_den=24, &      
    &       unit_por=25, &
    &       unit_esta=26, & 
-   &       unit_celda=27   
+   &       unit_celda=27, &
+   &       unit_ph2=28,   &
+   &      unit_camp2=29  
    
    
    
@@ -89,7 +91,9 @@ character*(30) :: filedata='input.in',  & ! entrada
      &          file_den='densidad.dat',  &
      &          file_por='poros.dat',  &
      &          file_esta='estadis.dat', &
-     &          file_celda='celda.dat'
+     &          file_celda='celda.dat',  &
+     &          file_phf='ph_final.csv', &
+     &          file_camp2='campo.dat'
 
 
 

@@ -68,7 +68,7 @@ for kk=1:ne
     x4=[x(ii),x(i)];
     y4=[y(ii),y(i)];
     
-    if(materia(kk)==2) 
+   % if(materia(kk)==2) 
        line(x1,y1);
        line(x2,y2);
        line(x3,y3);
@@ -100,7 +100,7 @@ for kk=1:ne
         s = sprintf('%i',ii);
         text(xno,yno,s);
         end 
-    end
+    %end
     
     end
     

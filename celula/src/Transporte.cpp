@@ -16,9 +16,10 @@ using namespace std;
 const double TOLER_MASA 	= 1e-12;
 const double FARADAY 		= 96485.34;		// C/mol cte. de Faraday
 const double R_CTE			= 8.314; 		// J/K/mol cte. de gases
-const double T_CTE			= 310;			// K temperatura
+const double T_CTE			= 1000;			// K temperatura. subido a 1000, antes tenía 310
 const double RSA 			= 0.5;
-const double CONCENT_MINIMO = 1e-12;
+const double CONCENT_MINIMO = 1e-8;
+const double CTE_DIFF_MEM	= 0.1;			// Solo se usa si no se calcula poros
 
 Transporte::Transporte(Celula& celula, bool calcularPoros) {
 	_celula = &celula;
@@ -70,13 +71,14 @@ void Transporte::iteracion(double deltaT) {
 
 			if (celula.concs[esp][kNodo] < CONCENT_MINIMO) {
 				celula.concs[esp][kNodo] = 0;
+				celula.c_ant[esp][kNodo] = 0;
 			}
 
 			celula.c_ant[esp][kNodo] = celula.concs[esp][kNodo];
 		}
 	}
 
-	double error = sqrt(num / den);
+	error = sqrt(num / den);
 	assert(error < 1e3 && error == error);
 }
 
@@ -212,12 +214,10 @@ void Transporte::concentracion(int esp, double deltaT) {
 			difusion = DIFUSION[esp];
 		}
 
-		double mu = -difusion * (FARADAY / (R_CTE * T_CTE)) * CARGA[esp] * celula.gradElem[kElem].y;
+		//double mu = -difusion * (FARADAY / (R_CTE * T_CTE)) * CARGA[esp] * celula.gradElem[kElem].y;
+		double mu = -difusion * (FARADAY / (R_CTE * T_CTE)) * CARGA[esp];
 
-		double landa = 1;
-		double qe = 0;
-
-		Armado::armadoTransporte(celula.nodpel, pos, difusion, qe, landa, mu, mas, sol, esm, ef, deltaT);
+		Armado::armadoTransporte(celula.nodpel, pos, difusion, 0.0, 1.0, mu, mas, sol, esm, ef, deltaT, celula.gradElem[kElem]);
 
 		for (int i = 0; i < celula.nodpel; i++) {
 			int iNodo = elem[i];
@@ -270,6 +270,6 @@ inline double Transporte::difusionMembrana(int iElem, int especie) {
 	if (_calcularPoros) {
 		return DIFUSION[especie] * (_poros->getProporsionArea(iElem));
 	} else {
-		return DIFUSION[especie] * 1e-3;
+		return DIFUSION[especie] * CTE_DIFF_MEM;
 	}
 }

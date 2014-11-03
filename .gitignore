@@ -10,27 +10,20 @@ celula/salida/sin_poros/*
 celula/salida/temp/*
 celula/salida/vacio/*
 celula/salida/valores_ale/*
+celula/salida/fixed/*
 
 fortran/potencial_transporte/objs/*
-fortran/potencial_transporte/campo.csv
-fortran/potencial_transporte/ch.csv
-fortran/potencial_transporte/coh.csv
-fortran/potencial_transporte/cna.csv
-fortran/potencial_transporte/ccl.csv
-fortran/potencial_transporte/celda.dat
 fortran/potencial_transporte/celula
 fortran/potencial_transporte/contorno.fem
-fortran/potencial_transporte/control.dat
-fortran/potencial_transporte/densidad.dat
-fortran/potencial_transporte/estadis.dat
-fortran/potencial_transporte/gradiente.dat
-fortran/potencial_transporte/historia.dat
-fortran/potencial_transporte/ph.dat
-fortran/potencial_transporte/poros.dat
-fortran/potencial_transporte/results.csv
-fortran/potencial_transporte/saleplano.csv
-fortran/potencial_transporte/SISTEMA.DAT
+fortran/potencial_transporte/transpo.fem
+fortran/potencial_transporte/transpo2.fem
 fortran/potencial_transporte/curvas/*
+fortran/potencial_transporte/*.dat
+fortran/potencial_transporte/*.csv
+fortran/potencial_transporte/*.u2d
+fortran/potencial_transporte/*.111
+fortran/potencial_transporte/*.333
+fortran/potencial_transporte/*.444
 
 celula/scripts/temp/*
 

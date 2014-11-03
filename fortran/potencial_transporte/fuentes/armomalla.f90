@@ -11,7 +11,7 @@ integer :: nsuperf,mater,Nel_z,Nel_r,nno,kk,jj,ne,nnod,nope1,nrads
 
 PI=3.14159
 if(ndimension==2) then
-    mater=3
+    mater=1
     if(mater==1) then
 
         nodpel=4
@@ -70,6 +70,19 @@ if(ndimension==2) then
             enddo
 
         enddo
+
+
+         write(111,*) nnodes
+        
+        do kk=1,nnodes
+            write(111,*) kk,coor_x(kk),coor_y(kk)
+        enddo
+
+        write(111,*) nelements
+        do kk=1,nelements
+            write(111,*) kk,conect(kk,1),conect(kk,2),conect(kk,3),conect(kk,4)
+        enddo
+
 
 
         deallocate(grilla)
@@ -134,11 +147,6 @@ if(ndimension==2) then
 
         enddo
 
-        write(111,*) nnod
-        
-        do kk=1,nnod
-            write(111,*) kk,coor_x(kk),coor_y(kk)
-        enddo
 
         nelements=0
         do kk=1,nsuperf
@@ -157,6 +165,11 @@ if(ndimension==2) then
         ! creo elementos adicionales
 
 
+        write(111,*) nnod
+        
+        do kk=1,nnod
+            write(111,*) kk,coor_x(kk),coor_y(kk)
+        enddo
 
         write(111,*) nelements
         do kk=1,nelements

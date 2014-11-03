@@ -229,7 +229,7 @@ integer ::i,j,Ngaus,kgaus,jj,ii,ndimension,ndime,k,ndi
                     PHIdx(2,kgaus,i)=AJACOI2d(2,1)*dphi(1,kgaus,i) + AJACOI2d(2,2)*dphi(2,kgaus,i) 
                ENDDO
 
-               cteI(kgaus)= deter * GAUSWT(ii)* GAUSWT(jj)*2*PI*GXCOD(1,kgaus) 
+               cteI(kgaus)= deter * GAUSWT(ii)* GAUSWT(jj) *2*PI*GXCOD(1,kgaus) 
 
            enddo
         enddo 
@@ -251,10 +251,10 @@ integer ::i,j,Ngaus,kgaus,jj,ii,ndimension,ndime,k,ndi
 
 end subroutine armado4
 
-SUBROUTINE ARMADO_t(NLE,X,Y,ns,NOPE,ESM,EF,sigma,qe,landa,mu,sol,Acoef1,Acoef2,mas)
+SUBROUTINE ARMADO_t(NLE,X,Y,ns,NOPE,ESM,EF,sigma,qe,landa,mu,sol,Acoef1,Acoef2,mas,Ex,Ey)
 implicit none
 INTEGER :: nope,NS(NOPE),NLE
-DOUBLE PRECISION :: X(NOPE),Y(NOPE),EF(NOPE),ESM(NOPE,NOPE),sigma,qe,landa,mu,sol(nope),Acoef1,Acoef2,mas(nope)
+DOUBLE PRECISION :: X(NOPE),Y(NOPE),EF(NOPE),ESM(NOPE,NOPE),sigma,qe,landa,mu,sol(nope),Acoef1,Acoef2,mas(nope),Ex,Ey
 DOUBLE PRECISION :: ESt(NOPE,NOPE)
 
 !local
@@ -263,6 +263,8 @@ DOUBLE PRECISION,allocatable :: gauspt(:),gauswt(:),phi(:,:),dphi(:,:,:),gxcod(:
 DOUBLE PREcIsION:: PI=3.14159
 integer ::i,j,Ngaus,kgaus,jj,ii,ndimension,ndime,k,ndi
 DOUBLE PREcIsION:: t,s,sm,tm,sq,tp,AJACO2d(2,2),AJACOI2d(2,2),xhi,jaco1d,jacoi1d
+
+ 
 
 
 ESt=0.0
@@ -388,11 +390,13 @@ elseif(nope==4) then
              do ndi=1,ndimension
                 
                 ESM(I,J)=ESM(I,J)+ sigma*PHIdX(ndi,kgaus,I)*PHIdX(ndi,kgaus,J)*cteI(kgaus)
+               
              enddo
                 
              if(landa==1) then  ! este es el caso con upwing!!
                   
-                 ESM(I,J)=ESM(I,J) + mu*PHIdX(2,kgaus,I)* phi(kgaus,j)*cteI(kgaus)  
+                 ESM(I,J)=ESM(I,J) -mu*cteI(kgaus)* phi(kgaus,j) *( Ex*PHIdX(1,kgaus,I) + Ey*PHIdX(2,kgaus,I) )    !! ***CAMBIO***
+
 
              endif
 

@@ -8,8 +8,8 @@ implicit none
 double precision,allocatable :: ch_ant(:),phHaux(:)
 double precision,allocatable :: coh_ant(:),phOHaux(:)
 double precision,allocatable :: ccl_ant(:),cna_ant(:)
-integer :: npaso_kk,nsale,i,ki,jj,kk,j,cadena(10)
-double precision :: tcero,deltat,tt,numer, denom,error,rsa
+integer :: npaso_kk,nsale,i,ki,jj,kk,j,ii,cadena(10)
+double precision :: tcero,deltat,tt,numer, denom,error,rsa,xmed,ymed
 
 
 allocate(ch(nnodes),coh(nnodes),masa(nnodes))
@@ -36,6 +36,7 @@ grad_ch_y=0.0
 
 write(unit_histo,*) nnodes
 write(unit_ph,*) nnodes
+write(unit_camp,*) nelements
        
 call masadiag2d()
 
@@ -43,17 +44,36 @@ call masadiag2d()
 ch = ch_inicial
 coh = coh_inicial
 
+
+!! ***CAMBIO***   LOs escenarios
+
 do kk=1,nelements
    
    do jj=1,nodpel
       j=conect(kk,jj)
-         cna(j) = cna_inicial
-         ccl(j) = ccl_inicial
+      cna(j) = cna_inicial
+      ccl(j) = ccl_inicial
 
-      if(material(kk)>1) then
+    !  if(material(kk)>2) then   ! escenario de cero concetracion dentro
+    !     ch(j) = 0.0   
+    !     coh(j) =0.0
+    !     cna(j) = 0.0
+    !     ccl(j) = 0.0
+    !  endif
+
+    !  if(material(kk)>2) then   ! escenario de concetracion menor
+      !   ch(j) =ch_inicial*0.5  
+      !   coh(j) =coh_inicial*0.5
       !   cna(j) = 0.0
       !   ccl(j) = 0.0
+    !  endif
+
+      if(material(kk)>2) then   ! escenario de concetracion igual  se espera acumulacion en los bordes
+         cna(j) = cna_inicial*0.5
+         ccl(j) = ccl_inicial*0.5
       endif
+
+
    enddo
 enddo
 
@@ -71,49 +91,47 @@ do jj=1,nnodes
 enddo
 
 
-
 if(nmode==2) then
     Number_clave= Faraday/(R_cte*T_cte)*0.6
     Ch_anodo=Ch_anodo*exp(zh*Number_clave*potencial)
     Coh_anodo=Coh_anodo*exp(zoh*Number_clave*potencial)
 else
     Number_clave= Faraday/(R_cte*T_cte)
-
 endif
 
 
-npaso_kk = 0
-nsale = 100
+npaso_kk=0
+nsale=100
 
-tcero = 100e-6
-
-deltat = 1e-7
+tcero=0.020
+deltat=1e-7 ! 0.2e-5    !! ***CAMBIO*** bajo el dt
 rsa = 0.50
 
-tt = 0.0
+tt=0.0
 
-do while (tt < tcero)
+do while( tt<tcero)
 
-	tt = tt + deltat
-	npaso_kk = npaso_kk + 1
+   tt=tt+deltat
+   npaso_kk=npaso_kk+1
 
-	call calculo_carga()
-	call poisson()
+   call calculo_carga()
+   call poisson()
 
-	if (nmode == 2) then
-		do ki=1,nnodes
-			ch(ki) = ch(ki) * exp(zh * Number_clave * solucion(ki))
-			coh(ki) = coh(ki) * exp(zoh * Number_clave * solucion(ki))
-			ch_ant(ki) = ch_ant(ki) * exp(zh * Number_clave * solucion(ki))
-			coh_ant(ki) = coh_ant(ki) * exp(zoh * Number_clave * solucion(ki))
-		enddo
-	endif
+
+   if(nmode==2) then
+       do ki=1,nnodes
+          ch(ki) = ch(ki)*exp(zh*Number_clave*solucion(ki))
+          coh(ki)= coh(ki)*exp(zoh*Number_clave*solucion(ki))
+          ch_ant(ki) = ch_ant(ki)*exp(zh*Number_clave*solucion(ki))
+          coh_ant(ki)= coh_ant(ki)*exp(zoh*Number_clave*solucion(ki))
+       enddo
+   endif
   
    
-	call concentraH_time (tt, deltat, ch_ant, coh_ant, cna_ant, ccl_ant)
-	call concentraOH_time(tt, deltat, ch_ant, coh_ant, cna_ant, ccl_ant)
-	call concentraNa_time(tt, deltat, ch_ant, coh_ant, cna_ant, ccl_ant)
-	call concentraCl_time(tt, deltat, ch_ant, coh_ant, cna_ant, ccl_ant)
+   call concentraH_time(tt,deltat,ch_ant,coh_ant,cna_ant,ccl_ant)
+   call concentraOH_time(tt,deltat,ch_ant,coh_ant,cna_ant,ccl_ant)
+   call concentraNa_time(tt,deltat,ch_ant,coh_ant,cna_ant,ccl_ant)
+   call concentraCl_time(tt,deltat,ch_ant,coh_ant,cna_ant,ccl_ant)
    
 
    if(nmode==2) then
@@ -126,9 +144,31 @@ do while (tt < tcero)
          phOHaux(ki)=-log10((coh(ki)+1e-18)*1e+15/6.02E23)
       enddo
    else
+      
       do ki=1,nnodes
-         phHaux(ki)=-log10((ch(ki)+1e-18)*1e+15/6.02E23)
+        
+         if(abs(ch(ki))<1.0e-8) then
+             ch(ki)  =0.0
+             ch_ant(ki)=ch(ki)
+         endif
+         if(abs(coh(ki))<1.0e-8) then
+             coh(ki)=0.0
+             coh_ant(ki)=0.0
+         endif
+         if(cna(ki)<1.0e-8)  then
+             cna(ki)=0.0
+             cna_ant(ki)=0.0
+         endif
+
+         if(ccl(ki)<1.0e-8) then 
+             ccl(ki)=0.0 
+             ccl_ant(ki)=0.0 
+         endif
+      
+         phHaux(ki)=-log10((ch(ki)+ 1e-18)*1e+15/6.02E23)
+         if(phHaux(ki)<=0.1)  phHaux(ki)=0.1
          phOHaux(ki)=-log10((coh(ki)+1e-18)*1e+15/6.02E23)
+         if(phOHaux(ki)<=0.1) phOHaux(ki)=0.1
       enddo
 
    endif
@@ -147,19 +187,12 @@ do while (tt < tcero)
         cna(jj) = rsa * cna(jj) + (1-rsa)*cna_ant(jj)
         ccl(jj) = rsa * ccl(jj) + (1-rsa)*ccl_ant(jj)
         
-        if(ch(jj)<1e-8) ch(jj)=0.0
-        if(coh(jj)<1e-8) coh(jj)=0.0
-        if(cna(jj)<1e-8) cna(jj)=0.0
-        if(ccl(jj)<1e-8) ccl(jj)=0.0
-        
         ch_ant(jj)=ch(jj)
         coh_ant(jj)=coh(jj)
         cna_ant(jj)=cna(jj)
         ccl_ant(jj)=ccl(jj)
 
-
         rresist = rresist + ch(jj) + coh(jj) +  cna(jj) +  ccl(jj)
-
 
    enddo
 
@@ -183,11 +216,24 @@ do while (tt < tcero)
    
        write(unit_histo,*) 'paso: ',tt
        write(unit_ph,*) 'paso: ',tt
+       write(unit_camp2,*) 'paso: ',tt
        do jj=1,nnodes 
-       
+          
           write(unit_histo,'(i5,7e15.5)') jj,coor_x(jj),coor_y(jj),solucion(jj),ch(jj),coh(jj),cna(jj),ccl(jj)
           write(unit_ph,'(i5,5e15.5)') jj,coor_x(jj),coor_y(jj),solucion(jj),phHaux(jj),phOHaux(jj)
        enddo
+
+       do jj=1,nelements
+          xmed=0
+          ymed=0
+          do ii=1,nodpel
+             xmed=xmed + coor_x(conect(jj,ii))/nodpel
+             ymed=ymed + coor_y(conect(jj,ii))/nodpel
+          enddo
+
+          write(unit_camp2,'(4e15.5)') xmed,ymed,gradxel_x(jj),gradxel_y(jj)
+       enddo
+
 
 
        ! reparo paso de tiempo
@@ -206,13 +252,11 @@ do while (tt < tcero)
        !endif
    endif
 
-!	call salida_concentra(ch,coh,cna,ccl)
-!	call EXIT(0)
 
 enddo
 
 
-call salida_concentra(ch,coh,cna,ccl)
+call salida_concentra(ch,coh,cna,ccl,phHaux,phOHaux)
 
 call salida_sol(solucion)
 

@@ -16,9 +16,8 @@ EntradaSalida::EntradaSalida(Celula& celula) {
 	_celula = &celula;
 	leerInput();
 
-	/* Chequear que dir de salida esté vacío */
 	ifstream f(getCelula().salida + "/input.in");
-	assert(!f.good());
+	//assert(!f.good() && "dir de salida no está vacío!");
 	f.close();
 
 	/* Copiar input.in */

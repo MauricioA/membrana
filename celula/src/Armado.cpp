@@ -20,7 +20,7 @@ void Armado::armadoPoisson(Double2D pos[], double sigma, int nodpel, double esm[
 		break;
 	case 4:
 		double ef[MAXNPEL];
-		armado4(pos, sigma, 0, false, 0, 0, esm, ef, NULL, NULL);
+		armado4(pos, sigma, 0, false, 0, 0, esm, ef, NULL, NULL, Double2D{0, 0});
 		break;
 	default: 
 		assert(false);
@@ -57,7 +57,7 @@ double Armado::determinante3(Double2D pos[], double b[], double c[]) {
 }
 
 void Armado::armado4(Double2D pos[], double sigma, double qe, bool transp, double landa, double mu,
-		double esm[][MAXNPEL], double ef[MAXNPEL], double est[][4], double mas[]) {
+		double esm[][MAXNPEL], double ef[MAXNPEL], double est[][4], double mas[], Double2D gradElem) {
 
 	const int NODPEL = 4;
 	double phi[2*NGAUSS][NODPEL];
@@ -92,16 +92,15 @@ void Armado::armado4(Double2D pos[], double sigma, double qe, bool transp, doubl
 			}
 
 			if (transp) {	//upwing
-				esm[i][j] += mu * phidX[1][kGauss][i] * phi[kGauss][j] * cteI[kGauss];
+				//esm[i][j] += mu * phidX[1][kGauss][i] * phi[kGauss][j] * cteI[kGauss];
+
+				esm[i][j] -= mu * cteI[kGauss] * phi[kGauss][j] * (
+					gradElem.x * phidX[0][kGauss][i] + gradElem.y * phidX[1][kGauss][i]
+				);
 			}
 		}
 
 		ef[i] += cteI[kGauss] * phi[kGauss][i] * qe;
-
-		/* Así estaba antes */
-		//if (transp) {
-		//	est[i][i] += mas[i] * landa * cteI[kGauss];
-		//}
 	}
 
 	if (transp) for (int i = 0; i < NODPEL; i++) {
@@ -173,7 +172,7 @@ double Armado::iteracion4(int i, int j, int kGauss, Double2D pos[4],
 }
 
 void Armado::armadoTransporte(int nodpel, Double2D pos[], double difusion, double qe, double landa,
-		double mu, double mas[], double sol[], double esm[][MAXNPEL], double ef[], double deltaT) {
+		double mu, double mas[], double sol[], double esm[][MAXNPEL], double ef[], double deltaT, Double2D gradElem) {
 
 	const double th2 = 0.5;
 	const double aCoef1 = deltaT * th2;
@@ -184,10 +183,11 @@ void Armado::armadoTransporte(int nodpel, Double2D pos[], double difusion, doubl
 
 	switch (nodpel) {
 	case 3:
+		assert(false && "código para 3 nodos no está actualizado!");
 		armadoTransporte3(pos, difusion, qe, landa, mu, mas, sol, esm, ef, est);
 		break;
 	case 4:
-		armado4(pos, difusion, qe, true, landa, mu, esm, ef, est, mas);
+		armado4(pos, difusion, qe, true, landa, mu, esm, ef, est, mas, gradElem);
 		break;
 	default: 
 		assert(false);

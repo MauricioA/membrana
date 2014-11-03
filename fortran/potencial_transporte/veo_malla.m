@@ -19,10 +19,6 @@ for kk=1:N
         poten(np)=kk;
     end
 end
-nt
-tierra
-np
-poten
 
 ne=fscanf(fid,'%i',1)
 
@@ -63,7 +59,7 @@ for kk=1:ne
     x4=[x(ii),x(i)];
     y4=[y(ii),y(i)];
 
-    if(mat(kk)==mate) 
+    if(mat(kk)==mate | mate==0) 
        line(x1,y1);
        line(x2,y2);
        line(x3,y3);

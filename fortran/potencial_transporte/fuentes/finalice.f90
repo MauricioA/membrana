@@ -21,6 +21,8 @@ implicit none
     close(unit_por)
     close(unit_esta)
     close(unit_celda)
+    close(unit_ph2)
+    close(unit_camp2)
 
 
     

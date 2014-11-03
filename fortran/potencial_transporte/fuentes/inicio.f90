@@ -23,5 +23,7 @@ implicit none
     open(unit=unit_por,file=file_por)
     open(unit=unit_esta,file=file_esta)
     open(unit=unit_celda,file=file_celda)
+    open(unit=unit_ph2,file=file_phf)
+    open(unit=unit_camp2,file=file_camp2)
 
 end subroutine inicio

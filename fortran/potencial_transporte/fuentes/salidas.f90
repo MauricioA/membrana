@@ -92,11 +92,11 @@ end subroutine salida_sol
 
 
 
-subroutine salida_concentra(ch,coh,cna,ccl)
+subroutine salida_concentra(ch,coh,cna,ccl,phHaux,phOHaux)
 use def_variables
 use def_constantes
 implicit none
-double precision :: ch(nnodes),coh(nnodes),cna(nnodes),ccl(nnodes)
+double precision :: ch(nnodes),coh(nnodes),cna(nnodes),ccl(nnodes),phHaux(nnodes),phOHaux(nnodes)
 ! local 
 integer :: kk
 character*(1)::coma=','
@@ -127,6 +127,11 @@ character*(1)::coma=','
        write(unit_cna,'(e15.5,a,e15.5,a,e15.5)') coor_x(kk),coma,coor_y(kk),coma,cna(kk)
     enddo
 
+    write(unit_ph2,*) 'X,    Y,   Ph,  Poh  ' ! nnodes
+
+    do kk=1,nnodes
+       write(unit_ph2,'(e15.5,a,e15.5,a,e15.5,a,e15.5)') coor_x(kk),coma,coor_y(kk),coma,phHaux(kk),coma,phOHaux(kk)
+    enddo
 
 end subroutine salida_concentra
 
