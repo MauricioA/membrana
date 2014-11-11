@@ -5,13 +5,13 @@
 
 #include <math.h>
 #include <string>
+#include <cinttypes>
 
 using namespace std;
 
 typedef unsigned int uint;
 
 namespace declaraciones {
-
 	const int	 MAXNPEL 	= 4;
 	const int 	 NESPS		= 4;
 	const int 	 NGAUSS 	= 2;
@@ -40,7 +40,7 @@ namespace declaraciones {
 
 	class Elemento {
 	private:
-		int nodos[MAXNPEL];
+		uint16_t nodos[MAXNPEL];
 
 	public:
 		Material material;
@@ -52,7 +52,7 @@ namespace declaraciones {
 			sigma = _sigma;
 		}
 
-		inline int operator[](int i) {
+		inline uint16_t operator[](int i) {
 			return nodos[i];
 		}
 	};

@@ -26,10 +26,7 @@ void Celula::poisson() {
 }
 
 /* Loop principal */
-//TODO cambiar como los 4 valores por arreglos, hacer variable tmb para consola, 
-//	ver valores mínimos posibles, ver de hacerlo continuo en vez de tener valores fijos (logarítmico?), 
-//  ver si poner delta_ts en vez de pasos (avanzar en cada paso el delta_t minimo)
-//	imprimir en us
+//TODO mejorar como son los delta_t
 void Celula::transportePoros() {
 	double DELTA_T = 1e-9;
 	
@@ -49,22 +46,12 @@ void Celula::transportePoros() {
 	const int PASO_DISCO_ITV_2 = 100;
 	const int PASO_DISCO_ITV_3 = 1000;
 	
-	const int PASO_CONSOLA = 100;
+	const int PASO_CONSOLA = 1000;
 
 	auto global_start = chrono::high_resolution_clock::now();
 
-	//vector<double> paso_disco = {
-	//	0, 30e-6, 100e-6, .9999e-3, 2e-3, 5e-3, 9.99e-3, 15e-3, 19.999e-3,
-	//	30e-3, 40e-3, 50e-3,
-	//	60e-3, 70e-3, 80e-3, 90e-3, 100e-3,
-	//	200e-3, 300e-3, 400e-3, 499.999e-3, 1,
-	//};
-
-	//vector<double> paso_disco;		//1 por ms
-	//for (int i = 0; i <= 20; i++) paso_disco.push_back(i*1e-3 - 2 * DELTA_T);
-	//paso_disco.push_back(1);
-
-	vector<double> paso_disco = { 0, 100e-6, 200e-6, 500e-6, 1e-3, 2e-3, 1, };
+	vector<double> paso_disco = { 0, 100e-6, 200e-6, };
+	for (double t = 500e-6; t < 1; t += 500e-6) paso_disco.push_back(t);	//uno cada 500us
 
 	int pos_disco = 0;
 	time = 0;
@@ -106,12 +93,12 @@ void Celula::transportePoros() {
 				/* Iteración poisson, solo si está ON */
 				if ((estado == ON) && (it_poiss == paso_poisson)) {
 					Poisson::iteracion(*this);
-					if (calcularPoros) it_poiss = 0;	//si no hay poros solo correr poisson 1 vez
+					if (calcularPoros) it_poiss = 0;		//si no hay poros solo correr poisson 1 vez
 				}
 
 				/* Iteración poros */
 				if (it_poros == paso_poros && calcularPoros) {
-					poros->iteracion(DELTA_T);
+					poros->iteracion(DELTA_T * paso_poros);	//el intervalo está mal cuando cambia de etapa!
 					it_poros = 0;
 				}
 
@@ -129,12 +116,10 @@ void Celula::transportePoros() {
 					start = end;
 
 					if (calcularPoros) {
-						//printf("%.1fus %.2e %d %d  %.2f ms/it\n", time*1e6, poros->getRadioMaximo(),
-						//	poros->getNPoros(), poros->getNPorosChicos(), delta_ms);
-						printf("%.1fus %d error: %f  %.2f ms/it\n", time*1e6, 
+						printf("%.1fus %d error: %e  %.2f ms/it\n", time*1e6, 
 							poros->getNPoros() + poros->getNPorosChicos(), transporte.error, delta_ms);
 					} else {
-						printf("%.1fus %f  %.2f ms/it\n", time*1e6, transporte.error, delta_ms);
+						printf("%.1fus error: %e  %.2f ms/it\n", time*1e6, transporte.error, delta_ms);
 					}
 
 					it_consola = 0;

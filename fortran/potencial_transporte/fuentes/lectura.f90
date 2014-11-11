@@ -182,87 +182,7 @@ do while(textinput /= 'END_DATA')
         enddo
    enddo
    
-
-
-
-do while(textinput /= 'END_DATACC')
-     read(unit_data,'(A120)') textinput
-	 call upcase(textinput)
-	 leng=len_trim(textinput) 
-     
-	 last=0
-	 suma=0
-	 opcion='  '
-	 do while(last<leng)
-        last=last+1
-		if(textinput(last:last)/=' '.and.textinput(last:last)/=':'.and.textinput(last:last)/='='.and.textinput(last:last)/=Z) then
-		  if(textinput(last:last)=='#') then
-		    last=leng
-		  else
-		    suma=suma+1
-		    opcion(suma:suma)= textinput(last:last)
-		  endif
-		endif
-
-	 enddo
-     
-	 leng=len_trim(opcion)
-	 
-       last=0	 
-	   do while(last<leng)
-			last=last+1
-			if(opcion(1:last)=='DIRICHV') then
-				read(opcion(last+1:leng),'(i4)') ndirichV
-				write(unit_cont,*) ' DIRICHV: ', ndirichV
-				last=leng+1
-		
-                if(ndirichV > 0 ) then
-                  allocate(nod_dirichV(ndirichV))
-!                  do kk=1,ndirichV
-!                     read(unit_data,*) nod_dirichV(kk)
-!                  enddo
-                  do kk=1,3 ! ndirichT
-                     read(unit_data,*) nod_dirichV(kk)
-                  enddo
-                  do kk=4,ndirichV
-                     nod_dirichV(kk)=nod_dirichV(kk-1)+1
-                  enddo
-
-                endif
-
-        
-        	endif
-      
-      enddo
-        
-      
-       last=0	 
-	   do while(last<leng)
-			last=last+1
-			if(opcion(1:last)=='DIRICHT') then
-				read(opcion(last+1:leng),'(i4)') ndirichT
-				write(unit_cont,*) ' DIRICHT: ', ndirichT
-				last=leng+1
-		
-                if(ndirichT > 0 ) then
-                  allocate(nod_dirichT(ndirichT))
-                  do kk=1,3 ! ndirichT
-                     read(unit_data,*) nod_dirichT(kk)
-                  enddo
-                  do kk=4,ndirichT
-                     nod_dirichT(kk)=nod_dirichT(kk-1)+1
-                  enddo
-
-                endif
-            endif
-        enddo
-        
-        
-     
-  enddo
-
-
-
+   
 
    if(archi_malla/='  ') then
        write(6,*) ' armo mallado desde los archivos! '
@@ -275,7 +195,7 @@ do while(textinput /= 'END_DATACC')
 
    endif
        
-
+   close(unit_data)
 end subroutine lectura
 
 subroutine lee_sistema(archi_sistema,nnodes)

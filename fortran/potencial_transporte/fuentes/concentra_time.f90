@@ -107,7 +107,7 @@ ncase=1
      
      
      
-     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dh_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,gradxel_x(kk),gradxel_y(kk))   !! ***CAMBIO***
+     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dh_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,-gradxel_x(kk),-gradxel_y(kk))   !! ***CAMBIO***  signo menos
 
      do inode=1,nodpel
             ipoin=NS(inode)
@@ -224,23 +224,6 @@ ncase=1
     else
        call BCG(nnodes,IA,JA,AN,AD,RHS,ch,toler_dos,itermax,ITER,ERR)
     endif
-
-!  error=0.0 
-!  denom=0.0
-!  do ke=1,nnodes
-!      error=error+ (ch(ke)-ch_ini(ke))**2
-!	  denom = denom + ch(ke)**2
-!      ch_ini(ke)=ch(ke)
-!  enddo   
-
-!  error = sqrt(error/denom)
-!  npasos=npasos+1
-  
-  
-!enddo ! fin while
-
-!deallocate(ch_ini)
-
 
 
 call grad_concentra(nnodes,nelements,nodpel,ch,material,conect,coor_x,coor_y,grad_ch_x,grad_ch_y)
@@ -365,7 +348,7 @@ ncase=1
      !endif
      
 
-     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Doh_el,qe,landa,mu,cohdes,Acoef1,Acoef2,mas,gradxel_x(kk),gradxel_y(kk))   !! ***CAMBIO***
+     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Doh_el,qe,landa,mu,cohdes,Acoef1,Acoef2,mas,-gradxel_x(kk),-gradxel_y(kk))   !! ***CAMBIO***
 
      do inode=1,nodpel
             ipoin=NS(inode)
@@ -618,7 +601,7 @@ ncase=1
      
      
      
-     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dna_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,gradxel_x(kk),gradxel_y(kk))   !! ***CAMBIO***
+     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dna_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,-gradxel_x(kk),-gradxel_y(kk))   !! ***CAMBIO***
 
      do inode=1,nodpel
             ipoin=NS(inode)
@@ -867,7 +850,7 @@ ncase=1
      QE = 0.0 
      
           
-     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dcl_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,gradxel_x(kk),gradxel_y(kk))   !! ***CAMBIO***
+     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dcl_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,-gradxel_x(kk),-gradxel_y(kk))   !! ***CAMBIO***
 
      do inode=1,nodpel
             ipoin=NS(inode)

@@ -16,13 +16,13 @@ public:
 	void iteracion(double deltaT);
 
 	struct InfoAngulo {
-		int nodosInternos[2];
-		int nodosExternos[2];
+		uint16_t nodosInternos[2];
+		uint16_t nodosExternos[2];
 		double densidad;
 		double tita;
 		double area;
 		vector<pair<double, double>> porosGrandes;	// <radio, tiempo de creación>
-		int porosChicos;
+		uint32_t porosChicos;
 		double radioChico;
 	};
 

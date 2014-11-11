@@ -2,7 +2,7 @@ subroutine finalice()
 use def_variables
 implicit none
 
-    close(unit_data)
+   
     close(unit_malla)
     close(unit_cc)
     close(unit_cont)

@@ -178,6 +178,10 @@ void Armado::armadoTransporte(int nodpel, Double2D pos[], double difusion, doubl
 	const double aCoef1 = deltaT * th2;
 	const double aCoef2 = deltaT * (1 - th2);
 
+	//cambio los signos del gradiente!
+	gradElem.x *= -1;
+	gradElem.y *= -1;
+
 	double est[MAXNPEL][MAXNPEL];
 	for (int i = 0; i < nodpel; i++) for (int j = 0; j < nodpel; j++) est[i][j] = 0;
 

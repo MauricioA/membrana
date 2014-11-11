@@ -3,12 +3,12 @@ module def_transpor
          
    double precision :: Faraday= 96485.34  !C/mol
    double precision :: R_cte= 8.314      ! J/K/mol
-   double precision :: T_cte= 1000.0      ! K                  !! ***CAMBIO*** Usamos una T ficticia para hacer el probelma numericamente estable y mas rapido
+   double precision :: T_cte= 350.0      ! K                  !! ***CAMBIO*** Usamos una T NORMAL
    double precision :: D_h = 12500.0     ! micro**2/sec
    double precision :: D_oh= 7050.0      ! micro**2/sec
    double precision :: D_Na = 1780.0     ! micro**2/sec
    double precision :: D_Cl= 2720.0      ! micro**2/sec
-   double precision :: D_eff= 0.1      ! micro**2/sec                  !! ***CAMBIO***
+   double precision :: D_eff= 0.5      ! micro**2/sec                  !! ***CAMBIO***
     
    double precision :: Kbolz= 8.61733e-5 ! ev/K/mol
 

@@ -396,8 +396,7 @@ elseif(nope==4) then
              if(landa==1) then  ! este es el caso con upwing!!
                   
                  ESM(I,J)=ESM(I,J) -mu*cteI(kgaus)* phi(kgaus,j) *( Ex*PHIdX(1,kgaus,I) + Ey*PHIdX(2,kgaus,I) )    !! ***CAMBIO***
-
-
+                 
              endif
 
 

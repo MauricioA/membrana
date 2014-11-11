@@ -113,6 +113,10 @@ protected:
 
 	vector<double> masas;
 
+	vector<Triplet<double>> multiple_triplets[NESPS];
+
+	VectorXd multiple_rhs[NESPS];
+
 	SparseMatrix<double> matrizTrans[NESPS];
 
 	Transporte() {}

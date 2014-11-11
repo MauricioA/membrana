@@ -18,9 +18,9 @@ archivo3: sistema.dat
 
 sigint:  	0.0000002  		#condutividad de la zona intraelular
 sigext:  	0.00000015        	#condutividad de la zona extra
-sigmem: 	0.000000000005	#condutividad de la membrana
+sigmem: 	0.000000000005   #condutividad de la membrana
 permit :  	1.0       	#permitividad de la membrana
-Potencial: 	5.0     	#voltaje 
+Potencial: 	1.0     	#voltaje 
 Frecuencia:	0.0  		#freq del campo en MGhz
 
 radioExt: 50.005 # 10.01 #
@@ -30,53 +30,3 @@ largo: 500.0 #100.0
 ancho: 250.0 # 50.0
 
 end_data
-
-end_dataCC
-
-dirichV: 26
-4
-3
-78
-
-dirichT: 26
-1
-2
-5
-
-dirichV: 51
-4
-3
-153
-
-dirichT: 51
-1
-2
-5
-
-
-
-dirichV: 11
-3
-4
-39
-40
-41
-42
-43
-44
-45
-46
-47
-
-dirichT: 11
-1
-2
-11
-12
-13
-14
-15
-16
-17
-18
-19

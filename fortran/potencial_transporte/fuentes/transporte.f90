@@ -8,8 +8,9 @@ implicit none
 double precision,allocatable :: ch_ant(:),phHaux(:)
 double precision,allocatable :: coh_ant(:),phOHaux(:)
 double precision,allocatable :: ccl_ant(:),cna_ant(:)
-integer :: npaso_kk,nsale,i,ki,jj,kk,j,ii,cadena(10)
+integer :: npaso_kk,nsale,i,ki,jj,kk,j,ii,cadena(10),cmenos,comenos, cNamenos,cCLmenos
 double precision :: tcero,deltat,tt,numer, denom,error,rsa,xmed,ymed
+character*(1)::coma=','
 
 
 allocate(ch(nnodes),coh(nnodes),masa(nnodes))
@@ -35,7 +36,7 @@ grad_ch_y=0.0
 
 
 write(unit_histo,*) nnodes
-write(unit_ph,*) nnodes
+!write(unit_ph,*) nnodes
 write(unit_camp,*) nelements
        
 call masadiag2d()
@@ -103,8 +104,8 @@ endif
 npaso_kk=0
 nsale=100
 
-tcero=0.020
-deltat=1e-7 ! 0.2e-5    !! ***CAMBIO*** bajo el dt
+tcero=0.010
+deltat=1e-8 ! 0.2e-5    !! ***CAMBIO*** bajo el dt
 rsa = 0.50
 
 tt=0.0
@@ -145,31 +146,6 @@ do while( tt<tcero)
       enddo
    else
       
-      do ki=1,nnodes
-        
-         if(abs(ch(ki))<1.0e-8) then
-             ch(ki)  =0.0
-             ch_ant(ki)=ch(ki)
-         endif
-         if(abs(coh(ki))<1.0e-8) then
-             coh(ki)=0.0
-             coh_ant(ki)=0.0
-         endif
-         if(cna(ki)<1.0e-8)  then
-             cna(ki)=0.0
-             cna_ant(ki)=0.0
-         endif
-
-         if(ccl(ki)<1.0e-8) then 
-             ccl(ki)=0.0 
-             ccl_ant(ki)=0.0 
-         endif
-      
-         phHaux(ki)=-log10((ch(ki)+ 1e-18)*1e+15/6.02E23)
-         if(phHaux(ki)<=0.1)  phHaux(ki)=0.1
-         phOHaux(ki)=-log10((coh(ki)+1e-18)*1e+15/6.02E23)
-         if(phOHaux(ki)<=0.1) phOHaux(ki)=0.1
-      enddo
 
    endif
 
@@ -179,23 +155,53 @@ do while( tt<tcero)
    
    rresist=0.0
 
+   cmenos=0
+   comenos=0
+   cNamenos=0
+   cCLmenos=0
+
    do jj=1,nnodes
         numer=numer + (ch(jj)-ch_ant(jj))*(ch(jj)-ch_ant(jj))+ (coh(jj)-coh_ant(jj))*(coh(jj)-coh_ant(jj))  + (cna(jj)-cna_ant(jj))*(cna(jj)-cna_ant(jj))+ (ccl(jj)-ccl_ant(jj))*(ccl(jj)-ccl_ant(jj))
         denom = denom +  ch(jj)*ch(jj) + coh(jj)*coh(jj) +  cna(jj)*cna(jj) + ccl(jj)*ccl(jj)
+        
         ch(jj) = rsa * ch(jj) + (1-rsa)*ch_ant(jj)
         coh(jj) = rsa * coh(jj) + (1-rsa)*coh_ant(jj)
         cna(jj) = rsa * cna(jj) + (1-rsa)*cna_ant(jj)
         ccl(jj) = rsa * ccl(jj) + (1-rsa)*ccl_ant(jj)
         
+        if(ch(jj)<0.0 ) then    ! ***CAMBIO
+            ch(jj) = 0.0
+            cmenos=cmenos+1    
+        endif
+        if(coh(jj)<0.0) then    ! ***CAMBIO
+            coh(jj) = 0.0
+            comenos=comenos+1
+        endif
+
+        if(cna(jj)<0.0 ) then    ! ***CAMBIO
+            cna(jj) = 0.0
+            cNamenos=cNamenos +1
+        endif
+        if(ccl(jj)<0.0 ) then    ! ***CAMBIO
+            ccl(jj) = 0.0
+            cCLmenos=cCLmenos+1
+        endif
+
         ch_ant(jj)=ch(jj)
         coh_ant(jj)=coh(jj)
         cna_ant(jj)=cna(jj)
         ccl_ant(jj)=ccl(jj)
 
+         phHaux(jj)=-log10((ch(jj)+ 1e-18)*1e+15/6.02E23)
+         if(phHaux(jj)<=0.1)  phHaux(jj)=0.1
+         phOHaux(jj)=-log10((coh(jj)+1e-18)*1e+15/6.02E23)
+         if(phOHaux(jj)<=0.1) phOHaux(jj)=0.1
+
         rresist = rresist + ch(jj) + coh(jj) +  cna(jj) +  ccl(jj)
 
    enddo
 
+  
    rresist  = rresist/nnodes
 
    rresist = rresist*124.2/1000.0 *1e12/6.02e+23 * (1.57e-4)
@@ -205,7 +211,7 @@ do while( tt<tcero)
 
    error=dsqrt(numer/denom)
 
-   if(error>=1e+3) then
+   if(error>=1e+1) then
        write(6,*) 'paso: ',tt,error
        stop ' '
    endif
@@ -214,13 +220,17 @@ do while( tt<tcero)
       
        write(6,*) 'paso: ',tt,error
    
+       if((comenos+cmenos+cNamenos+cCLmenos)>0) then    ! ***CAMBIO  para verificar
+          write(6,*) tt,cmenos,comenos,cNamenos,cCLmenos
+       endif
+
        write(unit_histo,*) 'paso: ',tt
-       write(unit_ph,*) 'paso: ',tt
        write(unit_camp2,*) 'paso: ',tt
+       write(unit_ph,*) tt
        do jj=1,nnodes 
           
           write(unit_histo,'(i5,7e15.5)') jj,coor_x(jj),coor_y(jj),solucion(jj),ch(jj),coh(jj),cna(jj),ccl(jj)
-          write(unit_ph,'(i5,5e15.5)') jj,coor_x(jj),coor_y(jj),solucion(jj),phHaux(jj),phOHaux(jj)
+          write(unit_ph,'(e15.5,a,e15.5,a,e15.5,a,e15.5,a,e15.5)') coor_x(jj),coma,coor_y(jj),coma,solucion(jj),coma,phHaux(jj),coma,phOHaux(jj)
        enddo
 
        do jj=1,nelements
@@ -234,22 +244,6 @@ do while( tt<tcero)
           write(unit_camp2,'(4e15.5)') xmed,ymed,gradxel_x(jj),gradxel_y(jj)
        enddo
 
-
-
-       ! reparo paso de tiempo
-       !if(npaso_kk > 1000 .and. cadena(1)==0) then
-       !     deltat=deltat*2
-       !     cadena(1)=1
-       !elseif(npaso_kk > 2000 .and. cadena(2)==0) then
-       !     deltat=deltat*2
-       !     cadena(2)=1
-       !elseif(npaso_kk > 4000 .and. cadena(3)==0) then
-       !     deltat=deltat*2
-       !     cadena(3)=1
-       !elseif(npaso_kk > 10000 .and. cadena(4)==0) then
-       !     deltat=deltat*2
-       !     cadena(4)=1
-       !endif
    endif
 
 
