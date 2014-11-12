@@ -50,8 +50,8 @@ void Celula::transportePoros() {
 
 	auto global_start = chrono::high_resolution_clock::now();
 
-	vector<double> paso_disco = { 0, 100e-6, 200e-6, };
-	for (double t = 500e-6; t < 1; t += 500e-6) paso_disco.push_back(t);	//uno cada 500us
+	vector<double> paso_disco = { 0, };
+	for (double t = 100e-6; t < 100e-3; t += 100e-6) paso_disco.push_back(t - 2*DELTA_T);
 
 	int pos_disco = 0;
 	time = 0;

@@ -25,6 +25,7 @@ fortran/potencial_transporte/*.u2d
 fortran/potencial_transporte/*.111
 fortran/potencial_transporte/*.333
 fortran/potencial_transporte/*.444
+fortran/potencial_transporte/temp/*
 
 celula/scripts/temp/*
 

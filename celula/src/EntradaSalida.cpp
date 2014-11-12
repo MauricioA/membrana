@@ -215,11 +215,10 @@ void EntradaSalida::grabarPoisson(bool verbose) {
 
 	double time = getCelula().time;
 	int nodpel = getCelula().nodpel;
+	char buffer[512];
 
-	FILE* ftension = fopen((
-		getCelula().salida + "/tension/tension-" + 
-		to_string(nPoisson) + "-" + to_string(time) + ".csv"
-	).c_str(), "w");
+	sprintf(buffer, "%s/tension/tension.csv.%03d", getCelula().salida.c_str(), nPoisson);
+	FILE* ftension = fopen(buffer, "w");
 
 	assert(ftension > 0);
 	fprintf(ftension, "         X,          Y,         tension\n");
@@ -231,10 +230,8 @@ void EntradaSalida::grabarPoisson(bool verbose) {
 
 	fclose(ftension);
 
-	FILE* fcampo = fopen((
-		getCelula().salida + "/campo/campo-" +
-		to_string(nPoisson) + "-" + to_string(time) + ".csv"
-	).c_str(), "w");
+	sprintf(buffer, "%s/campo/campo.csv.%03d", getCelula().salida.c_str(), nPoisson);
+	FILE* fcampo = fopen(buffer, "w");
 	
 	assert(fcampo > 0);
 	fprintf(ftension, "         X,          Y,           campo,       corriente\n");
@@ -284,25 +281,18 @@ void EntradaSalida::grabarTransporte(bool verbose) {
 	
 	double time = getCelula().time;
 	int nNodes = getCelula().nNodes;
+	char buffer[512];
 	
-	FILE* fConc = fopen((
-		getCelula().salida + "/transporte/conc-" +
-		to_string(nTransporte) + "-" + to_string(time) + ".csv"
-	).c_str(), "w");
+	sprintf(buffer, "%s/transporte/concentracion.csv.%03d", getCelula().salida.c_str(), nTransporte);
+	FILE* fConc = fopen(buffer, "w");
+	
+	sprintf(buffer, "%s/transporte/molar.csv.%03d", getCelula().salida.c_str(), nTransporte);
+	FILE* fMolar = fopen(buffer, "w");
 
-	FILE* fMolar = fopen((
-		getCelula().salida + "/transporte/molar-" +
-		to_string(nTransporte) + "-" + to_string(time) + ".csv"
-	).c_str(), "w");
+	sprintf(buffer, "%s/transporte/pH.csv.%03d", getCelula().salida.c_str(), nTransporte);
+	FILE* fpH = fopen(buffer, "w");
 
-	FILE* fpH = fopen((
-		getCelula().salida + "/transporte/pH-" +
-		to_string(nTransporte) + "-" + to_string(time) + ".csv"
-	).c_str(), "w");
-
-	assert(fConc > 0);
-	assert(fMolar > 0);
-	assert(fpH > 0);
+	assert(fConc > 0 && fMolar > 0 && fpH > 0);
 
 	fprintf(fConc,  "         X,          Y,              H+,             OH-,             Na+,             Cl-\n");
 	fprintf(fMolar, "         X,          Y,              H+,             OH-,             Na+,             Cl-\n");

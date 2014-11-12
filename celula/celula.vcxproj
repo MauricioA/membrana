@@ -95,7 +95,9 @@
     <ClInclude Include="src\Transporte.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="input.in" />
+    <None Include="input.in">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

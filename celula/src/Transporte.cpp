@@ -216,7 +216,7 @@ void Transporte::concentracion(int esp, double deltaT) {
 			difusion = DIFUSION[esp];
 		}
 
-		double mu = -difusion * (FARADAY / (R_CTE * T_CTE)) * CARGA[esp];
+		double mu = difusion * (FARADAY / (R_CTE * T_CTE)) * CARGA[esp];
 
 		Armado::armadoTransporte(celula.nodpel, pos, difusion, 0.0, 1.0, mu, mas, sol, esm, ef, deltaT, celula.gradElem[kElem]);
 
