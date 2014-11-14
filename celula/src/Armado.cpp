@@ -2,7 +2,7 @@
 
 #include "Armado.h"
 #include <cassert>
-#include <math.h>
+#include <cmath>
 
 using namespace std;
 

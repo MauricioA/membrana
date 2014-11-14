@@ -22,6 +22,7 @@ const double CTE_DIFF_MEM	= 0.5;			// Solo se usa si no se calcula poros
 Transporte::Transporte(Celula& celula, bool calcularPoros) {
 	_celula = &celula;
 	_calcularPoros = calcularPoros;
+	error = 0;
 
 	for (int i = 0; i < NESPS; i++) {
 		multiple_triplets[i].reserve(celula.elementos.size() * celula.nodpel * celula.nodpel);

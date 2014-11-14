@@ -8,13 +8,15 @@
 #include "Poisson.h"
 #include "Poros.h"
 
+#include <memory>
+
 using namespace std;
 
 Celula::Celula() {
 	potencial = 0;
 	nNodes = nElems = nodpel  = 0;
 	alto = radio = ancho = 0;
-	_entradaSalida = make_unique<EntradaSalida>(*this);
+	_entradaSalida = unique_ptr<EntradaSalida>(new EntradaSalida(*this));
 	area = 4 * M_PI * pow(radio, 2);
 }
 
@@ -60,7 +62,7 @@ void Celula::transportePoros() {
 	unique_ptr<Poros> poros;
 	
 	if (calcularPoros) {
-		poros = make_unique<Poros>(*this);
+		poros = unique_ptr<Poros>(new Poros(*this));
 		transporte._poros = poros.get();
 	}
 	

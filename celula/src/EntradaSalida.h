@@ -34,9 +34,9 @@ private:
 	FILE* fitv;
 	FILE* fPAD;
 
-	int nPoisson = 0;
-	int nTransporte = 0;
-	int nPoros = 0;
+	int nPoisson;
+	int nTransporte;
+	int nPoros;
 
 	chrono::time_point<chrono::high_resolution_clock> start;
 

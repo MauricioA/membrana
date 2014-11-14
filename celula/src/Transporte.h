@@ -106,7 +106,7 @@ public:
 	
 	Poros* _poros;
 
-	double error = 0;
+	double error;
 
 protected:
 	Celula* _celula;

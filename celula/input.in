@@ -3,9 +3,9 @@
 
 malla: 	 inputs/50_128.msh
 nodpel:	 quad
-salida:  salida/temp/12-11/5V_acoplado/
+salida:  salida/temp/
 threads: 4
-poros: true
+poros: false
 
 sigint: 200e-9
 sigext: 150e-9

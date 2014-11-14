@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <algorithm>
 #include <numeric>
+#include <iostream>
 #include "Poros.h"
 #include "EntradaSalida.h"
 
@@ -44,6 +45,7 @@ inline bool operator<(const Poros::InfoAngulo& lhs, const Poros::InfoAngulo& rhs
 Poros::Poros(Celula& celula) {
 	assert(celula.nodpel == 4);
 	const int NODPEL = 4;
+	comienzoPulso = 0;
 
 	_celula = &celula;
 	tau = celula.radio * CAPACITANCIA * (1 / celula.sigmas[INTERNO] + 1 / (2 * celula.sigmas[EXTERNO]));
@@ -348,11 +350,11 @@ double Poros::getProporsionArea(int iElem) {
 	/* Si hubo algún error */
 	if (areaP > info.area) {
 		for (auto poro : info.porosGrandes) {
-			printf("%e %e\n", poro.first, poro.second);
+			cout << poro.first << " " << poro.second << "\n";
 		}
-		double itv = getITV(info);
-		printf("%f\n", itv);
-		printf("%f %f %d %d %f\n", info.area, areaP, info.porosGrandes.size(), info.porosChicos, info.tita);
+		cout << getITV(info) << "\n";
+		cout << info.area << " " << areaP << " " << info.porosGrandes.size() << 
+			" " << info.porosChicos << " " << info.tita << endl;
 		assert(false);
 	}
 

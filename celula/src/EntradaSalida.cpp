@@ -1,12 +1,15 @@
 #define _CRT_SECURE_NO_WARNINGS
-
 #include <iostream>
 #include <fstream>
-#include <direct.h>
+#include <sys/stat.h>
 #include <cassert>
 #include <cfloat>
 #include "EntradaSalida.h"
 #include "Celula.h"
+
+#ifdef _WIN32
+#include <direct.h>
+#endif
 
 using namespace std;
 
@@ -15,9 +18,13 @@ const double EPSILON_DIST = 1e-9;
 EntradaSalida::EntradaSalida(Celula& celula) {
 	_celula = &celula;
 	leerInput();
+	
+	nPoisson = 0;
+	nTransporte = 0;
+	nPoros = 0;
 
 	ifstream f(getCelula().salida + "/input.in");
-	assert(!f.good() && "dir de salida no est· vacÌo!");
+	assert(!f.good() && "dir de salida no est√° vac√≠o!");
 	f.close();
 
 	/* Copiar input.in */
@@ -111,12 +118,20 @@ void EntradaSalida::leerInput() {
 			getCelula().nodos[i].esTierra = true;
 		}
 	}
-
-	_mkdir(getCelula().salida.c_str());
-	_mkdir((getCelula().salida + "/tension").c_str());
-	_mkdir((getCelula().salida + "/campo").c_str());
-	_mkdir((getCelula().salida + "/transporte").c_str());
-	_mkdir((getCelula().salida + "/poros").c_str());
+	
+	#ifdef _WIN32
+		_mkdir(getCelula().salida.c_str());
+        _mkdir((getCelula().salida + "/tension").c_str());
+        _mkdir((getCelula().salida + "/campo").c_str());
+        _mkdir((getCelula().salida + "/transporte").c_str());
+        _mkdir((getCelula().salida + "/poros").c_str());
+	#else
+		mkdir(getCelula().salida.c_str(), 0777);
+        mkdir((getCelula().salida + "/tension").c_str(), 0777);
+        mkdir((getCelula().salida + "/campo").c_str(), 0777);
+        mkdir((getCelula().salida + "/transporte").c_str(), 0777);
+        mkdir((getCelula().salida + "/poros").c_str(), 0777);
+	#endif
 
 	printEnd(2, true);
 }
@@ -213,7 +228,6 @@ void EntradaSalida::dameLinea(ifstream& archivo, istringstream& iss) {
 void EntradaSalida::grabarPoisson(bool verbose) {
 	printStart("Grabando poisson...", verbose);
 
-	double time = getCelula().time;
 	int nodpel = getCelula().nodpel;
 	char buffer[512];
 
@@ -279,7 +293,6 @@ void EntradaSalida::printEnd(int tabs, bool verbose) {
 void EntradaSalida::grabarTransporte(bool verbose) {
 	printStart("Grabando transporte...", verbose);
 	
-	double time = getCelula().time;
 	int nNodes = getCelula().nNodes;
 	char buffer[512];
 	
@@ -339,7 +352,7 @@ void EntradaSalida::grabarPoros(Poros& radios, bool verbose) {
 			fprintf(fPoros, "%#10f, %#15.9g\n", info.tita, radio.first);
 		}
 
-		for (int i = 0; i < info.porosChicos; i++) {
+		for (uint i = 0; i < info.porosChicos; i++) {
 			fprintf(fPoros, "%#10f, %#15.9g\n", info.tita, info.radioChico);
 		}
 	}

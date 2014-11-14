@@ -78,7 +78,7 @@ private:
 
 	double tau;
 	double factorPulso;
-	double comienzoPulso = 0;
+	double comienzoPulso;
 
 	void actualizarSigmas();
 
