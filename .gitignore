@@ -11,6 +11,7 @@ celula/salida/temp/*
 celula/salida/vacio/*
 celula/salida/valores_ale/*
 celula/salida/fixed/*
+celula/salida/fixed2/*
 celula/salida/*.7z
 
 fortran/potencial_transporte/objs/*
