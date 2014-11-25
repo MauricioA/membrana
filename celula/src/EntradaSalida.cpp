@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
@@ -8,6 +7,7 @@
 #include "Celula.h"
 
 #ifdef _WIN32
+#define _CRT_SECURE_NO_WARNINGS
 #include <direct.h>
 #endif
 
@@ -24,7 +24,7 @@ EntradaSalida::EntradaSalida(Celula& celula) {
 	nPoros = 0;
 
 	ifstream f(getCelula().salida + "/input.in");
-	assert(!f.good() && "dir de salida no está vacío!");
+	assert(!f.good() && "dir de salida no está vacio!");
 	f.close();
 
 	/* Copiar input.in */

@@ -61,8 +61,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="input.in">
+    <None Include="input.in">
       <Filter>Resource Files</Filter>
-    </Text>
+    </None>
   </ItemGroup>
 </Project>

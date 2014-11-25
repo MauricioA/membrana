@@ -1,19 +1,18 @@
-# cuidado con la temperatura si se elije poros!
 # graba cada 100us
 
-malla: 	 inputs/50_128.msh
+malla: 	 inputs/chico_25_192_150_10.msh	#alto 150
 nodpel:	 quad
-salida:  salida/temp/
-threads: 4
-poros: false
+salida:  salida/temp/24-11/
+threads: 3
+poros: true
 
 sigint: 200e-9
 sigext: 150e-9
-sigmem: 5e-12		# valor real
+sigmem: 50e-12		#cambiado! valor real 5e-12
 
-potencial:  1		# 2KV/m
-radio: 		50
-ancho: 		5e-3	# ancho de la membrana [um]
+potencial:  18		#120 KV/m
+radio: 		25
+ancho: 		10e-3	#ancho de la membrana [um]
 pulsos:		1
-on_time:	20e-3
+on_time:	100e-3
 off_time:	0

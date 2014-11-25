@@ -9,7 +9,6 @@
 #include "Poros.h"
 #include "EntradaSalida.h"
 
-const bool   CALCULAR_RADIOS		= true;
 const bool	 CALCULAR_CAPACITANCIA	= true;
 const bool	 POROS_CHICOS			= true;
 
@@ -29,7 +28,7 @@ const double GAMA 				= 1.8e-5;		// 1.8e-11 J m**-1
 const double SIGMA_P			= 2e-2;			// 2e-2 J m**-2
 const double SIGMA_0			= 1e-6;			// 1e-6 J m**-2
 const double SIGMA_PORO			= 2e-6;			// sigma de la sol que llena el poro (2 S/m)
-const double TEMPERATURA 		= 310;			// 37ºC
+const double TEMPERATURA 		= 350;			// K estaba en 310, cambiado para que sea igual a transporte!
 const double CAPACITANCIA		= 1e-14;		// 1e-2 F m**-2
 const double BOLTZMANN			= 1.3806488e-11;// cte de Boltzmann 1.3806488e-23 [J K**-1]
 const double CONST_Q			= pow((RADIO_MIN_ENERGIA / RADIO_INICIAL), 2);
@@ -37,7 +36,7 @@ const double TERM_TENSION_LINEA = - 2 * M_PI * GAMA;
 const double TOLER_DIST_POROS	= 1e-3;
 const double TOLER_ANGULO		= 1e-3;
 
-inline bool operator<(const Poros::InfoAngulo& lhs, const Poros::InfoAngulo& rhs) {
+inline bool operator<(const Poros::InfoAngulo &lhs, const Poros::InfoAngulo &rhs) {
 	return lhs.tita < rhs.tita;
 };
 
@@ -198,37 +197,34 @@ void Poros::iteracion(double deltaT) {
 		double itv = getITV(info);
 		bool neg = false;
 
-		if (CALCULAR_RADIOS) {
-			/* Actualizo los radios de los poros grandes */
-			for (auto& poro : info.porosGrandes) {
-				poro.first = actualizarRadio(poro.first, deltaT, tensionEfectiva, itv);
-				if (poro.first < 0) neg = true;
-			}
+		/* Actualizo los radios de los poros grandes */
+		for (auto& poro : info.porosGrandes) {
+			poro.first = actualizarRadio(poro.first, deltaT, tensionEfectiva, itv);
+			if (poro.first < 0) neg = true;
+		}
 
-			/* Acá hay gato encerrado */
-			if (neg) for (uint i = 0; i < info.porosGrandes.size(); i++) {
-				if (info.porosGrandes[i].first < 0) {
+		if (neg) for (uint i = 0; i < info.porosGrandes.size(); i++) {
+			if (info.porosGrandes[i].first < 0) {
+				info.porosGrandes.erase(info.porosGrandes.begin() + i);
+				i--;
+				printf("PORO NEGATIVO BORRADO!\n");
+			}
+		}
+
+		if (POROS_CHICOS) {
+			/* Muevo a chicos los poros grandes con poco radio y bastante antigüedad */
+			for (uint i = 0; i < info.porosGrandes.size(); i++) {
+				auto poro = info.porosGrandes[i];
+				if ((poro.first < 1e-3) && (tiempo - poro.second > 1e-6)) {
 					info.porosGrandes.erase(info.porosGrandes.begin() + i);
+					info.porosChicos++;
 					i--;
-					printf("PORO NEGATIVO BORRADO!\n");
 				}
 			}
 
-			if (POROS_CHICOS) {
-				/* Muevo a chicos los poros grandes con poco radio y bastante antigüedad */
-				for (uint i = 0; i < info.porosGrandes.size(); i++) {
-					auto poro = info.porosGrandes[i];
-					if ((poro.first < 1e-3) && (tiempo - poro.second > 1e-6)) {
-						info.porosGrandes.erase(info.porosGrandes.begin() + i);
-						info.porosChicos++;
-						i--;
-					}
-				}
-
-				/* Actualizo el radio de los poros chicos */
-				if (info.porosChicos > 0) {
-					info.radioChico = actualizarRadio(info.radioChico, deltaT, tensionEfectiva, itv);
-				}
+			/* Actualizo el radio de los poros chicos */
+			if (info.porosChicos > 0) {
+				info.radioChico = actualizarRadio(info.radioChico, deltaT, tensionEfectiva, itv);
 			}
 		}
 
@@ -252,14 +248,6 @@ void Poros::iteracion(double deltaT) {
 
 	/* Actualizo las conductividades de la membrana */
 	actualizarSigmas();
-
-	//if (getCelula().time > 1.5e-6) {
-	//	for (auto& info : valores) {
-	//		printf("%f, %g, %d, %g\n", 
-	//			info.tita, info.densidad, info.porosGrandes.size() + info.porosChicos, info.area);
-	//	}
-	//	assert(false);
-	//}
 }
 
 double Poros::getITV(InfoAngulo& info) {

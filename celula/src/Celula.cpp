@@ -8,8 +8,6 @@
 #include "Poisson.h"
 #include "Poros.h"
 
-#include <memory>
-
 using namespace std;
 
 Celula::Celula() {
@@ -33,22 +31,22 @@ void Celula::transportePoros() {
 	double DELTA_T = 1e-9;
 	
 	const int PASO_POROS_1 = 1;
-	const int PASO_POROS_2 = 8;
-	const int PASO_POROS_3 = 128;
-	const int PASO_POROS_4 = 2048;
+	const int PASO_POROS_2 = 1;
+	const int PASO_POROS_3 = 1;
+	const int PASO_POROS_4 = 1;
 
-	const int PASO_POISSON_1 = 1;
-	const int PASO_POISSON_2 = 10;
-	const int PASO_POISSON_3 = 100;
-	const int PASO_POISSON_4 = 200;
+	const int PASO_POISSON_1 = 2;	//antes 1 10 100 200
+	const int PASO_POISSON_2 = 20;
+	const int PASO_POISSON_3 = 200;
+	const int PASO_POISSON_4 = 1000;
 
-	const int PASO_TRANSPORTE = 10;
+	const int PASO_TRANSPORTE = 10;	//estaba en 10
 
 	const int PASO_DISCO_ITV_1 = 10;
 	const int PASO_DISCO_ITV_2 = 100;
 	const int PASO_DISCO_ITV_3 = 1000;
 	
-	const int PASO_CONSOLA = 1000;
+	const int PASO_CONSOLA = 500;
 
 	auto global_start = chrono::high_resolution_clock::now();
 
@@ -153,7 +151,7 @@ void Celula::transportePoros() {
 					paso_poisson = PASO_POISSON_3;
 					paso_poros = PASO_POROS_3;
 					paso_disco_itv = PASO_DISCO_ITV_3;
-				} else if (fase == 3 && time > 5e-3) {
+				} else if (fase == 3 && time > 2e-3) {
 					fase = 4;
 					paso_poros = PASO_POROS_4;
 					paso_poisson = PASO_POISSON_4;
