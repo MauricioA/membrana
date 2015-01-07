@@ -32,6 +32,7 @@ public:
 	double area;
 	double time;
 	double on_time;
+	double delta_t;
 	double times[2];
 	double sigmas[3];
 
@@ -53,6 +54,8 @@ public:
 	void transportePoros();
 
 	void chequearSimetria();
+
+	bool chequearValoresExtremos();
 
 	inline EntradaSalida& getEntradaSalida() {
 		return *_entradaSalida;

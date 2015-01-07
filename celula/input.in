@@ -1,18 +1,19 @@
 # graba cada 100us
 
-malla: 	 inputs/chico_25_192_150_10.msh	#alto 150
+malla: 	 inputs/chico_25_192_150_10.msh		# alto 150
 nodpel:	 quad
-salida:  salida/temp/24-11/
+salida:  salida/loop/01-07/2/
 threads: 3
 poros: true
+delta_t: 1e-9
 
 sigint: 200e-9
 sigext: 150e-9
-sigmem: 50e-12		#cambiado! valor real 5e-12
+sigmem: 5e-12		# valor real
 
-potencial:  18		#120 KV/m
+potencial:  18		# 120 KV/m
 radio: 		25
-ancho: 		10e-3	#ancho de la membrana [um]
-pulsos:		1
-on_time:	100e-3
-off_time:	0
+ancho: 		10e-3	# ancho de la membrana [um]
+pulsos:		3
+on_time:	5e-3
+off_time:	5e-3

@@ -1,3 +1,8 @@
+#ifdef _WIN32
+#define _CRT_SECURE_NO_WARNINGS
+#include <direct.h>
+#endif
+
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
@@ -5,11 +10,6 @@
 #include <cfloat>
 #include "EntradaSalida.h"
 #include "Celula.h"
-
-#ifdef _WIN32
-#define _CRT_SECURE_NO_WARNINGS
-#include <direct.h>
-#endif
 
 using namespace std;
 
@@ -24,7 +24,7 @@ EntradaSalida::EntradaSalida(Celula& celula) {
 	nPoros = 0;
 
 	ifstream f(getCelula().salida + "/input.in");
-	assert(!f.good() && "dir de salida no está vacio!");
+	assert(!f.good() && "directorio de salida not empty!");
 	f.close();
 
 	/* Copiar input.in */
@@ -89,6 +89,8 @@ void EntradaSalida::leerInput() {
 			iss >> s >> getCelula().ancho;
 		} else if (line.find("threads") != string::npos) {
 			iss >> s >> getCelula().threads;
+		} else if (line.find("delta_t") != string::npos) {
+			iss >> s >> getCelula().delta_t;
 		} else if (line.find("pulsos") != string::npos) {
 			iss >> s >> getCelula().pulsos;
 		} else if (line.find("on_time") != string::npos) {

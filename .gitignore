@@ -13,6 +13,9 @@ celula/salida/valores_ale/*
 celula/salida/fixed/*
 celula/salida/fixed2/*
 celula/salida/*.7z
+celula/salida/dec_10_OSC/*
+celula/salida/loop/*
+celula/salida/weaver/*
 
 fortran/potencial_transporte/objs/*
 fortran/potencial_transporte/celula

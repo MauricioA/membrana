@@ -6,7 +6,7 @@ ALTO_orig = 150
 ANCHO_orig = 50
 RADIO_orig = 25
 MEMBRANA_orig = 10e-3
-ESCALA = 100        #después de generada la malla mergear y achicar con merge.py
+ESCALA = 100        #despues de generada la malla mergear y achicar con merge.py
 
 ALTO = ALTO_orig * ESCALA
 ANCHO = ANCHO_orig * ESCALA

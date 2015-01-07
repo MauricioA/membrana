@@ -6,15 +6,15 @@ from pylab import *
 import pylab
 import os
 
-#para generar graficos de itv vs tiempo de itv.csv
+# para generar graficos de itv vs tiempo de itv.csv
 
-MESH = 128		#cant de angulos discretos
+MESH = 192		    # cant de angulos discretos
 NLINEAS = 7
-MAX_LIN_US = 10
-MAX_LOG_SEG = 1e-3
+MAX_LIN_US = 5e-3   # 10
+MAX_LOG_SEG = 1e-9  
 MAXTIME = max(MAX_LIN_US, MAX_LOG_SEG)
 FOLDERS = [
-	'C:\\Archivos\\Membrana\\celula\\salida\\pulsos\\25_128_cls\\',
+	'..\\salida\\weaver\\01-05\\',
 ]
 
 font = { 'size': 16 }

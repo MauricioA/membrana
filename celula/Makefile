@@ -1,6 +1,6 @@
 #ESTE MAKEFILE ES SOLO PARA LINUX
 #EN WINDOWS USAR VISUAL STUDIO
-#Pueden faltar dependencias?
+#Pueden faltar dependencias
 
 COMP=g++
 FLAGS=-O3 -std=c++0x -fopenmp -Wall -Werror -I eigen/
