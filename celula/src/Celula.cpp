@@ -1,6 +1,7 @@
 #include <cassert>
 #include <chrono>
 #include <iostream>
+#include <cfloat>
 #include "Celula.h"
 #include "Transporte.h"
 #include "EntradaSalida.h"
@@ -27,18 +28,17 @@ void Celula::poisson() {
 }
 
 double inline getDeltaT(double time_pulso, double multiplier, double delta_t) {
-	/* 90% del máximo en 1ms */
-	const double K = -1e-3 / log(0.1);
+	/* 90% del máximo en 500e-6 */
+	const double K = -500e-6 / log(0.1);
 	return multiplier * delta_t * (1 - exp(-time_pulso / K));
 }
 
 /* Loop principal */
 void Celula::transportePoros() {
 	auto global_start = chrono::high_resolution_clock::now();
-	const double THRESH_PULSE = 2e-3;
-	const double MULTIPLIER_POISSON = 500;
-	const double MULTIPLIER_TRANSPORTE = 1000;
-	const double MULTIPLIER_CONSOLA = 5000;
+	const double MULTIPLIER_POISSON = 2000;	//estaba en 1000
+	const double MULTIPLIER_CONSOLA = 250;
+	const double MULTIPLIER_TRANSPORTE = 5;
 	const double MULTIPLIER_ITV = 1000;
 	const double PASO_DISCO = 100e-6;
 
@@ -59,7 +59,8 @@ void Celula::transportePoros() {
 		for (int estado = ON; estado < 2; estado++) {
 
 			next_poisson = next_disco = next_itv = 0;	//Corren desde la 1º iteración
-			next_transporte = next_consola = delta_t;	//No corren en la 1º iteración
+			next_transporte = delta_t;					//No corre en la 1º iteración
+			next_consola = delta_t * MULTIPLIER_CONSOLA;
 			
 			/* Si comienza nuevo pulso le aviso a poros */
 			if (estado == ON && calcularPoros) poros->nuevoPulso();
@@ -86,9 +87,8 @@ void Celula::transportePoros() {
 				/* Iteración transporte */
 				if (time >= next_transporte) {
 					transporte.iteracion(time - last_transporte);
-					double step = getDeltaT(pulse_time, MULTIPLIER_TRANSPORTE, delta_t);
 					last_transporte = time;
-					next_transporte = time + step;
+					next_transporte = time + MULTIPLIER_TRANSPORTE * delta_t;
 				}
 
 				/* Escribo por consola */
@@ -99,14 +99,18 @@ void Celula::transportePoros() {
 					console_start = console_end;
 
 					if (calcularPoros) {
-						printf("%.1fus %d error: %e  %.2f ms/it\n", time*1e6,
+						printf("%.1fus %d error: %e  %.2f ms/it", time*1e6,
 							poros->getNPoros() + poros->getNPorosChicos(), transporte.error, delta_ms);
 					} else {
-						printf("%.1fus error: %e  %.2f ms/it\n", time*1e6, transporte.error, delta_ms);
+						printf("%.1fus error: %e  %.2f ms/it", time*1e6, transporte.error, delta_ms);
 					}
 
-					if (chequearValoresExtremos()) printf("VALORES EXTREMOS DE pH!!\n");
-					double step = getDeltaT(pulse_time, MULTIPLIER_CONSOLA, delta_t);
+					int nodosExtremos = valoresExtremos();
+					if (nodosExtremos > 6) printf("  VALORES EXTREMOS DE pH: %d", nodosExtremos);
+					printf("\n");
+
+					//double step = getDeltaT(pulse_time, MULTIPLIER_CONSOLA, 10 * delta_t);
+					double step = MULTIPLIER_CONSOLA * delta_t;
 					last_consola = time;
 					next_consola = time + step;
 				}
@@ -140,11 +144,17 @@ void Celula::transportePoros() {
 }
 
 /* Retorna true si hay nodos con valores extremos de pH */
-bool Celula::chequearValoresExtremos() {
+int Celula::valoresExtremos() {
+	const int MAX_NODES = 5;
+	int count = 0;
+
 	for (int node = 0; node < nNodes; node++) {
 		double pH  = -log10((concs[H_][node] + 1e-18) / CONCENT);
 		double pOH = -log10((concs[OH][node] + 1e-18) / CONCENT);
-		if (pH < 0 || pH > 14 || pOH < 0 || pOH > 14) return true;
+		if (pH < 0 || pH > 14 || pOH < 0 || pOH > 14) {
+			count++;
+		}
 	}
-	return false;
+
+	return count;
 }

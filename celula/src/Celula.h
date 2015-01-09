@@ -55,7 +55,7 @@ public:
 
 	void chequearSimetria();
 
-	bool chequearValoresExtremos();
+	int valoresExtremos();
 
 	inline EntradaSalida& getEntradaSalida() {
 		return *_entradaSalida;

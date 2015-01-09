@@ -2,16 +2,16 @@
 
 malla: 	 inputs/chico_25_192_150_10.msh		# alto 150
 nodpel:	 quad
-salida:  salida/loop/01-07/2/
+salida:  salida/loop/01-09/2/
 threads: 3
 poros: true
 delta_t: 1e-9
 
 sigint: 200e-9
 sigext: 150e-9
-sigmem: 5e-12		# valor real
+sigmem: 5e-12		# valor real 5e-12
 
-potencial:  18		# 120 KV/m
+potencial:  15		# 100 KV/m
 radio: 		25
 ancho: 		10e-3	# ancho de la membrana [um]
 pulsos:		3
