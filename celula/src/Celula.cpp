@@ -38,7 +38,9 @@ void Celula::transportePoros() {
 	auto global_start = chrono::high_resolution_clock::now();
 	const double MULTIPLIER_POISSON = 2000;	//estaba en 1000
 	const double MULTIPLIER_CONSOLA = 250;
-	const double MULTIPLIER_TRANSPORTE = 5;
+	//const double MULTIPLIER_TRANSPORTE = 5;
+	const double MULTIPLIER_TRANSPORTE_MIN = 1;
+	const double MULTIPLIER_TRANSPORTE_MAX = 20;
 	const double MULTIPLIER_ITV = 1000;
 	const double PASO_DISCO = 100e-6;
 
@@ -53,6 +55,7 @@ void Celula::transportePoros() {
 	auto console_start = chrono::high_resolution_clock::now();
 	double last_transporte = 0, last_consola = 0;
 	double next_poisson, next_transporte, next_disco, next_consola, next_itv;
+	double multiplier_transporte = MULTIPLIER_TRANSPORTE_MAX;
 
 	for (int pulso = 0; pulso < pulsos; pulso++) {
 
@@ -88,7 +91,7 @@ void Celula::transportePoros() {
 				if (time >= next_transporte) {
 					transporte.iteracion(time - last_transporte);
 					last_transporte = time;
-					next_transporte = time + MULTIPLIER_TRANSPORTE * delta_t;
+					next_transporte = time + multiplier_transporte * delta_t;
 				}
 
 				/* Escribo por consola */
@@ -106,7 +109,12 @@ void Celula::transportePoros() {
 					}
 
 					int nodosExtremos = valoresExtremos();
-					if (nodosExtremos > 6) printf("  VALORES EXTREMOS DE pH: %d", nodosExtremos);
+					if (nodosExtremos) {
+						printf("  pH ext: %d", nodosExtremos);
+						multiplier_transporte = MULTIPLIER_TRANSPORTE_MIN;
+					} else {
+						multiplier_transporte = MULTIPLIER_TRANSPORTE_MAX;
+					}
 					printf("\n");
 
 					//double step = getDeltaT(pulse_time, MULTIPLIER_CONSOLA, 10 * delta_t);
@@ -143,11 +151,8 @@ void Celula::transportePoros() {
 	cout << (interv.count() / 60) % 60 << "m " << interv.count() % 60 << "s\n";
 }
 
-/* Retorna true si hay nodos con valores extremos de pH */
 int Celula::valoresExtremos() {
-	const int MAX_NODES = 5;
 	int count = 0;
-
 	for (int node = 0; node < nNodes; node++) {
 		double pH  = -log10((concs[H_][node] + 1e-18) / CONCENT);
 		double pOH = -log10((concs[OH][node] + 1e-18) / CONCENT);
@@ -155,6 +160,5 @@ int Celula::valoresExtremos() {
 			count++;
 		}
 	}
-
 	return count;
 }

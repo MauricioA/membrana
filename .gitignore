@@ -44,6 +44,8 @@ celula/scripts/temp/*
 *.docx#
 *.doc#
 
+*.avi
+
 latex/*/*.log
 latex/*/*.out
 latex/*/*.gz
