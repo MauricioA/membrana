@@ -98,6 +98,7 @@ void Celula::transportePoros() {
 				if (time >= next_consola) {
 					auto console_end = chrono::high_resolution_clock::now();
 					auto interv = chrono::duration_cast<chrono::microseconds>(console_end - console_start);
+					//TODO revisar esta cuenta vvv
 					double delta_ms = interv.count() / 1000. / ((time - last_consola) / delta_t);
 					console_start = console_end;
 
@@ -109,9 +110,9 @@ void Celula::transportePoros() {
 					}
 
 					int nodosExtremos = valoresExtremos();
-					if (nodosExtremos) {
+					if (nodosExtremos > 10) {
 						printf("  pH ext: %d", nodosExtremos);
-						multiplier_transporte = MULTIPLIER_TRANSPORTE_MIN;
+						//multiplier_transporte = MULTIPLIER_TRANSPORTE_MIN;
 					} else {
 						multiplier_transporte = MULTIPLIER_TRANSPORTE_MAX;
 					}
