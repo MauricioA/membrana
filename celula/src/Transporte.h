@@ -115,7 +115,7 @@ protected:
 
 	vector<Triplet<double>> multiple_triplets[NESPS];
 
-	VectorXd multiple_rhs[NESPS];
+	VectorXd rhss_esp[NESPS], rhss[NESPS], rhss_aux[NESPS];
 
 	SparseMatrix<double> matrizTrans[NESPS];
 

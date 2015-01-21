@@ -10,7 +10,8 @@ public:
 	static void armadoPoisson(Double2D pos[], double sigma, int nodpel, double esm[][MAXNPEL]);
 
 	static void armadoTransporte(int nodpel, Double2D pos[], double sigma, double qe, double landa,
-			double mu, double mas[], double sol[], double esm[][MAXNPEL], double ef[], double deltaT, Double2D gradElem);
+		double mu, double mas[], double sol[], double esm[][MAXNPEL], double ef[], double ef_ant[], 
+		double deltaT, Double2D gradElem);
 
 	static double determinante3(Double2D pos[], double b[], double c[]);
 

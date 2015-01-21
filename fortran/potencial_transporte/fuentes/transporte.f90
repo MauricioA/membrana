@@ -18,6 +18,14 @@ allocate(cna(nnodes),ccl(nnodes),phOHaux(nnodes),phHaux(nnodes))
 allocate(ch_ant(nnodes),coh_ant(nnodes))
 allocate(cna_ant(nnodes),ccl_ant(nnodes))
 
+allocate(rhs_H(nnodes),rhs_cl(nnodes),rhs_oh(nnodes),rhs_na(nnodes))   ! ***cambio ***
+
+rhs_H=0.0     ! ***cambio ***
+rhs_cl=0.0
+rhs_na=0.0
+rhs_oh=0.0
+
+
 allocate(grad_ccl_x(nnodes),grad_ccl_y(nnodes))
 allocate(grad_cna_x(nnodes),grad_cna_y(nnodes))
 allocate(grad_coh_x(nnodes),grad_coh_y(nnodes))
@@ -102,10 +110,10 @@ endif
 
 
 npaso_kk=0
-nsale=100
+nsale=10
 
-tcero=0.010
-deltat=1e-8 ! 0.2e-5    !! ***CAMBIO*** bajo el dt
+tcero=0.020  ! 20 milisegundos
+deltat=0.5e-6 !!  ***CAMBIO*** Pude subir el dt bastante 
 rsa = 0.50
 
 tt=0.0
@@ -169,20 +177,20 @@ do while( tt<tcero)
         cna(jj) = rsa * cna(jj) + (1-rsa)*cna_ant(jj)
         ccl(jj) = rsa * ccl(jj) + (1-rsa)*ccl_ant(jj)
         
-        if(ch(jj)<0.0 ) then    ! ***CAMBIO
+        if(ch(jj)<0.0 ) then      ! OJO verifica cuantas veces sucede esto con contadores como aca
             ch(jj) = 0.0
             cmenos=cmenos+1    
         endif
-        if(coh(jj)<0.0) then    ! ***CAMBIO
+        if(coh(jj)<0.0) then    
             coh(jj) = 0.0
             comenos=comenos+1
         endif
 
-        if(cna(jj)<0.0 ) then    ! ***CAMBIO
+        if(cna(jj)<0.0 ) then    
             cna(jj) = 0.0
             cNamenos=cNamenos +1
         endif
-        if(ccl(jj)<0.0 ) then    ! ***CAMBIO
+        if(ccl(jj)<0.0 ) then    
             ccl(jj) = 0.0
             cCLmenos=cCLmenos+1
         endif
@@ -220,7 +228,7 @@ do while( tt<tcero)
       
        write(6,*) 'paso: ',tt,error
    
-       if((comenos+cmenos+cNamenos+cCLmenos)>0) then    ! ***CAMBIO  para verificar
+       if((comenos+cmenos+cNamenos+cCLmenos)>0) then    !  para verificar
           write(6,*) tt,cmenos,comenos,cNamenos,cCLmenos
        endif
 

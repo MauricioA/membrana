@@ -172,7 +172,8 @@ double Armado::iteracion4(int i, int j, int kGauss, Double2D pos[4],
 }
 
 void Armado::armadoTransporte(int nodpel, Double2D pos[], double difusion, double qe, double landa,
-		double mu, double mas[], double sol[], double esm[][MAXNPEL], double ef[], double deltaT, Double2D gradElem) {
+		double mu, double mas[], double sol[], double esm[][MAXNPEL], double ef[], double ef_ant[], 
+		double deltaT, Double2D gradElem) {
 
 	const double th2 = 0.5;
 	const double aCoef1 = deltaT * th2;
@@ -203,7 +204,10 @@ void Armado::armadoTransporte(int nodpel, Double2D pos[], double difusion, doubl
 			sum += (est[k][j] - aCoef2 * esm[k][j]) * sol[j];
 			esm[k][j] = est[k][j] + aCoef1 * esm[k][j];
 		}
-		ef[k] = (aCoef1 + aCoef2) * ef[k] + sum;
+
+		double ef_aux = ef[k];
+		ef[k] = aCoef1 * ef[k] + aCoef2 * ef_ant[k] + sum;
+		ef_ant[k] = ef_aux;
 	}
 }
 

@@ -38,7 +38,6 @@ void Celula::transportePoros() {
 	auto global_start = chrono::high_resolution_clock::now();
 	const double MULTIPLIER_POISSON = 2000;	//estaba en 1000
 	const double MULTIPLIER_CONSOLA = 250;
-	//const double MULTIPLIER_TRANSPORTE = 5;
 	const double MULTIPLIER_TRANSPORTE_MIN = 1;
 	const double MULTIPLIER_TRANSPORTE_MAX = 20;
 	const double MULTIPLIER_ITV = 1000;

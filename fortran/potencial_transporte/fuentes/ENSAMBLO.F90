@@ -251,10 +251,10 @@ integer ::i,j,Ngaus,kgaus,jj,ii,ndimension,ndime,k,ndi
 
 end subroutine armado4
 
-SUBROUTINE ARMADO_t(NLE,X,Y,ns,NOPE,ESM,EF,sigma,qe,landa,mu,sol,Acoef1,Acoef2,mas,Ex,Ey)
+SUBROUTINE ARMADO_t(NLE,X,Y,ns,NOPE,ESM,EF,ef_ant,sigma,qe,landa,mu,sol,Acoef1,Acoef2,mas,Ex,Ey)  ! ***cambio*** ef_ant viene y se va!
 implicit none
 INTEGER :: nope,NS(NOPE),NLE
-DOUBLE PRECISION :: X(NOPE),Y(NOPE),EF(NOPE),ESM(NOPE,NOPE),sigma,qe,landa,mu,sol(nope),Acoef1,Acoef2,mas(nope),Ex,Ey
+DOUBLE PRECISION :: X(NOPE),Y(NOPE),EF(NOPE),ef_ant(nope),ESM(NOPE,NOPE),sigma,qe,landa,mu,sol(nope),Acoef1,Acoef2,mas(nope),Ex,Ey
 DOUBLE PRECISION :: ESt(NOPE,NOPE)
 
 !local
@@ -262,7 +262,7 @@ DOUBLE PREcIsION:: B(3),C(3),DETER,A,RMED,A2,sum
 DOUBLE PRECISION,allocatable :: gauspt(:),gauswt(:),phi(:,:),dphi(:,:,:),gxcod(:,:),PHIdX(:,:,:),cteI(:) 
 DOUBLE PREcIsION:: PI=3.14159
 integer ::i,j,Ngaus,kgaus,jj,ii,ndimension,ndime,k,ndi
-DOUBLE PREcIsION:: t,s,sm,tm,sq,tp,AJACO2d(2,2),AJACOI2d(2,2),xhi,jaco1d,jacoi1d
+DOUBLE PREcIsION:: t,s,sm,tm,sq,tp,AJACO2d(2,2),AJACOI2d(2,2),xhi,jaco1d,jacoi1d,efaux
 
  
 
@@ -395,14 +395,13 @@ elseif(nope==4) then
                 
              if(landa==1) then  ! este es el caso con upwing!!
                   
-                 ESM(I,J)=ESM(I,J) -mu*cteI(kgaus)* phi(kgaus,j) *( Ex*PHIdX(1,kgaus,I) + Ey*PHIdX(2,kgaus,I) )    !! ***CAMBIO***
+                 ESM(I,J)=ESM(I,J) -mu*cteI(kgaus)* phi(kgaus,j) *( Ex*PHIdX(1,kgaus,I) + Ey*PHIdX(2,kgaus,I) )    
                  
              endif
 
 
          ENDDO
          EF(I)=EF(I) + cteI(kgaus)*PHI(kgaus,I)*QE
-         !EST(i,i) = EST(i,i) + mas(i)*LANDA  
        ENDDO
      
      enddo
@@ -529,7 +528,11 @@ DO K=1,nope
      SUM   = SUM + (EST(K,J) - Acoef2*ESM(K,J)) * sol(J)  
      ESM(K,J) = EST(K,J) + Acoef1*ESM(K,J)
   enddo
-  EF(K) = (Acoef1+Acoef2)*EF(K) + SUM
+  
+  efaux=EF(K)                                     ! ***cambio***
+  EF(K) = Acoef1*EF(K)+Acoef2*EF_ant(K) + SUM     ! ***cambio*** 
+  EF_ant(K)=efaux                                 ! ***cambio***
+
 enddo
 
 

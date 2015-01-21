@@ -30,6 +30,7 @@ fortran/potencial_transporte/*.111
 fortran/potencial_transporte/*.333
 fortran/potencial_transporte/*.444
 fortran/potencial_transporte/temp/*
+fortran/potencial_transporte/fuentes/old/*
 
 celula/scripts/temp/*
 

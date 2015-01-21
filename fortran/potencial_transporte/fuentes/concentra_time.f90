@@ -13,11 +13,11 @@ double precision :: ymed,tmed,dx,qe,fundx,funqe,adiag,denom,burn,potvol,  &
 
 double precision :: th2,Acoef2,Acoef1,funrho,funcp,cp,rho,landa,rinvaina,flujomed,Tvai,f0,b0,dista,mu
 
-double precision, allocatable :: ch_ini(:),coh_ini(:)
+double precision, allocatable :: ch_ini(:),coh_ini(:),rhs_aux(:)
 integer :: mat,NS(nodpel),iter
 double precision :: chmed,cohmed,pot_med,Dh_el,err,hmed,current,current2
 
-allocate(ch_ini(nnodes),coh_ini(nnodes))
+allocate(ch_ini(nnodes),coh_ini(nnodes),rhs_aux(nnodes))
 
 
 th2=0.5
@@ -38,6 +38,8 @@ ncase=1
   an=0
   ad=0
   rhs=0
+  rhs_aux=0   ! ***cambio***
+
   
   do kk=1,nelements
        
@@ -61,7 +63,7 @@ ncase=1
 
          endif
          mas(i)=masa(j)
-
+         ef_ant(i) = rhs_H(j)            ! ***cambio ***
          chdes(i)=ch_ant(j)
          chmed=chmed+ch_ant(j)/real(nodpel)
          cohmed=cohmed+coh_ant(j)/real(nodpel)
@@ -89,7 +91,7 @@ ncase=1
          if(mat==1 ) then
                Dh_el = D_h
          elseif(mat==2 ) then
-               Dh_el =  D_h*D_eff     !! ***CAMBIO***
+               Dh_el =  D_h*D_eff     
          elseif(mat==3) then
                Dh_el = D_h
          endif 
@@ -97,7 +99,7 @@ ncase=1
      
          landa =1.0
 
-          mu = Dh_el*Number_clave*zh    !! ***CAMBIO***
+          mu = Dh_el*Number_clave*zh    
 
      endif
      
@@ -107,7 +109,7 @@ ncase=1
      
      
      
-     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dh_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,-gradxel_x(kk),-gradxel_y(kk))   !! ***CAMBIO***  signo menos
+     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,ef_ant,Dh_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,-gradxel_x(kk),-gradxel_y(kk))   
 
      do inode=1,nodpel
             ipoin=NS(inode)
@@ -159,6 +161,7 @@ ncase=1
          DO II=1,nodpel
             RHS(NS(II))=RHS(NS(II)) + EF(II)
 	        AD(NS(II)) = AD(NS(II)) + ESM(II,II)
+            rhs_aux(NS(II))	=     rhs_aux(NS(II))	+ ef_ant(ii)
             	     
 	        DO JJ=1,nodpel
 
@@ -186,7 +189,8 @@ ncase=1
          DO II=1,nodpel
             RHS(NS(II))=RHS(NS(II)) + EF(II)
 	        AD(NS(II)) = AD(NS(II)) + ESM(II,II)
-            	     
+             rhs_aux(NS(II))	=     rhs_aux(NS(II))	+ ef_ant(ii)     ! ***cambio ***
+           	     
 	        DO JJ=1,nodpel
 
 !                JJ2=NS(JJ)+1-NS(II)
@@ -217,6 +221,7 @@ ncase=1
 
      
     ch=RHS
+    rhs_H=rhs_aux   ! ***cambio***
     iter=0
     err=1.0
     if(nmode==2) then
@@ -229,6 +234,7 @@ ncase=1
 call grad_concentra(nnodes,nelements,nodpel,ch,material,conect,coor_x,coor_y,grad_ch_x,grad_ch_y)
 
 
+deallocate(ch_ini,coh_ini,rhs_aux)
 
 end subroutine concentraH_time
 
@@ -248,11 +254,11 @@ double precision :: ymed,tmed,dx,qe,fundx,funqe,adiag,denom,burn,potvol,  &
    &                hconduc,funconduc,Pint,funpint
 
 double precision :: th2,Acoef2,Acoef1,funrho,funcp,cp,rho,landa,rinvaina,flujomed,Tvai,f0,b0,dista,mu
-double precision, allocatable :: ch_ini(:),coh_ini(:)
+double precision, allocatable :: ch_ini(:),coh_ini(:),rhs_aux(:)
 integer :: mat,ns(nodpel),iter
 double precision :: chmed,cohmed,Doh_el,err,pot_med,hmed,current
 
-!allocate(coh_ini(nnodes))
+allocate(rhs_aux(nnodes))
 
 
 th2=0.5
@@ -274,7 +280,7 @@ ncase=1
   an=0
   ad=0
   rhs=0
-
+  rhs_aux=0.0  ! ***cambio ***
 
   do kk=1,nelements
        
@@ -299,6 +305,8 @@ ncase=1
          endif
         
          mas(i)=masa(j)
+         
+         ef_ant(i)=rhs_oh(j)  ! ***cambio ***
 
          cohdes(i)=coh_ant(j)
          chmed=chmed+ch_ant(j)/real(nodpel)
@@ -332,13 +340,13 @@ ncase=1
          if(mat==1 ) then
                Doh_el = D_oh
          elseif(mat==2 ) then
-               Doh_el =  D_oh*D_eff    !! ***CAMBIO***
+               Doh_el =  D_oh*D_eff    
          elseif(mat==3) then
                Doh_el = D_oh
          endif 
      
          landa=1.0
-         mu = Doh_el*Number_clave*zoh   !! ***CAMBIO***
+         mu = Doh_el*Number_clave*zoh   
 
      endif
 
@@ -348,7 +356,7 @@ ncase=1
      !endif
      
 
-     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Doh_el,qe,landa,mu,cohdes,Acoef1,Acoef2,mas,-gradxel_x(kk),-gradxel_y(kk))   !! ***CAMBIO***
+     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,ef_ant,Doh_el,qe,landa,mu,cohdes,Acoef1,Acoef2,mas,-gradxel_x(kk),-gradxel_y(kk))   
 
      do inode=1,nodpel
             ipoin=NS(inode)
@@ -394,7 +402,7 @@ ncase=1
          DO II=1,nodpel
             RHS(NS(II))=RHS(NS(II)) + EF(II)
 	        AD(NS(II)) = AD(NS(II)) + ESM(II,II)
-            	     
+            rhs_aux(NS(II))	=     rhs_aux(NS(II))	+ ef_ant(ii)  ! ***cambio ***
 	        DO JJ=1,nodpel
 
 
@@ -421,7 +429,8 @@ ncase=1
          DO II=1,nodpel
             RHS(NS(II))=RHS(NS(II)) + EF(II)
 	        AD(NS(II)) = AD(NS(II)) + ESM(II,II)
-            	     
+            rhs_aux(NS(II))	=     rhs_aux(NS(II))	+ ef_ant(ii)  ! ***cambio ***
+	     
 	        DO JJ=1,nodpel
 
 !                JJ2=NS(JJ)+1-NS(II)
@@ -453,6 +462,7 @@ ncase=1
 
      
     coh=RHS
+    rhs_oh=rhs_aux  ! ***cambio ***
     iter=0
     err=1.0
     if(nmode==2) then
@@ -477,11 +487,11 @@ ncase=1
   
 !enddo ! fin while
 
-!deallocate(coh_ini)
 
 
 call grad_concentra(nnodes,nelements,nodpel,coh,material,conect,coor_x,coor_y,grad_coh_x,grad_coh_y)
 
+deallocate(rhs_aux)  ! ***cambio ***
 
 
 end subroutine concentraOH_time
@@ -503,11 +513,11 @@ double precision :: ymed,tmed,dx,qe,fundx,funqe,adiag,denom,burn,potvol,  &
 
 double precision :: th2,Acoef2,Acoef1,funrho,funcp,cp,rho,landa,rinvaina,flujomed,Tvai,f0,b0,dista,mu
 
-double precision, allocatable :: ch_ini(:),coh_ini(:),cna_ini(:),ccl_ini(:)
+double precision, allocatable :: ch_ini(:),coh_ini(:),cna_ini(:),ccl_ini(:),rhs_aux(:)
 integer :: mat,NS(nodpel),iter
 double precision :: chmed,cohmed,cnamed,cclmed,pot_med,DNa_el,err,hmed,current
 
-allocate(ch_ini(nnodes),coh_ini(nnodes),cna_ini(nnodes),ccl_ini(nnodes))
+allocate(ch_ini(nnodes),coh_ini(nnodes),cna_ini(nnodes),ccl_ini(nnodes),rhs_aux(nnodes))
 
 
 th2=0.5
@@ -528,6 +538,7 @@ ncase=1
   an=0
   ad=0
   rhs=0
+  rhs_aux=0.0
   
   do kk=1,nelements
        
@@ -553,7 +564,7 @@ ncase=1
 
          endif
          mas(i)=masa(j)
-
+         ef_ant(i)=rhs_Na(j)  ! ***cambio ***
          chdes(i)=cna_ant(j)
          
          chmed=chmed+ch_ant(j)/real(nodpel)
@@ -585,7 +596,7 @@ ncase=1
          if(mat==1 ) then
                Dna_el = D_na
          elseif(mat==2 ) then
-               Dna_el =  D_na*D_eff   !! ***CAMBIO***
+               Dna_el =  D_na*D_eff   
          elseif(mat==3) then
                Dna_el = D_na
          endif 
@@ -593,7 +604,7 @@ ncase=1
      
          landa =1.0
 
-         mu = Dna_el*Number_clave*zna   !! ***CAMBIO***
+         mu = Dna_el*Number_clave*zna   
 
      endif
      
@@ -601,7 +612,7 @@ ncase=1
      
      
      
-     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dna_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,-gradxel_x(kk),-gradxel_y(kk))   !! ***CAMBIO***
+     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,ef_ant,Dna_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,-gradxel_x(kk),-gradxel_y(kk))   
 
      do inode=1,nodpel
             ipoin=NS(inode)
@@ -648,7 +659,8 @@ ncase=1
          DO II=1,nodpel
             RHS(NS(II))=RHS(NS(II)) + EF(II)
 	        AD(NS(II)) = AD(NS(II)) + ESM(II,II)
-            	     
+            RHS_aux(NS(II))=RHS_aux(NS(II)) + EF_ant(II)  ! ***cambio ***
+	        	     
 	        DO JJ=1,nodpel
 
 
@@ -675,7 +687,8 @@ ncase=1
          DO II=1,nodpel
             RHS(NS(II))=RHS(NS(II)) + EF(II)
 	        AD(NS(II)) = AD(NS(II)) + ESM(II,II)
-            	     
+            RHS_aux(NS(II))=RHS_aux(NS(II)) + EF_ant(II)  ! ***cambio ***
+     
 	        DO JJ=1,nodpel
 
 !                JJ2=NS(JJ)+1-NS(II)
@@ -706,6 +719,7 @@ ncase=1
 
      
     cna=RHS
+    rhs_na=rhs_aux  ! ***cambio ***
     iter=0
     err=1.0
     if(nmode==2) then
@@ -728,7 +742,7 @@ ncase=1
   
 !enddo ! fin while
 
-!deallocate(ch_ini)
+deallocate(rhs_aux)  ! ***cambio ***
 
 
 call grad_concentra(nnodes,nelements,nodpel,cna,material,conect,coor_x,coor_y,grad_cna_x,grad_cna_y)
@@ -753,11 +767,11 @@ double precision :: ymed,tmed,dx,qe,fundx,funqe,adiag,denom,burn,potvol,  &
 
 double precision :: th2,Acoef2,Acoef1,funrho,funcp,cp,rho,landa,rinvaina,flujomed,Tvai,f0,b0,dista,mu
 
-double precision, allocatable :: ch_ini(:),coh_ini(:),cna_ini(:),ccl_ini(:)
+double precision, allocatable :: ch_ini(:),coh_ini(:),cna_ini(:),ccl_ini(:),rhs_aux(:)
 integer :: mat,NS(nodpel),iter
 double precision :: chmed,cohmed,cnamed,cclmed,pot_med,Dcl_el,err,hmed,current,current2
 
-allocate(ch_ini(nnodes),coh_ini(nnodes),cna_ini(nnodes),ccl_ini(nnodes))
+allocate(ch_ini(nnodes),coh_ini(nnodes),cna_ini(nnodes),ccl_ini(nnodes),rhs_aux(nnodes))
 
 
 th2=0.5
@@ -778,6 +792,7 @@ ncase=1
   an=0
   ad=0
   rhs=0
+  rhs_aux=0.0
   
   do kk=1,nelements
        
@@ -805,6 +820,8 @@ ncase=1
          mas(i)=masa(j)
 
          chdes(i)=ccl_ant(j)
+         ef_ant(i)=rhs_cl(j)  ! ***cambio ***
+         
          
          chmed=chmed+ch_ant(j)/real(nodpel)
          cohmed=cohmed+coh_ant(j)/real(nodpel)
@@ -835,14 +852,14 @@ ncase=1
          if(mat==1 ) then
                Dcl_el = D_cl
          elseif(mat==2 ) then
-               Dcl_el =  D_cl *D_eff   !! ***CAMBIO***
+               Dcl_el =  D_cl *D_eff   
          elseif(mat==3) then
                Dcl_el = D_cl
          endif 
      
      
          landa =1.0
-         mu = Dcl_el*Number_clave*zcl   !! ***CAMBIO***
+         mu = Dcl_el*Number_clave*zcl  
 
 
      endif
@@ -850,7 +867,7 @@ ncase=1
      QE = 0.0 
      
           
-     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,Dcl_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,-gradxel_x(kk),-gradxel_y(kk))   !! ***CAMBIO***
+     call ARMADO_t(kk,X,Y,ns,nodpel,ESM,EF,ef_ant,Dcl_el,qe,landa,mu,chdes,Acoef1,Acoef2,mas,-gradxel_x(kk),-gradxel_y(kk))   
 
      do inode=1,nodpel
             ipoin=NS(inode)
@@ -900,6 +917,7 @@ ncase=1
          DO II=1,nodpel
             RHS(NS(II))=RHS(NS(II)) + EF(II)
 	        AD(NS(II)) = AD(NS(II)) + ESM(II,II)
+            RHS_aux(NS(II))=RHS_aux(NS(II)) + EF_ant(II)  ! ***cambio ***
             	     
 	        DO JJ=1,nodpel
 
@@ -927,6 +945,7 @@ ncase=1
          DO II=1,nodpel
             RHS(NS(II))=RHS(NS(II)) + EF(II)
 	        AD(NS(II)) = AD(NS(II)) + ESM(II,II)
+            RHS_aux(NS(II))=RHS_aux(NS(II)) + EF_ant(II)  ! ***cambio ***
             	     
 	        DO JJ=1,nodpel
 
@@ -958,6 +977,7 @@ ncase=1
 
      
     ccl=RHS
+    rhs_cl=rhs_aux  ! ***cambio ***
     iter=0
     err=1.0
     if(nmode==2) then
@@ -980,7 +1000,7 @@ ncase=1
   
 !enddo ! fin while
 
-!deallocate(ch_ini)
+deallocate(rhs_aux)  ! ***cambio ***
 
 
 call grad_concentra(nnodes,nelements,nodpel,ccl,material,conect,coor_x,coor_y,grad_ccl_x,grad_ccl_y)

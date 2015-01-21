@@ -14,7 +14,7 @@ using namespace std;
 const double TOLER_MASA 	= 1e-12;
 const double FARADAY 		= 96485.34;		// C/mol cte. de Faraday
 const double R_CTE			= 8.314; 		// J/K/mol cte. de gases
-const double T_CTE			= 350;			// K temperatura
+const double T_CTE			= 1000;			// K temperatura ***CAMBIADO!!
 const double RSA 			= 0.5;
 const double CONCENT_MINIMO = 0;			// Antes estaba en 1e-8!
 const double CTE_DIFF_MEM	= 0.5;			// Solo se usa si no se calcula poros
@@ -26,7 +26,9 @@ Transporte::Transporte(Celula& celula, bool calcularPoros) {
 
 	for (int i = 0; i < NESPS; i++) {
 		multiple_triplets[i].reserve(celula.elementos.size() * celula.nodpel * celula.nodpel);
-		multiple_rhs[i].resize(celula.nNodes);
+		rhss_esp[i].resize(celula.nNodes);
+		rhss[i].resize(celula.nNodes);
+		rhss_aux[i].resize(celula.nNodes);
 	}
 
 	for (int esp = 0; esp < NESPS; esp++) {
@@ -185,14 +187,21 @@ void Transporte::masaDiag2D() {
 	}
 }
 
+//TODO subir la temperatura
+//TODO revisar después si tiene sentido
+//TODO contar apariciones de concentraciones negativas
 void Transporte::concentracion(int esp, double deltaT) {
 	Celula& celula = getCelula();
 	double esm[MAXNPEL][MAXNPEL];
 	vector<Triplet<double>> &triplets = multiple_triplets[esp];
 	triplets.clear();
 
-	VectorXd &rhs = multiple_rhs[esp];
+	VectorXd &rhs_esp = rhss_esp[esp];
+	VectorXd &rhs = rhss[esp];
+	VectorXd &rhs_aux = rhss_aux[esp];
+	
 	rhs.fill(0);
+	rhs_aux.fill(0);
 
 	for (uint kElem = 0; kElem < celula.elementos.size(); kElem++) {
 		Elemento elem = celula.elementos[kElem];
@@ -200,6 +209,7 @@ void Transporte::concentracion(int esp, double deltaT) {
 		double mas[MAXNPEL];
 		double sol[MAXNPEL];
 		double ef[MAXNPEL];
+		double ef_ant[MAXNPEL];
 		double difusion;
 
 		for (int i = 0; i < celula.nodpel; i++) {
@@ -209,6 +219,7 @@ void Transporte::concentracion(int esp, double deltaT) {
 			pos[i].y = nodo.y;
 			sol[i] = celula.c_ant[esp][iNodo];
 			mas[i] = masas[iNodo];
+			ef_ant[i] = rhs_esp[iNodo];
 		}
 
 		if (elem.material == MEMBRANA) {
@@ -219,7 +230,8 @@ void Transporte::concentracion(int esp, double deltaT) {
 
 		double mu = difusion * (FARADAY / (R_CTE * T_CTE)) * CARGA[esp];
 
-		Armado::armadoTransporte(celula.nodpel, pos, difusion, 0.0, 1.0, mu, mas, sol, esm, ef, deltaT, celula.gradElem[kElem]);
+		Armado::armadoTransporte(celula.nodpel, pos, difusion, 0.0, 1.0, mu, mas, 
+			sol, esm, ef, ef_ant, deltaT, celula.gradElem[kElem]);
 
 		for (int i = 0; i < celula.nodpel; i++) {
 			int iNodo = elem[i];
@@ -251,6 +263,7 @@ void Transporte::concentracion(int esp, double deltaT) {
 		for (int i = 0; i < celula.nodpel; i++) {
 			int iNodo = elem[i];
 			rhs[iNodo] += ef[i];
+			rhs_aux[iNodo] += ef_ant[i];
 
 			for (int j = 0; j < celula.nodpel; j++) {
 				int jNodo = elem[j];
@@ -258,6 +271,9 @@ void Transporte::concentracion(int esp, double deltaT) {
 			}
 		}
 	}
+
+	celula.concs[esp] = rhs;	//con qué ventaja? se sobreescribe al resolver CG
+	rhs_esp = rhs_aux;
 
 	SparseMatrix<double> matriz(celula.nNodes, celula.nNodes);
 	matriz.setFromTriplets(triplets.begin(), triplets.end());
