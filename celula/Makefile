@@ -1,4 +1,3 @@
-#ESTE MAKEFILE ES SOLO PARA LINUX
 #EN WINDOWS USAR VISUAL STUDIO
 #Pueden faltar dependencias
 
