@@ -8,6 +8,7 @@
 \usepackage[left=3cm,right=3cm,bottom=3.5cm,top=3.5cm]{geometry}
 \usepackage[version=3]{mhchem}	%fórmulas químicas
 \usepackage{siunitx}			%unidades
+\usepackage{verbatim}
 
 \newcommand{\h}{\ce{H^+}}
 \newcommand{\oh}{\ce{OH^-}}
@@ -64,6 +65,39 @@
 
 \chapter{Introducción}
 % CAP 1 introducción. problemática e introducción del modelo
+
+El proceso de electroporación celular tiene como objetivo permeabilizar la membrana de una célula, mediante la aplicación de un campo electromagnético externo, para lograr el transporte a través de la misma de drogas o agentes terapéuticos cargados por difusión y convección. Este proceso es utilizado en diferentes tratamientos electroquímicos de tumores [1,2] como por ejemplo, en la electroquimioterapia (ECT) donde se utilizan drogas quimioterápicas clásicas o en el caso de la Electroterapia Génica (GET), en donde se utilizan moléculas de ADN y ARN[4]. El proceso se optimiza cuando ese campo es pulsado, dependiendo del voltaje aplicado, la duración de los pulsos y la frecuencia de los mismos [3,4].\\
+
+La membrana está compuesta por una bicapa lipídica con su interior hidrofóbico, que actúa como una barrera altamente impermeable a la mayoría de moléculas polares, impidiendo que la mayor parte del contenido hidrosoluble de la célula salga de ella. \\
+
+A tiempo infinito  cualquier molécula difundirá a través de una bicapa lipídica libre de proteínas, a favor de su gradiente de concentración. Sin embargo la velocidad a la que una molécula difunde a través de una bicapa lipídica varía enormemente, dependiendo en gran parte del tamaño de la molécula y de su solubilidad relativa al aceite (es decir, cuanto más hidrofóbica o no polar), tanto más rápidamente difundirá a través de una bicapa [12]. Una de las funciones mas importantes de la membrana es controlar la comunicación entre el medio intracelular y el exterior a través del transporte. Dentro de la célula tienen lugar dos tipos de transporte que se llevan a cabo a través de la membrana: el transporte pasivo y el activo. \\
+
+El transporte pasivo consiste en un proceso de difusión de sustancias a través de la membrana dado por la diferencia de concentración de las mismas. Estos procesos son naturales y no requieren de energía externa. El transporte activo, en cambio, es un proceso que necesita de energía para transportar las moléculas de uno a otro lado de la membrana a través de una permeabilización natural o artificial de la misma.\\
+
+La electroporación de la membrana se inicia con la aplicación de un campo eléctrico que sobre la célula genera el llamado potencial transmembranal (PTM), una diferencia de voltaje inducida sobre la membrana celular que aísla a la célula del medio exterior [5] debido a que la conductividad eléctrica de la membrana es seis (6) órdenes de magnitud más pequeña que la de los medios intra y extra celular. Este potencial inducido tiene estrecha relación con la formación de poros acuosos que conducen a través de la memebrana que poseen una dinámica relacionada con el PTM [8]. Sin potencial aplicado dichos poros poseen un radio relativamente pequeño, (del orden de medio nanómetro) que sólo permiten el paso de sustancia específicas de un medio al otro producto de reacciones electroquímicas en su proximidad. La mayor o menor facilidad de las moléculas para atravesar la membrana celular dependen de la carga eléctrica y la masa molar. Moléculas pequeñas o con carga eléctrica neutra pasan la membrana más fácilmente que elementos cargados eléctricamente y moléculas grandes. Además, la membrana es selectiva, lo que significa que permite la entrada de unas moléculas y restringe la de otras.\\
+Las moléculas pequeñas no polares se disuelven fácilmente en las bicapas lipídicas y por lo tanto difunden con rapidez a través de ellas. Las moléculas polares sin carga si su tamaño es suficientemente reducido también difunden rápidamente a través de una bicapa. Ejemplos de estas sustancias no polares son los solventes orgánicos, que presentan una polaridad alta o baja. Por ejemplo: el metanol, la acetona, el etanol, la urea, etc.\\
+
+La permeabilidad depende de los siguientes factores: i) Solubilidad en los lípidos: Las sustancias que se disuelven en los lípidos (moléculas hidrófobas, no polares) penetran con facilidad en la membrana dado que está compuesta en su mayor parte por fosfolípidos. ii) Tamaño: la más grande parte de las moléculas de gran tamaño no pasan a través de la membrana. Solo un pequeño número de moléculas polares de pequeño tamaño pueden atravesar la capa de fosfolípidos. iii) Carga: Las moléculas cargadas y los iones no pueden pasar, en condiciones normales, a través de la membrana. Sin embargo, algunas sustancias cargadas pueden pasar por los canales proteicos o con la ayuda de una proteína transportadora.\\
+
+Sin embargo cuando se aplica un campo eléctrico al medio, la población de poros de la membrana responden al PTM en forma dinámica, abriéndose a medida que este potencial aumenta, para después cerrarse en muchos casos o alcanzar un tamaño estable en otros siguiendo una compleja estadística analizada en [7]. En respuesta a esta apertura se modifica el coeficiente de conductividad eléctrica y el de difusión de la membrana facilitando el transporte a través de la misma [6]. Básicamente en este caso por mecanismos guiados por la difusión y la movilidad de las especies iónicas. Estos fenómenos también se relacionan con la tension elástica sobre la membrana. Una campo eléctrico aplicado sobre la misma genera mediante el tensor de Maxwell una tension local que produce una deformación en la célula, que genera que la misma tome una forma oblada o prolada, según sean los campos aplicados [13-14]. Una vez abiertos los poros y deformada la membrana en la zona de los polos de la célula, se produce una condición adecuada para que las especies iónicas de concentración distinta en cada medio (intra y extra celular) comiencen a ingresar dentro de la célula por diferencia de concentración. \\
+
+Es necesario destacar que el modelo propuesto en esta tesis y que sigue el trabajo de diferentes autores [8-12] es un mecanismo aun no establecido con firmeza y sobre el que persisten algunos puntos que aun se deben analizar y continuar estudiando. Es por ese motivo que investigaciones de este tipo resultan valiosas ya que permiten confirmar predicciones y poner en duda suposiciones analíticas que no son tenidas en cuenta por las teóricas y deben ser estudiadas en detalle. \\
+
+Este conjunto de simulaciones deben encararse mediante una compleja batería de modelos acoplados unos con otros y mutuamente dependientes. En esta tesis se propone por primera vez un mecanismo de funcionamiento en conjunto de todos estos fenómenos. Cada uno de estos modelos debe ser abordado por una técnica numérica adecuada. En primer lugar nos proponemos simular la distribución de potencial y campo eléctrico sobre el dominio conformado por el líquido intracelular, el liquido extracelular y la membrana mediante el método de los elementos finitos [9-10], discretizando explícitamente la membrana celular [8,9]. Es necesario destacar que la membrana celular posee un espesor aproximado de entre 5 y 10 nanómetros representando un desafío numérico novedoso al intentar discretizar la misma mediante elementos finitos. En la literatura la membrana es tratada mediante una condición de contorno que separa los medios extra e intra celular [12]. \\
+
+La modelización de la dinámica de creación y evolución de la población de poros sobre la membrana y el tamaño de los mismos es resuelta medianate una serie de ecuaciones diferenciales ordinarias, que se evolucionan en el tiempo mediante un algoritmo de un paso usual [15]. Con la información provista por ambos modelos, calculamos la nueva conductividad eléctrica y el coeficiente de difusión de la membrana permeabilizada, así como la distribución de tensiones sobre la misma. Tensión que retroalimenta el modelo de creación de poros y el de conductividad de membrana[13]. \\
+
+Con estos resultados se resuelve el problema del transporte en todo el dominio proponiendo que a través de la membrana el mismo ocurre por el área de poros abiertos. Analizaremos la movilidad de cuatro especies iónicas presentes en el medio extra e intracelular: hidrógeno (\h), hidróxido (\oh), sodio (\na) y cloruro (\cl) resolviendo las ecuaciones de Nerts-Plank para cada especie sobre todo el dominio. Para este cálculo volveremos a utilizar el método de elementos finitos sobre el mismo mallado utilizado para recalcular la distribución de potencial eléctrico.\\
+
+Son numerosos los parámetros relevantes a tener en cuanta cuando se realiza una simulación tan compleja. En primer lugar debemos analizar los parámetros geométricos. Es necesario explorar el adecuado dominio de resolución, el tamaño de la célula puede variar en un rango que va de los 5 micrones a los 50 micrones de diámetro. El dominio general puede abarcar un espacio circundante amplio o restringir el estudio a unos pocos micrones fuera de la membrana. Es crucial el ancho de membrana utilizado. Como ya dijimos el espesor de la membrana vive entre los 5 y los 20 nanómetros dependiendo de la célula. Esta expliracionn geometria es fundamental y a ella dedicamos una buena parte del tiempo involucrado en este trabajo. 
+%TODO what? corregir oración
+Algunos de los resultados se presentaran en el capitulo 3 y 4 del mismo. Otro parámetro fundamental dado la diferencia de escalas involucradas es el tiempo. El paso temporal de cada uno de los modelos es diferente, ya que el potencial aplicado genera un potencial sobre el dominio que varia poco en función del tiempo pero el tiempo de creación y destrucción de poros es muy pequeño, sobre todo en los procesos iniciales de desarrollo del PTM. Por ultimo el transporte posee un tiempo característico intermedio entre ambos problemas mencionados. Determinar estas escalas y ajustarlas al modelos tambien lelvo una buena parte de la tareas preliminares a la obtención de resultados.
+%TODO es alreves, el transporte varía mas lento que la tensión
+Para optimizar estos parámetros se realizó un análisis paramétrico de cada uno de los modelos por separado, algunos de los cuales, los mas relevantes, son presentados en cada una de las secciones dedicadas a los mismos. 
+Un punto a destacar es el relativo al tratamiento de las mallas de elementos finitos utilizadas. Hemos seleccionado un mallador externo [11] que se adapta adecuadamente a nuestro problema pero que hemos tenido que testear y comprar con otros similares. Algunos resultados se este análisis se presentan en el capitulo 2 dedicado a los modelos numéricos utilizados.
+Los resultados obtenidos del modelo general son comparados con datos experimentales existentes en la literatura. Cada uno de los modelos por separado se comparan con experimentos o resultados numéricos provistos por otros códigos. En general hemos obtenido muy buenos acuerdos con los experimentos, como se mostrará en el capitulo 6 de esta tesis[6-8].\\
+
+ Problemas complejos proveen una gran cantidad de resultados que es necesario manipular adecuadamente para poder manipular la información que dichos datos proveen además de entender el modelo, este funcionando bien o mal. Para ello hemos perfeccionado el uso de un software de visualización abierto [16]. Se mencionarán mas detalles del mismo en la capitulo 2.
 
 \chapter{Descripción del Modelo}
 % CAP 2 descripción del modelo. qué se resuelve, método numérico. Explicación de FEM
@@ -243,28 +277,12 @@ A continuación se presenta la definición y valores de las constantes usadas.
 
 \newpage
 
-%section con detalles de implementación (mallado, librerías, lenguaje, etc) de última si está demasiado detallado se puede mover a otro lugar. explicar que se divide en 3 partes
 \section{Implementación}
-%TODO reescribir bien esto
-
-%El problema fue divido en tres partes: el potencial eléctrico en el dominio al aplicar un pulso, la creación y evolución de poros en la membrana celular y el transporte de las especies de interés producto de las diferencias de potencial. Cada uno de estos sub-problemas se resolvió por separado numéricamente y los resultados fueron analizados en capítulos separados. Por último se acoplaron los tres sistemas...  completar \\
-%
-%Para resolver numéricamente las ecuaciones diferenciales de los distintos fenómenos físicos simulados se utilizaron los métodos de elementos finitos y diferencias finitas. 
-%
-%El trabajo se implementó desde cero en \texttt{C++}. 
-%
-%
-%%primera versión conciso:
 %
 %FALTA ACOPLAMIENTO EN LA SECCIÓN MODELO MATEMÁTICO!!! (como influyen los poros en conductancia y difusión)
 %FALTARÍA TAMBIÉN ACLARAR QUE LA DENSIDAD DE POROS ES MUY VARIABLE SEGÚN LA REGIÓN DE LA SUPERFICIE Y QUE LA EQ SE APLICA A CADA PORO POR SEPARADO!!
 
-%mencionar matrices esparsas
-
 El problema fue dividido en tres partes, según los tres fenómenos físicos principales considerados: el potencial eléctrico en el dominio, la evolución de los poros en la membrana celular y el transporte de las especies iónicas. Las tres partes fueron implementadas y estudiadas por separado y por último fueron acopladas.\\
-
-%\subsection*{Detalles de implementación}
-%escribir todo, después dividir en subsecciones
 
 %TODO agregar referencias!!
 %mas detalles de implementación en capítulos posteriores
@@ -287,24 +305,14 @@ Las mallas utilizadas tienen entre xxx y xxx elementos y representan un dominio 
 
 También se usó \texttt{Python} como lenguaje secundario, para ayudar en la generación de mallas, la interpretación de los datos de salida obtenidos en las simulaciones y la generación de gráficos, haciendo uso de la librería \texttt{mathplotlib}.
 
-%primero escribir, después ordenar y corregir
-%
-%+dividido en 3 partes
-%+detalles cpu
-%+implementado en c++ y librerías
-%+métodos de resolución
-%+openmp
-%+mallado
-%+coordenadas cilíndricas
-%+fem 
-%+python
-
 %TODO podrían ir más detalles de entrada (input.in), salida, como usar el programa, etc o podria ir un apéndice de uso
 
 \subsection{Método de Elementos Finitos}
 %acá solo explicación a grandes rasgos??
 %debería ir abajo de la section implementación?
 %TODO expandir bastante
+
+Esto está copiado del preinforme. Habría que expandir bastante. También poner detalles del trabajo.\\
 
 El método de elementos finitos (FEM) sirve para resolver ecuaciones diferenciales de manera aproximada, discretizando el dominio en zonas pequeñas y disjuntas llamadas elementos, y resolviendo un sistema de ecuaciones lineales que obtiene la solución de las ecuaciones diferenciales en un conjunto de puntos del dominio. La aplicación del método de elementos finitos consiste en: \cite{fem}
 
@@ -323,9 +331,9 @@ El método de elementos finitos (FEM) sirve para resolver ecuaciones diferencial
 
 %TODO \subsection{Método de Diferencias Finitas}
 
-%TODO \subsection{Descomposición de Cholesky}
+\subsection{Descomposición de Cholesky}
 
-%TODO \subsection{Descomposición BiCGSTAB}
+\subsection{Descomposición BiCGSTAB}
 
 \chapter{Potencial Eléctrico}
 % CAP 3 ITV. como se resuelve, resultados (solos, sin poros ni transporte). 
@@ -355,18 +363,184 @@ En la figura ??? se observa el PTM en función del ángulo polar $\theta$, mient
 
 \chapter{Generación y Evolución de Poros}
 % CAP 4 Poros. ecuaciones, como se resuelve, resultados
+En este capítulo se simula la creación de poros en la membrana celular según las ecuaciones \ref{eq:poros-crea} y \ref{eq:poros-radio}. Para eso se utiliza el cálculo del potencial eléctrico realizado en el capítulo anterior, pero se le agrega la ecuación \ref{eq:capacit}, que tiene en cuenta la capacitancia de la célula al momento de calcular el potencial transmembrana.\\
+
+\section{Implementación}
+
+Como las ecuaciones que gobiernan la creación de poros en la membrana son dependientes del tiempo, fue necesario crear un ciclo que realice iteraciones de las ecuaciones de poros y de potencial eléctrico. La ecuación \ref{eq:poisson} debe correrse periódicamente a pesar de que no depende del tiempo, ya que los valores de conductancias en la membrana ($\sigma_{m}$) son afectados por la aparición de poros. \\
+
+La ecuación \ref{eq:poros-crea} que calcula la densidad de poros en cada región de la membrana fue discretizada como
+
+\begin{equation} \label{eq:poros-crea-disc}
+	\frac{N_{t+1} - N_{t}}{\Delta t} = \alpha e^{(V_m/V_{ep})^2} \left( 1 - \frac{N_{t}}{N_0 e^{q \left(V_m / V_{ep} \right) ^2}} \right)
+\end{equation}
+
+Para obtener el valor de $V_m$ en cada punto de la membrana celular se tienen en cuenta los potenciales obtenidos con el método de elementos finitos y la capacitancia de la célula. Primero se calcula la diferencia de potencial entre los nodos externos e internos de la membrana y luego se aplica la ecuación \ref{eq:capacit} para obtener el PTM real según el tiempo transcurrido desde el comienzo del pulso.\\
+
+La cantidad de poros en cada región de la membrana se calcula multiplicando la densidad obtenida con la ecuación \ref{eq:poros-crea-disc} por el área de cada región discreta y tomando la parte entera del valor obtenido. El área de cada zona esférica discreta se calcula como 
+
+\begin{equation} \label{eq:area}
+	A = 2 \pi \alpha^2 (cos(\theta_1) - cos(\theta_2))
+\end{equation}
+
+siendo $\alpha$ el radio de la célula y $\theta_1$ y $\theta_2$ los ángulos que delimitan la zona esférica.\\
+
+Se mantiene para cada zona esférica discreta un vector con cada uno de los poros y sus radios. Si en una iteración la cantidad de poros estimada para una región es mayor a cantidad de poros estimada en la iteración anterior, entonces se agregan poros al vector de la región esférica con radio inicial $r_*$.\\
+
+Para cada uno de los poros se calcula por separado su radio en cada iteración aplicando la ecuación \ref{eq:poros-radio} discretizada como
+
+\begin{equation} \label{eq:poros-radio-disc}
+	\frac{r_{t+1} - r_t}{\Delta t} = \frac{D}{kT} \left( \frac{V_m^2 F_{max}}{1+r_h / (r_t+r_a)} + \frac{4 \beta}{r_t} \left(\frac{r_*}{r_t}\right)^4 - 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r_t \right)
+\end{equation}
+
+Para mejorar los tiempos de ejecución se consideran todos los poros con radio muy pequeño y con cierta antigüedad como iguales en vez de tratarlos individualmente, mientras que a los poros grandes o recién creados se los trata individualmente, aplicando la ecuación \ref{eq:poros-radio-disc} a cada uno.\\
+
+Los valores de conductividad de la membrana son afectados por la aparición de poros. Por esta razón se calcula primero la permeablización de cada región de la membrana como la proporción del área ocupada por poros con la fórmula
+
+\begin{equation} 
+    p = \frac{ \sum\limits_{r \in R} \pi r^2 }{A_z}
+\end{equation} 
+
+donde $p$ es la permeabilización de una zona esférica de la membrana, $R$ un conjunto con todos los radios de los poros en ésa zona y $A_z$ el área de la zona, calculada según la ecuación \ref{eq:area}. Luego se actualizan los valores de conductividad de cada zona de la membrana como
+
+\begin{equation} 
+	\sigma_{\textrm{\tiny elem}} = \sigma_m (1 - p) + \sigma_p p
+\end{equation} 
+
+con $\sigma_{\textrm{\tiny elem}}$ la nueva conductividad del elemento finito, $\sigma_m$ la conductividad de la membrana cuando no tiene poros y $\sigma_p$ la conductividad del líquido que llena los poros.\\
+
+De la misma manera se actualizan los valores de difusión para los elementos de la membrana 
+
+\begin{equation} 
+	D{\textrm{\tiny elem}} = D_m (1 - p) + D_p p
+\end{equation} 
+
+con $D_m$ la difusión de la membrana celular sin poros y $D_p$ la difusión del líquido que llena los poros. Este cambio en la difusión no tiene por el momento ningún efecto pero lo tendrá en capítulos posteriores cuando se calcule el transporte de especies.\\
+
+\section{Resultados}
+
+Se corrieron simulaciones con células de ??? y ??? de radio y pulsos de ??? y ??? de duración. \\
+
+
+acá poner histogramas de poros en diferentes instantes. Al menos para dos valores de tensión\\
+
+Las figuras ??? presentan histogramas con los radios de los poros creados en diferentes instantes de tiempo. 
+
+
+
+
+acá poner 4 gráficos de itv vs tiempo para diferentes potenciales, como en el preinforme
+
+Se puede observar en las figuras ??? el potencial transmembrana en función del tiempo al comienzo del pulso para diferente ángulos polares $\theta$. Las cuatro figuras corresponden a cuatro pulsos de diferente potencial eléctrico aplicado sobre la misma célula. En el primer caso el potencial eléctrico es muy chico y por lo tanto no se alcanzaron a crear poros. En los otros casos el potencial sí es lo suficientemente alto como para crear poros. Se observa en estos casos que el PTM se incrementa durante los primeros instantes hasta alcanzar un pico de tensión a partir del cual comienza a disminuir hasta alcanzar un valor de equilibrio. La subida paulatina de tensión durante los primeros instantes del pulso se debe a la capacitancia de la célula, mientras que la caída en los instantes posteriores se debe a la aparición de poros, que disminuyen la conductividad de la membrana, disminuyendo de esta manera la caída de tensión entre el interior y exterior de la célula. \\
+
+Las diferentes curvas en cada uno de los gráficos corresponden a diferentes ángulos polares. Se nota en todos los casos que las regiones de la membrana cercanas a los polos (con ángulos cercanos a 0º o 180º) obtienen en los primeros instantes los valores absolutos de PTM más altos, mientras que las regiones cercanas al ecuador (ángulo polar cercano a 90º) tienen un PTM prácticamente nulo.\\
+
+aca poner gráficos de PTM vs ángulo para diff tiempos. estaría bueno poner una sola curva por gráfico y gráficos más chicos. podrian ser todos de un solo potencial en vez de diferentes tensiones\\
+
+En las figuras ??? se graficaron los potenciales transmembrana en función del ángulo polar para diferentes instantes de tiempo en una célula de ??? de radio con un pulso aplicado de ???. Se observa en los primeros instantes que el PTM obtenido es similar al obtenido en el capítulo anterior y al que se puede estimar con la fórmula cerrada \ref{eq:cos}. Esto se debe a que la población de poros es nula o muy pequeña como para afectar aún la conductividad de la membrana. Sin embargo en los instantes posteriores la aparición de poros disminuye notablemente la conductividad de la membrana en las regiones cercanas a los polos, bajando así la diferencia de potencial. En instantes posteriores se observa el mismo fenómeno con regiones más lejanas a los poros, alejándose más el PTM obtenido del que se puede calcular con la fórmula cerrada \ref{eq:cos}.\\
+
+
+%TODO mencionar incremento de tensión -> velocidad
+%TODO mencionar potencial mínimo necesario para electroporación 
+%TODO mencionar que la formula cerrada de itv no sirve
+%TODO gráficos de estadísticas de poros
 
 \chapter{Transporte de Especies}
 % CAP 5 Transporte. idem (solo transporte, sin poros)
 
+En este capítulo se analiza la concentración y movimiento de cuatro especies iónicas: el hidrógeno (\h), el hidróxido (\oh), el sodio (\na) y cloruro (\cl) en el dominio producto del campo eléctrico aplicado. Para ello se realizan simulaciones en las que se aplican pulsos eléctricos a las mallas generadas anteriormente y se analiza el transporte de las cuatro especies producto del gradiente de concentración y del campo eléctrico según la ley de Nernst-Planck. Se ignora en este capítulo la creación de poros en la membrana celular.\\
+
+\section{Implementación}
+
+%Como las concentraciones de las cuatro especies son independientes entre sí, se hace uso de la interfaz OpenMP para realizar llenar las matrices y resolver los sistemas en cada iteración. 
+
+\section{Resultados}
+Para esto hace falta correr sin poros y escribir algo.
+
 \chapter{Modelo Acoplado}
 % CAP 6 Todo acoplado. Resultados. poner snapshots de valores 1-9
+
+En este capítulo se realizan simulaciones de todos los fenómenos físicos simulados en los capítulos anteriores juntos, es decir el potencial eléctrico, la creación de poros en la membrana y la posterior variación en el radio de los mimos, las variaciones en la conductividad y difusión de la membrana producto de la aparición de poros y el transporte de especies iónicas en el dominio. Además se estudió el efecto de aplicar varios pulsos consecutivos a través de los electrodos, en lugar de un único pulso.
+
+\section{Implementación}
+Para realizar la simulación completa se creó un ciclo principal que realiza llamados a las diferentes rutinas implementadas en los capítulos anteriores.\\
+
+Para acelerar los tiempos de ejecución se usaron intervalos temporales diferentes para los distintos fenómenos físicos simulados. Para el cálculo de la densidad de poros en la membrana celular y sus radios se utilizó un intervalo temporal muy pequeño, ya que se notó que al aumentarlo se producen errores de discretización muy grandes que producen la divergencia del sistema. Para el cálculo de los potenciales eléctricos en el dominio, en cambio, alcanzó un intervalo temporal mucho mayor, y se notó que reducirlo no impacta en los resultados. Por último para el cálculo de las concentraciones de las especies iónicas se necesitaron intervalos temporales aún mayores. Concretamente se usaron intervalos de 1 \si{\nano\second} para las ecuaciones de poros, 20 \si{\nano\second} para el transporte de especies y un intervalo variable de entre 1 \si{\nano\second} y 2 \si{\micro\second} para el cálculo del potencial eléctrico. Este último intervalo es variable dado que los primeros instantes de cada pulso eléctrico es el que tiene mayores variaciones en los potenciales producto de la repentina permeabilización de la membrana, como puede verse en el capítulo 4. Esto hace que se necesite una actualización constante de los valores de potencial en los nodos, sobre todos los cercanos a la membrana celular. Sin embargo pasados los primeros microsegundos del pulso el sistema se estabiliza y la permeabilización y valores de PTM se mantienen con pocos cambios lo que hace innecesario un cálculo constante de los potenciales. Por esta razón se optó por un intervalo muy pequeño al comenzar un pulso y se incrementa de manera exponencial.\\
+
+%TODO revisar los valores de los intervalos!! revisar si transporte efectivamente mayor que poisson
+%TODO está bien decir delta t exponencial? aumenta como un capacitor
+
+%TODO on time, off time. mencionar que se reinicia el delta_t
+
+%TODO mencionar truco numérico temperatura
+
+\section{Resultados}
+
+Se presentan a continuación las concentraciones en el dominio de las diferentes especies iónicas estudiadas para diferentes instantes de tiempo. Los resultados corresponden a simulaciones de una célula de ??? bajo ? pulsos eléctricos con una diferencia potencial de ??? y una duración de ??? encendidos y ??? apagados cada uno.\\
+
+Tener primero resultados para poder escribir.
+
+\subsection*{\h}
+
+Acá poner snapshots de pH \\
+
+\subsection*{\oh}
+
+\subsection*{\na}
+
+\subsection*{\cl}
+
 
 \chapter{Conclusiones}
 % CAP 7 conclusiones
 
-%%%% BIBLIOGRAFÍA
 \backmatter
-%\bibliography{tesis}
+\bibliography{tesis}
+
+\begin{thebibliography}{99}
+
+%\bibitem{puchiar}
+%	G. Puchiar, T. Kotnik, B. Valič and D. Miklavčič
+%	\emph{Numerical Determination of Transmembrane Voltage Induced on Irregularly Shaped Cells}
+%	Annals of Biomedical Engineering
+%	April 2006, Volume 34, Issue 4, Pages 642-652
+
+%TODO pasar la bibiografía a bibitem!!!
+
+\begin{comment}
+1. Colombo L, González G, Marshall G, Molina F, Soba A, Suárez C, Turjanski P; Bioelectrochemistry 71.(2007)
+
+2. Nilsson E, von Euler H, Berendson J, Thorne A, Wersall P, Naslund I, Lagerstedt A, Narfstrom K, Olsson J; Bioelectrochemistry 51 (2000)
+
+3. Netti PA, Berk DA, Swartz MA, Grodzinsky AJ,Jain RK; Cancer Research 60 (2000) 
+
+4 - Matías Daniel Marino, Dr. Pablo Turjanski, Dr. Nahuel Olaiz, Electroporación en el tratamiento de tumores: modelos teóricos y experimentales, (2013).
+
+5 - G. Puchiar, T. Kotnik, B. Valic and D. Miklavcic; Annals of Biomedical Engineering, Volume 34, 4, (2006).
+
+6 - Qiong Zheng, Duan Chen and Guo-Wei Wei; Journal of Computational Physics,	Volume 230,13, (2011).
+
+7 - Wanda Krassowska, Petar D. Filev; Biophysical Journal, Volume 92, Issue 2, (2007).
+
+8-Jianbo Li, Hao Lin, Numerical simulation of molecular uptake via electroporation, Bioelectrochemistry 82 (2011) 10–21
+
+9 - Stanley Humphries; Finite-element Methods for Electromagnetics, (2010).
+
+10 - O.C. Zienkiewicz, R.L. Taylor, The Finite Element Method Volume I: The Basis, Butterworth-Heinemann, 5th edition, (2000).
+
+11 - http://www.automesh2d.com/
+
+12- Cooper, La célula, pág 470-471, 2ª edición, Ed. Marbán
+
+13- P.H. Mott_, J.R. Dorgan1, C.M. Roland The bulk modulus and Poisson’s ratio of ‘‘incompressible’’ materials Journal of Sound and Vibration 312 (2008) 572–575
+
+14- John David Jackson,"Classical Electrodynamics, 3rd Ed.", John Wiley & Sons, Inc., 1999.
+
+15- Nieves, Antonio (2007). Métodos numéricos aplicados a la ingeniería. Grupo editorial Patria.
+
+16- www.paraview.org
+\end{comment}
+
+\end{thebibliography}
 
 \end{document}
