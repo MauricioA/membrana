@@ -24,7 +24,9 @@ Celula::~Celula() {}
 
 void Celula::poisson() {
 	Poisson::iteracion(*this);
+	Poros poros(*this);
 	getEntradaSalida().grabarPoisson();
+	getEntradaSalida().grabarITV(poros);
 }
 
 double inline getDeltaT(double time_pulso, double multiplier, double delta_t) {

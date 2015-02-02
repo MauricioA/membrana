@@ -2,8 +2,8 @@
 
 malla: 	 inputs/chico_25_192_150_10.msh		# alto 150
 nodpel:	 quad
-salida:  salida/loop/01-21/fixed/
-threads: 3
+salida:  salida/last/poisson_01-29/
+threads: 4
 poros: true
 delta_t: 1e-9
 

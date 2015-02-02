@@ -3,7 +3,7 @@
 \usepackage[version=3]{mhchem}
 \usepackage{siunitx}
 \usepackage{babel}
-\usepackage[pdftex]{hyperref}	%este tiene que ser el último usepackage en incluír?
+\usepackage[pdftex]{hyperref}	%último en incluir
 
 \hypersetup{colorlinks = true}
 
@@ -39,7 +39,7 @@
 
 %La exposición de células biológicas a campos eléctricos pulsantes (PEF) resulta en un aumento de la permeabilidad de la membrana de las células, fenómeno denominado electroporación (EP). Dado que todo tipo de células (animal, plantas y organismos) pueden ser efectivamente electroporadas, la EP es considerada un método universal y una plataforma tecnológica. La EP es ampliamente utilizada en aplicaciones en salud en el tratamiento de tumores,  la transfección génica en vacunas, y en alimentos, en la producción o conservación de los mismos. Por su característica de fenómeno universal la EP es transversal a muchas disciplinas lo que justifica la conveniencia de establecer una plataforma tecnológica local basada en la EP (PETP) y sus aplicaciones en salud y procesamiento de alimentos. En el contexto de este proyecto interdisciplinario de PTEP que se desarrolla en el LSC, mis objetivos específicos son desarrollar modelos numéricos genéricos en un contexto de HPC en el tratamiento electroquímico de tumores y en el procesamiento de alimentos por PEF.  En particular, dado que la EP es un fenómeno a nivel celular intentaré entender mejor el comportamiento de la membrana celular y el transporte iónico simulando una célula esférica sometida a PEF por medio de dos electrodos. Se asumirá que la célula está constituida  por cuatro especies iónicas: el ión hidrógeno (\h), el hidróxido (\oh), el catión sodio (\na) y el cloruro (\cl). Se  analizará la creación de poros en la membrana celular y el transporte de masa a través de los mismos. El sistema será descrito por la ecuaciones de Nernst-Planck para el transporte iónico \cite{fodava}, la ecuación de Poisson para el campo eléctrico \cite{jianbo}, y las ecuaciones de DeBruin y Krassowska para la creación de poros y variación del tamaño de los mismos \cite{krass}. Para la solución del sistema anterior se utilizarán elementos finitos, técnicas de relajación standard y computación serial y paralela. El dominio será representado por una malla bidimensional con coordenadas cilíndricas y elementos cuadrilaterales con los electrodos dentro del dominio y tres materiales diferentes: el líquido extracelular, la membrana celular y el líquido intracelular. Con los resultados a nivel celular, en salud, espero optimizar los protocolos para aumentar la eficiencia de la EP y posiblemente disminuir los efectos adversos; en el procesamiento de alimentos por PEF espero maximizar la eficiencia de extracción y minimizar el costo de producción. El objetivo general en el contexto de la PETP es profundizar el conocimiento de los mecanismos bioelectroquímicos que subyacen a la EP a través de un abordaje interdisciplinario integrando la modelación matemática numérica con la validación experimental desarrollada en el LSC. El desarrollo de estas nuevas aplicaciones basadas en EP y PEF puede proporcionar sin duda múltiples beneficios sociales, científicos, tecnológicos y económicos a la sociedad de nuestro tiempo. 
 
-La exposición de células biológicas a campos eléctricos pulsantes (PEF) resulta en un aumento de la permeabilidad de la membrana de las células, fenómeno denominado electroporación (EP). La EP es ampliamente utilizada en aplicaciones en salud y en alimentos. El objetivo específico de mi plan de tesis de licenciatura es desarrollar un modelo computacional serial y paralelo genérico en un contexto de HPC para el estudio de los mecanismos básicos de electroporación y sus aplicaciones en salud y alimentos.  En particular, dado que la EP es un fenómeno a nivel celular intentaré entender mejor el comportamiento de la membrana celular y el transporte iónico simulando una célula esférica sometida a PEF por medio de dos electrodos. Se asumirá que la célula está constituida  por cuatro especies iónicas: el ión hidrógeno (H+), el hidróxido (OH-), el catión sodio (Na+) y el cloruro (Cl-). Se  analizará la creación de poros en la membrana celular y el transporte de masa a través de los mismos. El modelo computacional resuelve numéricamente un sistema de ecuaciones en derivadas parciales no lineales que describen la evolución espacio-temporal del transporte iónico, el campo eléctrico, la creación de poros y variación de tamaño de los mismos, por medio de las ecuaciones de Nernst-Planck \cite{fodava}, de Poisson \cite{jianbo}, de DeBruin y Krassowska \cite{krass} y de Smoluchowski, respectivamente, en un dominio espacial plano y el tiempo. Para la discretización espacial del dominio en coordenadas cilíndricas se utilizará una malla bidimensional de  elementos finitos cuadrilaterales con los electrodos dentro del dominio y tres materiales diferentes: el líquido extracelular, la membrana celular y el líquido intracelular. Para la discretización temporal se utilizarán diferencias finitas. En la implementación computacional se utilizará programación serial y paralela. La complejidad computacional de este tipo de sistemas implica grandes volúmenes de cálculo por lo que se utilizará programación paralela en un cluster Beowulf. Se utilizará el paradigma de pasaje de mensajes y  OpenMP y se llevará a cabo un estudio del speed up y la performance del sistema y se intentará obtener escalabilidad. Para ello se utilizarán las bibliotecas Eigen\footnote{\href{http://eigen.tuxfamily.org/}{http://eigen.tuxfamily.org/}} para álgebra lineal en C++, MPICH\footnote{\href{http://www.mpich.org/}{http://www.mpich.org/}} y OpenMP. Con los resultados de la  simulación computacional a nivel celular, en salud, espero optimizar los protocolos para aumentar la eficiencia de la EP y posiblemente disminuir los efectos adversos; en el procesamiento de alimentos por PEF espero maximizar la eficiencia de extracción y minimizar el costo de producción. El objetivo general es profundizar a través de la modelación matemática computacional el conocimiento de los mecanismos bioelectroquímicos que subyacen a la EP.
+La exposición de células biológicas a campos eléctricos pulsantes (PEF) resulta en un aumento de la permeabilidad de la membrana de las células, fenómeno denominado electroporación (EP). La EP es ampliamente utilizada en aplicaciones en salud y en alimentos. El objetivo específico de mi plan de tesis de licenciatura es desarrollar un modelo computacional serial y paralelo genérico en un contexto de HPC para el estudio de los mecanismos básicos de electroporación y sus aplicaciones en salud y alimentos.  En particular, dado que la EP es un fenómeno a nivel celular intentaré entender mejor el comportamiento de la membrana celular y el transporte iónico simulando una célula esférica sometida a PEF por medio de dos electrodos. Se asumirá que la célula está constituida  por cuatro especies iónicas: el ión hidrógeno (\h), el hidróxido (\oh), el catión sodio (\na) y el cloruro (\cl). Se  analizará la creación de poros en la membrana celular y el transporte de masa a través de los mismos. El modelo computacional resuelve numéricamente un sistema de ecuaciones en derivadas parciales no lineales que describen la evolución espacio-temporal del transporte iónico, el campo eléctrico, la creación de poros y variación de tamaño de los mismos, por medio de las ecuaciones de Nernst-Planck \cite{fodava}, de Poisson \cite{jianbo}, de DeBruin y Krassowska \cite{krass} y de Smoluchowski, respectivamente, en un dominio espacial plano y el tiempo. El programa será desarrollado desde cero en \texttt{C++} utilizando el paradigma de programación orientada a objetos. Para la discretización espacial del dominio en coordenadas cilíndricas se utilizará una malla bidimensional de  elementos finitos cuadrilaterales \cite{fem, fem-electro} con los electrodos dentro del dominio y tres materiales diferentes: el líquido extracelular, la membrana celular y el líquido intracelular. Para la discretización temporal se utilizarán diferencias finitas. En la implementación computacional se utilizará programación serial y paralela. La complejidad computacional de este tipo de sistemas implica grandes volúmenes de cálculo por lo que se utilizará programación paralela en un cluster Beowulf. Se utilizará el paradigma de pasaje de mensajes y  OpenMP y se llevará a cabo un estudio del speed up y la performance del sistema y se intentará obtener escalabilidad. Para ello se utilizarán las bibliotecas Eigen \cite{eigen} para álgebra lineal en \texttt{C++}, MPICH \cite{mpich} y OpenMP \cite{openmp}. Con los resultados de la  simulación computacional a nivel celular, en salud, espero optimizar los protocolos para aumentar la eficiencia de la EP y posiblemente disminuir los efectos adversos; en el procesamiento de alimentos por PEF espero maximizar la eficiencia de extracción y minimizar el costo de producción. El objetivo general es profundizar a través de la modelación matemática computacional el conocimiento de los mecanismos bioelectroquímicos que subyacen a la EP.
 
 \begin{thebibliography}{9}
 
@@ -49,16 +49,24 @@ La exposición de células biológicas a campos eléctricos pulsantes (PEF) resu
 %	Annals of Biomedical Engineering
 %	April 2006, Volume 34, Issue 4, Pages 642-652
 
+
 \bibitem{fodava}
 	Qiong Zheng, Duan Chen and Guo-Wei Wei
 	\emph{Second-order Poisson Nernst-Planck solver for ion channel transport}
 	Journal of Computational Physics
 	Volume 230, Issue 13, 10 June 2011, Pages 5239–5262
 
-%\bibitem{fem-electro}
-%	Stanley Humphries, Jr.
-%	\emph{Finite-element Methods for Electromagnetics}
-%	2010
+\bibitem{fem}
+	O.C. Zienkiewicz and R.L. Taylor
+	\emph{The Finite Element Method Volume I: The Basis}
+	Butterworth-Heinemann,
+	5th edition,
+	2000
+
+\bibitem{fem-electro}
+	Stanley Humphries, Jr.
+	\emph{Finite-element Methods for Electromagnetics}
+	2010
 
 \bibitem{jianbo}
 	Jianbo Lia, Wenchang Tanb, Miao Yua, Hao Lina
@@ -72,13 +80,15 @@ La exposición de células biológicas a campos eléctricos pulsantes (PEF) resu
 	Biophysical Journal
 	Volume 92, Issue 2, 15 January 2007, Pages 404–417
 
-%\bibitem{fem}
-%	O.C. Zienkiewicz and R.L. Taylor
-%	\emph{The Finite Element Method Volume I: The Basis}
-%	Butterworth-Heinemann,
-%	5th edition,
-%	2000
-%
+\bibitem{eigen}
+	Eigen \texttt{http://eigen.tuxfamily.org/}
+	
+\bibitem{mpich}
+	MPICH High Performance Portable MPI \texttt{http://www.mpich.org/}
+	
+\bibitem{openmp}
+	OpenMP \texttt{http://openmp.org/wp/}
+
 %\bibitem{marino}
 %	Matías Daniel Marino, Dr. Pablo Turjanski, Dr. Nahuel Olaiz
 %	\emph{Electroporación en el tratamiento de tumores: modelos teóricos y experimentales}

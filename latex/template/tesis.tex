@@ -9,19 +9,28 @@
 \usepackage[version=3]{mhchem}	%fórmulas químicas
 \usepackage{siunitx}			%unidades
 \usepackage{verbatim}
+\usepackage{caption}
+\usepackage{subcaption}
 
+%Definiciones de unidades y fórmulas químicas
+\sisetup{per-mode = symbol}
 \newcommand{\h}{\ce{H^+}}
 \newcommand{\oh}{\ce{OH^-}}
 \newcommand{\na}{\ce{Na^+}}
 \newcommand{\cl}{\ce{Cl^-}}
-\newcommand{\kvm}{$\si{\kilo\volt\per\metre}$}
-\newcommand{\usec}{$\si{\micro\second}$}
+\newcommand{\kvm}{ \si{\kilo\volt\per\metre} }
+\newcommand{\kvcm}{ \si{\kilo\volt\over\centi\metre} }
+\newcommand{\um}{ \si{\micro\metre} }
+\newcommand{\usec}{ \si{\micro\second} }
+\newcommand{\vcm}{ \si{\volt\per\centi\metre} }
 
 \begin{document}
 
-\graphicspath{graficos}
+\graphicspath{
+	{graficos/}
+}
 
-%%%% CARATULA
+% Carátula
 \def\titulo{Licenciado }
 
 \def\autor{Mauricio Alfonso}
@@ -33,7 +42,7 @@
 \def\lugar{Buenos Aires, 2014}
 \input{caratula}
 
-%%%% ABSTRACTS, AGRADECIMIENTOS Y DEDICATORIA
+%Abstracts, etc
 \frontmatter
 \pagestyle{empty}
 \input{abs_esp.tex}
@@ -47,7 +56,7 @@
 \mainmatter
 \pagestyle{headings}
 
-%%%% ACA VA EL CONTENIDO DE LA TESIS
+%Contenido de la tesis
 
 %TODO revisar Underful \hbox warnings
 %TODO Comparar tamaños con texmaker
@@ -66,6 +75,8 @@
 \chapter{Introducción}
 % CAP 1 introducción. problemática e introducción del modelo
 
+%TODO sacar todos los newline innecesarios (ver otras tesis)
+
 El proceso de electroporación celular tiene como objetivo permeabilizar la membrana de una célula, mediante la aplicación de un campo electromagnético externo, para lograr el transporte a través de la misma de drogas o agentes terapéuticos cargados por difusión y convección. Este proceso es utilizado en diferentes tratamientos electroquímicos de tumores [1,2] como por ejemplo, en la electroquimioterapia (ECT) donde se utilizan drogas quimioterápicas clásicas o en el caso de la Electroterapia Génica (GET), en donde se utilizan moléculas de ADN y ARN[4]. El proceso se optimiza cuando ese campo es pulsado, dependiendo del voltaje aplicado, la duración de los pulsos y la frecuencia de los mismos [3,4].\\
 
 La membrana está compuesta por una bicapa lipídica con su interior hidrofóbico, que actúa como una barrera altamente impermeable a la mayoría de moléculas polares, impidiendo que la mayor parte del contenido hidrosoluble de la célula salga de ella. \\
@@ -74,7 +85,7 @@ A tiempo infinito  cualquier molécula difundirá a través de una bicapa lipíd
 
 El transporte pasivo consiste en un proceso de difusión de sustancias a través de la membrana dado por la diferencia de concentración de las mismas. Estos procesos son naturales y no requieren de energía externa. El transporte activo, en cambio, es un proceso que necesita de energía para transportar las moléculas de uno a otro lado de la membrana a través de una permeabilización natural o artificial de la misma.\\
 
-La electroporación de la membrana se inicia con la aplicación de un campo eléctrico que sobre la célula genera el llamado potencial transmembranal (PTM), una diferencia de voltaje inducida sobre la membrana celular que aísla a la célula del medio exterior [5] debido a que la conductividad eléctrica de la membrana es seis (6) órdenes de magnitud más pequeña que la de los medios intra y extra celular. Este potencial inducido tiene estrecha relación con la formación de poros acuosos que conducen a través de la memebrana que poseen una dinámica relacionada con el PTM [8]. Sin potencial aplicado dichos poros poseen un radio relativamente pequeño, (del orden de medio nanómetro) que sólo permiten el paso de sustancia específicas de un medio al otro producto de reacciones electroquímicas en su proximidad. La mayor o menor facilidad de las moléculas para atravesar la membrana celular dependen de la carga eléctrica y la masa molar. Moléculas pequeñas o con carga eléctrica neutra pasan la membrana más fácilmente que elementos cargados eléctricamente y moléculas grandes. Además, la membrana es selectiva, lo que significa que permite la entrada de unas moléculas y restringe la de otras.\\
+La electroporación de la membrana se inicia con la aplicación de un campo eléctrico que sobre la célula genera el llamado potencial transmembranal (PTM), una diferencia de voltaje inducida sobre la membrana celular que aísla a la célula del medio exterior [5] debido a que la conductividad eléctrica de la membrana es seis (6) órdenes de magnitud más pequeña que la de los medios intra y extra celular. Este potencial inducido tiene estrecha relación con la formación de poros acuosos que conducen a través de la membrana que poseen una dinámica relacionada con el PTM [8]. Sin potencial aplicado dichos poros poseen un radio relativamente pequeño, (del orden de medio nanómetro) que sólo permiten el paso de sustancia específicas de un medio al otro producto de reacciones electroquímicas en su proximidad. La mayor o menor facilidad de las moléculas para atravesar la membrana celular dependen de la carga eléctrica y la masa molar. Moléculas pequeñas o con carga eléctrica neutra pasan la membrana más fácilmente que elementos cargados eléctricamente y moléculas grandes. Además, la membrana es selectiva, lo que significa que permite la entrada de unas moléculas y restringe la de otras.\\
 Las moléculas pequeñas no polares se disuelven fácilmente en las bicapas lipídicas y por lo tanto difunden con rapidez a través de ellas. Las moléculas polares sin carga si su tamaño es suficientemente reducido también difunden rápidamente a través de una bicapa. Ejemplos de estas sustancias no polares son los solventes orgánicos, que presentan una polaridad alta o baja. Por ejemplo: el metanol, la acetona, el etanol, la urea, etc.\\
 
 La permeabilidad depende de los siguientes factores: i) Solubilidad en los lípidos: Las sustancias que se disuelven en los lípidos (moléculas hidrófobas, no polares) penetran con facilidad en la membrana dado que está compuesta en su mayor parte por fosfolípidos. ii) Tamaño: la más grande parte de las moléculas de gran tamaño no pasan a través de la membrana. Solo un pequeño número de moléculas polares de pequeño tamaño pueden atravesar la capa de fosfolípidos. iii) Carga: Las moléculas cargadas y los iones no pueden pasar, en condiciones normales, a través de la membrana. Sin embargo, algunas sustancias cargadas pueden pasar por los canales proteicos o con la ayuda de una proteína transportadora.\\
@@ -282,6 +293,8 @@ A continuación se presenta la definición y valores de las constantes usadas.
 %FALTA ACOPLAMIENTO EN LA SECCIÓN MODELO MATEMÁTICO!!! (como influyen los poros en conductancia y difusión)
 %FALTARÍA TAMBIÉN ACLARAR QUE LA DENSIDAD DE POROS ES MUY VARIABLE SEGÚN LA REGIÓN DE LA SUPERFICIE Y QUE LA EQ SE APLICA A CADA PORO POR SEPARADO!!
 
+%TODO mencionar el archivo de entrada input.in!!! se menciona en otros capítulos
+
 El problema fue dividido en tres partes, según los tres fenómenos físicos principales considerados: el potencial eléctrico en el dominio, la evolución de los poros en la membrana celular y el transporte de las especies iónicas. Las tres partes fueron implementadas y estudiadas por separado y por último fueron acopladas.\\
 
 %TODO agregar referencias!!
@@ -335,31 +348,7 @@ El método de elementos finitos (FEM) sirve para resolver ecuaciones diferencial
 
 \subsection{Descomposición BiCGSTAB}
 
-\chapter{Potencial Eléctrico}
-% CAP 3 ITV. como se resuelve, resultados (solos, sin poros ni transporte). 
-% Comparar con formula cerrada?
-
-En este capítulo se estudiará el potencial transmembrana generado en una célula por efecto de un pulso eléctrico, usando la ecuación \ref{eq:poisson} descrita en el capítulo anterior. Para eso se presentará el modelo computacional y los resultados serán estudiados. Se estudiará únicamente el potencial eléctrico en el dominio y no se tendrá en cuenta la creación de poros en la membrana, los cuales pueden afectar la conductividad de la misma y modificar de esta manera el potencial eléctrico a través del tiempo. 
-
-\section{Implementación}
-Para resolver la ecuación \ref{eq:poisson} se utilizó el método de elementos finitos, llenando la matriz de rigidez según los conductividades y coordenadas de los elementos y el vector de masa según las condiciones de borde. La matriz de rigidez generada es simétrica definida positiva y con muy pocos elementos distintos de cero. Por estas razones es representada con una matriz esparsa y el sistema de ecuaciones se resuelve con el método de Cholesky. Dado que la creación de la matriz es uno de los pasos más caros de la resolución, se utiliza \texttt{OpenMP} para llenar la matriz en paralelo. \\
-
-mencionar porqué no se usa la fórmula cerrada
-
-%TODO campo eléctrico
-%TODO llenar mucho más en la parte de implementación. detalles de FEM, etc.
-
-\section{Resultados}
-Se corrió una simulación con una célula de ??? radio y un pulso de ??? y se observaron los potenciales obtenidos en todo el dominio y los PTM en cada punto de la membrana celular.\\
-
-poner figura potencial hecho en paraview\\
-poner figura de campo eléctrico en paraview\\
-poner figura de PTM vs tita real\\
-poner figura de PTM vs tita segun fórmula cerrada\\
-
-En la figura ??? se observa el PTM en función del ángulo polar $\theta$, mientras que en la figura ??? se observa la misma diferencia de potencial calculada según la fórmula cerrada \ref{eq:cos}. Como puede observarse los valores obtenidos son prácticamente idénticos a los obtenidos con la fórmula cerrada, lo cual confirma el correcto funcionamiento de la simulación.\\
-
-%TODO escribir más...
+\input{itv}
 
 \chapter{Generación y Evolución de Poros}
 % CAP 4 Poros. ecuaciones, como se resuelve, resultados
@@ -497,7 +486,7 @@ Acá poner snapshots de pH \\
 \backmatter
 \bibliography{tesis}
 
-\begin{thebibliography}{99}
+%\begin{thebibliography}{99}
 
 %\bibitem{puchiar}
 %	G. Puchiar, T. Kotnik, B. Valič and D. Miklavčič
@@ -541,6 +530,6 @@ Acá poner snapshots de pH \\
 16- www.paraview.org
 \end{comment}
 
-\end{thebibliography}
+%\end{thebibliography}
 
 \end{document}

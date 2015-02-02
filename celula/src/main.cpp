@@ -10,7 +10,8 @@ int main() {
 
 	Celula celula;
 
-	celula.transportePoros();
+	//celula.transportePoros();
+	celula.poisson();
 
 	return EXIT_SUCCESS;
 }

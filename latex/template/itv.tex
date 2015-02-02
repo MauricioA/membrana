@@ -1,0 +1,71 @@
+
+\chapter{Potencial Eléctrico}
+%% CAP 3 ITV. como se resuelve, resultados (solos, sin poros ni transporte). 
+%% Comparar con formula cerrada?
+
+En este capítulo se estudiará el potencial transmembrana generado en una célula por efecto de un pulso eléctrico, usando la ecuación \ref{eq:poisson} descrita en el capítulo anterior. Para eso se presentará el modelo computacional y los resultados serán estudiados. Se estudiará únicamente el potencial eléctrico en el dominio con su campo eléctrico, pero no se tendrá en cuenta la creación de poros en la membrana, los cuales pueden afectar la conductividad de la misma y modificar de esta manera el potencial eléctrico a través del tiempo. 
+
+\section{Implementación}
+Para resolver la ecuación \ref{eq:poisson} se utilizó el método de elementos finitos, llenando la matriz de rigidez según los conductividades y coordenadas de los elementos y el vector de masa según las condiciones de borde. La matriz de rigidez generada es simétrica definida positiva y con muy pocos elementos distintos de cero. Por estas razones es representada con una matriz esparsa y el sistema de ecuaciones se resuelve con el método de Cholesky. Una vez resuelto el sistema se obtiene el potencial eléctrico en cada nodo de la malla que representa el dominio. Dado que la creación de la matriz es uno de los pasos con mayor costo computacional, se utiliza \texttt{OpenMP} para llenar la matriz en paralelo, usando tantos threads como sean indicados en el archivo de entrada \texttt{input.in}.
+
+Con los resultados obtenidos por el método de elementos finitos se calcula también el PTM en cada ángulo polar de la célula, comparando los potenciales externos con los internos, habiendo previamente identificado los nodos correspondientes al exterior e interior de cada ángulo discreto. También se calcula el campo eléctrico en el dominio como el gradiente del potencial eléctrico. Los resultados de potencial en el dominio, PTM y campo eléctrico se graban en archivos separados en formato \texttt{.csv}. 
+
+La fórmula cerrada \ref{eq:cos} permitiría obtener con mayor facilidad los potenciales transmembrana sin resolver sistemas de ecuaciones, pero no es utilizada porque no sirve para obtener los potenciales en el resto del dominio, los cuales serán necesarios en capítulos posteriores y porque asume que la conductividad en la membrana es constante, lo cual no será asumido en el capítulo siguiente.
+
+%TODO llenar mucho más en la parte de implementación. detalles de FEM, etc.
+%TODO explicar mejor como se calcula el campo!!!
+
+\section{Resultados}
+A continuación se presentan los resultados obtenidos de una simulación de una célula de 25\um de radio con dos electrodos que generan un campo eléctrico de 1200\vcm.\\
+
+%\subsection*{Potencial en el dominio}
+
+\newcommand{\dobleimagen}[6]{
+	\begin{figure} \centering
+		\begin{minipage}{.5\textwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{#1}
+			\captionof{figure}{#3}
+			\label{fig:#2}
+		\end{minipage}%
+		\begin{minipage}{.5\textwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{#4}
+			\captionof{figure}{#6}
+			\label{fig:#5}
+		\end{minipage}
+	\end{figure}
+}
+
+\newcommand{\dobleimagengrande}[6]{
+	\begin{figure} 
+	\makebox[\textwidth][c] {
+		\centering
+		\begin{minipage}{.40\paperwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{#1}
+			\captionof{figure}{#3}
+			\label{fig:#2}
+		\end{minipage}%
+		\begin{minipage}{.40\paperwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{#4}
+			\captionof{figure}{#6}
+			\label{fig:#5}
+		\end{minipage}
+	}
+	\end{figure}
+}
+
+\dobleimagen{itv/v-close}{itv-pote}{Potencial eléctrico en el dominio}{itv/campo-close}{itv-campo}{Campo eléctrico en el dominio}
+
+%TODO unidad del campo???
+
+\dobleimagengrande{itv/itv-tita}{itv-tita}{PTM en función del  ángulo polar $\theta$\\ según simulación}{itv/itv-cos}{itv-cos}{PTM en función del  ángulo polar $\theta$\\ según fórmula cerrada}
+
+
+En las figuras \ref{fig:itv-pote} y \ref{fig:itv-campo} se observa el potencial y el módulo del campo eléctrico en el dominio respectivamente. Se observa que el potencial en el interior de la célula es constante y que la diferencia de potencial entre el exterior y el interior varía según la región de la superficie: en las regiones cercanas al ecuador de la célula la diferencia entre el interior y le exterior es casi nula, pero en los polos la diferencia se hace mayor. 
+En la figura \ref{fig:itv-tita} se presenta el PTM en función del ángulo polar $\theta$, mientras que en la figura \ref{fig:itv-cos} se graficó la misma diferencia de potencial calculada según la fórmula cerrada \ref{eq:cos}. Como puede observarse, los valores obtenidos con el método de elementos finitos son muy similares a los obtenidos con la fórmula cerrada, lo cual confirma el correcto funcionamiento de la simulación. 
+
+%TODO escribir más...
+%TODO mencionar que ITV crece con el radio. Se podrían comparar varias células

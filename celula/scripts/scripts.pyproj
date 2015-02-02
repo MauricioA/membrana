@@ -30,6 +30,9 @@
     <Compile Include="itv_plot_nuevo.py" />
     <Compile Include="itv_tita.py" />
     <Compile Include="merge.py" />
+    <Compile Include="itv_cos.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="transp_final.py">
       <SubType>Code</SubType>
     </Compile>

@@ -16,6 +16,7 @@ celula/salida/*.7z
 celula/salida/dec_10_OSC/*
 celula/salida/loop/*
 celula/salida/weaver/*
+celula/salida/last/*
 
 fortran/potencial_transporte/objs/*
 fortran/potencial_transporte/celula
@@ -33,6 +34,7 @@ fortran/potencial_transporte/temp/*
 fortran/potencial_transporte/fuentes/old/*
 
 celula/scripts/temp/*
+celula/scripts/itvs/*.png
 
 *.aux
 *.nav
