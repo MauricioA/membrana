@@ -9,9 +9,8 @@ int main() {
 	#endif
 
 	Celula celula;
-
-	//celula.transportePoros();
-	celula.poisson();
+	
+	celula.transportePoros();
 
 	return EXIT_SUCCESS;
 }

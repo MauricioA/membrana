@@ -8,13 +8,14 @@ import os
 #para generar graficos de itv vs angulo de los itv.csv
 
 FOLDERS = [		# (ruta, radio, cant(angulos))
-    ("../salida/last/poisson_01-29/", 25, 192),
+    ("../salida/last/02-03/120/", 25, 192),
+	("../salida/last/02-03/160/", 25, 192),
 ]
 
 font = { 'size': 16 }
 
-#TIMES = [1e-6, 2e-6, 4e-6, 16e-6]
-TIMES = [0]
+TIMES = [750e-9, 1.5e-6, 16e-6]
+LABELS = ['750 $ns$', '1.5 $\\mu s$', '16 $\\mu s$']
 
 for (folder, radio, mesh) in FOLDERS:
 	#for dir in os.listdir(folder):
@@ -59,9 +60,10 @@ for (folder, radio, mesh) in FOLDERS:
 		fig, ax = plt.subplots()
 
 		for i in range(len(TIMES)):
-			ax.plot(angles[i], itvs[i], label = '%.0f$\\mu$s' % (TIMES[i]*1e6))
+			#ax.plot(angles[i], itvs[i], label = '%.0f$\\mu$s' % (TIMES[i]*1e6))
+			ax.plot(angles[i], itvs[i], label = LABELS[i])
 
-		#legend = ax.legend()		#descomentar para poner label
+		legend = ax.legend()		#descomentar para poner label
 
 		#for label in legend.get_texts():
 		#	label.set_fonstize('small')
@@ -71,7 +73,6 @@ for (folder, radio, mesh) in FOLDERS:
 		ax.set_xlim(0, np.pi)
 
 		pylab.savefig(
-			#itv-tita-%s-%s-%s.png' % (radio, mesh, dir), 
 			'%s/itv-tita-%s-%s.png' % (folder, radio, mesh), 
 			bbox_inches='tight'
 		)

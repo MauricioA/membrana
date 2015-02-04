@@ -10,11 +10,11 @@ import os
 
 MESH = 192		    # cant de angulos discretos
 NLINEAS = 7
-MAX_LIN_US = 5e-3   # 10
+MAX_LIN_US = 5   # 10
 MAX_LOG_SEG = 1e-9  
 MAXTIME = max(MAX_LIN_US, MAX_LOG_SEG)
 FOLDERS = [
-	'..\\salida\\weaver\\01-05\\',
+	'../salida/last/02-03/120/',
 ]
 
 font = { 'size': 16 }
@@ -27,7 +27,7 @@ for folder in FOLDERS:
 	iis = [int(round(((MESH-1) * i) / (NLINEAS-1), 0)) for i in range(NLINEAS)]
 	angles = [0 for x in range(NLINEAS)]
 	first = True
-		
+	
 	with open(file) as f:
 		for line in f:
 			spl = line.split(',')
@@ -77,23 +77,25 @@ for folder in FOLDERS:
 		pylab.savefig(filename,	bbox_inches='tight')
 		print filename
 
-		plt.clf()
-		i = 0
-		fig, ax = plt.subplots()
-		for itvs in itvss:
-			assert len(itvs) == len(times)
-			itvs = np.array(itvs)
-			plt.semilogx(times, itvs, label = '%.0f$^\circ$' % (angles[i] * 57.2957795))
-			i += 1
+		#logarítmico:
 
-		legend = ax.legend()
-		for label in legend.get_texts():
-			label.set_fontsize('small')
+		#plt.clf()
+		#i = 0
+		#fig, ax = plt.subplots()
+		#for itvs in itvss:
+		#	assert len(itvs) == len(times)
+		#	itvs = np.array(itvs)
+		#	plt.semilogx(times, itvs, label = '%.0f$^\circ$' % (angles[i] * 57.2957795))
+		#	i += 1
 
-		plt.ylabel('ITV [V]', fontdict=font)
-		plt.xlabel('Tiempo [s]', fontdict=font)
-		plt.xlim(0, MAX_LOG_SEG)
+		#legend = ax.legend()
+		#for label in legend.get_texts():
+		#	label.set_fontsize('small')
 
-		filename = folder + 'itv-log.png'
-		pylab.savefig(filename,	bbox_inches='tight')
-		print filename
+		#plt.ylabel('PTM [V]', fontdict=font)
+		#plt.xlabel('Tiempo [s]', fontdict=font)
+		#plt.xlim(0, MAX_LOG_SEG)
+
+		#filename = folder + 'itv-log.png'
+		#pylab.savefig(filename,	bbox_inches='tight')
+		#print filename

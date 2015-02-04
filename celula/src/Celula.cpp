@@ -38,10 +38,10 @@ double inline getDeltaT(double time_pulso, double multiplier, double delta_t) {
 /* Loop principal */
 void Celula::transportePoros() {
 	auto global_start = chrono::high_resolution_clock::now();
-	const double MULTIPLIER_POISSON = 2000;	//estaba en 1000
-	const double MULTIPLIER_CONSOLA = 250;
+	const double MULTIPLIER_POISSON = 2000;	
+	const double MULTIPLIER_CONSOLA = 250;			//aumentar
 	const double MULTIPLIER_TRANSPORTE_MIN = 1;
-	const double MULTIPLIER_TRANSPORTE_MAX = 20;
+	const double MULTIPLIER_TRANSPORTE_MAX = 20;	//se puede aumentar bastante
 	const double MULTIPLIER_ITV = 1000;
 	const double PASO_DISCO = 100e-6;
 

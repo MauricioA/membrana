@@ -7,7 +7,7 @@ import os
 #para generar histogramas de poros
 
 folders = [		
-	'../salida/solo_poros/grandes/',
+	'../salida/last/02-03/120/',
 ]
 
 font = {'size': 16}

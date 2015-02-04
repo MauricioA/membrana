@@ -6,13 +6,15 @@ from pylab import *
 import pylab
 import os
 
-MESH = 128		#cant de angulos discretos
+MESH = 192		#cant de angulos discretos
 NLINEAS = 3
-MAX_LIN = 10e-6
+MAX_LIN = 4e-6
 FOLDERS = (
-	'C:\\Archivos\\Membrana\\celula\\salida\\25-128\\40KVm\\',
-	'C:\\Archivos\\Membrana\\celula\\salida\\25-128\\80KVm\\',
+	'../salida/loop/01-09/2/',
+	'../salida/last/02-03/160/',
 )
+
+OUT_FILE = 'C:\\Users\\Mauricio\\Desktop\\temp.png'
 
 font = { 'size': 16 }
 
@@ -50,7 +52,7 @@ for j in range(2):
 fig, ax = plt.subplots()
 fig.set_size_inches(16, 6)
 
-extra_string = ('40KV/m', '80KV/m')
+extra_string = ('1000 KV/cm', '1600 KV/cm')
 style = ('-', '--')
 
 for i in range(2):
@@ -62,10 +64,11 @@ for i in range(2):
 for label in ax.legend().get_texts():
 	label.set_fontsize('small')
 
-plt.ylabel('ITV [V]', fontdict=font)
+plt.ylabel('PTM [V]', fontdict=font)
 plt.xlabel('Tiempo [$\\mu$s]', fontdict=font)
 plt.xlim(0, MAX_LIN*1e6)
 
-filename = 'C:\\Temp\\temp.png'
-pylab.savefig(filename, bbox_inches='tight')
-print filename
+#plt.show()
+
+pylab.savefig(OUT_FILE, bbox_inches='tight')
+print OUT_FILE
