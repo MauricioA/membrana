@@ -1,0 +1,29 @@
+\chapter{Transporte de Especies}
+% CAP 5 Transporte. idem (solo transporte, sin poros)
+
+En este capítulo se analiza la concentración y movimiento de cuatro especies iónicas: el hidrógeno (\h), el hidróxido (\oh), el sodio (\na) y cloruro (\cl) en el dominio producto del campo eléctrico aplicado. Para ello se realizan simulaciones en las que se aplican pulsos eléctricos a las mallas generadas anteriormente y se analiza el transporte de las cuatro especies producto del gradiente de concentración y del campo eléctrico según la ley de Nernst-Planck. Se ignora en este capítulo la creación de poros en la membrana celular y el efecto que pueda tener.
+
+\section{Implementación}
+
+Se utiliza el método de elementos finitos para resolver la ecuación \ref{eq:trans} y obtener las concentraciones de las cuatro especies iónicas en cada nodo de la malla y en cada instante de tiempo. Se resuelve primero el potencial eléctrico en el dominio con los métodos usados en el capítulo \ref{chap:itv} y luego se resuelven las concentraciones de masa en diferentes instantes de tiempo.
+
+Las concentraciones de las cuatro especies iónicas se resuelven por separado en un método que genera la matriz de rigidez y el vector de masa para una especie según los resultados de potencial eléctrico, difusión y concentraciones existentes en cada elemento. El sistema de ecuaciones generado se resuelve con el método iterativo de bi-gradientes conjugados estabilizado, dado que la matriz no es simétrica definida positiva. La matriz de masa se representa con una estructura de datos esparsa aprovechando que la mayoría de sus celdas son ceros. Se usa como solución inicial el vector de concentraciones obtenido en la iteración anterior; esto sirve para reducir significativamente la cantidad de iteraciones necesarias para la convergencia del sistema y así reducir los tiempos de ejecución, dado que se espera que en las concentraciones varíen levemente en cada iteración. Como las concentraciones de las cuatro especies son independientes entre sí, se hace uso de la interfaz \texttt{OpenMP} para realizar las iteraciones de elementos finitos en paralelo usando hasta 4 threads, acelerando así los tiempos de ejecución.
+
+Las concentraciones obtenidas se graban en archivos de salida individuales en intervalos de tiempo fijos usando un formato \texttt{.csv}. Se graban las densidades como cantidad de partículas en unidad de volumen y como concentraciones molares, y también se graban los valores de pH y pOH según las concentraciones de \h y \oh. 
+
+%TODO falta explicar el tema del error. Faltaría alguna referencia para la fórmula
+%TODO se podría mencionar lo de los valores extremos y el truco de subir la temperatura
+%TODO explcar concentraciones iniciales?
+
+\section{Resultados}
+
+Se corrió una simulación de un pulso de 100\vcm aplicado sobre una célula de 25\um de radio y se observaron las concentraciones de las cuatro especies iónicas estudiadas. A continuación se presentan los resultados. Debido a que en este capítulo no se tuvo en cuenta la creación de poros en la membrana como en el capítulo anterior, se eligió una diferencia de potencial baja, ya que los valores de potencial transmembrana se vuelven de otra manera muy altos al no haber poros, lo cual originaría concentraciones extremas cerca de la membrana celular en caso de simular campos eléctricos más grandes.
+
+\dobleimagengrande{trans/h}{trans-h}{Concentración molar de \h}{trans/oh}{trans-oh}{Concentración molar de \oh}
+
+\dobleimagengrande{trans/na}{trans-na}{Concentración molar de \na}{trans/cl}{trans-cl}{Concentración molar de \cl}
+
+Las cuatro imágenes corresponden a concentraciones molares de las cuatro especies estudiadas en el instante $t = 380 \, \si{\micro\second}$ del comienzo del pulso. Se observa en todos los casos extremos altos y bajos de concentraciones en las regiones cercanas a la membrana celular, tanto del lado interno como externo, y valores prácticamente iguales a los iniciales en el resto del dominio, tanto interno como externo a la célula. También se nota que las regiones cercanas al ecuador de la membrana no poseen valores altos ni bajos de concentración, a diferencia del resto de la membrana. Tanto el \h como el \na, ambos de carga positiva, logran concentraciones altas en las zonas cercanas al interior de la membrana en el hemisferio depolarizado, y en las zonas cercanas al exterior de la membrana en el hemisferio polarizado, mientras que alcanzan extremos bajos de concentración cerca del exterior de la membrana en el hemisferio depolarizado y cerca del interior en el hemisferio polarizado. Las concentraciones de \oh y \cl --de carga negativa-- se comportan en cambio de manera opuesta, con extremos altos en el interior de la membrana en la región polarizada y el exterior de la depolarizada y extremos bajos en los otros casos. 
+
+%TODO explicar porqué sucede eso!!!
+%TODO las imágenes pueden ser más interesantes con voltajes mas altos, aunque tenga mucho error!!!

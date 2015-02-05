@@ -36,14 +36,17 @@ double inline getDeltaT(double time_pulso, double multiplier, double delta_t) {
 }
 
 /* Loop principal */
-void Celula::transportePoros() {
+//TODO imprimir por pantalla cada una cantidad de tiempo real (chequear cada x iters)
+void Celula::acoplado() {
 	auto global_start = chrono::high_resolution_clock::now();
 	const double MULTIPLIER_POISSON = 2000;	
-	const double MULTIPLIER_CONSOLA = 250;			//aumentar
 	const double MULTIPLIER_TRANSPORTE_MIN = 1;
-	const double MULTIPLIER_TRANSPORTE_MAX = 20;	//se puede aumentar bastante
+	const double MULTIPLIER_TRANSPORTE_MAX = 5;	//ponerlo en 20 por lo menos con poros
 	const double MULTIPLIER_ITV = 1000;
-	const double PASO_DISCO = 100e-6;
+	const double PASO_DISCO = 10e-6;
+
+	const int CONSOLE_UPDATE_CHECK = 100;
+	const int CONSOLE_INTERVAL_US = 1 * 1000 * 1000;
 
 	Transporte transporte(*this, calcularPoros);
 	unique_ptr<Poros> poros;
@@ -55,8 +58,10 @@ void Celula::transportePoros() {
 
 	auto console_start = chrono::high_resolution_clock::now();
 	double last_transporte = 0, last_consola = 0;
-	double next_poisson, next_transporte, next_disco, next_consola, next_itv;
+	double next_poisson, next_transporte, next_disco, next_itv;
 	double multiplier_transporte = MULTIPLIER_TRANSPORTE_MAX;
+
+	int console_counter = 0;
 
 	for (int pulso = 0; pulso < pulsos; pulso++) {
 
@@ -64,7 +69,6 @@ void Celula::transportePoros() {
 
 			next_poisson = next_disco = next_itv = 0;	//Corren desde la 1º iteración
 			next_transporte = delta_t;					//No corre en la 1º iteración
-			next_consola = delta_t * MULTIPLIER_CONSOLA;
 			
 			/* Si comienza nuevo pulso le aviso a poros */
 			if (estado == ON && calcularPoros) poros->nuevoPulso();
@@ -86,7 +90,7 @@ void Celula::transportePoros() {
 				}
 
 				/* Iteración poros */
-				poros->iteracion(delta_t);
+				if (calcularPoros) poros->iteracion(delta_t);
 
 				/* Iteración transporte */
 				if (time >= next_transporte) {
@@ -96,33 +100,32 @@ void Celula::transportePoros() {
 				}
 
 				/* Escribo por consola */
-				if (time >= next_consola) {
-					auto console_end = chrono::high_resolution_clock::now();
-					auto interv = chrono::duration_cast<chrono::microseconds>(console_end - console_start);
-					//TODO revisar esta cuenta vvv
-					double delta_ms = interv.count() / 1000. / ((time - last_consola) / delta_t);
-					console_start = console_end;
+				if (console_counter == CONSOLE_UPDATE_CHECK) {
+					console_counter = 0;
+					auto time_now = chrono::high_resolution_clock::now();
+					auto interval_us = chrono::duration_cast<chrono::microseconds>(time_now - console_start);
 
-					if (calcularPoros) {
-						printf("%.1fus %d error: %e  %.2f ms/it", time*1e6,
-							poros->getNPoros() + poros->getNPorosChicos(), transporte.error, delta_ms);
-					} else {
-						printf("%.1fus error: %e  %.2f ms/it", time*1e6, transporte.error, delta_ms);
-					}
+					if (interval_us.count() >= CONSOLE_INTERVAL_US) {
+						//TODO revisar esta cuenta vvv
+						double intervalo_virtual = time - last_consola;
+						double iteraciones = intervalo_virtual / delta_t;
+						double tiempo_por_iter = interval_us.count() / 1000. / iteraciones;
 
-					int nodosExtremos = valoresExtremos();
-					if (nodosExtremos > 10) {
-						printf("  pH ext: %d", nodosExtremos);
-						//multiplier_transporte = MULTIPLIER_TRANSPORTE_MIN;
-					} else {
-						multiplier_transporte = MULTIPLIER_TRANSPORTE_MAX;
-					}
-					printf("\n");
+						if (calcularPoros) {
+							printf("%.1fus %d error: %e  %.2f ms/it", time*1e6,
+								poros->getNPoros() + poros->getNPorosChicos(), transporte.error, tiempo_por_iter);
+						} else {
+							printf("%.1fus error: %e  %.2f ms/it", time*1e6, transporte.error, tiempo_por_iter);
+						}
 
-					//double step = getDeltaT(pulse_time, MULTIPLIER_CONSOLA, 10 * delta_t);
-					double step = MULTIPLIER_CONSOLA * delta_t;
-					last_consola = time;
-					next_consola = time + step;
+						int nodosExtremos = valoresExtremos();
+						if (nodosExtremos > 10) {
+							printf("  pH ext: %d", nodosExtremos);
+						}
+						printf("\n");
+
+						console_start = time_now;
+					}	
 				}
 
 				/* Grabo disco poisson poros y transporte */
@@ -140,6 +143,8 @@ void Celula::transportePoros() {
 					double step = getDeltaT(pulse_time, MULTIPLIER_ITV, delta_t);
 					next_itv = time + step;
 				}
+
+				console_counter++;
 			}
 
 		}

@@ -51,7 +51,7 @@ public:
 
 	void poisson();
 
-	void transportePoros();
+	void acoplado();
 
 	void chequearSimetria();
 

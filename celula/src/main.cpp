@@ -10,7 +10,7 @@ int main() {
 
 	Celula celula;
 	
-	celula.transportePoros();
+	celula.acoplado();
 
 	return EXIT_SUCCESS;
 }

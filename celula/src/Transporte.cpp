@@ -187,9 +187,7 @@ void Transporte::masaDiag2D() {
 	}
 }
 
-//TODO subir la temperatura
-//TODO revisar después si tiene sentido
-//TODO contar apariciones de concentraciones negativas
+//TODO revisar la parte de rhs_aux y los últimos cambios
 void Transporte::concentracion(int esp, double deltaT) {
 	Celula& celula = getCelula();
 	double esm[MAXNPEL][MAXNPEL];
