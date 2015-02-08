@@ -40,7 +40,7 @@ double inline getDeltaT(double time_pulso, double multiplier, double delta_t) {
 void Celula::acoplado() {
 	auto global_start = chrono::high_resolution_clock::now();
 	const double MULTIPLIER_POISSON = 2000;	
-	const double MULTIPLIER_TRANSPORTE_MIN = 1;
+	//const double MULTIPLIER_TRANSPORTE_MIN = 1;
 	const double MULTIPLIER_TRANSPORTE_MAX = 20;	//ponerlo en 20 por lo menos con poros
 	const double MULTIPLIER_ITV = 1000;
 	const double PASO_DISCO = 100e-6;
@@ -111,10 +111,10 @@ void Celula::acoplado() {
 						double tiempo_por_iter = interval_us.count() / 1000. / iteraciones;
 
 						if (calcularPoros) {
-							printf("%.1fus %d error: %e  %.3f ms/it", time*1e6,
+							printf("%.1fus %d error: %e  %.6f ms/it", time*1e6,
 								poros->getNPoros() + poros->getNPorosChicos(), transporte.error, tiempo_por_iter);
 						} else {
-							printf("%.1fus error: %e  %.3sf ms/it", time*1e6, transporte.error, tiempo_por_iter);
+							printf("%.1fus error: %e  %.6f ms/it", time*1e6, transporte.error, tiempo_por_iter);
 						}
 
 						int nodosExtremos = valoresExtremos();
