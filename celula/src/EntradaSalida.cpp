@@ -16,6 +16,12 @@ using namespace std;
 const double EPSILON_DIST = 1e-9;
 
 EntradaSalida::EntradaSalida(Celula& celula) {
+	#ifdef EIGEN_VECTORIZE
+		cout << "Vectorization ON\n";
+	#else
+		cout << "Vectorization OFF\n";
+	#endif
+
 	_celula = &celula;
 	leerInput();
 	
@@ -250,11 +256,11 @@ void EntradaSalida::grabarPoisson(bool verbose) {
 	FILE* fcampo = fopen(buffer, "w");
 	
 	assert(fcampo > 0);
-	fprintf(ftension, "         X,          Y,           campo,       corriente\n");
+	fprintf(ftension, "         X,          Y,          campoX,          campoY,           campo,       corriente\n");
 
 	for (int k = 0; k < getCelula().nElems; k++) {
-		double corr = sqrt(pow(getCelula().corrElem[k].x, 2) + pow(getCelula().gradElem[k].y, 2));
-		double camp = sqrt(pow(getCelula().corrElem[k].x, 2) + pow(getCelula().corrElem[k].y, 2));
+		double corr = sqrt(pow(getCelula().corrElem[k].x, 2) + pow(getCelula().corrElem[k].y, 2));
+		double camp = sqrt(pow(getCelula().gradElem[k].x, 2) + pow(getCelula().gradElem[k].y, 2));
 		double xMed = 0, yMed = 0;
 	
 		for (int j = 0; j < getCelula().nodpel; j++) {
@@ -266,7 +272,8 @@ void EntradaSalida::grabarPoisson(bool verbose) {
 		xMed /= nodpel;
 		yMed /= nodpel;
 		
-		fprintf(fcampo, "%#10f, %#10f, %#15.9g, %#15.9g\n", xMed, yMed, camp, corr);
+		fprintf(fcampo, "%#10f, %#10f, %#15.9g, %#15.9g, %#15.9g, %#15.9g\n", 
+			xMed, yMed, getCelula().gradElem[k].x, getCelula().gradElem[k].y, camp, corr);
 	}
 
 	fclose(fcampo);

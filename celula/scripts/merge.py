@@ -8,7 +8,7 @@ ESCALA  = 100
 RADIO   = 25
 ANCHO   = 50
 ALTO    = 150
-MEMB    = 10e-3
+MEMB    = 5e-3
 
 centerX = 0
 centerY = ALTO / 2

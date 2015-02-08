@@ -41,12 +41,12 @@ void Celula::acoplado() {
 	auto global_start = chrono::high_resolution_clock::now();
 	const double MULTIPLIER_POISSON = 2000;	
 	const double MULTIPLIER_TRANSPORTE_MIN = 1;
-	const double MULTIPLIER_TRANSPORTE_MAX = 5;	//ponerlo en 20 por lo menos con poros
+	const double MULTIPLIER_TRANSPORTE_MAX = 20;	//ponerlo en 20 por lo menos con poros
 	const double MULTIPLIER_ITV = 1000;
-	const double PASO_DISCO = 10e-6;
+	const double PASO_DISCO = 100e-6;
 
-	const int CONSOLE_UPDATE_CHECK = 100;
-	const int CONSOLE_INTERVAL_US = 1 * 1000 * 1000;
+	const int CONSOLE_UPDATE_CHECK = 10000;
+	const int CONSOLE_INTERVAL_US = 2 * 1000 * 1000;
 
 	Transporte transporte(*this, calcularPoros);
 	unique_ptr<Poros> poros;
@@ -105,17 +105,16 @@ void Celula::acoplado() {
 					auto time_now = chrono::high_resolution_clock::now();
 					auto interval_us = chrono::duration_cast<chrono::microseconds>(time_now - console_start);
 
-					if (interval_us.count() >= CONSOLE_INTERVAL_US) {
-						//TODO revisar esta cuenta vvv
+					if (interval_us.count() > CONSOLE_INTERVAL_US) {
 						double intervalo_virtual = time - last_consola;
 						double iteraciones = intervalo_virtual / delta_t;
 						double tiempo_por_iter = interval_us.count() / 1000. / iteraciones;
 
 						if (calcularPoros) {
-							printf("%.1fus %d error: %e  %.2f ms/it", time*1e6,
+							printf("%.1fus %d error: %e  %.3f ms/it", time*1e6,
 								poros->getNPoros() + poros->getNPorosChicos(), transporte.error, tiempo_por_iter);
 						} else {
-							printf("%.1fus error: %e  %.2f ms/it", time*1e6, transporte.error, tiempo_por_iter);
+							printf("%.1fus error: %e  %.3sf ms/it", time*1e6, transporte.error, tiempo_por_iter);
 						}
 
 						int nodosExtremos = valoresExtremos();

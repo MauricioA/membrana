@@ -63,15 +63,15 @@ latex/preinforme/preinforme.pdf
 celula/scripts/*.prm
 celula/scripts/*.msh
 
-mesh/AutoMesh2D/nuevo/*.dat
-mesh/AutoMesh2D/nuevo/*.txt
-mesh/AutoMesh2D/nuevo/*.DST
-mesh/AutoMesh2D/nuevo/*.geo
-mesh/AutoMesh2D/nuevo/*.msh
-mesh/AutoMesh2D/nuevo/malla1D.prm
-mesh/AutoMesh2D/nuevo/*.pnt
-mesh/AutoMesh2D/nuevo/*.inp
-mesh/AutoMesh2D/nuevo/*.msd
+mesh/AutoMesh2D/*/*.dat
+mesh/AutoMesh2D/*/*.txt
+mesh/AutoMesh2D/*/*.DST
+mesh/AutoMesh2D/*/*.geo
+mesh/AutoMesh2D/*/*.msh
+mesh/AutoMesh2D/*/malla1D.prm
+mesh/AutoMesh2D/*/*.pnt
+mesh/AutoMesh2D/*/*.inp
+mesh/AutoMesh2D/*/*.msd
 
 #################
 ## Eclipse

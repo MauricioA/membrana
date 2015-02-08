@@ -1,0 +1,6 @@
+﻿derecha: 46
+arriba y abajo: 20
+izquierda arriba y abajo: 35
+izquierda centro: 38
+arco: 192
+También mallar los segmentos de la membrna y el eje de rotación

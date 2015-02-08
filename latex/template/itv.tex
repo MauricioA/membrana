@@ -15,12 +15,14 @@ La fórmula cerrada \ref{eq:cos} permitiría obtener con mayor facilidad los pot
 %TODO llenar mucho más en la parte de implementación. detalles de FEM, etc.
 %TODO explicar mejor como se calcula el campo!!!
 
+\newpage
+
 \section{Resultados}
 A continuación se presentan los resultados obtenidos de una simulación de una célula de 25\um de radio con dos electrodos que generan un campo eléctrico de 1200\vcm.\\
 
 %\subsection*{Potencial en el dominio}
 
-\newcommand{\dobleimagen}[6]{
+\newcommand{\dobleimagen}[6] {
 	\begin{figure} \centering
 		\begin{minipage}{.5\textwidth}
 			\centering
@@ -37,7 +39,7 @@ A continuación se presentan los resultados obtenidos de una simulación de una 
 	\end{figure}
 }
 
-\newcommand{\dobleimagengrande}[6]{
+\newcommand{\dobleimagengrande}[6] {
 	\begin{figure} 
 	\makebox[\textwidth][c] {
 		\centering
@@ -57,15 +59,39 @@ A continuación se presentan los resultados obtenidos de una simulación de una 
 	\end{figure}
 }
 
-\dobleimagen{itv/v-close}{itv-pote}{Potencial eléctrico en el dominio}{itv/campo-close}{itv-campo}{Campo eléctrico en el dominio}
+%\dobleimagen{itv/v-close}{itv-pote}{Potencial eléctrico en el dominio}{itv/campo-close}{itv-campo}{Campo eléctrico en el dominio}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \begin{center}
+    %\includegraphics[width=0.48\textwidth]{gull}
+    \includegraphics[width=0.48\textwidth]{itv/v-close}
+  \end{center}
+  \caption{Potencial eléctrico en el dominio}
+  \label{fig:pote}
+\end{wrapfigure}
+
+Se observa en la figura \ref{fig:pote} que el potencial en el interior de la célula es constante y que la diferencia de potencial entre el exterior y el interior varía según la región de la superficie: en las regiones cercanas al ecuador de la célula la diferencia entre el interior y le exterior es casi nula, pero en los polos la diferencia se hace mayor. 
+
+Las figuras \ref{fig:campo-r} y \ref{fig:campo-r-int} representan la componente horizontal del campo eléctrico en el dominio, con diferentes escalas que permiten observar las variaciones en el exterior e interior de la célula respectivamente. Los valores más altos se encuentran en exterior de la célula, con un campo en dirección positiva (hacia afuera de la célula) en el hemisferio polarizado, y negativa (hacia la célula) en el hemisferio depolarizado. Los valores en el interior de la célula son mucho menores, pero de signo opuesto al del exterior; con dirección hacia el exterior en el hemisferio depolarizado y hacia el interior en el hemisferio polarizado. Por último se nota que los valores más extremos se encuentran en la membrana, con signo opuesto al del exterior. 
+
+En las figuras \ref{fig:campo-y} y \ref{fig:campo-y-int} se representa en cambio la componente vertical del campo eléctrico para el exterior e interior. En todos los casos el signo es negativo, por ser la dirección del campo hacia abajo. Los valores más extremos se encuentran en toda la membrana y en la zona extracelular, cerca del ecuador de la célula, mientras que ambos polos tienen los valores más cercanos a cero. En el interior de la célula el campo tiene valores con valor absoluto mucho menor, y al igual que en el exterior valores extremos cerca del ecuador y cercanos a cero en los polos.
+
+%TODO EXPLICAR PORQUÉ EL CAMPO ES ASÍ EN TODOS LOS CASOS!!!!!
+
+Por último en las figuras \ref{fig:campo} y \ref{fig:campo-int} se observa el módulo del campo eléctrico, teniendo en cuenta sus dos componentes, y se observan nuevamente los valores más extremos en la membrana y en zona del exterior cercana al ecuador.
+
+En la figura \ref{fig:itv-tita} se presenta el PTM en función del ángulo polar $\theta$, mientras que en la figura \ref{fig:itv-cos} se graficó la misma diferencia de potencial calculada según la fórmula cerrada \ref{eq:cos}. Como puede observarse, los valores obtenidos con el método de elementos finitos son muy similares a los obtenidos con la fórmula cerrada, lo cual confirma el correcto funcionamiento de la simulación. 
+
+\clearpage
+
+\dobleimagen{itv/campo-r}{campo-r}{Componente horizontal del campo eléctrico}{itv/campo-r-int}{campo-r-int}{Componente horizontal del campo eléctrico en el interior de la célula}
+
+\dobleimagen{itv/campo-y}{campo-y}{Componente vertical del campo eléctrico}{itv/campo-y-int}{campo-y-int}{Componente vertical del campo eléctrico en el interior de la célula}
+
+\dobleimagen{itv/campo}{campo}{Módulo del campo eléctrico}{itv/campo-y-int}{campo-int}{Módulo del campo eléctrico en el interior de la célula}
 
 %TODO unidad del campo???
 
 \dobleimagengrande{itv/itv-tita}{itv-tita}{PTM en función del  ángulo polar $\theta$\\ según simulación}{itv/itv-cos}{itv-cos}{PTM en función del  ángulo polar $\theta$\\ según fórmula cerrada}
 
-
-En las figuras \ref{fig:itv-pote} y \ref{fig:itv-campo} se observa el potencial y el módulo del campo eléctrico en el dominio respectivamente. Se observa que el potencial en el interior de la célula es constante y que la diferencia de potencial entre el exterior y el interior varía según la región de la superficie: en las regiones cercanas al ecuador de la célula la diferencia entre el interior y le exterior es casi nula, pero en los polos la diferencia se hace mayor. 
-En la figura \ref{fig:itv-tita} se presenta el PTM en función del ángulo polar $\theta$, mientras que en la figura \ref{fig:itv-cos} se graficó la misma diferencia de potencial calculada según la fórmula cerrada \ref{eq:cos}. Como puede observarse, los valores obtenidos con el método de elementos finitos son muy similares a los obtenidos con la fórmula cerrada, lo cual confirma el correcto funcionamiento de la simulación. 
-
-%TODO escribir más...
 %TODO mencionar que ITV crece con el radio. Se podrían comparar varias células

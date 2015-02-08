@@ -1,20 +1,19 @@
-# graba cada 10us
-# REVERTIR: calcular poros e intervalo disco!!!
+# graba cada 100us
 
-malla: 	 inputs/chico_25_192_150_10.msh		# alto 150
+malla: 	 inputs/25_192_150_5.msh
 nodpel:	 quad
-salida:  salida/last/02-04/transporte_solo/
+salida:  salida/last/02-08/acoplado-120kvm/
 threads: 4
-poros: false
+poros: true
 delta_t: 1e-9
 
 sigint: 200e-9
 sigext: 150e-9
 sigmem: 5e-12		# valor real 5e-12
 
-potencial:  1.5		# 10 KV/m
+potencial:  18		# 120 KV/m
 radio: 		25
-ancho: 		10e-3	# ancho de la membrana [um]
-pulsos:		1	
+ancho: 		5e-3	# ancho de la membrana [um]
+pulsos:		4
 on_time:	5e-3
-off_time:	0e-3
+off_time:	5e-3

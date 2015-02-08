@@ -1,12 +1,14 @@
 #-*- coding: utf-8 -*-
 # Para generar archivos .prm para AutoMesh2D sin la malla 1d ni 2d
+# después generar la malla con AutoMesh2D usando __MALLA1D.txt para la malla 1D
+# despues de generada la malla mergear y achicar con merge.py
 
 SALIDA = "generado.prm"
 ALTO_orig = 150
 ANCHO_orig = 50
 RADIO_orig = 25
-MEMBRANA_orig = 10e-3
-ESCALA = 100        #despues de generada la malla mergear y achicar con merge.py
+MEMBRANA_orig = 5e-3
+ESCALA = 100        
 
 ALTO = ALTO_orig * ESCALA
 ANCHO = ANCHO_orig * ESCALA
