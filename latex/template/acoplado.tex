@@ -17,16 +17,40 @@ Para acelerar los tiempos de ejecución se usaron intervalos temporales diferent
 
 \section{Resultados}
 
-Se presentan a continuación las concentraciones en el dominio de las diferentes especies iónicas estudiadas para diferentes instantes de tiempo. Los resultados corresponden a simulaciones de una célula de ??? bajo ? pulsos eléctricos con una diferencia potencial de ??? y una duración de ??? encendidos y ??? apagados cada uno.\\
+\newcommand{\lineasnap}[7]{
+	#2 &
+	\includegraphics[width=0.19\textwidth]{#1#3} & 
+	\includegraphics[width=0.19\textwidth]{#1#4} & 
+	\includegraphics[width=0.19\textwidth]{#1#5} & 
+	\includegraphics[width=0.19\textwidth]{#1#6} & 
+	\includegraphics[width=0.19\textwidth]{#1#7} \\
+}
 
-Tener primero resultados para poder escribir.
+\begin{table} \begin{center} 
+	\begin{tabular}
+		{ m{0.5cm} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} }
+		& 1\ms & 2\ms & 3\ms & 4\ms & 5\ms \\
+		\lineasnap{acoplado/1p160kvm/h} {\h} {10}{20}{30}{40}{50}
+		\lineasnap{acoplado/1p160kvm/oh}{\oh}{10}{20}{30}{40}{50}
+		\lineasnap{acoplado/1p160kvm/na}{\na}{10}{20}{30}{40}{50}
+		\lineasnap{acoplado/1p160kvm/cl}{\cl}{10}{20}{30}{40}{50}
+	\end{tabular}
+	\caption{Concentraciones en diferentes instantes de tiempo}
+	\label{tbl:snap1}
+\end{center} \end{table}
 
-\subsection*{\h}
+Se presentan a continuación las concentraciones en el dominio de las diferentes especies iónicas estudiadas para diferentes instantes de tiempo. Los resultados corresponden a simulaciones de una célula de 25\usec de radio bajo un pulsos eléctrico que genera un campo de 1600\vcm y una duración de 5\ms. Las imágenes de la tabla \ref{tbl:snap1} corresponden a las concentraciones molares de las cuatro especies en diferentes instantes del pulso. Los colores azules corresponden a los extremos bajos de concentración y los rojos a los extremos altos.
 
-Acá poner snapshots de pH \\
+Se observan en todos los casos cambios en el interior de la célula mucho mayores a los obtenidos en las simulaciones del capítulo \ref{chap:trans}. Esto se debe a que la simulación de la generación de poros posibilitó la permeabilización de la membrana y el ingreso o egreso con mayor facilidad de las especies iónicas. 
 
-\subsection*{\oh}
+En el caso del \h se observa un gran movimiento en las concentraciones, obteniéndose valores muy altos de concentración en la región hiperpolarizada del interior de la célula, que se observan con una franja roja cercana a la membrana. En cuanto a la región depolarizada del interior, la concentración de \h disminuyó notablemente, lo que se observa con una mancha de color verde que avanza hacia el ecuador de la célula con el paso del tiempo. El líquido extracelular también tuvo grandes cambios, con concentraciones altas en la región depolarizada y bajas en la región hiperpolarizada (al contrario del interior).
 
-\subsection*{\na}
+Las concentraciones de \oh presentan un comportamiento opuesto al observado en el \h, es decir en el interior de la célula se producen extremos altos de concentración en el polo depolarizado y una disminución de materia en el polo hiperpolarizado, mientras que en el exterior se alcanzan extremos altos cerca de la región de la membrana cercana al polo positivo y extremos bajos en el polo negativo. 
 
-\subsection*{\cl}
+En cuanto a las concentraciones de \na y \cl, se observa mucho menos movimiento, dado que sus constantes de difusión son mucho menores que las del \h y \oh. Al igual que en los casos anteriores se tienen concentraciones extremas cerca de la membrana, con el mismo patrón de comportamiento según el signo de la especia iónica (el \na se comporta como el \h por ser de carga positiva y el \cl como el \oh por ser de carga negativa). No se observa, sin embargo, una zona de concentraciones bajas que avance hacia el centro de la célula, como en los casos anteriores, pero se alcanza a notar que las zonas con valores extremos son de mayor tamaño que las obtenidas en el capítulo \ref{chap:trans}, en el que no se tenía en cuenta la permeabilización de la membrana.
+
+Si bien se observan cambios significativos en las concentraciones de las especies en el interior de la célula, estos cambios se dan principalmente en las regiones cercanas a la membrana. Sin embargo se observa que con el paso del tiempo las regiones con valores extremos se vuelven mayores, lo cuál indica que se podrían obtener mayores cambios en las concentraciones internas con pulsos de mayor duración o con varios pulsos. 
+
+%TODO subir a share (tesis, transporte y acoplado) y github
+
+%TODO VARIOS PULSOS!!!!

@@ -41,12 +41,12 @@ void Celula::acoplado() {
 	auto global_start = chrono::high_resolution_clock::now();
 	const double MULTIPLIER_POISSON = 2000;	
 	//const double MULTIPLIER_TRANSPORTE_MIN = 1;
-	const double MULTIPLIER_TRANSPORTE_MAX = 20;	//ponerlo en 20 por lo menos con poros
+	const double MULTIPLIER_TRANSPORTE_MAX = 200;	//ponerlo en 20 por lo menos con poros
 	const double MULTIPLIER_ITV = 1000;
 	const double PASO_DISCO = 100e-6;
 
 	const int CONSOLE_UPDATE_CHECK = 10000;
-	const int CONSOLE_INTERVAL_US = 2 * 1000 * 1000;
+	const int CONSOLE_INTERVAL_US = 5 * 1000 * 1000;
 
 	Transporte transporte(*this, calcularPoros);
 	unique_ptr<Poros> poros;
