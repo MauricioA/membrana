@@ -17,6 +17,8 @@ Para acelerar los tiempos de ejecución se usaron intervalos temporales diferent
 
 \section{Resultados}
 
+\subsection*{Un pulso}
+
 \newcommand{\lineasnap}[7]{
 	#2 &
 	\includegraphics[width=0.19\textwidth]{#1#3} & 
@@ -51,6 +53,53 @@ En cuanto a las concentraciones de \na y \cl, se observa mucho menos movimiento,
 
 Si bien se observan cambios significativos en las concentraciones de las especies en el interior de la célula, estos cambios se dan principalmente en las regiones cercanas a la membrana. Sin embargo se observa que con el paso del tiempo las regiones con valores extremos se vuelven mayores, lo cuál indica que se podrían obtener mayores cambios en las concentraciones internas con pulsos de mayor duración o con varios pulsos. 
 
-%TODO subir a share (tesis, transporte y acoplado) y github
+\subsection*{Varios pulsos}
 
-%TODO VARIOS PULSOS!!!!
+A continuación se presentan resultados de una simulación similar a la anterior pero con 4 pulsos de 5\ms cada uno, con un tiempo de apagado de 5\ms luego de cada pulso, en lugar de uno solo. Se utilizó la misma célula (de 25\um de radio) y el mismo potencial (160\kvcm).
+
+TODAS ESTAS IMAGENES ESTAN MAL!!!
+
+\begin{table} \begin{center} 
+	\begin{tabular}
+		{ m{0.5cm} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} }
+		& 8\ms & 16\ms & 24\ms & 32\ms & 40\ms \\
+		\lineasnap{acoplado/pulsos/h} {\h} {80}{160}{239}{319}{399}
+		\lineasnap{acoplado/pulsos/oh}{\oh}{80}{160}{239}{319}{399}
+		\lineasnap{acoplado/pulsos/na}{\na}{80}{160}{239}{319}{399}
+		\lineasnap{acoplado/pulsos/cl}{\cl}{80}{160}{239}{319}{399}
+	\end{tabular}
+	\caption{Concentraciones en diferentes instantes de tiempo}
+	\label{tbl:snap2}
+\end{center} \end{table}
+
+
+\begin{comment}
+TODO ESTO ESTA MAL!!: (resultados viejos)
+
+Se lograron con cuatro pulsos cambios en las concentraciones interiores y exteriores de todas las especies mucho mayores a los obtenidos con un pulso. 
+
+cambiar donde dice "a continuación se presentan en la intro" xq en las imágenes no se alcanza a observar bien
+
+los valores cambian segun los pulsos estén encendidos o apagados (no se alcanza a observar en las imágenes)
+
+En el interior de la célula se obtienen valores altos de concentración muy cerca de la membrana del polo del mismo signo que la especie. esto no depende del momento del pulso (es constante)
+
+en cambio en el polo opuesto (del lado interno también) se observa un comportamiento muy variado según si el pulso está apagado o prendido. en el primer pulso se obtienen valores bajos, es decir un comportamiento opuesto al del polo del mismo signo. Al apagarse el primer pulso se obtienen valores aún más bajos en el extremo de polo opuesto, y los valores de concentración que habían anteriormente (en el polo opuesto) avanzan hacia el ecuador. Sin embargo al encenderse el segundo pulso aparecen valores altos de concentración, que avanzan hacia el ecuador, en vez de obtenerse valores bajos como en el primer pulso. En el tiempo restante se repite el mismo proceso: valores altos en la zona interna cercana al polo opuesto mientras que el pulso está encendido, y bajos cuando el pulso está apagado, en todos los casos avanzando hacia el polo de mismo signo y con la zona cercana al polo del mismo signo con concentración alta constante.
+
+En cuanto a la región extracelular se obtuvieron en la mitad cercana al polo del mismo signo muchos cambios de concentración: durante el tiempo que el pulso está apagado se obtienen frentes de concentración bajos que salen del polo del mismo signo que la especie y avanzan hacia el electrodo del mismo signo, mientras que en los momentos que el pulso está on sucede lo mismo 
+
+
+
+
+
+
+
+
+quiero decir que las concentraciones externas en la mitad del mismo signo que la especie poseen cambios extremos provenientes de la célula 
+
+cambios concentraciones exteriores en zonas polares según valencia
+prendido y apagado 
+zona roja
+
+\end{comment}
+

@@ -40,8 +40,7 @@ double inline getDeltaT(double time_pulso, double multiplier, double delta_t) {
 void Celula::acoplado() {
 	auto global_start = chrono::high_resolution_clock::now();
 	const double MULTIPLIER_POISSON = 2000;	
-	//const double MULTIPLIER_TRANSPORTE_MIN = 1;
-	const double MULTIPLIER_TRANSPORTE_MAX = 200;	//ponerlo en 20 por lo menos con poros
+	const double MULTIPLIER_TRANSPORTE = 200;	//ponerlo en 20 por lo menos con poros
 	const double MULTIPLIER_ITV = 1000;
 	const double PASO_DISCO = 100e-6;
 
@@ -59,7 +58,7 @@ void Celula::acoplado() {
 	auto console_start = chrono::high_resolution_clock::now();
 	double last_transporte = 0, last_consola = 0;
 	double next_poisson, next_transporte, next_disco, next_itv;
-	double multiplier_transporte = MULTIPLIER_TRANSPORTE_MAX;
+	double multiplier_transporte = MULTIPLIER_TRANSPORTE;
 
 	int console_counter = 0;
 
@@ -69,18 +68,16 @@ void Celula::acoplado() {
 
 			next_poisson = next_disco = next_itv = 0;	//Corren desde la 1º iteración
 			next_transporte = delta_t;					//No corre en la 1º iteración
+			Poisson::estado = estado;					//Actualizo valor 
 			
-			/* Si comienza nuevo pulso le aviso a poros */
+			/* Si comienza nuevo pulso le aviso a poros (para que actualize capacitancia) */
 			if (estado == ON && calcularPoros) poros->nuevoPulso();
-
-			/* Si terminó el pulso le aviso a poisson */
-			if (estado == OFF) Poisson::apagar(*this);
 
 			/* Itero todo el pulso */
 			for (double pulse_time = 0; pulse_time < times[estado]; pulse_time += delta_t, time += delta_t) {
 
 				/* Iteración poisson, solo si está ON */
-				if ((estado == ON) && time >= next_poisson) {
+				if (time >= next_poisson) {
 					Poisson::iteracion(*this);
 					double step = getDeltaT(pulse_time, MULTIPLIER_POISSON, delta_t);
 					next_poisson = time + step;

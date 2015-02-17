@@ -3,11 +3,13 @@
 
 #include "Celula.h"
 
+//TODO no debería ser static!
+
 class Poisson {
 public:
-	static void iteracion(Celula& celula);
+	static int estado;
 
-	static void apagar(Celula& celula);
+	static void iteracion(Celula& celula);
 
 private:
 	static VectorXd global_rhs;

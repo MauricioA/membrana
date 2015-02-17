@@ -18,6 +18,7 @@ celula/salida/loop/*
 celula/salida/weaver/*
 celula/salida/last/*
 celula/salida/*.xz
+celula/salida/pulsativo/*
 
 fortran/potencial_transporte/objs/*
 fortran/potencial_transporte/celula

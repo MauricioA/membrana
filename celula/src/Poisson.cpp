@@ -9,12 +9,15 @@ const double TIERRA = 0;
 
 VectorXd Poisson::global_rhs;
 SparseMatrix<double> Poisson::matriz;
+int Poisson::estado = ON;
 
 void Poisson::iteracion(Celula &celula) {
 	global_rhs.resize(celula.nNodes);
 	global_rhs.fill(0.);
 	celula.potenciales.resize(celula.nNodes);
 	vector<Triplet<double>> global_triplets(celula.nElems * celula.nodpel * celula.nodpel);
+
+	double potencial = estado == ON ? celula.potencial : 0;
 
 	#pragma omp parallel num_threads(celula.threads)
 	{
@@ -58,11 +61,11 @@ void Poisson::iteracion(Celula &celula) {
 				if (nodo.esPotencia) {
 					for (int j = 0; j < celula.nodpel; j++) {
 						esm[i][j] = 0;
-						ef[j] -= esm[j][i] * celula.potencial;
+						ef[j] -= esm[j][i] * potencial;
 						esm[j][i] = 0;
 					}
 					esm[i][i] = adiag;
-					ef[i] = adiag * celula.potencial;
+					ef[i] = adiag * potencial;
 				}
 			}
 
@@ -186,8 +189,4 @@ void Poisson::corriente(Celula &celula) {
 		celula.corrElem[iElem].x = -elem.sigma * celula.corrElem[iElem].x;
 		celula.corrElem[iElem].y = -elem.sigma * celula.gradElem[iElem].y;
 	}
-}
-
-void Poisson::apagar(Celula &celula) {
-	celula.potenciales.fill(0);
 }
