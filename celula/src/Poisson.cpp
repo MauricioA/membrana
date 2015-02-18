@@ -10,14 +10,24 @@ const double TIERRA = 0;
 VectorXd Poisson::global_rhs;
 SparseMatrix<double> Poisson::matriz;
 int Poisson::estado = ON;
+bool Poisson::lastOff = false;
 
 void Poisson::iteracion(Celula &celula) {
+	double potencial;
+
+	if (estado == OFF) {
+		if (lastOff) return;				//no hacer nada si está off y ya se resolvió uno
+		potencial = 0;
+		lastOff = true;
+	} else {
+		potencial = celula.potencial;
+		lastOff = false;
+	}
+
 	global_rhs.resize(celula.nNodes);
 	global_rhs.fill(0.);
 	celula.potenciales.resize(celula.nNodes);
 	vector<Triplet<double>> global_triplets(celula.nElems * celula.nodpel * celula.nodpel);
-
-	double potencial = estado == ON ? celula.potencial : 0;
 
 	#pragma omp parallel num_threads(celula.threads)
 	{

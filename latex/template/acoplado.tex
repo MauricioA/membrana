@@ -21,11 +21,11 @@ Para acelerar los tiempos de ejecución se usaron intervalos temporales diferent
 
 \newcommand{\lineasnap}[7]{
 	#2 &
-	\includegraphics[width=0.19\textwidth]{#1#3} & 
-	\includegraphics[width=0.19\textwidth]{#1#4} & 
-	\includegraphics[width=0.19\textwidth]{#1#5} & 
-	\includegraphics[width=0.19\textwidth]{#1#6} & 
-	\includegraphics[width=0.19\textwidth]{#1#7} \\
+	\includegraphics[width=0.19\textwidth]{#1#3.png} & 
+	\includegraphics[width=0.19\textwidth]{#1#4.png} & 
+	\includegraphics[width=0.19\textwidth]{#1#5.png} & 
+	\includegraphics[width=0.19\textwidth]{#1#6.png} & 
+	\includegraphics[width=0.19\textwidth]{#1#7.png} \\
 }
 
 \begin{table} \begin{center} 
@@ -55,23 +55,31 @@ Si bien se observan cambios significativos en las concentraciones de las especie
 
 \subsection*{Varios pulsos}
 
-A continuación se presentan resultados de una simulación similar a la anterior pero con 4 pulsos de 5\ms cada uno, con un tiempo de apagado de 5\ms luego de cada pulso, en lugar de uno solo. Se utilizó la misma célula (de 25\um de radio) y el mismo potencial (160\kvcm).
-
-TODAS ESTAS IMAGENES ESTAN MAL!!!
+A continuación se presentan resultados de una simulación similar a la anterior pero con 4 pulsos de 5\ms cada uno, con un tiempo de apagado de 5\ms luego de cada pulso, en lugar de uno solo. Se utilizó la misma célula (de 25\um de radio) y el mismo potencial (160\kvcm). En todos los casos se lograron movimientos de las especies mucho mayores a los obtenidos con un solo pulso. \\
 
 \begin{table} \begin{center} 
 	\begin{tabular}
 		{ m{0.5cm} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} }
 		& 8\ms & 16\ms & 24\ms & 32\ms & 40\ms \\
-		\lineasnap{acoplado/pulsos/h} {\h} {80}{160}{239}{319}{399}
-		\lineasnap{acoplado/pulsos/oh}{\oh}{80}{160}{239}{319}{399}
-		\lineasnap{acoplado/pulsos/na}{\na}{80}{160}{239}{319}{399}
-		\lineasnap{acoplado/pulsos/cl}{\cl}{80}{160}{239}{319}{399}
+		\lineasnap{acoplado/pulsos/h000} {\h} {1}{2}{3}{4}{5}
+		\lineasnap{acoplado/pulsos/oh000}{\oh}{1}{2}{3}{4}{5}
+		\lineasnap{acoplado/pulsos/na000}{\na}{1}{2}{3}{4}{5}
+		\lineasnap{acoplado/pulsos/cl000}{\cl}{1}{2}{3}{4}{5}
 	\end{tabular}
 	\caption{Concentraciones en diferentes instantes de tiempo}
 	\label{tbl:snap2}
 \end{center} \end{table}
 
+
+En las cuatro especies estudiadas se obtuvo lo siguiente:
+
+\begin{itemize}
+	\item En el interior de la célula: en todos los casos en los momentos en los que el pulso está encendido se concentran extremos altos de densidad de las especies cerca de la membrana en el hemisferio del mismo signo que la especie (es decir \h y \oh se concentran en el hemisferio hiperpolarizado y \na y \cl en el depolarizado), mientras que en el polo de signo opuesto se crea una zona con concentraciones bajas que avanzan hacia el ecuador. En cambio cuando el pulso está apagado los valores altos de concentración se dispersan desde la zona cercana a la membrana hacia el interior de la célula, aumentando así la región ocupada por concentraciones altas, mientras que la zona con concentraciones bajas deja de avanzar.
+
+	\item En el exterior de la célula: se crea una zona de concentración alta que rodea la célula empezando en el polo de signo opuesto al signo de la especie y avanzando hacia el ecuador cuando el pulso está encendido y dispersándose y alejándose de la célula cuando el pulso está apagado. En el polo del mismo signo que la especie se observó la aparición de zonas de concentración baja que no avanzan hacia el ecuador, sino que se alejan de la célula cuando el pulso está encendido.
+\end{itemize}
+
+En el caso del \h y el \oh también se notó la aparición de zonas con concentraciones altas en el polo del mismo signo que la especie a partir del segundo pulso, provenientes del interior de la célula, mezclándose con las zonas de concentración baja, y con dirección hacia el electrodo del signo de la especie cuando el pulso está encendido. Los movimientos del \na y el \cl fueron menores que los del \h y el \oh, dada su menores constantes de difusión.
 
 \begin{comment}
 TODO ESTO ESTA MAL!!: (resultados viejos)

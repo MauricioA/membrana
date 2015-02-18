@@ -2,8 +2,8 @@
 
 malla: 	 inputs/25_192_150_5.msh
 nodpel:	 quad
-salida:  salida/pulsativo/02-17/120kvm/
-threads: 4
+salida:  salida/pulsativo/02-17/longoff/
+threads: 3
 poros: true
 delta_t: 1e-9
 
@@ -11,9 +11,9 @@ sigint: 200e-9
 sigext: 150e-9
 sigmem: 5e-12		# valor real 5e-12
 
-potencial:  18		# 120 KV/m
+potencial:  24		# 160 KV/m
 radio: 		25
 ancho: 		5e-3	# ancho de la membrana [um]
 pulsos:		4
 on_time:	5e-3
-off_time:	5e-3
+off_time:	15e-3

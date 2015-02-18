@@ -105,13 +105,13 @@ void Celula::acoplado() {
 					if (interval_us.count() > CONSOLE_INTERVAL_US) {
 						double intervalo_virtual = time - last_consola;
 						double iteraciones = intervalo_virtual / delta_t;
-						double tiempo_por_iter = interval_us.count() / 1000. / iteraciones;
+						double tiempo_por_iter = interval_us.count() / iteraciones;
 
 						if (calcularPoros) {
-							printf("%.1fus %d error: %e  %.6f ms/it", time*1e6,
+							printf("%.1fus %d error: %e  %.6f us/it", time*1e6,
 								poros->getNPoros() + poros->getNPorosChicos(), transporte.error, tiempo_por_iter);
 						} else {
-							printf("%.1fus error: %e  %.6f ms/it", time*1e6, transporte.error, tiempo_por_iter);
+							printf("%.1fus error: %e  %.6f us/it", time*1e6, transporte.error, tiempo_por_iter);
 						}
 
 						int nodosExtremos = valoresExtremos();

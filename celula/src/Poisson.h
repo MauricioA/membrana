@@ -9,6 +9,8 @@ class Poisson {
 public:
 	static int estado;
 
+	static bool lastOff;
+
 	static void iteracion(Celula& celula);
 
 private:
