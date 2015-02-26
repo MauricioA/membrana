@@ -2,8 +2,8 @@
 
 malla: 	 inputs/25_192_150_5.msh
 nodpel:	 quad
-salida:  salida/pulsativo/02-17/longoff/
-threads: 3
+salida:  salida/temp/
+threads: 4
 poros: true
 delta_t: 1e-9
 

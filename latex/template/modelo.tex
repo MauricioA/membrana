@@ -7,37 +7,67 @@
 
 % El chapter anterior debería tener una explicación a grandes rasgos de que es lo que se hace en el trabajo
 
+%Primero tiene que ir una introducción a grandes rasgos de lo que se hace (revisar chapter intro)
+
+En este capítulo se explica en detalle el modelo matemático estudiado y los métodos numéricos utilizados para resolverlo.
+
 \section{Modelo Matemático}
 
+Se estudia una única célula idealizada de forma esférica y compuesta por dos materiales: el líquido intracelular (citoplasma) y una fina membrana celular. La célula se encuentra sumergida en un líquido conductor extracelular, y se aplican pulsos eléctricos por medio de dos electrodos equidistantes a la célula, con una diferencia de potencial constante.
+
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[width=0.40\linewidth]{celula}
+%	\caption{PTM en función del tiempo en distintos ángulos polares para dos potenciales aplicados diferentes}
+%	\label{fig:itv-time}
+%\end{figure}
+
+%\begin{figure}[h]
+%\floatbox[{\capbeside\thisfloatsetup{capbesideposition={right,top},capbesidewidth=4cm}}]{figure}[\FBwidth]
+%{\caption{A test figure with its caption side by side}\label{fig:test}}
+%{\includegraphics[width=5cm]{celula}}
+%\end{figure}
+
+\begin{figure}[h]
+  \begin{minipage}[r]{0.50\textwidth}
+    \includegraphics[width=\textwidth]{celula}
+  \end{minipage}\hfill
+  \begin{minipage}[l]{0.5\textwidth}
+    \caption{
+       Modelo de la célula de radio $r$.\\ $\theta$ representa el ángulo polar\\ y $E$ el campo eléctrico.
+    } \label{fig:03-03}
+  \end{minipage}
+\end{figure}
+
 \subsection*{Potencial Eléctrico}
-El campo eléctrico en el dominio es generado por dos electrodos con un potencial constante durante la duración del pulso. El potencial eléctrico en todo el dominio se calcula según la ecuación 
+El potencial eléctrico generado por los electrodos se calcula en todo el dominio según la ecuación de Laplace \cite[p.~88]{c9-fem-electro}
 
 \begin{equation} \label{eq:poisson}
 	\nabla \sigma_{elem} \cdot (\nabla \phi) = 0 
 \end{equation}
 
-donde $\phi$ representa el potencial eléctrico y $\sigma_{elem}$ la conductividad del material, para $elem = o, i$ o $m$ para el líquido extracelular, el citoplasma o la membrana celular respectivamente.\\
+donde $\phi$ representa el potencial eléctrico y $\sigma_{elem}$ la conductividad del material, para $elem = o, i$ o $m$ para el líquido extracelular, el citoplasma o la membrana celular respectivamente. Los valores de las conductividades son muy diferentes para los tres tipos de material, siendo en particular la conductividad de la membrana celular mucho menor que la del resto del dominio.
 
-La diferencia de potencial entre el interior y el exterior de la célula en un punto de su superficie se conoce como potencial transmembrana (PTM). Si la célula es esférica este potencial se puede aproximar con la fórmula cerrada
+La diferencia de potencial entre el interior y el exterior de la célula en un punto de su superficie se conoce como potencial transmembrana (PTM). Si la célula es esférica este potencial se puede aproximar con la fórmula cerrada \cite{tsong}
 
 \begin{equation} \label{eq:cos}
-	V^{\theta} = 1.5\, E\, \alpha\, cos (\theta)
+	V^{\theta} = 1.5\, E\, \alpha\, \cos (\theta)
 \end{equation}
 
 % puede ir \cite{puchiar}
 donde $E$ es el campo eléctrico, $\theta$ el ángulo polar respecto del campo eléctrico y $\alpha$ el radio de la célula. Esta fórmula no tiene en cuenta que el PTM puede variar en el tiempo por la creación de poros, por eso en este trabajo no se la usa directamente, si no que usa la ecuación \ref{eq:poisson}.
 
 \subsection*{Generación y evolución de poros}
-Si el PTM es lo suficientemente alto, genera poros hidrofílicos en la membrana celular, que se pueden calcular según la ecuación
+El PTM genera en la membrana celular la aparición de poros hidrofílicos, cuya densidad se puede calcular según la ecuación diferencial ordinaria \cite{krass-viejo}
 
 \begin{equation} \label{eq:poros-crea}
 	\frac{\partial N}{\partial t} = \alpha_c e^{(V_m/V_{ep})^2} \left( 1 - \frac{N}{N_0 e^{q \left(V_m/V_{ep} \right) ^2}} \right)
 \end{equation}
 
 %poner cita \cite{krass}
-donde $N$ es la densidad de poros en un determinado tiempo y posición de la membrana celular, $\alpha_c$ es el coeficiente de creación de poros, $V_m$ es el potencial transmembrana, $V_{ep}$ es el voltaje característico de electroporación, $N_0$ es la densidad de poros en equilibrio (cuando $V_m = 0$) y $q$ es una constante igual a $(r_m / r*)^2$, donde $r_m$ es el radio de mínima energía para $V_m = 0$ y $r*$ es el radio mínimo de los poros.\\
+donde $N$ es la densidad de poros en un determinado tiempo y posición de la membrana celular, $\alpha_c$ es el coeficiente de creación de poros, $V_m$ es el potencial transmembrana, $V_{ep}$ es el voltaje característico de electroporación, $N_0$ es la densidad de poros en equilibrio (cuando $V_m = 0$) y $q$ es una constante igual a $(r_m / r*)^2$, donde $r_m$ es el radio de mínima energía para $V_m = 0$ y $r*$ es el radio mínimo de los poros. Esta ecuación se usa para cada región de la membrana por separado, ya que depende del PTM, que no es constante en la superficie. 
 
-Los poros se crean con un radio inicial $r*$ y su radio varía en el tiempo según el potencial transmembrana de acuerdo a la ecuación
+Los poros se crean con un radio inicial $r*$ y su radio varía en el tiempo según el potencial transmembrana de acuerdo a la ecuación diferencial ordinaria \cite{c7-krass07}
 
 \begin{equation} \label{eq:poros-radio}
 	\frac{\partial r}{\partial t} = \frac{D}{kT} \left( \frac{V_m^2 F_{max}}{1+r_h / (r+r_a)} + \frac{4 \beta}{r} \left(\frac{r_*}{r}\right)^4 - 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r\right)
@@ -50,19 +80,21 @@ donde $r$ es el radio de un poro, $D$ es el coeficiente de difusión para los po
 \end{equation}
 
 % puede ir \cite{krass}
-donde $\sigma^\prime$ es la tensión de la interfase hidrocarburo-agua, $\sigma_0$ es la tensión de la bicapa sin poros, $A_p$ es la suma de las áreas de todos los poros en la célula, y $A$ es el área de la célula. En la ecuación \ref{eq:poros-radio}, el primer término corresponde a la fuerza eléctrica inducida por el potencial transmembrana, el segundo a la repulsión estérica, el tercero a la tensión de línea que actúa en el perímetro del poro y el cuarto a la tensión superficial de la célula.\\
+donde $\sigma^\prime$ es la tensión de la interfase hidrocarburo-agua, $\sigma_0$ es la tensión de la bicapa sin poros, $A_p$ es la suma de las áreas de todos los poros en la célula, y $A$ es el área de la célula. En la ecuación \ref{eq:poros-radio}, el primer término corresponde a la fuerza eléctrica inducida por el potencial transmembrana, el segundo a la repulsión estérica, el tercero a la tensión de línea que actúa en el perímetro del poro y el cuarto a la tensión superficial de la célula. Se debe analizar el radio de cada poro individualmente y no en conjunto.\\
 
-Por otra parte se asume que la membrana celular se carga como un capacitor y una resistencia en paralelo. De esta manera el potencial transmembrana no aumenta bruscamente al iniciarse el pulso eléctrico, si no que crece de manera paulatina según la ecuación: 
+Por otra parte se asume que la membrana celular se carga como un capacitor y una resistencia en paralelo. De esta manera el potencial transmembrana no aumenta bruscamente al iniciarse el pulso eléctrico, si no que crece de manera paulatina según la ecuación \cite{c7-krass07}
 
 \begin{equation} \label{eq:capacit} \begin{split}
 	V_m = V_p\, (1 - e^{-t/\tau}) , \\ \textrm{con } \tau = \alpha\, C_m \left( \frac{1}{\sigma_i} + \frac{1}{2 \sigma_o} \right)
 \end{split} \end{equation}
 
 %poner \cite{krass}
-donde $V_m$ es el potencial transmembrana en un punto de la superficie de la célula, $V_p$ es el potencial obtenido por las ecuaciones de potencial eléctrico en ése mismo punto, $t$ es el tiempo transcurrido desde el comienzo del pulso eléctrico, $\alpha$ es el radio de la célula, $C_m$ es la capacitancia superficial de la célula y $\sigma_i$ y $\sigma_o$ las conductancias intra y extracelulares respectivamente.\\
+donde $V_m$ es el potencial transmembrana en un punto de la superficie de la célula, $V_p$ es el potencial obtenido por las ecuaciones de potencial eléctrico en ése mismo punto, $t$ es el tiempo transcurrido desde el comienzo del pulso eléctrico, $\alpha$ es el radio de la célula, $C_m$ es la capacitancia superficial de la célula y $\sigma_i$ y $\sigma_o$ las conductancias intra y extracelulares respectivamente.
 
 \subsection*{Transporte de especies}
-Para conocer la concentración de las especies iónicas se usa la ecuación de conservación de masa de Nernst-Planck:
+Se estudia el transporte de cuatro especies iónicas: \h, \oh, \na y \cl en el dominio producto de la diferencia de potencial aplicada por los electrodos. Para conocer las concentraciones en las diferentes regiones e instantes de tiempo se utiliza la ecuación de conservación de masa de Nernst-Planck \cite{c6-fodava}
+
+%Para conocer la concentración de las especies iónicas se usa la ecuación de conservación de masa de Nernst-Planck \cite{c6-fodava}
 
 \begin{equation} \label{eq:trans}
 	\frac{\partial C_i}{\partial t} = \nabla \cdot \left( D_i \nabla C_i + D_i z_i \frac{F}{R T} C_i \nabla \phi \right)
@@ -71,10 +103,9 @@ Para conocer la concentración de las especies iónicas se usa la ecuación de c
 %\cite{fodava} abajo
 donde $C_i$, $D_i$ y $z_i$ representan la concentración, el coeficiente de difusión y la valencia respectivamente de la especie $i$, para $i = $ \h, \oh, \na ó \cl.
 $F$ es la constante de Faraday, $R$ la constante de los gases y $T$ la temperatura. 
-Esta ecuación tiene en cuenta la difusión de las partículas (con el término $D_i \nabla C_i$) pero también el efecto de migración producto del campo eléctrico (con el término $D_i z_i \frac{F}{R T} C_i \nabla \phi$).\\
+Esta ecuación tiene en cuenta la difusión de las partículas (con el término $D_i \nabla C_i$) pero también el efecto de migración producto del campo eléctrico (con el término $D_i z_i \frac{F}{R T} C_i \nabla \phi$). 
 
 \subsection*{Condiciones de borde}
-%TODO ESTA MAL LA REFERENCIA A LA EQ POISSON!!
 Para la ecuación \ref{eq:poisson} se usan condiciones de borde de Dirichlet con potenciales fijos en los electrodos, mientras que para el borde no ocupado por electrodos se usan condiciones de borde de Neumann:
 
 \begin{equation}
@@ -83,9 +114,9 @@ Para la ecuación \ref{eq:poisson} se usan condiciones de borde de Dirichlet con
 
 donde $\mathbf{n}$ representa la normal al borde.\\
 
-Para la ecuación de generación de poros \ref{eq:poros-crea} se usa como condición inicial que la membrana no contiene poros, mientras que para la ecuación \ref{eq:poros-radio} se asume que los poros se crean con un radio inicial $r^*$.\\
+Para la ecuación de generación de poros \ref{eq:poros-crea} se usa como condición inicial que la membrana no contiene poros, mientras que para la ecuación \ref{eq:poros-radio} se asume que los poros se crean con un radio inicial $r^*$.
 
-Para la ecuación de transporte de especies \ref{eq:trans} se usan como condiciones iniciales las concentraciones descritas en la tabla \ref{table:tablita}: $C_{e, i}^0$ siendo $e =$ $i$ ó $o$ si se refiere a los nodos del interior o del exterior de la célula respectivamente e $i =$ \h, \oh, \na ó \cl para la concentración de cada especie y $C_{e,i}$ con $e =$ $a$ ó $c$ si es para el ánodo o el cátodo respectivamente.\\
+Para la ecuación de transporte de especies \ref{eq:trans} se usan como condiciones iniciales las concentraciones descritas en la tabla \ref{table:tablita}: $C_{e, i}^0$ siendo $e =$ $i$ ó $o$ si se refiere a los nodos del interior o del exterior de la célula respectivamente e $i =$ \h, \oh, \na ó \cl para la concentración de cada especie y $C_{e,i}$ con $e =$ $a$ ó $c$ si es para el ánodo o el cátodo respectivamente.
 
 Como condición de borde en el borde no ocupado por los electrodos se usa
 \begin{equation}
@@ -95,12 +126,12 @@ Como condición de borde en el borde no ocupado por los electrodos se usa
 Para los bordes ocupados por los electrodos se usan los valores fijos $C_{e,i}$ descritos anteriormente.
 
 
-\subsection{Constantes}
+\subsection*{Constantes}
 A continuación se presenta la definición y valores de las constantes usadas.
 
-TODO CORREGIR LOS 0 1 QUE ESTÁN MAL! (ver preinforme)
-
-TODO revisar todos los valores de la tabla!
+%TODO CORREGIR LOS 0 1 QUE ESTÁN MAL! (ver preinforme)
+%TODO revisar todos los valores de la tabla!!!!
+%TODO agregar referencias dentro de la tabla
 
 \newcommand{\lineaTabla}[3]{ ${#1}$ & {#3} & {#2} \\ }
 
@@ -174,68 +205,158 @@ TODO revisar todos los valores de la tabla!
 		\hline
 	\end{tabular} 
 	\caption{Valores constantes usados.} %Valores obtenidos de \cite{krass}, \cite{puchiar} y \cite{marino}}
-%TODO revisar valores que se hallan cambiado
 	\label{table:tablita}
 \end{table}
 
 \newpage
 
-\section{Implementación}
-%
-%FALTA ACOPLAMIENTO EN LA SECCIÓN MODELO MATEMÁTICO!!! (como influyen los poros en conductancia y difusión)
-%FALTARÍA TAMBIÉN ACLARAR QUE LA DENSIDAD DE POROS ES MUY VARIABLE SEGÚN LA REGIÓN DE LA SUPERFICIE Y QUE LA EQ SE APLICA A CADA PORO POR SEPARADO!!
+\section{Métodos Computacionales}
 
-%TODO mencionar el archivo de entrada input.in!!! se menciona en otros capítulos
+%Las ecuaciones descritas en la sección anterior fueron resueltas utilizando los métodos numéricos de elementos finitos y diferencias finitas. 
 
-El problema fue dividido en tres partes, según los tres fenómenos físicos principales considerados: el potencial eléctrico en el dominio, la evolución de los poros en la membrana celular y el transporte de las especies iónicas. Las tres partes fueron implementadas y estudiadas por separado y por último fueron acopladas.\\
+La complejidad de las ecuaciones descritas en la sección anterior obliga a resolverlas con métodos numéricos. Se eligieron los métodos de elementos finitos y diferencias finitas, que fueron implementados desde cero. El método de elementos finitos requiere además resolver sistemas de ecuaciones lineales, los cuales se resolvieron utilizando la librería Eigen \cite{eigen}.
 
-%TODO agregar referencias!!
-%mas detalles de implementación en capítulos posteriores
-El trabajo fue implementado en \texttt{C++} haciendo uso de la librería de álgebra lineal \texttt{Eigen} para resolver sistemas de ecuaciones.\\ %Los sub-problemas de potencial eléctrico y transporte de especies fueron resueltos con el método de elementos finitos. \\
+\subsection*{Método de Elementos Finitos}
+%TODO agregar citas!!!
 
-Las simulaciones fueron realizadas en un equipo con procesador \texttt{Intel i3 2100} corriendo a 3.10 GHz y 8GB de memoria RAM con sistema operativo \texttt{Microsoft Windows 7}. El código es portable y fue compilado con \texttt{Microsoft Visual C++} bajo la interfaz \texttt{Microsoft Visual Studio 2013}, pero también fue probado con los compiladores \texttt{Intel C Compiler} en Windows y \texttt{GCC} en Linux.\\
-
-Para realizar las simulaciones de los sub-problemas de potencial eléctrico y transporte de especies se utilizó el método de elementos finitos, que requiere resolver sistemas de ecuaciones lineales. Las resoluciones de los sistemas de ecuaciones se hicieron con la librería \texttt{Eigen}, usando matrices esparsas y los métodos de Cholesky y Bi-gradientes conjugados estabilizados.\\
-
-Para acelerar los tiempos de ejecución se usó la API \texttt{OpenMP}, que consiste en directivas para correr código \texttt{C++} en paralelo (escribir mejor). 
-%Más detalles de donde se usa OpenMP en los capítulos posteriores
-
-Se usó un sistema de coordenadas cilíndricas idealizando la célula y los electrodos como sólidos de revolución. De esta manera la cantidad de nodos en la grilla empleada es considerablemente menor que si se usara un sistema de coordenadas con tres dimensiones, y los tiempos de ejecución se reducen notablemente.\\
-
-Se generaron mallas bidimensionales con elementos cuadrilaterales usando el programa \texttt{Auto-Mesh 2D} con el método looping quad (???). Los elementos en la malla son de tamaño variable, con los elementos cercanos a la membrana de tamaño muy pequeño por ser la región de mayor interés y con cambios muy bruscos en la concentraciones y potenciales (escribir bien!). Se distinguen en la malla tres regiones: el líquido extracelular, el citoplasma (en el interior de la célula) y la membrana celular. A diferencia de otros trabajos anteriores (agregar refs) la membrana celular se modela en la malla con elementos propios del tamaño real en vez de considerarse con un ancho superior al real o directamente una condición de borde. El método de elementos finitos fue elegido en lugar de el método de diferencias finitas porque permite crear mallas con elementos de tamaños irregulares y realizar cambios en las mallas empleadas sin modificar el programa que realiza la simulación.\\
-
-acá deberían ir un par de dibujos de la malla\\
-
-Las mallas utilizadas tienen entre xxx y xxx elementos y representan un dominio de ??? \si{\micro\metre} de alto y ??? \si{\micro\metre} de ancho con células de ?? \si{\micro\metre} de radio y membranas de 5 \si{\nano\metre} de ancho. Para modelar la célula se dividió el ángulo $\theta$ en 192 partes con dos elementos por cada ángulo discreto (explicar mejor???).\\
-
-También se usó \texttt{Python} como lenguaje secundario, para ayudar en la generación de mallas, la interpretación de los datos de salida obtenidos en las simulaciones y la generación de gráficos, haciendo uso de la librería \texttt{mathplotlib}.
-
-%TODO podrían ir más detalles de entrada (input.in), salida, como usar el programa, etc o podria ir un apéndice de uso
-
-\subsection{Método de Elementos Finitos}
-%acá solo explicación a grandes rasgos??
-%debería ir abajo de la section implementación?
-%TODO expandir bastante
-
-Esto está copiado del preinforme. Habría que expandir bastante. También poner detalles del trabajo.\\
-
-El método de elementos finitos (FEM) sirve para resolver ecuaciones diferenciales de manera aproximada, discretizando el dominio en zonas pequeñas y disjuntas llamadas elementos, y resolviendo un sistema de ecuaciones lineales que obtiene la solución de las ecuaciones diferenciales en un conjunto de puntos del dominio. La aplicación del método de elementos finitos consiste en: [AG CITA!] %\cite{fem} 
+El método de elementos finitos (FEM, \textit{Finite Element Method}) es una herramienta computacional que se utiliza para resolver ecuaciones diferenciales discretizando el dominio en zonas pequeñas llamadas elementos y resolviendo un sistema de ecuaciones lineales con el que se obtiene la solución de las ecuaciones diferenciales en un conjunto de puntos del dominio. Una ventaja del método es que permite modelar con facilidad dominios con formas complejas, y que permite enfocar la atención en zonas del dominio que sean de particular interés, o que contengan cambios bruscos en la solución del problema, modelando sin problemas con elementos de tamaño variable. La aplicación del método de elementos finitos consiste en:
 
 \begin{itemize}
-	\item Discretizar el dominio continuo en una malla formada por elementos unidos por nodos. Cada uno de estos elementos debe ser pequeño y tener una forma simple (por ejemplo triángulos o cuadriláteros). El conjunto de elementos debe ser disjunto y ocupar todo el dominio; es decir, cada punto del dominio debe estar ocupado por uno y sólo un elemento. Los vértices de los elementos se llaman nodos, y suelen ser un punto en común entre dos o más elementos. Cuántos más pequeños sean los elementos, mayor será la precisión de la solución al aplicar el método, pero se necesitarán más elementos para cubrir el dominio, y por lo tanto un mayor poder de cómputo. 
+	\item Discretizar el dominio continuo en una malla formada por elementos unidos por nodos. Cada uno de estos elementos debe ser pequeño y tener una forma simple (por ejemplo triángulos o cuadriláteros si el dominio es bidimensional). El conjunto de elementos debe ser disjunto y ocupar todo el dominio; es decir, cada punto del dominio debe estar ocupado por uno y sólo un elemento. Los vértices de los elementos se llaman nodos, y suelen ser un punto en común entre dos o más elementos. Cuántos más pequeños sean los elementos, mayor será la precisión de la solución al aplicar el método, pero se necesitarán más elementos para cubrir el dominio, y por lo tanto un mayor poder de cómputo. 
+
+	\item Definir funciones de forma. Una función de forma  de un nodo de un elemento es una función tal que vale 1 cuando se evalúa en el nodo que la define, 0 cuando se evalúa en los demás nodos del elemento, y tiene valores intermedios para los demás puntos del interior. 
+
+	\item Plantear la ecuación $R(e) = \int_{v} N \cdot (L(u) + f_v)\, dv$  para cada elemento, donde la ecuación diferencial a resolver tiene la forma $L(u) + f_v = 0$, $N$ es un vector con las funciones de forma definidas anteriormente, y $R(e)$ es el residuo del elemento, que se intentará minimizar. Luego igualar el residuo a 0 y obtener un sistema de ecuaciones lineales de la forma $K u = f$ donde $K$ es una matriz de $n_e \times n_e$, con $n_e$ la cantidad de nodos por elemento, $u$ es el vector con los valores nodales de la ecuación a resolver y $f$ es un vector de longitud $n_e$. La matriz $K$ del sistema generado se denomina matriz de rigidez, y el vector $f$ vector de fuerza. Para llegar al sistema de ecuaciones lineales suele ser necesario usar integración por partes para reducir el orden de las ecuaciones diferenciales y puede ser necesario resolver integrales con métodos aproximados de integración numérica. La manera de llegar al sistema de ecuaciones lineales depende de la ecuación diferencial a resolver, del tipo de los elementos usados y de las funciones de forma elegidas. 
 	
-	\item Desarrollar para cada elemento un sistema de ecuaciones lineales que relacione los valores en los nodos. Esto se hace generalmente aplicando el método de residuos ponderados a cada uno de los elementos. El sistema resultante suele tener tantas incógnitas y ecuaciones como nodos por elemento.
-%	explayarse más! funciones de forma? 
-		
-	\item Ensamblar todos los sistemas de ecuaciones elementales en un sistema grande, con tantas ecuaciones e incógnitas como nodos en la malla del dominio. 
+	\item Ensamblar todos los sistemas de ecuaciones elementales en un sistema grande, con tantas ecuaciones e incógnitas como nodos en la malla. El valor en cada nodo debe ser igual para los diferentes elementos a los que pertenece. El proceso de ensamblaje se realiza reescribiendo cada sistema elemental obtenido en el punto anterior por un sistema global, de $n \times n$, donde cada elemento de la matriz de rigidez $K$ se coloca en la posición correspondiente al nodo que representa según la numeración global de los nodos en todo el dominio, y el resto de los elementos se dejan en 0. Luego se suman todas las matrices globales de cada elemento para obtener una única matriz global de rigidez del sistema. Lo mismo se debe realizar con el vector de fuerza $f$. La cantidad de elementos distintos de cero en cada fila $i$ de la matriz de rigidez depende de la cantidad de elementos a los que pertenece el nodo $i$ en la malla que representa el dominio y de la cantidad de nodos por elemento.
 	
-	\item Agregar las condiciones de borde al sistema. En algunos casos se realiza este paso al generar las ecuaciones elementales, es decir antes de ensamblar el sistema.
+	\item Agregar las condiciones de borde al sistema global. En algunos casos es posible realizar este paso al generar las ecuaciones elementales, es decir antes de ensamblar el sistema. Diferentes condiciones de borde se agregan de diferentes maneras. Por ejemplo la condición de borde de Dirichlet en un nodo $i$ se puede agregar al sistema reemplazando la fila $i$ de la matriz de rigidez por una fila con 1 en la posición $i$ y ceros en las demás posiciones, y reemplazando el valor en la posición $i$ del vector de fuerza por el valor indicado por la condición de borde. 
 	
-	\item Resolver el sistema ensamblado con algún método de resolución de ecuaciones lineales. Dado que la matriz ensamblada es muy poco densa (muy pocos elementos distintos de cero), se suele representar con estructuras especiales para matrices dispersas. En algunos problemas la matriz generada es simétrica definida positiva, lo que permite usar métodos como descomposición de Cholesky o gradientes conjugados.
+	\item Resolver el sistema ensamblado con algún método de resolución de ecuaciones lineales. El vector $u$ global obtenido contiene las soluciones en los nodos de la ecuación diferencial. Dado que la matriz ensamblada es muy poco densa (muy pocos elementos distintos de cero), se suele representar con estructuras especiales para matrices dispersas. Si la matriz de rigidez global $K$ es simétrica definida positiva\footnote{$K$ es simétrica definida positiva si $K = K^\intercal$ y $x^\intercal K x > 0$ para todo vector $x \neq 0$} se pueden utilizar métodos especiales como descomposición de Cholesky, LDL o gradientes conjugados, que pueden reducir sustancialmente los tiempos de cómputo. También se pueden reducir los tiempos de resolución si se tiene una matriz banda\footnote{$K$ es una matriz con banda $p$ si $K_{ij} = 0 \; \forall j < i-p$ ó $j > i+p$, es decir todos los valores distintos de cero están dentro de una banda diagonal con un ancho conocido} de rigidez. Para lograr esto último es necesario haber asignado números a los nodos de la malla de manera tal que se minimice la máxima distancia entre los números de dos nodos en un mismo elemento en todo el dominio.
+	
+	%Otro tipo de matriz particular que puede reducir los tiempos de ejecución de la resolución es la matriz banda, en la que 
 \end{itemize}
+
+%TODO aclarar que en los siguientes capítulos se explica en detalle etc
 
 %TODO \subsection{Método de Diferencias Finitas}
 
-\subsection{Descomposición de Cholesky}
+\subsection*{Descomposición LDL}
 
-\subsection{Descomposición BiCGSTAB}
+%TODO faltan las citas!
+%TODO mencionar ldlt arriba
+
+La factorización LDL permite descomponer una matriz $A$ simétrica en $A = L D L^\intercal$ donde $L$ es triangular inferior con unos en la diagonal, $D$ es diagonal y $L^\intercal$ es la matriz traspuesta de $L$. De esta manera es posible resolver sistemas de ecuaciones lineales de la forma $Ax = b$ con aproximadamente la mitad de las operaciones que se necesitarían por el método de eliminación gaussiana o LU. Este método puede utilizarse para cualquier matriz $A$ cuadrada simétrica que tenga una descomposición LU sin intercambios de filas. En particular puede aplicarse para todas las matrices simétricas definidas positivas.\\
+
+El algoritmo para obtener las matrices $L$ y $D$ a partir de una matriz $A$ de $n \times n$ es:\\
+
+\clearpage
+
+%\begin{algorithm}
+%	\For {i = 1 \ldots n} {
+%		\For {j = 1 \ldots i-1} {
+%%			v_j = L_{ij} D_j\;
+%			v_{asd}
+%		}
+%%		D_j = A_{ii} - \sigma_{j=1}^{i-1} L_{ij} v_j
+%		\For {j = i+1 \ldots n} {
+%%			L_{ij} = \left( A_{ji} - \sigma_{k=1}^{j-1} L_{jk} v_k \right) / D_i
+%		}
+%	}
+%\end{algorithm}
+
+\begin{algorithmic}
+	\FORALL {$i \in \{1 \ldots n\}$}
+		\FORALL {$j \in \{1 \ldots i-1\}$}
+			\STATE $v_j = L_{ij} D_{jj}$
+		\ENDFOR
+		\STATE $D_{jj} = A_{ii} - \Sigma_{j=1}^{i-1} L_{ij} v_j$
+		\FORALL {$j \in \{i+1 \ldots n\}$}
+			\STATE $L_{ij} = \left( A_{ji} - \Sigma_{k=1}^{j-1} L_{jk} v_k \right) / D_{ii}$
+		\ENDFOR
+	\ENDFOR
+	\RETURN $L, D$
+\end{algorithmic}
+
+%TODO REVISAR EL ALGORITMO!!
+
+%aprox. n^3 / 6 + n^2 - 7/6 n mult o div de punto flotante
+
+El algoritmo requiere aproximadamente $\frac{1}{6} n^3 + \frac{1}{2} n^2 - \frac{7}{6}n$
+multiplicaciones o divisiones de punto flotante. La factorización LDL es similar a la descomposición de Cholesky, la cual calcula una descomposición de la forma $A = L'L'^\intercal$, donde $L' = L\sqrt{D}$. Sin embargo el método de Cholesky requiere calcular la raíz cuadrada de la matriz diagonal $D$, lo cual tiene un costo computacional y un error de cálculo adicional. LDL tiene además como ventaja que funciona en algunos casos en los que $A$ no es una matriz definida positiva, lo cual no sucede con la descomposición de Cholesky.
+
+%TODO se puede hablar también de la estabilidad del algoritmo
+
+\subsection*{Descomposición de gradiente biconjugado estabilizado}
+
+%TODO agregar citas!!!
+%libro iterative methods for sparse....
+%y paper Generalized conjugate gradient squared
+%Diederik R. Fokkema*, Gerard L.G. Sleijpen, Henk A. Van der Vorst
+%Mathematical Institute, Utrecht University, P.O. Box 80.010, NL-3508 TA Utrecht, Netherlands
+%Received 2 March 1995; revised 19 September 1995 
+
+El método del gradiente biconjugado estabilizado (BiCGSTAB por \textit{biconjugate gradient stabilized method}) es un algoritmo iterativo que sirve para resolver sistemas de ecuaciones lineales de la forma $Ax=b$. BiCGSTAB es una modificación del método del bigradiente conjugado (BCG) que logra una mayor estabilidad numérica y velocidad de convergencia. A su vez BCG es una generalización del método de gradientes conjugados, modificado para funcionar también con matrices no simétricas pero con baja estabilidad numérica. El pseudocódigo del algoritmo es:
+
+\newcommand{\walfa}{\widetilde{\alpha}}
+\newcommand{\wsigma}{\widetilde{\sigma}}
+\newcommand{\wrcero}{\widetilde{r}_0}
+
+\begin{algorithmic}
+	\STATE Elegir valores iniciales de $x_0$ y $\wrcero$
+	\STATE $r_0 = b - A x_0$
+	\STATE $u_{-1} = w_{-1} = s_{-1} = 0$
+	\STATE $\alpha_{-1} = \sigma_{-1} = \walfa_{-1} = \wsigma_{-1} = 1$
+	\STATE $k = 0$
+	\REPEAT
+		\STATE $\rho_k = \left( r_k, \wrcero \right)$
+		\STATE $\beta_k = (-1 / \walfa_{k-1}) (\rho_k / \sigma_{k-1})$
+		\STATE $w_k = r_k - \beta_k (w_{k-1} - \walfa_{k} c_{k-1})$
+		\STATE $c_k = A w_k$
+		\STATE $\sigma_k = (c_k, \wrcero)$
+		\STATE $\alpha_k = \rho_k / \sigma_k$
+		\STATE $s_k = r_k - \alpha_k c_k$
+		\STATE $t_k = A s_k$ 
+		\STATE $\walfa_{k} = (s_k,t_k) / (t_k, t_k)$
+		\STATE $x_{k+1} = x_k + \alpha_k w_k + \walfa_{k} s_k$
+		\STATE $r_{k+1} = s_k - \walfa_{k} t_k$
+		\STATE $k = k + 1$
+	\UNTIL {$x_{k}$ no sea lo suficientemente preciso}
+	\RETURN $x_k$
+\end{algorithmic}
+
+%TODO revisar que el código tenga sentido
+
+BiCGSTAB funciona particularmente bien comparado con métodos directos cuando se trabaja con sistemas de ecuaciones muy grandes y esparsos, algo que suele suceder a menudo al aplicar el método de elementos finitos. Dado que es un algoritmo iterativo, necesita un criterio de parada que puede estar dado como una medida de la diferencia entre $b$ y $A x_k$. El valor de $x_0$ usado en la primera iteración se puede elegir de manera arbitraria, y el algoritmo puede converger en muy pocas iteraciones si se elije un valor de $x_0$ muy cercano a la solución del sistema. Por esta razón si se resuelven muchos sistemas de ecuaciones similares, se puede usar la solución final de uno como solución inicial del siguiente. 
+
+%TODO poner ejemplo FEM para problemas transitorios
+
+\section{Implementación}
+El problema fue dividido en tres partes, según los tres fenómenos físicos principales considerados: el potencial eléctrico en el dominio, la evolución de los poros en la membrana celular y el transporte de las especies iónicas. 
+
+El trabajo fue implementado en \texttt{C++} haciendo uso de la librería de álgebra lineal \nombre{Eigen} para resolver sistemas de ecuaciones. Las simulaciones fueron realizadas en un equipo con procesador Intel i3 2100 corriendo a 3.10 GHz y 8GB de memoria RAM con sistema operativo Microsoft Windows 7. El código es portable y fue compilado con Microsoft Visual C++ bajo la interfaz Microsoft Visual Studio 2013, pero también fue probado con los compiladores Intel C Compiler para Windows y GCC para Linux.
+
+Para realizar las simulaciones de los sub-problemas de potencial eléctrico y transporte de especies se utilizó el método de elementos finitos, que requiere resolver sistemas de ecuaciones lineales. Las resoluciones de los sistemas de ecuaciones se hicieron con la librería \nombre{Eigen}, usando matrices esparsas y los métodos LDL y gradiente biconjugado estabilizado. Las ecuaciones de densidad y radio de poros se resolvieron por el método de diferencias finitas. Para acelerar los tiempos de ejecución se usó la interfaz \nombre{OpenMP}, que consiste en directivas para paralelizar código \texttt{C++} en múltiples hilos de ejecución. 
+
+Se usó un sistema de coordenadas cilíndricas idealizando la célula y los electrodos como sólidos de revolución. De esta manera la cantidad de nodos en la grilla empleada es considerablemente menor que si se usara un sistema de coordenadas con tres dimensiones, y los tiempos de ejecución se reducen notablemente. 
+
+Se generaron mallas bidimensionales con elementos cuadrilaterales de tamaño variable usando el programa \nombre{Auto-Mesh 2D}. Las zonas cercanas a la membrana celular son de mucho interés y contienen cambios bruscos de potencial y concentraciones. Por esta razón se usaron elementos muy pequeños en estas regiones. Se distinguen en la malla tres regiones: el líquido extracelular, el citoplasma (en el interior de la célula) y la membrana celular. A diferencia de otros trabajos anteriores la membrana celular se modela en la malla con elementos propios del tamaño real en vez de considerarse con un ancho superior al real o directamente una condición de borde. El método de elementos finitos fue elegido en lugar de el método de diferencias finitas porque permite crear mallas con elementos de tamaños irregulares y realizar cambios en las mallas empleadas sin modificar el programa que realiza la simulación.
+
+\begin{figure} 
+\makebox[\textwidth][c] {
+	\centering
+	\begin{minipage}{.20\paperwidth}
+		\centering
+		\includegraphics[scale=0.55]{mesh/meshfar}
+	\end{minipage}%
+	\begin{minipage}{.60\paperwidth}
+		%\centering
+		\includegraphics[scale=0.50]{mesh/mesh3}
+	\end{minipage}
+}
+\caption{Ejemplo de malla. Dominio completo (izquierda) y detalle (derecha). La célula tiene forma de semicírculo dado que se usan coordenadas cilíndricas. Los elementos de la membrana son los más pequeños y no se alcanzan a ver.}
+\end{figure}
+
+Las mallas utilizadas tienen entre 7500 y 8900 elementos y representan un dominio de hasta 150 \si{\micro\metre} de alto y hasta 50 \si{\micro\metre} de ancho con células de 25 \si{\micro\metre} de radio y membranas de 5 \si{\nano\metre} de ancho. Para modelar la célula se dividió el ángulo polar en 192 partes con dos elementos por cada ángulo discreto. Los electrodos se modelaron dentro del dominio, en los bordes superior e inferior.
+
+También se usó \nombre{Python} como lenguaje secundario, para ayudar en la generación de mallas, la interpretación de los datos de salida obtenidos en las simulaciones y la generación de gráficos, haciendo uso de la librería \nombre{mathplotlib}. El programa lee los parámetros de ejecución de un archivo \texttt{input.in} y graba periódicamente resultados de potencial y campo eléctrico eléctrico, potencial transmembrana, densidad y radios de poros en la membrana celular, concentraciones de las especies y valores de pH en diferentes archivos de salida.

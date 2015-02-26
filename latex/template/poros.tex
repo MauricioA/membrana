@@ -9,6 +9,8 @@ Como las ecuaciones que gobiernan la creación de poros en la membrana son depen
 
 La ecuación \ref{eq:poros-crea} que calcula la densidad de poros en cada región de la membrana fue discretizada como
 
+%TODO esquema implícito, explícito etc!!!
+
 \begin{equation} \label{eq:poros-crea-disc}
 	\frac{N_{t+1} - N_{t}}{\Delta t} = \alpha e^{(V_m/V_{ep})^2} \left( 1 - \frac{N_{t}}{N_0 e^{q \left(V_m / V_{ep} \right) ^2}} \right)
 \end{equation}
@@ -18,7 +20,7 @@ Para obtener el valor de $V_m$ en cada punto de la membrana celular se tienen en
 La cantidad de poros en cada región de la membrana se calcula multiplicando la densidad obtenida con la ecuación \ref{eq:poros-crea-disc} por el área de cada región discreta y tomando la parte entera del valor obtenido. El área de cada zona esférica discreta se calcula como 
 
 \begin{equation} \label{eq:area}
-	A = 2 \pi \alpha^2 (cos(\theta_1) - cos(\theta_2))
+	A = 2 \pi \alpha^2 (\cos(\theta_1) - \cos(\theta_2))
 \end{equation}
 
 siendo $\alpha$ el radio de la célula y $\theta_1$ y $\theta_2$ los ángulos que delimitan la zona esférica.

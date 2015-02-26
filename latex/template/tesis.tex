@@ -14,6 +14,10 @@
 \usepackage{wrapfig}
 \usepackage{array}
 \usepackage{cite}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{algorithmic}
+
+%\usepackage{floatrow}
 
 %Definiciones de unidades y fórmulas químicas
 \sisetup{per-mode = symbol}
@@ -64,7 +68,6 @@
 %Contenido de la tesis
 
 %TODO corregir valores con membrana ancha!
-%TODO estudiar el efecto de la capacitancia celular
 %TODO revisar Underful \hbox warnings
 %TODO Comparar tamaños con texmaker
 %TODO estilo carátula
@@ -78,6 +81,45 @@
 % CAP 5 Transporte. idem (solo transporte, sin poros)
 % CAP 6 Todo acoplado. Resultados. poner snapshots de valores 1-9
 % CAP 7 conclusiones
+
+\newcommand{\nombre}{}
+
+\newcommand{\dobleimagen}[6] {
+	\begin{figure} \centering
+		\begin{minipage}{.5\textwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{#1}
+			\captionof{figure}{#3}
+			\label{fig:#2}
+		\end{minipage}%
+		\begin{minipage}{.5\textwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{#4}
+			\captionof{figure}{#6}
+			\label{fig:#5}
+		\end{minipage}
+	\end{figure}
+}
+
+\newcommand{\dobleimagengrande}[6] {
+	\begin{figure} 
+	\makebox[\textwidth][c] {
+		\centering
+		\begin{minipage}{.40\paperwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{#1}
+			\captionof{figure}{#3}
+			\label{fig:#2}
+		\end{minipage}%
+		\begin{minipage}{.40\paperwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{#4}
+			\captionof{figure}{#6}
+			\label{fig:#5}
+		\end{minipage}
+	}
+	\end{figure}
+}
 
 \input{intro}
 
