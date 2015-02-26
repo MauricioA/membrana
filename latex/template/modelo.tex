@@ -244,7 +244,6 @@ El método de elementos finitos (FEM, \textit{Finite Element Method}) es una her
 \subsection*{Descomposición LDL}
 
 %TODO faltan las citas!
-%TODO mencionar ldlt arriba
 
 La factorización LDL permite descomponer una matriz $A$ simétrica en $A = L D L^\intercal$ donde $L$ es triangular inferior con unos en la diagonal, $D$ es diagonal y $L^\intercal$ es la matriz traspuesta de $L$. De esta manera es posible resolver sistemas de ecuaciones lineales de la forma $Ax = b$ con aproximadamente la mitad de las operaciones que se necesitarían por el método de eliminación gaussiana o LU. Este método puede utilizarse para cualquier matriz $A$ cuadrada simétrica que tenga una descomposición LU sin intercambios de filas. En particular puede aplicarse para todas las matrices simétricas definidas positivas.\\
 
@@ -283,7 +282,7 @@ El algoritmo para obtener las matrices $L$ y $D$ a partir de una matriz $A$ de $
 %aprox. n^3 / 6 + n^2 - 7/6 n mult o div de punto flotante
 
 El algoritmo requiere aproximadamente $\frac{1}{6} n^3 + \frac{1}{2} n^2 - \frac{7}{6}n$
-multiplicaciones o divisiones de punto flotante. La factorización LDL es similar a la descomposición de Cholesky, la cual calcula una descomposición de la forma $A = L'L'^\intercal$, donde $L' = L\sqrt{D}$. Sin embargo el método de Cholesky requiere calcular la raíz cuadrada de la matriz diagonal $D$, lo cual tiene un costo computacional y un error de cálculo adicional. LDL tiene además como ventaja que funciona en algunos casos en los que $A$ no es una matriz definida positiva, lo cual no sucede con la descomposición de Cholesky.
+multiplicaciones o divisiones de punto flotante \cite{burden}. La factorización LDL es similar a la descomposición de Cholesky, la cual calcula una descomposición de la forma $A = L'L'^\intercal$, donde $L' = L\sqrt{D}$. Sin embargo el método de Cholesky requiere calcular la raíz cuadrada de la matriz diagonal $D$, lo cual tiene un costo computacional y un error de cálculo adicional. LDL tiene además como ventaja que funciona en algunos casos en los que $A$ no es una matriz definida positiva, lo cual no sucede con la descomposición de Cholesky.
 
 %TODO se puede hablar también de la estabilidad del algoritmo
 
@@ -296,7 +295,7 @@ multiplicaciones o divisiones de punto flotante. La factorización LDL es simila
 %Mathematical Institute, Utrecht University, P.O. Box 80.010, NL-3508 TA Utrecht, Netherlands
 %Received 2 March 1995; revised 19 September 1995 
 
-El método del gradiente biconjugado estabilizado (BiCGSTAB por \textit{biconjugate gradient stabilized method}) es un algoritmo iterativo que sirve para resolver sistemas de ecuaciones lineales de la forma $Ax=b$. BiCGSTAB es una modificación del método del bigradiente conjugado (BCG) que logra una mayor estabilidad numérica y velocidad de convergencia. A su vez BCG es una generalización del método de gradientes conjugados, modificado para funcionar también con matrices no simétricas pero con baja estabilidad numérica. El pseudocódigo del algoritmo es:
+El método del gradiente biconjugado estabilizado (BiCGSTAB por \textit{biconjugate gradient stabilized method}) es un algoritmo iterativo que sirve para resolver sistemas de ecuaciones lineales de la forma $Ax=b$. BiCGSTAB es una modificación del método del bigradiente conjugado (BCG) que logra una mayor estabilidad numérica y velocidad de convergencia. A su vez BCG es una generalización del método de gradientes conjugados, modificado para funcionar también con matrices no simétricas pero con baja estabilidad numérica. El pseudocódigo del algoritmo es: \cite{yousef}
 
 \newcommand{\walfa}{\widetilde{\alpha}}
 \newcommand{\wsigma}{\widetilde{\sigma}}
