@@ -19,7 +19,8 @@
 
 %\usepackage{floatrow}
 
-%Definiciones de unidades y fórmulas químicas
+%Definiciones de comandos
+
 \sisetup{per-mode = symbol}
 \newcommand{\h}{\ce{H^+}}
 \newcommand{\oh}{\ce{OH^-}}
@@ -32,6 +33,46 @@
 \newcommand{\kvm}{ \si{\kilo\volt\per\metre} }
 \newcommand{\kvcm}{ \si{\kilo\volt\per\centi\metre} }
 \newcommand{\ms}{ \si{\milli\second} }
+\newcommand{\nanos}{ \si{\nano\second} }
+
+\newcommand{\nombre}{}
+
+\newcommand{\dobleimagen}[6] {
+	\begin{figure} \centering
+		\begin{minipage}{.5\textwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{#1}
+			\captionof{figure}{#3}
+			\label{fig:#2}
+		\end{minipage}%
+		\begin{minipage}{.5\textwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{#4}
+			\captionof{figure}{#6}
+			\label{fig:#5}
+		\end{minipage}
+	\end{figure}
+}
+
+\newcommand{\dobleimagengrande}[6] {
+	\begin{figure} 
+	\makebox[\textwidth][c] {
+		\centering
+		\begin{minipage}{.40\paperwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{#1}
+			\captionof{figure}{#3}
+			\label{fig:#2}
+		\end{minipage}%
+		\begin{minipage}{.40\paperwidth}
+			\centering
+			\includegraphics[width=0.9\linewidth]{#4}
+			\captionof{figure}{#6}
+			\label{fig:#5}
+		\end{minipage}
+	}
+	\end{figure}
+}
 
 \begin{document}
 
@@ -81,45 +122,6 @@
 % CAP 5 Transporte. idem (solo transporte, sin poros)
 % CAP 6 Todo acoplado. Resultados. poner snapshots de valores 1-9
 % CAP 7 conclusiones
-
-\newcommand{\nombre}{}
-
-\newcommand{\dobleimagen}[6] {
-	\begin{figure} \centering
-		\begin{minipage}{.5\textwidth}
-			\centering
-			\includegraphics[width=0.9\linewidth]{#1}
-			\captionof{figure}{#3}
-			\label{fig:#2}
-		\end{minipage}%
-		\begin{minipage}{.5\textwidth}
-			\centering
-			\includegraphics[width=0.9\linewidth]{#4}
-			\captionof{figure}{#6}
-			\label{fig:#5}
-		\end{minipage}
-	\end{figure}
-}
-
-\newcommand{\dobleimagengrande}[6] {
-	\begin{figure} 
-	\makebox[\textwidth][c] {
-		\centering
-		\begin{minipage}{.40\paperwidth}
-			\centering
-			\includegraphics[width=0.9\linewidth]{#1}
-			\captionof{figure}{#3}
-			\label{fig:#2}
-		\end{minipage}%
-		\begin{minipage}{.40\paperwidth}
-			\centering
-			\includegraphics[width=0.9\linewidth]{#4}
-			\captionof{figure}{#6}
-			\label{fig:#5}
-		\end{minipage}
-	}
-	\end{figure}
-}
 
 \input{intro}
 

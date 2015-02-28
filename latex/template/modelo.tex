@@ -51,8 +51,16 @@ donde $\phi$ representa el potencial eléctrico y $\sigma_{elem}$ la conductivid
 La diferencia de potencial entre el interior y el exterior de la célula en un punto de su superficie se conoce como potencial transmembrana (PTM). Si la célula es esférica este potencial se puede aproximar con la fórmula cerrada \cite{tsong}
 
 \begin{equation} \label{eq:cos}
-	V^{\theta} = 1.5\, E\, \alpha\, \cos (\theta)
+	 V^{\theta} = f_s\, E\, \alpha\, \cos (\theta) 
 \end{equation}
+
+con
+
+\begin{equation} \label{eq:lambda}
+    f_s = \frac{3\sigma_o \left( 3 d \alpha^2 \sigma_i + \left( 3 d^2 \alpha - d^3 \right) \left(\sigma_m - \sigma_i \right) \right)}{2 \alpha^3 \left( \sigma_m + 2 \sigma_o \right) \left(\sigma_m + \frac{1}{2} \sigma_i \right) - 2 \left(\alpha - d \right)^3 \left(\sigma_o - \sigma_m \right) \left( \sigma_i - \sigma_m \right)}
+\end{equation}
+
+%TODO aclarar que fs tiende a 3/2
 
 % puede ir \cite{puchiar}
 donde $E$ es el campo eléctrico, $\theta$ el ángulo polar respecto del campo eléctrico y $\alpha$ el radio de la célula. Esta fórmula no tiene en cuenta que el PTM puede variar en el tiempo por la creación de poros, por eso en este trabajo no se la usa directamente, si no que usa la ecuación \ref{eq:poisson}.
@@ -232,12 +240,86 @@ El método de elementos finitos (FEM, \textit{Finite Element Method}) es una her
 	
 	\item Agregar las condiciones de borde al sistema global. En algunos casos es posible realizar este paso al generar las ecuaciones elementales, es decir antes de ensamblar el sistema. Diferentes condiciones de borde se agregan de diferentes maneras. Por ejemplo la condición de borde de Dirichlet en un nodo $i$ se puede agregar al sistema reemplazando la fila $i$ de la matriz de rigidez por una fila con 1 en la posición $i$ y ceros en las demás posiciones, y reemplazando el valor en la posición $i$ del vector de fuerza por el valor indicado por la condición de borde. 
 	
-	\item Resolver el sistema ensamblado con algún método de resolución de ecuaciones lineales. El vector $u$ global obtenido contiene las soluciones en los nodos de la ecuación diferencial. Dado que la matriz ensamblada es muy poco densa (muy pocos elementos distintos de cero), se suele representar con estructuras especiales para matrices dispersas. Si la matriz de rigidez global $K$ es simétrica definida positiva\footnote{$K$ es simétrica definida positiva si $K = K^\intercal$ y $x^\intercal K x > 0$ para todo vector $x \neq 0$} se pueden utilizar métodos especiales como descomposición de Cholesky, LDL o gradientes conjugados, que pueden reducir sustancialmente los tiempos de cómputo. También se pueden reducir los tiempos de resolución si se tiene una matriz banda\footnote{$K$ es una matriz con banda $p$ si $K_{ij} = 0 \; \forall j < i-p$ ó $j > i+p$, es decir todos los valores distintos de cero están dentro de una banda diagonal con un ancho conocido} de rigidez. Para lograr esto último es necesario haber asignado números a los nodos de la malla de manera tal que se minimice la máxima distancia entre los números de dos nodos en un mismo elemento en todo el dominio.
-	
-	%Otro tipo de matriz particular que puede reducir los tiempos de ejecución de la resolución es la matriz banda, en la que 
+	\item Resolver el sistema ensamblado con algún método de resolución de ecuaciones lineales. El vector $u$ global obtenido contiene las soluciones en los nodos de la ecuación diferencial. Dado que la matriz ensamblada es muy poco densa (muy pocos elementos distintos de cero), se suele representar con estructuras especiales para matrices dispersas. Si la matriz de rigidez global $K$ es simétrica definida positiva\footnote{$K$ es simétrica definida positiva si $K = K^\intercal$ y $x^\intercal K x > 0$ para todo vector $x \neq 0$} se pueden utilizar métodos especiales como descomposición de Cholesky, LDL o gradientes conjugados, que pueden reducir sustancialmente los tiempos de cómputo. También se pueden reducir los tiempos de resolución si se tiene una matriz banda\footnote{$K$ es una matriz con banda $p$ si $K_{ij} = 0 \; \forall j < i-p$ ó $j > i+p$, es decir todos los valores distintos de cero están dentro de una banda diagonal con un ancho conocido} de rigidez. Para lograr esto último es necesario haber asignado números a los nodos de la malla de manera tal que se minimice la máxima distancia entre los números de dos nodos en un mismo elemento en todo el dominio.\\
 \end{itemize}
 
-%TODO aclarar que en los siguientes capítulos se explica en detalle etc
+\newpage
+
+\subsubsection*{Función de forma bilineal lagrangiana}
+
+En particular en este trabajo se usan elementos cuadrilaterales y funciones de forma lagrangianas bilineales. Para trabajar con facilidad se realiza un cambio de variables que transforma cualquier elemento cuadrilateral en un cuadrado estándar. Esto permite trabajar con las mismas funciones de forma para todos los elementos, aunque estos tengan formas o tamaños muy variados. Esta proyección se conoce como transformación isoparamétrica.
+	
+	%TODO acá poner dibujo de cambio de variables!! TIENE QUE TENER LOS NUMEROS 1 A 4 EN LOS NODOS!!
+	
+\setlength{\unitlength}{1cm}
+\begin{picture}(10,5)
+\put(1,0){\vector(0,1){5}}
+\put(0,1){\vector(1,0){5}}
+\put(5.2,1.2){$x$}
+\put(1.2,4.6){$y$}
+
+\put(1.5,1.5){\circle*{0.15}}
+\put(2.5,3.5){\circle*{0.15}}
+\put(4.5,4.5){\circle*{0.15}}
+\put(4.5,2.5){\circle*{0.15}}
+
+\thicklines
+\put(1.5,1.5){\line(1,2){1}}
+\put(2.5,3.5){\line(2,1){2}}
+\put(4.5,4.5){\line(0,-2){2}}
+\put(4.5,2.5){\line(-3,-1){3}}
+
+\put(5, 3){\vector(1,0){1.5}}
+
+\thinlines
+\put(7,2.5){\vector(1,0){5}}
+\put(9.51,0){\vector(0,1){5}}
+\put(12,2.7){$\xi$}
+\put(9.7,4.6){$\eta$}
+
+%centro en 9.5, 2.5
+
+\put(8.5,1.5){\circle*{0.15}}
+\put(8.5,3.5){\circle*{0.15}}
+\put(10.5,1.5){\circle*{0.15}}
+\put(10.5,3.5){\circle*{0.15}}
+
+\thicklines
+\put(8.5,1.5){\line(0,1){2}}
+\put(8.5,3.5){\line(1,0){2}}
+\put(10.5,1.5){\line(-1,0){2}}
+\put(10.5,3.5){\line(0,-1){2}}
+
+\put(6.5,1.2){$(-1,-1)\; 1$}
+\put(7.2,3.7){$(-1, 1)\; 4$}
+\put(10.7,1.2){$2 \;(1, -1)$}
+\put(10.7,3.7){$3 \;(1, 1)$}
+
+\end{picture}	
+
+La proyección tranforma puntos de las coordenadas reales $(x, y)$ a coordenadas locales $(\xi, \eta)$ en el rango $[-1, 1]$. Las funciones de forma bilineales lagrangianas son:
+
+%\begin{equation}
+%    N_i(\xi, \eta) = \frac{1}{4} (1 + \xi_i \, \xi) (1 + \eta_i \, \eta) \;\; \mathrm{para} \; i = 1, \ldots, 4
+%\end{equation}
+
+\begin{equation}
+    N_i(\xi, \eta) = \frac{1}{4} (1 + \xi_i \, \xi) (1 + \eta_i \, \eta)
+\end{equation}
+
+para $i = 1, \ldots, 4$, donde $\xi_i$ y $\eta_i$ son las coordenadas locales del punto $i$ (que valen $-1$ o $1$).  Es fácil ver que la función de interpolación $i$ vale 1 en el punto $(\xi_i, \eta_i)$, 0 en $(\xi_j, \eta_j)$ para $j \neq i$ y valores intermedios para cualquier otro punto del cuadrado estándar. Esta función de forma es una función de interpolación de primer orden y usa únicamente los 4 elementos de las esquinas del cuadrilátero, mientras que otras funciones de forma son polinomios de mayor grado que usan también puntos intermedios del elemento.
+
+\subsubsection*{Integración por cuadratura de Gauss}
+
+Para resolver las integrales necesarias en el método de elementos finitos, se recurrió a la integración numérica. El método de cuadratura de Gauss permite obtener una aproximación de la integral definida de una función en un intervalo evaluando la función a en una serie de puntos y realizando una suma pesada de los valores. En forma general se puede integrar en dos dimensiones en el cuadrado estándar como
+
+\begin{equation}
+    \int_{-1}^1 \int_{-1}^{1} f(\xi, \eta) \, \mathrm{d\eta} \, \mathrm{d\xi} \approx \sum_{j=1}^{n} \sum_{i=1}^{n} w_j \, w_i \, f(r_i, r_j)
+\end{equation}
+
+donde $n$ es la cantidad de puntos elegidos para realizar la cuadratura, $w_i$ es el peso del iésimo punto y $r_i$ es el iésimo punto. Tanto los $w_i$ como los $r_i$ corresponden a las raíces de los polinomios de Legendre. En el caso particular de esta tesis se trabajó con $n = 2$ puntos, por lo tanto corresponden los siguientes valores: $r_1 = -\sqrt{1/3}, r_2 = \sqrt{1/3}, w_1 = w_2 = 1$.
+
+%aclarar que falta revisar
 
 %TODO \subsection{Método de Diferencias Finitas}
 
@@ -249,20 +331,7 @@ La factorización LDL permite descomponer una matriz $A$ simétrica en $A = L D 
 
 El algoritmo para obtener las matrices $L$ y $D$ a partir de una matriz $A$ de $n \times n$ es:\\
 
-\clearpage
-
-%\begin{algorithm}
-%	\For {i = 1 \ldots n} {
-%		\For {j = 1 \ldots i-1} {
-%%			v_j = L_{ij} D_j\;
-%			v_{asd}
-%		}
-%%		D_j = A_{ii} - \sigma_{j=1}^{i-1} L_{ij} v_j
-%		\For {j = i+1 \ldots n} {
-%%			L_{ij} = \left( A_{ji} - \sigma_{k=1}^{j-1} L_{jk} v_k \right) / D_i
-%		}
-%	}
-%\end{algorithm}
+%\clearpage
 
 \begin{algorithmic}
 	\FORALL {$i \in \{1 \ldots n\}$}
@@ -279,8 +348,6 @@ El algoritmo para obtener las matrices $L$ y $D$ a partir de una matriz $A$ de $
 
 %TODO REVISAR EL ALGORITMO!!
 
-%aprox. n^3 / 6 + n^2 - 7/6 n mult o div de punto flotante
-
 El algoritmo requiere aproximadamente $\frac{1}{6} n^3 + \frac{1}{2} n^2 - \frac{7}{6}n$
 multiplicaciones o divisiones de punto flotante \cite{burden}. La factorización LDL es similar a la descomposición de Cholesky, la cual calcula una descomposición de la forma $A = L'L'^\intercal$, donde $L' = L\sqrt{D}$. Sin embargo el método de Cholesky requiere calcular la raíz cuadrada de la matriz diagonal $D$, lo cual tiene un costo computacional y un error de cálculo adicional. LDL tiene además como ventaja que funciona en algunos casos en los que $A$ no es una matriz definida positiva, lo cual no sucede con la descomposición de Cholesky.
 
@@ -288,14 +355,15 @@ multiplicaciones o divisiones de punto flotante \cite{burden}. La factorización
 
 \subsection*{Descomposición de gradiente biconjugado estabilizado}
 
-%TODO agregar citas!!!
-%libro iterative methods for sparse....
+%TODO agregar citas del paper!
 %y paper Generalized conjugate gradient squared
 %Diederik R. Fokkema*, Gerard L.G. Sleijpen, Henk A. Van der Vorst
 %Mathematical Institute, Utrecht University, P.O. Box 80.010, NL-3508 TA Utrecht, Netherlands
 %Received 2 March 1995; revised 19 September 1995 
 
 El método del gradiente biconjugado estabilizado (BiCGSTAB por \textit{biconjugate gradient stabilized method}) es un algoritmo iterativo que sirve para resolver sistemas de ecuaciones lineales de la forma $Ax=b$. BiCGSTAB es una modificación del método del bigradiente conjugado (BCG) que logra una mayor estabilidad numérica y velocidad de convergencia. A su vez BCG es una generalización del método de gradientes conjugados, modificado para funcionar también con matrices no simétricas pero con baja estabilidad numérica. El pseudocódigo del algoritmo es: \cite{yousef}
+
+\clearpage
 
 \newcommand{\walfa}{\widetilde{\alpha}}
 \newcommand{\wsigma}{\widetilde{\sigma}}
@@ -353,9 +421,10 @@ Se generaron mallas bidimensionales con elementos cuadrilaterales de tamaño var
 		\includegraphics[scale=0.50]{mesh/mesh3}
 	\end{minipage}
 }
+
 \caption{Ejemplo de malla. Dominio completo (izquierda) y detalle (derecha). La célula tiene forma de semicírculo dado que se usan coordenadas cilíndricas. Los elementos de la membrana son los más pequeños y no se alcanzan a ver.}
 \end{figure}
 
 Las mallas utilizadas tienen entre 7500 y 8900 elementos y representan un dominio de hasta 150 \si{\micro\metre} de alto y hasta 50 \si{\micro\metre} de ancho con células de 25 \si{\micro\metre} de radio y membranas de 5 \si{\nano\metre} de ancho. Para modelar la célula se dividió el ángulo polar en 192 partes con dos elementos por cada ángulo discreto. Los electrodos se modelaron dentro del dominio, en los bordes superior e inferior.
 
-También se usó \nombre{Python} como lenguaje secundario, para ayudar en la generación de mallas, la interpretación de los datos de salida obtenidos en las simulaciones y la generación de gráficos, haciendo uso de la librería \nombre{mathplotlib}. El programa lee los parámetros de ejecución de un archivo \texttt{input.in} y graba periódicamente resultados de potencial y campo eléctrico eléctrico, potencial transmembrana, densidad y radios de poros en la membrana celular, concentraciones de las especies y valores de pH en diferentes archivos de salida.
+También se usó \nombre{Python} como lenguaje secundario, para ayudar en la generación de mallas, la interpretación de los datos de salida obtenidos en las simulaciones y la generación de gráficos, haciendo uso de la librería \texttt{matplotlib} \cite{matplotlib}. El programa lee los parámetros de ejecución de un archivo \texttt{input.in} y graba periódicamente resultados de potencial y campo eléctrico eléctrico, potencial transmembrana, densidad y radios de poros en la membrana celular, concentraciones de las especies y valores de pH en diferentes archivos de salida.

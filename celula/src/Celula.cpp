@@ -24,7 +24,7 @@ Celula::~Celula() {}
 
 void Celula::poisson() {
 	Poisson::iteracion(*this);
-	Poros poros(*this);
+	Poros poros(*this);				//necesario para tener los ángulos, etc
 	getEntradaSalida().grabarPoisson();
 	getEntradaSalida().grabarITV(poros);
 }

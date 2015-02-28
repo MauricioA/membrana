@@ -29,8 +29,14 @@
     <Compile Include="itv_doble.py" />
     <Compile Include="itv_plot_nuevo.py" />
     <Compile Include="itv_tita.py" />
+    <Compile Include="itv_tita_vs_cerrada.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="merge.py" />
     <Compile Include="itv_cos.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="itv_tita_comparacion.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="transp_final.py">

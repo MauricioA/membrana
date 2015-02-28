@@ -151,7 +151,7 @@ inline Celula& Poros::getCelula() {
 double Poros::getTita(Nodo nodo) {
 	Double2D center = getCelula().getCenter();
 	double radio = sqrt(pow(nodo.x - center.x, 2) + pow(nodo.y - center.y, 2));
-	double tita = acos((nodo.y - center.y) / radio);
+	double tita = M_PI - acos((nodo.y - center.y) / radio);
 	assert(tita == tita);
 	return tita;
 }
@@ -251,11 +251,11 @@ void Poros::iteracion(double deltaT) {
 }
 
 double Poros::getITV(InfoAngulo& info) {
-	double itv1 = getCelula().potenciales[info.nodosExternos[0]] -
-		getCelula().potenciales[info.nodosInternos[0]];
+	double itv1 = getCelula().potenciales[info.nodosInternos[0]] -
+		getCelula().potenciales[info.nodosExternos[0]];
 
-	double itv2 = getCelula().potenciales[info.nodosExternos[1]] -
-		getCelula().potenciales[info.nodosInternos[1]];
+	double itv2 = getCelula().potenciales[info.nodosInternos[1]] -
+		getCelula().potenciales[info.nodosExternos[1]];
 
 	return factorPulso * (itv1 + itv2) / 2;
 }
