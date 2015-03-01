@@ -39,6 +39,14 @@ Se estudia una única célula idealizada de forma esférica y compuesta por dos 
   \end{minipage}
 \end{figure}
 
+Los pulsos se dividen en dos partes con un tiempo de encendido (\texttt{ON\_TIME}) en el que la diferencia de potencial es constante y un tiempo de apagado (\texttt{OFF\_TIME}) sin diferencia de potencial entre los electrodos.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.75]{pulso}
+\end{figure}
+
+
 \subsection*{Potencial Eléctrico}
 El potencial eléctrico generado por los electrodos se calcula en todo el dominio según la ecuación de Laplace \cite[p.~88]{c9-fem-electro}
 
@@ -421,9 +429,16 @@ Se generaron mallas bidimensionales con elementos cuadrilaterales de tamaño var
 		\includegraphics[scale=0.50]{mesh/mesh3}
 	\end{minipage}
 }
-
 \caption{Ejemplo de malla. Dominio completo (izquierda) y detalle (derecha). La célula tiene forma de semicírculo dado que se usan coordenadas cilíndricas. Los elementos de la membrana son los más pequeños y no se alcanzan a ver.}
 \end{figure}
+
+
+\begin{figure}
+	\includegraphics[width=\textwidth]{mesh/membrana}
+	\caption{Detalle de la malla cerca de la membrana. Los líneas dobles corresponden a elementos de la membrana celular, los elementos de la izquierda corresponden al interior de la célula y los de la derecha al exterior.}
+	\label{fig:mesh-membrana}
+\end{figure}
+
 
 Las mallas utilizadas tienen entre 7500 y 8900 elementos y representan un dominio de hasta 150 \si{\micro\metre} de alto y hasta 50 \si{\micro\metre} de ancho con células de 25 \si{\micro\metre} de radio y membranas de 5 \si{\nano\metre} de ancho. Para modelar la célula se dividió el ángulo polar en 192 partes con dos elementos por cada ángulo discreto. Los electrodos se modelaron dentro del dominio, en los bordes superior e inferior.
 
