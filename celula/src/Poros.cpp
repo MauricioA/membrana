@@ -210,7 +210,7 @@ void Poros::iteracion(double deltaT) {
 				printf("PORO NEGATIVO BORRADO!\n");
 			}
 		}
-
+		
 		if (POROS_CHICOS) {
 			/* Muevo a chicos los poros grandes con poco radio y bastante antigüedad */
 			for (uint i = 0; i < info.porosGrandes.size(); i++) {
@@ -337,6 +337,12 @@ double Poros::getProporsionArea(int iElem) {
 
 	/* Si hubo algún error */
 	if (areaP > info.area) {
+
+		cout << info.porosChicos << "\n";
+		cout << info.porosGrandes.size() << "\n";
+
+		assert(false);
+
 		for (auto poro : info.porosGrandes) {
 			cout << poro.first << " " << poro.second << "\n";
 		}

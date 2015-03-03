@@ -8,15 +8,17 @@ import os
 #para generar histogramas de poros
 
 folders = [
-	'../salida/pulsativo/02-17/longoff/',
+	'../salida/pulsativo/02-16/',
 ]
 
-#ESTOS = [
-#	'poros-1-0.000100.csv',
-#	'poros-101-0.010100.csv',
-#	'poros-201-0.020100.csv',
-#	'poros-301-0.030100.csv',
-#]
+USAR_SOLO_ESTOS = true	
+
+ESTOS = [
+	'poros-1-0.000100.csv',
+	'poros-101-0.010100.csv',
+	'poros-201-0.020100.csv',
+	'poros-301-0.030100.csv',
+]
 
 font = {'size': 16}
 
@@ -40,7 +42,7 @@ for folder in folders:
 	for file in files:
 		radios = []
 
-		#if not file in ESTOS: continue
+		if USAR_SOLO_ESTOS and not file in ESTOS: continue
 
 		with open(poros_folder + file) as f:
 			for line in f.readlines()[1:]:
@@ -60,5 +62,5 @@ for folder in folders:
 		pylab.hist(radios * 1e3, 100)
 		plt.xlabel('Radio [nm]', fontdict=font)
 		filename = poros_folder + dir_salida + file[:-len('.csv')] + '.png'
-		pylab.savefig(filename)
+		pylab.savefig(filename, bbox_inches='tight') 
 		print filename

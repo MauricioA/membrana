@@ -1,9 +1,9 @@
 # graba cada 100us
 
-malla: 	 inputs/25_192_150_5.msh
+malla: 	 inputs/25_192_150_5.msh	# alto 150
 nodpel:	 quad
-salida:  salida/temp/
-threads: 4
+salida:  salida/pulsativo/03-01/1600vcm/
+threads: 1
 poros: true
 delta_t: 1e-9
 
@@ -11,9 +11,9 @@ sigint: 200e-9
 sigext: 150e-9
 sigmem: 5e-12		# valor real 5e-12
 
-potencial:  24		# 160 KV/m
+potencial:  24		# 1600 V/cm
 radio: 		25
 ancho: 		5e-3	# ancho de la membrana [um]
 pulsos:		4
 on_time:	5e-3
-off_time:	15e-3
+off_time:	5e-3

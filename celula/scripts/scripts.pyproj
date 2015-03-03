@@ -39,6 +39,10 @@
     <Compile Include="itv_tita_comparacion.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="radios_vs_tiempo.py" />
+    <Compile Include="poros_vs_tiempo.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="transp_final.py">
       <SubType>Code</SubType>
     </Compile>

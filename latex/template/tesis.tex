@@ -16,10 +16,9 @@
 \usepackage{cite}
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{algorithmic}
+\usepackage[disable]{todonotes} %disable para ocultar todas las notas
 
-%\usepackage{floatrow}
-
-%Definiciones de comandos
+%%%% Definiciones de comandos
 
 \sisetup{per-mode = symbol}
 \newcommand{\h}{\ce{H^+}}
@@ -31,11 +30,29 @@
 \newcommand{\usec}{ \si{\micro\second} }
 \newcommand{\vcm}{ \si{\volt\per\centi\metre} }
 \newcommand{\kvm}{ \si{\kilo\volt\per\metre} }
-\newcommand{\kvcm}{ \si{\kilo\volt\per\centi\metre} }
 \newcommand{\ms}{ \si{\milli\second} }
 \newcommand{\nanos}{ \si{\nano\second} }
-
+\newcommand{\ontime}{\texttt{ON TIME}}
+\newcommand{\offtime}{\texttt{OFF TIME}}
 \newcommand{\nombre}{}
+
+\newcommand{\imagensola}[4] {
+\begin{figure}
+    \centering
+    \includegraphics[width=#4\textwidth]{#1}
+    \caption{#3}
+    \label{fig:#2}
+\end{figure}
+}
+
+\newcommand{\imagendonde}[5] {
+\begin{figure}[#5]
+    \centering
+    \includegraphics[width=#4\textwidth]{#1}
+    \caption{#3}
+    \label{fig:#2}
+\end{figure}
+}
 
 \newcommand{\dobleimagen}[6] {
 	\begin{figure} \centering
@@ -54,28 +71,8 @@
 	\end{figure}
 }
 
-%\newcommand{\dobleimagengrande}[6] {
-%	\begin{figure} 
-%	\makebox[\textwidth][c] {
-%		\centering
-%		\begin{minipage}{.40\paperwidth}
-%			\centering
-%			\includegraphics[width=0.9\linewidth]{#1}
-%			\captionof{figure}{#3}
-%			\label{fig:#2}
-%		\end{minipage}%
-%		\begin{minipage}{.40\paperwidth}
-%			\centering
-%			\includegraphics[width=0.9\linewidth]{#4}
-%			\captionof{figure}{#6}
-%			\label{fig:#5}
-%		\end{minipage}
-%	}
-%	\end{figure}
-%}
-
-\newcommand{\dobleimagengrande}[6] {
-	\begin{figure} 
+\newcommand{\dobleimagengrandedonde}[7] {
+	\begin{figure} [#7]
 	\makebox[\textwidth][c] {
 		\centering
 		\begin{minipage}{.43\paperwidth}
@@ -93,6 +90,15 @@
 	}
 	\end{figure}
 }
+%antes tenía 0.9\textwidth y 0.40\paperwidth
+
+\newcommand{\dobleimagengrande}[6]{\dobleimagengrandedonde{#1}{#2}{#3}{#4}{#5}{#6}{}}
+
+%%%%
+
+% Para compilar más rápido incluir solo lo que se edita. 
+% Comentar para compilar todo. 
+%\includeonly{modelo, biblio}
 
 \begin{document}
 
@@ -126,15 +132,7 @@
 \mainmatter
 \pagestyle{headings}
 
-%Contenido de la tesis
-
-%TODO corregir valores con membrana ancha!
-%TODO revisar Underful \hbox warnings
-%TODO Comparar tamaños con texmaker
-%TODO estilo carátula
-
-% Si tarda mucho en compilar se puede poner cada capítulo en archivos separados.
-
+% ABSTRACT
 % CAP 1 introducción. problemática e introducción del modelo
 % CAP 2 descripción del modelo. qué se resuelve, método numérico. Explicación de FEM
 % CAP 3 ITV. como se resuelve, resultados (solos, sin poros ni transporte)
@@ -142,23 +140,25 @@
 % CAP 5 Transporte. idem (solo transporte, sin poros)
 % CAP 6 Todo acoplado. Resultados. poner snapshots de valores 1-9
 % CAP 7 conclusiones
+% ANX A instrucciones de uso
+% BIBLIO
 
-\input{intro}
+\include{intro}
 
-\input{modelo}
+\include{modelo}
 
-\input{itv}
+\include{itv}
 
-\input{poros}
+\include{poros}
 
-\input{transporte}
+\include{transporte}
 
-\input{acoplado}
+\include{acoplado}
 
-\input{conclusiones}
+\include{conclusiones}
 
-\input{uso}
+\include{uso}
 
-\input{biblio}
+\include{biblio}
 
 \end{document}

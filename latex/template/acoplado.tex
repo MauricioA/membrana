@@ -9,10 +9,8 @@ Para realizar la simulación completa se creó un ciclo principal que realiza ll
 Para acelerar los tiempos de ejecución se usaron intervalos temporales diferentes para los distintos fenómenos físicos simulados. Para el cálculo de la densidad de poros en la membrana celular y sus radios se utilizó un intervalo temporal muy pequeño, ya que se notó que al aumentarlo se producen errores de discretización muy grandes que producen la divergencia del sistema. Para el cálculo de los potenciales eléctricos en el dominio, en cambio, alcanzó un intervalo temporal mucho mayor, y se notó que reducirlo no impacta en los resultados. Por último para el cálculo de las concentraciones de las especies iónicas se necesitaron intervalos temporales aún mayores. Concretamente se usaron intervalos de 1 \si{\nano\second} para las ecuaciones de poros, 20 \si{\nano\second} para el transporte de especies y un intervalo variable de entre 1 \si{\nano\second} y 2 \si{\micro\second} para el cálculo del potencial eléctrico. Este último intervalo es variable dado que los primeros instantes de cada pulso eléctrico es el que tiene mayores variaciones en los potenciales producto de la repentina permeabilización de la membrana, como puede verse en el capítulo 4. Esto hace que se necesite una actualización constante de los valores de potencial en los nodos, sobre todos los cercanos a la membrana celular. Sin embargo pasados los primeros microsegundos del pulso el sistema se estabiliza y la permeabilización y valores de PTM se mantienen con pocos cambios lo que hace innecesario un cálculo constante de los potenciales. Por esta razón se optó por un intervalo muy pequeño al comenzar un pulso y se incrementa de manera exponencial.\\
 
 %TODO revisar los valores de los intervalos!! revisar si transporte efectivamente mayor que poisson
-%TODO está bien decir delta t exponencial? aumenta como un capacitor
-
-%TODO on time, off time. mencionar que se reinicia el delta_t
-
+%TODO está bien decir delta t exponencial?
+%TODO mencionar que se reinicia el delta_t con el pulso
 %TODO mencionar truco numérico temperatura
 
 \section{Resultados}
@@ -55,7 +53,7 @@ Si bien se observan cambios significativos en las concentraciones de las especie
 
 \subsection*{Varios pulsos}
 
-A continuación se presentan resultados de una simulación similar a la anterior pero con 4 pulsos de 5\ms cada uno, con un tiempo de apagado de 5\ms luego de cada pulso, en lugar de uno solo. Se utilizó la misma célula (de 25\um de radio) y el mismo potencial (160\kvcm). En todos los casos se lograron movimientos de las especies mucho mayores a los obtenidos con un solo pulso. \\
+A continuación se presentan resultados de una simulación similar a la anterior pero con 4 pulsos de 5\ms cada uno, con un tiempo de apagado de 5\ms luego de cada pulso, en lugar de uno solo. Se utilizó la misma célula (de 25\um de radio) y el mismo potencial (1600\vcm). En todos los casos se lograron movimientos de las especies mucho mayores a los obtenidos con un solo pulso. \\
 
 \begin{table} \begin{center} 
 	\begin{tabular}
@@ -78,4 +76,19 @@ En las cuatro especies estudiadas se obtuvo lo siguiente:
 	\item En el exterior de la célula: se crea una zona de concentración alta que rodea la célula empezando en el polo de signo opuesto al signo de la especie y avanzando hacia el ecuador cuando el pulso está encendido y dispersándose y alejándose de la célula cuando el pulso está apagado. En el polo del mismo signo que la especie se observó la aparición de zonas de concentración baja que no avanzan hacia el ecuador, sino que se alejan de la célula cuando el pulso está encendido.
 \end{itemize}
 
-En el caso del \h y el \oh también se notó la aparición de zonas con concentraciones altas en el polo del mismo signo que la especie a partir del segundo pulso, provenientes del interior de la célula, mezclándose con las zonas de concentración baja, y con dirección hacia el electrodo del signo de la especie cuando el pulso está encendido. Los movimientos del \na y el \cl fueron menores que los del \h y el \oh, dada su menores constantes de difusión.
+En el caso del \h y el \oh también se notó la aparición de zonas con concentraciones altas en el polo del mismo signo que la especie a partir del segundo pulso, provenientes del interior de la célula, mezclándose con las zonas de concentración baja, y con dirección hacia el electrodo del signo de la especie cuando el pulso está encendido. Los movimientos del \na y el \cl fueron menores que los del \h y el \oh, dada su menores constantes de difusión.\\
+
+
+
+En la tabla \ref{tbl:chinos} se comparan valores experimentales de pH en diferentes instantes con fotografías de valores experimentales de \cite{gt99}. Los instantes de tiempo de las imágenes simuladas se eligieron para coincidir con los experimentales. En las imágenes de los experimentos se fotografiaron concentraciones de especies iónicas diferentes a las estudiadas en este trabajo. Sin embargo alcanza para observar que el proceso de ingreso de especies a la célula es similar al obtenido en las simulaciones. 
+
+\begin{table}[h!] \begin{center} 
+	\begin{tabular}
+		{ m{0.1mm} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} >{\centering\arraybackslash}m{0.17\textwidth} }
+		& 3.3\ms & 6.7\ms & 10\ms & 13.3\ms & 16.7\ms \\
+		\lineasnap{acoplado/chinos/h} { } {1}{2}{3}{4}{5}
+		\lineasnap{acoplado/chinos/gt}{ }{1}{2}{3}{4}{5}
+	\end{tabular}
+	\caption{Concentraciones de pH en la simulaci\'{o}n (arriba) y valores experimentales de \cite{gt99} (abajo).}
+	\label{tbl:chinos}
+\end{center} \end{table}

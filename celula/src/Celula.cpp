@@ -116,6 +116,7 @@ void Celula::acoplado() {
 
 						int nodosExtremos = valoresExtremos();
 						if (nodosExtremos > 10) {
+							assert(false && "poros extremos muchos");
 							printf("  pH ext: %d", nodosExtremos);
 						}
 						printf("\n");

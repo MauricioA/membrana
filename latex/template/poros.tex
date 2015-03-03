@@ -33,7 +33,7 @@ Para cada uno de los poros se calcula por separado su radio en cada iteración a
 	\frac{r_{t+1} - r_t}{\Delta t} = \frac{D}{kT} \left( \frac{V_m^2 F_{max}}{1+r_h / (r_t+r_a)} + \frac{4 \beta}{r_t} \left(\frac{r_*}{r_t}\right)^4 - 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r_t \right)
 \end{equation}
 
-Para mejorar los tiempos de ejecución se consideran todos los poros con radio muy pequeño y con cierta antigüedad como iguales en vez de tratarlos individualmente, mientras que a los poros grandes o recién creados se los trata individualmente, aplicando la ecuación \ref{eq:poros-radio-disc} a cada uno, técnica utilizada en \cite{krass}.
+Para mejorar los tiempos de ejecución se consideran todos los poros con radio muy pequeño y con cierta antigüedad como iguales en vez de tratarlos individualmente, mientras que a los poros grandes o recién creados se los trata individualmente, aplicando la ecuación \ref{eq:poros-radio-disc} a cada uno, técnica utilizada en \cite{krass07}.
 
 Los valores de conductividad de la membrana son afectados por la aparición de poros. Por esta razón se calcula primero la permeablización de cada región de la membrana como la proporción del área ocupada por poros con la fórmula
 
@@ -59,15 +59,15 @@ con $D_m$ la difusión de la membrana celular sin poros y $D_p$ la difusión del
 
 \section{Resultados}
 
-Se corrieron simulaciones con células de 25\um de radio y pulsos de entre 1000\kvcm y 1600\kvcm y 5 \ms de duración. 
+Se corrieron simulaciones con células de 25\um de radio y pulsos de entre 1200\vcm y 1600\vcm y 5 \ms de duración. 
 
 %acá poner histogramas de poros en diferentes instantes. Al menos para dos valores de tensión
 %
 %4 histogramas en total, para dos valores de tensión
 
-\dobleimagengrande{poros/120kvm/20micro}{histo-120-1}{Distribución de radios de los poros\\ para $E = 1200\,\kvcm$ en $t = 20\,\usec$}{poros/120kvm/500micro}{histo-120-2}{Distribución de radios de los poros\\ para $E = 1200\,\kvcm$ en $t = 500\,\usec$}
+\dobleimagengrandedonde{poros/120kvm/20micro}{histo-120-1}{Distribución de radios de los poros grandes \\ para $E = 1200\,\vcm$ en $t = 20\,\usec$}{poros/120kvm/500micro}{histo-120-2}{Distribución de radios de los poros grandes\\ para $E = 1200\,\vcm$ en $t = 500\,\usec$}{p}
 
-\dobleimagengrande{poros/160kvm/20micro}{histo-160-1}{Distribución de radios de los poros\\ para $E = 1600\,\kvcm$ en $t = 20\,\usec$}{poros/160kvm/500micro}{histo-160-2}{Distribución de radios de los poros\\ para $E = 1600\,\kvcm$ en $t = 500\,\usec$}
+\dobleimagengrandedonde{poros/160kvm/20micro}{histo-160-1}{Distribución de radios de los poros grandes\\ para $E = 1600\,\vcm$ en $t = 20\,\usec$}{poros/160kvm/500micro}{histo-160-2}{Distribución de radios de los poros grandes\\ para $E = 1600\,\vcm$ en $t = 500\,\usec$}{p}
 
 En las figuras \ref{fig:histo-120-1} y \ref{fig:histo-120-2} se presentan histogramas con los radios de los poros grandes creados en diferentes instantes para pulsos de 1200 \si{\kilo\volt\per\centi\metre}. También hay una gran población de poros pequeños (con radio menor a 1 \si{\nano\metre}) que no fueron graficados por ser de poco interés. Se puede observar que la población de poros alcanza valores altos en un primer instante, pero se reduce dramáticamente en los instantes posteriores. En las figuras \ref{fig:histo-160-1} y \ref{fig:histo-160-2} se observa distribución de radios para la misma célula pero con un pulso de 1600 \si{\kilo\volt\per\centi\metre}. Tanto la cantidad como el radio de los poros creados es mayor en el segundo caso, y se observa también una disminución en la población pasados los primeros instantes del pulso. Es importante notar que si bien la cantidad de poros disminuye con el tiempo, los poros que quedan tienen un radio promedio notablemente mayor al de los primeros instantes.
 
@@ -81,14 +81,70 @@ En las figuras \ref{fig:histo-120-1} y \ref{fig:histo-120-2} se presentan histog
 
 %Se nota en todos los casos que las regiones de la membrana cercanas a los polos (con ángulos cercanos a 0º o 180º) obtienen en los primeros instantes los valores absolutos de PTM más altos, mientras que las regiones cercanas al ecuador (ángulo polar cercano a 90º) tienen un PTM prácticamente nulo.
 
-Se puede observar en la figura \ref{fig:itv-time} el potencial transmembrana en función del tiempo al comienzo del pulso para diferentes ángulos polares $\theta$, con dos campos eléctricos diferentes. El PTM se incrementa durante los primeros instantes hasta alcanzar un pico de tensión a partir del cual comienza a disminuir hasta alcanzar un valor de equilibrio. La subida paulatina de tensión durante los primeros instantes del pulso se debe a la capacitancia de la célula, mientras que la caída en los instantes posteriores se debe a la aparición de poros, que disminuyen la conductividad de la membrana, disminuyendo de esta manera la caída de tensión entre el interior y exterior de la célula. Se nota que el PTM obtenido depende notablemente del ángulo polar: en la región polar cercana al electrodo positivo el PTM es positivo y alcanza valores altos, mientras que en el polo cercano al cátodo el potencial es negativo y en el ecuador es cercano a cero. Es llamativo que los valores de campo eléctrico aplicado no influyen en el valor de pico de PTM obtenido, pero si en el tiempo en que éste se alcanza; al aumentar el campo de 1000\kvcm a 1600\kvcm se acelera el proceso de subida y bajada de PTM hasta alcanzar un equilibrio, pero no se logran aumentar los potenciales obtenidos.
+Se puede observar en la figura \ref{fig:itv-time} el potencial transmembrana en función del tiempo al comienzo del pulso para diferentes ángulos polares $\theta$, con dos campos eléctricos diferentes. El PTM se incrementa durante los primeros instantes hasta alcanzar un pico de tensión a partir del cual comienza a disminuir hasta alcanzar un valor de equilibrio. La subida paulatina de tensión durante los primeros instantes del pulso se debe a la capacitancia de la célula, mientras que la caída en los instantes posteriores se debe a la aparición de poros, que disminuyen la conductividad de la membrana, disminuyendo de esta manera la caída de tensión entre el interior y exterior de la célula. Se nota que el PTM obtenido depende notablemente del ángulo polar: en la región polar cercana al electrodo positivo el PTM es positivo y alcanza valores altos, mientras que en el polo cercano al cátodo el potencial es negativo y en el ecuador es cercano a cero. Es llamativo que los valores de campo eléctrico aplicado no influyen en el valor de pico de PTM obtenido, pero si en el tiempo en que éste se alcanza; al aumentar el campo de 1000\vcm a 1600\vcm se acelera el proceso de subida y bajada de PTM hasta alcanzar un equilibrio, pero no se logran aumentar los potenciales obtenidos.
 
 
 %aca poner gráficos de PTM vs ángulo para diff tiempos. estaría bueno poner una sola curva por gráfico y gráficos más chicos. podrian ser todos de un solo potencial en vez de diferentes tensiones
 
-\dobleimagengrande{poros/120kvm/tita}{tita120}{PTM en función del ángulo polar\\ con $E = 1200\,\kvcm$}{poros/160kvm/tita}{tita160}{PTM en función del ángulo polar\\ con $E = 1600\,\kvcm$}
+\dobleimagengrande{poros/120kvm/tita}{tita120}{PTM en función del ángulo polar\\ con $E = 1200\,\vcm$}{poros/160kvm/tita}{tita160}{PTM en función del ángulo polar\\ con $E = 1600\,\vcm$}
 
-En las figuras \ref{fig:tita120} y \ref{fig:tita160} se graficaron los potenciales transmembrana en función del ángulo polar para diferentes instantes de tiempo con pulsos de potenciales diferentes en los dos gráficos. Se observa en los primeros instantes que el PTM obtenido es similar al obtenido en el capítulo anterior y al que se puede estimar con la fórmula cerrada \ref{eq:cos}. Esto se debe a que la población de poros es nula o muy pequeña como para afectar aún la conductividad de la membrana. Sin embargo en los instantes posteriores la aparición de poros disminuye notablemente la conductividad de la membrana en las regiones cercanas a los polos, bajando así la diferencia de potencial. En instantes posteriores se observa el mismo fenómeno con regiones más lejanas a los poros, alejándose más el PTM obtenido del que se puede calcular con la fórmula cerrada \ref{eq:cos}.
+En las figuras \ref{fig:tita120} y \ref{fig:tita160} se graficaron los potenciales transmembrana en función del ángulo polar para diferentes instantes de tiempo con pulsos de potenciales diferentes en los dos gráficos. Se observa en los primeros instantes que el PTM obtenido es similar al obtenido en el capítulo anterior y al que se puede estimar con la fórmula cerrada \ref{eq:cos}. Esto se debe a que la población de poros es nula o muy pequeña como para afectar aún la conductividad de la membrana. Sin embargo en los instantes posteriores la aparición de poros disminuye notablemente la conductividad de la membrana en las regiones cercanas a los polos, bajando así la diferencia de potencial. En instantes posteriores se observa el mismo fenómeno con regiones más lejanas a los poros, alejándose más el PTM obtenido del que se puede calcular con la fórmula cerrada \ref{eq:cos}.\\
+
+%%%%
+
+Se estudió también el efecto de aplicar una señal de varios pulsos en lugar uno solo. En la figura \ref{fig:poros-tiempo} se graficó la cantidad de poros en función del tiempo para 4 pulsos de 5\ms de \ontime{} y 5\ms de \offtime{} con dos potenciales diferentes. Se puede ver que la cantidad de poros crece únicamente al principio de cada pulso, y se mantiene casi constante durante el resto del pulso, disminuyendo muy levemente durante el tiempo de apagado. Por cada pulso nuevo se crean poros nuevos, aunque la cantidad de poros nuevos disminuye con cada pulso consecutivo. Se puede ver también que el efecto del campo eléctrico sobre la densidad es enorme, obteniéndose poblaciones de casi el doble de poros para al aumentar el potencial aplicado de 1200\vcm a 1600\vcm.
+
+En la figura \ref{fig:radios-tiempo} se graficó el promedio de los radios de los poros en función del tiempo. Se nota que los radios altos se obtienen por un instante muy corto de tiempo al principio de cada pulso, y que rápidamente se achican llegando a un valor de equilibrio en aproximadamente la mitad del tiempo del \ontime. Cuando el pulso se apaga, los radios se hacen rápidamente mínimos, y se mantienen en un valor muy chico hasta el inicio del próximo pulso. Nuevamente el potencial aplicado afecta los resultados, agrandando el tamaño de los poros. En cada pulso consecutivo parecen aumentar ligeramente los radios obtenidos, notándose la mayor diferencia entre los radios del primer y el segundo pulso. 
+
+En las figuras \ref{fig:pulso1} a \ref{fig:pulso4} se observan las distribuciones de radios de poros para 1600\vcm al instante de 100\usec luego del comienzo de cada pulso. Las diferencias entre radios se observan sobre todo entre el primer y segundo pulso, mientras que los siguientes parecen tener distribuciones muy similares. La mayor concentración se encuentra siempre en los radios muy pequeños (de aproximadamente 1 \si{\nano\metre}), que afectan poco al proceso de permeabilización de la membrana.
+
+
+
+\imagensola{poros/poros-tiempo}{poros-tiempo}{Cantidad de poros en función del tiempo para cuatro pulsos}{}
+\imagensola{poros/radios-tiempo}{radios-tiempo}{Radio promedio de los poros en función del tiempo para cuatro pulsos}{}
+
+
+
+%En las figuras \ref{pulso1} a \ref{pulso4} se observan las distribuciones de radios de poros para cuatro pulsos consecutivos. Los pulsos son de 160\kvcm con 5\ms de \ontime{} y 5\ms de \offtime{} y los histogramas corresponden al instante de 100\usec luego de comenzado cada pulso. \todo[inline]{escribir más después de poner cant poros vs tiempo}
+
+%\dobleimagengrande{poros/160kvm/pulso1}{pulso1}{Primer pulso}{poros/160kvm/pulso2}{pulso2}{Segundo pulso}
+%\dobleimagengrande{poros/160kvm/pulso3}{pulso3}{Tercer pulso}{poros/160kvm/pulso4}{pulso4}{Cuarto pulso}
+
+\begin{figure} [ht!]
+\makebox[\textwidth][c] {
+	\centering
+	\begin{minipage}{.43\paperwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{poros/160kvm/pulso1}
+		\captionof{figure}{Primer pulso}
+		\label{fig:pulso1}
+	\end{minipage}%
+	\begin{minipage}{.43\paperwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{poros/160kvm/pulso2}
+		\captionof{figure}{Segundo pulso}
+		\label{fig:pulso2}
+	\end{minipage}
+}
+\end{figure}
+
+\begin{figure} [ht!]
+\makebox[\textwidth][c] {
+	\centering
+	\begin{minipage}{.43\paperwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{poros/160kvm/pulso3}
+		\captionof{figure}{Tercer pulso}
+		\label{fig:pulso3}
+	\end{minipage}%
+	\begin{minipage}{.43\paperwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{poros/160kvm/pulso4}
+		\captionof{figure}{Cuarto pulso}
+		\label{fig:pulso4}
+	\end{minipage}
+}
+\end{figure}
 
 %TODO conclusiones generales
 %TODO mencionar potencial mínimo necesario para electroporación. podría ir tmb un gráfico de itv en tiempo con voltaje bajo sin electroporación

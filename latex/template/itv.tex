@@ -12,7 +12,6 @@ Con los resultados obtenidos por el método de elementos finitos se calcula tamb
 
 La fórmula cerrada \ref{eq:cos} permitiría obtener con mayor facilidad los potenciales transmembrana sin resolver sistemas de ecuaciones, pero no es utilizada porque no sirve para obtener los potenciales en el resto del dominio, los cuales serán necesarios en capítulos posteriores y porque asume que la conductividad en la membrana es constante, lo cual no será asumido en el capítulo siguiente.
 
-%TODO llenar mucho más en la parte de implementación. detalles de FEM, etc.
 %TODO explicar mejor como se calcula el campo!!!
 
 \newpage
@@ -68,41 +67,3 @@ En la figura \ref{fig:itv-vs-teo} se pueden comparar los resultados de PTM en fu
 También se realizaron simulaciones aplicando diferentes potenciales eléctricos y con células de diferentes radios. En la figura \ref{fig:itv-voltaje} se observa que el PTM aumenta linealmente al aumentar el campo eléctrico aplicado. También sucede lo mismo con el radio de la célula, como puede verse en la figura \ref{fig:itv-radio}. Nuevamente coinciden los resultados de las simulaciones con los de la fórmula cerrada \ref{eq:cos}, la cual indica que los valores de PTM son directamente proporcionales al campo eléctrico y el radio de la célula, y por lo tanto se necesitarán mayores valores de campo eléctrico para lograr un mismo potencial transmembrana cuanto más chica sea la célula.
 
 \dobleimagengrande{itv/itv-voltaje}{itv-voltaje}{PTM en función del ángulo polar $\theta$ para\\ diferentes campos eléctricos aplicados}{itv/itv-radio}{itv-radio}{PTM en función del ángulo polar $\theta$ para\\ células de diferentes radios}
-
-%\begin{figure} 
-%\makebox[\textwidth][c] {
-%	\centering
-%	\begin{minipage}{.43\paperwidth}
-%		\centering
-%		\includegraphics[width=\textwidth]{itv/itv-voltaje}
-%		\captionof{figure}{PTM en función del ángulo polar $\theta$ para\\ diferentes campos eléctricos aplicados}
-%		\label{fig:itv-voltaje}
-%	\end{minipage}%
-%	\begin{minipage}{.43\paperwidth}
-%		\centering
-%		\includegraphics[width=\textwidth]{itv/itv-radio}
-%		\captionof{figure}{PTM en función del ángulo polar $\theta$ para\\ células de diferentes radios}
-%		\label{fig:itv-radio}
-%	\end{minipage}
-%}
-%\end{figure}
-
-%\newcommand{\dobleimagengrande}[6] {
-%	\begin{figure} 
-%	\makebox[\textwidth][c] {
-%		\centering
-%		\begin{minipage}{.40\paperwidth}
-%			\centering
-%			\includegraphics[width=0.9\linewidth]{#1}
-%			\captionof{figure}{#3}
-%			\label{fig:#2}
-%		\end{minipage}%
-%		\begin{minipage}{.40\paperwidth}
-%			\centering
-%			\includegraphics[width=0.9\linewidth]{#4}
-%			\captionof{figure}{#6}
-%			\label{fig:#5}
-%		\end{minipage}
-%	}
-%	\end{figure}
-%}
