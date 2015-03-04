@@ -64,6 +64,7 @@ latex/preinforme/preinforme.pdf
 
 celula/scripts/*.prm
 celula/scripts/*.msh
+celula/scripts/temp.png
 
 mesh/AutoMesh2D/*/*.dat
 mesh/AutoMesh2D/*/*.txt

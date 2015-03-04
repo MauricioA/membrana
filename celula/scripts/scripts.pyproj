@@ -21,6 +21,9 @@
     <Compile Include="curvas_nuevo.py" />
     <Compile Include="curvas_trans.py" />
     <Compile Include="deltamax.py" />
+    <Compile Include="delta_t.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="depolarizado.py" />
     <Compile Include="digest.py" />
     <Compile Include="generar_prm.py" />
