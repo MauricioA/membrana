@@ -36,10 +36,6 @@ const double TERM_TENSION_LINEA = - 2 * M_PI * GAMA;
 const double TOLER_DIST_POROS	= 1e-3;
 const double TOLER_ANGULO		= 1e-3;
 
-inline bool operator<(const Poros::InfoAngulo &lhs, const Poros::InfoAngulo &rhs) {
-	return lhs.tita < rhs.tita;
-};
-
 /* Todo esto es solo para buscar los elementos de la membrana y llenar el vector valores */
 Poros::Poros(Celula& celula) {
 	assert(celula.nodpel == 4);
@@ -140,8 +136,6 @@ Poros::Poros(Celula& celula) {
 		}
 	}
 	assert(ints == valores.size());
-
-	sort(valores.begin(), valores.end());
 }
 
 inline Celula& Poros::getCelula() {
@@ -152,6 +146,7 @@ double Poros::getTita(Nodo nodo) {
 	Double2D center = getCelula().getCenter();
 	double radio = sqrt(pow(nodo.x - center.x, 2) + pow(nodo.y - center.y, 2));
 	double tita = M_PI - acos((nodo.y - center.y) / radio);
+	//double tita = acos((nodo.y - center.y) / radio);
 	assert(tita == tita);
 	return tita;
 }
@@ -206,8 +201,8 @@ void Poros::iteracion(double deltaT) {
 		if (neg) for (uint i = 0; i < info.porosGrandes.size(); i++) {
 			if (info.porosGrandes[i].first < 0) {
 				info.porosGrandes.erase(info.porosGrandes.begin() + i);
-				i--;
 				printf("PORO NEGATIVO BORRADO!\n");
+				i--;
 			}
 		}
 		
@@ -337,12 +332,6 @@ double Poros::getProporsionArea(int iElem) {
 
 	/* Si hubo algún error */
 	if (areaP > info.area) {
-
-		cout << info.porosChicos << "\n";
-		cout << info.porosGrandes.size() << "\n";
-
-		assert(false);
-
 		for (auto poro : info.porosGrandes) {
 			cout << poro.first << " " << poro.second << "\n";
 		}
