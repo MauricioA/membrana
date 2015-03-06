@@ -6,8 +6,8 @@
 
 \noindent 
 
-Cell electroporation involves the application of electric pulses of short duration and high potential to a cell in order to create pores in its membrane, thus achieving a permeabilization that allows the entry of drugs or ions. Simulations of individual cells to which pulses are applied through electrodes were made. The simulations take into account the following physical phenomena: the electrical potential in the domain, the creation of pores in the membrane and the evolution of their radii and transport of four different ionic species. For this the finite element method is used in two-dimensional cylindrical coordinates, assuming the cell as a solid of revolution.
+Electroporation involves the application of electrical pulses of short duration and high potential to a cell in order to create pores in the membrane, thus achieving a permeabilization that allows the entry of drugs or ions. This thesis presents a numerical model that takes in consideration the electrical response of the membrane to the application of electrical pulses, the pore dynamics over it and the transport of four different ionic species. To solve the set of coupled differential equations involved, the finite element method was used in two-dimensional cylindrical coordinates, assuming the cell as a solid of revolution. The equations related to the evolution of the population of pores are solved by a Euler method integrated into a single step. Distributed programming based on OpenMP was used to maximize current multithreading processors. The results are compared with experiments obtained from the literature as well as against those provided by similar numerical schemes.
 
 \bigskip
 
-\noindent\textbf{Keywords:} Cell membrana, electroporation, transport, finite elements.
+\noindent\textbf{Keywords:} cell membrane, electroporation, transport, finite elements
