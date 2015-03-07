@@ -2,7 +2,7 @@
 
 malla: 	 inputs/25_192_150_5.msh	# alto 150
 nodpel:	 quad
-salida:  salida/temp/5m2t/
+salida:  salida/pulsativo/03-06/500vcm/
 threads: 2
 poros: true
 delta_t: 1e-9
@@ -11,9 +11,9 @@ sigint: 200e-9
 sigext: 150e-9
 sigmem: 5e-12		# valor real 5e-12
 
-potencial:  24		# 1600 V/cm
+potencial:  7.5		# 500 V/cm
 radio: 		25
 ancho: 		5e-3	# ancho de la membrana [um]
-pulsos:		1
+pulsos:		4
 on_time:	5e-3
-off_time:	0e-3
+off_time:	5e-3

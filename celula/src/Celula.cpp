@@ -31,8 +31,8 @@ void Celula::poisson() {
 
 double inline getDeltaT(double time_pulso, double multiplier, double delta_t) {
 	/* 90% del máximo en 500e-6 */
-	const double K = -500e-6 / log(0.1);
-	return multiplier * delta_t * (1 - exp(-time_pulso / K));
+	const double K = 500e-6 / log(0.1);
+	return multiplier * delta_t * (1 - exp(time_pulso / K));
 }
 
 /* Loop principal */
