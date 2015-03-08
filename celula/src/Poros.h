@@ -22,7 +22,7 @@ public:
 		double tita;
 		double area;
 		vector<pair<double, double>> porosGrandes;	// <radio, tiempo de creación>
-		uint32_t porosChicos;
+		int32_t porosChicos;
 		double radioChico;
 	};
 

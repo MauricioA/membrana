@@ -11,6 +11,10 @@ import re
 FOLDERS = [
 	('../salida/pulsativo/02-16/', '1600 V/cm'),
 	('../salida/pulsativo/02-17/120kvm/', '1200 V/cm'),
+	('../salida/pulsativo/03-06/800vcm/', '800 V/cm'),
+#	('../salida/pulsativo/03-06/500vcm/', '500 V/cm'),
+#	('../salida/pulsativo/03-06/400vcm/', '400 V/cm'),
+#	('../salida/pulsativo/03-06/300vcm/', '300 V/cm'),
 ]
 
 font = { 'size': 16 }
@@ -22,13 +26,13 @@ def get_radio_avg(fname):
 			if i == 0: continue
 			total += float(line.split(',')[1])
 	avg = 0
-	if i > 0: avg = total / 1
+	if i > 0: avg = total / i
 	#print 1, avg
 	return avg
 
 plt.clf()
 fig, ax = plt.subplots()
-fig.set_size_inches(12, 4.5)
+fig.set_size_inches(12, 6)
 
 for folder, label in FOLDERS:
 	poros_folder = folder + '/poros/'
@@ -39,8 +43,8 @@ for folder, label in FOLDERS:
 	
 	for file in files:
 		reg = re.match('.*\\poros\-\d+\-(.*)\.csv', file)
-		time = float(reg.groups()[0]) * 1000
-		radios = get_radio_avg(file) * 1e9
+		time = float(reg.groups()[0])
+		radios = get_radio_avg(file)
 		values.append((time, radios))
 
 	values = sorted(values, key = lambda x : x[0])
@@ -51,18 +55,17 @@ for folder, label in FOLDERS:
 	times = np.array(times)
 	radios = np.array(radios)
 
-	ax.plot(times, radios, label = label)
+	ax.plot(times * 1e3, radios * 1e3, label=label)
 	#plt.semilogx(times, radios, label = label)
-	
-ax.legend(loc = 'upper right')
 
 #ax.set_xlim(0, 5)
 
 plt.xlabel('Tiempo [ms]')
 plt.ylabel('Radio [nm]')
+plt.legend(loc='upper right', prop={'size':12})
 
 #plt.show()
 
-outfile = 'temp.png'
+outfile = '../../latex/template/graficos/poros/radios-tiempo.png'
 pylab.savefig(outfile, bbox_inches='tight')
 print outfile

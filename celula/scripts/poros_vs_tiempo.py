@@ -11,6 +11,10 @@ import re
 FOLDERS = [
 	('../salida/pulsativo/02-16/', '1600 V/cm'),
 	('../salida/pulsativo/02-17/120kvm/', '1200 V/cm'),
+	('../salida/pulsativo/03-06/800vcm/', '800 V/cm'),
+	('../salida/pulsativo/03-06/500vcm/', '500 V/cm'),
+	('../salida/pulsativo/03-06/400vcm/', '400 V/cm'),
+	('../salida/pulsativo/03-06/300vcm/', '300 V/cm'),
 ]
 
 font = { 'size': 16 }
@@ -23,7 +27,7 @@ def count_lines(fname):
 
 plt.clf()
 fig, ax = plt.subplots()
-fig.set_size_inches(12, 4.5)
+fig.set_size_inches(12, 6)
 
 for folder, label in FOLDERS:
 	poros_folder = folder + '/poros/'
@@ -52,9 +56,10 @@ ax.legend(loc = 'upper left')
 
 plt.xlabel('Tiempo [ms]')
 plt.ylabel('Poros')
+plt.legend(loc=2, prop={'size':12})
 
 #plt.show()
 
-outfile = 'temp.png'
+outfile = '../../latex/template/graficos/poros/poros-tiempo.png'
 pylab.savefig(outfile, bbox_inches='tight')
 print outfile

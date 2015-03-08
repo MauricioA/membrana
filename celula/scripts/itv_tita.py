@@ -8,14 +8,16 @@ import os
 #para generar graficos de itv vs angulo de los itv.csv
 
 FOLDERS = [		# (ruta, radio, cant(angulos))
-    ("../salida/last/02-03/120/", 25, 192),
-	("../salida/last/02-03/160/", 25, 192),
+	('../salida/pulsativo/03-06/300vcm/', 25, 192),
+	('../salida/pulsativo/03-06/400vcm/', 25, 192),
+	('../salida/pulsativo/03-06/500vcm/', 25, 192),
+	('../salida/pulsativo/03-06/800vcm/', 25, 192),
 ]
 
 font = { 'size': 16 }
 
 TIMES = [750e-9, 1.5e-6, 16e-6]
-LABELS = ['750 $ns$', '1.5 $\\mu s$', '16 $\\mu s$']
+LABELS = ['750 ns', '1.5 $\\mu$s ', '16 $\\mu$s']
 
 for (folder, radio, mesh) in FOLDERS:
 	#for dir in os.listdir(folder):
@@ -71,6 +73,8 @@ for (folder, radio, mesh) in FOLDERS:
 		ax.set_ylabel('PTM [V]', fontdict=font)
 		ax.set_xlabel('$\\theta$ [rad]', fontdict=font)
 		ax.set_xlim(0, np.pi)
+
+		#plt.show()
 
 		pylab.savefig(
 			'%s/itv-tita-%s-%s.png' % (folder, radio, mesh), 

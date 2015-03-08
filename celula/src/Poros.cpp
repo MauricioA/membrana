@@ -10,7 +10,7 @@
 #include "EntradaSalida.h"
 
 const bool	 CALCULAR_CAPACITANCIA	= true;
-const bool	 POROS_CHICOS			= true;
+const bool	 POROS_CHICOS			= false;
 
 // um!! J -> 1e12, N -> 1e6 - esta testeado
 const double DENSIDAD_INICIAL	= 0;
@@ -234,10 +234,30 @@ void Poros::iteracion(double deltaT) {
 			info.porosGrandes.push_back({ RADIO_INICIAL, tiempo });
 		}
 		
-		/* Si se sellaron algunos poros, borro de los poros chicos */
+		/* Esto es para borrar poros que se sellaron
+		 * Borra los poros más chicos que encuentre */
 		if (porosNuevos < 0) {
-			info.porosChicos += porosNuevos;
-			assert(info.porosChicos >= 0);
+			assert(abs(porosNuevos) <= ((int) info.porosGrandes.size()) + info.porosChicos);
+			if (info.porosChicos > abs(porosNuevos)) {
+				info.porosChicos -= abs(porosNuevos);
+			} else {
+				porosNuevos += info.porosChicos;
+				info.porosChicos = 0;
+				while (porosNuevos < 0) {
+					double minRadio = DBL_MAX;
+					int minI = 0;
+					for (uint i = 0; i < info.porosGrandes.size(); i++) {
+						double radio = info.porosGrandes[i].first;
+						if (radio < minRadio) {
+							minRadio = radio;
+							minI = i;
+						}
+					}
+
+					info.porosGrandes.erase(info.porosGrandes.begin() + minI);
+					porosNuevos++;
+				}
+			}
 		}
 	}
 
