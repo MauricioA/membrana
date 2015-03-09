@@ -14,6 +14,10 @@ Para acelerar los tiempos de ejecución se usaron intervalos temporales diferent
 
 donde $\mathrm{m_p}$ es el máximo valor de intervalo temporal posible, $t$ es el tiempo desde el inicio del último pulso y $k$ es una constante con la que se controla la velocidad con la que aumenta el intervalo temporal. En particular se utilizaron los valores de $\mathrm{m_p} = 2$ \si{\micro\second} y $k = \frac{500 \si{\micro\second}}{\ln (1 - 0.9)}$ para que el intervalo temporal aumente hacia 2 \si{\micro\second} de manera asintótica y alcance el 90\% de este valor en el instante de 500 \si{\micro\second} de comenzado el pulso. En la figura \ref{fig:deltat} se muestra el intervalo temporal en el inicio del pulso. Es importante aclarar que al comenzar y terminar cada pulso se reinicia el cálculo del intervalo temporal.
 
+Por último se utiliza para el cálculo del transporte de especies un intervalo temporal fijo de 200 \si{\nano\second}.\\
+
+\clearpage
+
 \begin{figure}
 	\centering
 	\includegraphics[width=0.8\textwidth]{acoplado/deltat}
@@ -21,15 +25,68 @@ donde $\mathrm{m_p}$ es el máximo valor de intervalo temporal posible, $t$ es e
 	\label{fig:deltat}
 \end{figure}
 
-Por último se utiliza para el cálculo del transporte de especies un intervalo temporal fijo de 200 \si{\nano\second}.\\
+
 
 % está en este capítulo aunque debería ir en poros!
 
 %Para acelerar los tiempos de ejecución se usaron intervalos temporales diferentes para los distintos fenómenos físicos simulados. Para el cálculo de la densidad de poros en la membrana celular y sus radios se utilizó un intervalo temporal muy pequeño, ya que se notó que al aumentarlo se producen errores de discretización muy grandes que producen la divergencia del sistema. Para el cálculo de los potenciales eléctricos en el dominio, en cambio, alcanzó un intervalo temporal mucho mayor, y se notó que reducirlo no impacta en los resultados. Por último para el cálculo de las concentraciones de las especies iónicas se necesitaron intervalos temporales aún mayores. Concretamente se usaron intervalos de 1 \si{\nano\second} para las ecuaciones de poros, 20 \si{\nano\second} para el transporte de especies y un intervalo variable de entre 1 \si{\nano\second} y 2 \si{\micro\second} para el cálculo del potencial eléctrico. Este último intervalo es variable dado que los primeros instantes de cada pulso eléctrico es el que tiene mayores variaciones en los potenciales producto de la repentina permeabilización de la membrana, como puede verse en el capítulo 4. Esto hace que se necesite una actualización constante de los valores de potencial en los nodos, sobre todos los cercanos a la membrana celular. Sin embargo pasados los primeros microsegundos del pulso el sistema se estabiliza y la permeabilización y valores de PTM se mantienen con pocos cambios lo que hace innecesario un cálculo constante de los potenciales. Por esta razón se optó por un intervalo muy pequeño al comenzar un pulso y se incrementa de manera exponencial.\\
 
+A continuación se presenta el pseudo-código del loop principal del programa. \texttt{nPulsos} es la cantidad de pulsos a simular y $\mathrm{m_p}$, $\mathrm{m_t}$ y $\mathrm{m_d}$ son constantes usadas para determinar los intervalos temporales para el cálculo de potencial eléctrico, el transporte de especies y para grabar los resultados a disco respectivamente.\\
+
+
+\newcommand{\nextpoiss}{\mathtt{next}_{\mathtt{p}}}
+\newcommand{\nextt}{\mathtt{next}_{\mathtt{t}}}
+\newcommand{\nextd}{\mathtt{next}_{\mathtt{d}}}
+
+\begin{algorithmic}
+	\FORALL{\texttt{pulso} $\in \{1,\ldots, \mathtt{nPulsos}\}$} 
+		\FORALL{\texttt{estado} $\in \{\mathtt{ON},\mathtt{OFF}\}$} 
+			\STATE $t = 0$
+			\STATE $\nextpoiss = \nextt = \nextd = 0$
+			\WHILE{$t < \mathtt{duracion[estado]}$} 
+				
+				\IF{$t \geq \nextpoiss$}
+					\STATE calcular potencial eléctrico con \texttt{estado}
+					\STATE $\nextpoiss = t + \Delta_t \, \mathrm{m_p} \left(1 - e^{t/k}\right)$
+				\ENDIF
+				
+				\STATE calcular densidad de poros
+				\STATE calcular radios de poros
+				\STATE actualizar valores de conductividad y difusión
+			
+				\IF{$t \geq \nextt$}
+					\FORALL{$e \in \{$\h, \oh, \na, \cl$\}$} 
+						\STATE calcular concentraciones de especie $e$
+					\ENDFOR
+					
+					\STATE $\nextt = t + \Delta_t \, \mathrm{m_t}$
+				\ENDIF
+				
+				\IF{$t \geq \nextd$}
+					\STATE grabar estado en disco
+					\STATE $\nextd = t + \Delta_t \, \mathrm{m_d}$
+				\ENDIF								
+				
+				\STATE{$t = t + \Delta_t$}
+			\ENDWHILE
+		\ENDFOR
+	\ENDFOR
+\end{algorithmic}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 %TODO revisar los valores de los intervalos!! revisar si transporte efectivamente mayor que poisson
-%TODO está bien decir delta t exponencial?
-%TODO mencionar que se reinicia el delta_t con el pulso
 %TODO mencionar truco numérico temperatura
 
 \section{Resultados}

@@ -146,7 +146,6 @@ double Poros::getTita(Nodo nodo) {
 	Double2D center = getCelula().getCenter();
 	double radio = sqrt(pow(nodo.x - center.x, 2) + pow(nodo.y - center.y, 2));
 	double tita = M_PI - acos((nodo.y - center.y) / radio);
-	//double tita = acos((nodo.y - center.y) / radio);
 	assert(tita == tita);
 	return tita;
 }

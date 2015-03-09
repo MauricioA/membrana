@@ -36,11 +36,10 @@ double inline getDeltaT(double time_pulso, double multiplier, double delta_t) {
 }
 
 /* Loop principal */
-//TODO imprimir por pantalla cada una cantidad de tiempo real (chequear cada x iters)
 void Celula::acoplado() {
 	auto global_start = chrono::high_resolution_clock::now();
 	const double MULTIPLIER_POISSON = 2000;	
-	const double MULTIPLIER_TRANSPORTE = 200;	//ponerlo en 20 por lo menos con poros
+	const double MULTIPLIER_TRANSPORTE = 200;
 	const double MULTIPLIER_ITV = 1000;
 	const double PASO_DISCO = 100e-6;
 
@@ -76,7 +75,7 @@ void Celula::acoplado() {
 			/* Itero todo el pulso */
 			for (double pulse_time = 0; pulse_time < times[estado]; pulse_time += delta_t, time += delta_t) {
 
-				/* Iteración poisson, solo si está ON */
+				/* Iteración poisson */
 				if (time >= next_poisson) {
 					Poisson::iteracion(*this);
 					double step = getDeltaT(pulse_time, MULTIPLIER_POISSON, delta_t);
