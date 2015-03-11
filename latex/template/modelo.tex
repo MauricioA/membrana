@@ -158,7 +158,7 @@ A continuación se presenta la definición y valores de las constantes usadas.
 		\hline
 		\lineaTabla{\sigma_{o}}{0.20 \si{\siemens\per\metre}}{Conductividad de la zona extracelular}
 		\lineaTabla{\sigma_{i}}{0.15 \si{\siemens\per\metre}}{Conductividad de la zona intracelular}
-		\lineaTabla{\sigma_{m}}{\num{5e-7} \si{\siemens\per\metre}}{Conductividad de la membrana celular}
+		\lineaTabla{\sigma_{m}}{\num{5e-6} \si{\siemens\per\metre}}{Conductividad de la membrana celular}
 		\lineaTabla{\sigma_{p}}{2 \si{\siemens\per\metre}}{Conductividad del líquido que llena el poro}
 		\lineaTabla{E}{1000\vcm - 2000\vcm}{Campo eléctrico aplicado}
 		\lineaTabla{\alpha}{10 \si{\micro\metre} - 50 \si{\micro\metre}}{Radio de la célula}
@@ -385,7 +385,7 @@ Para realizar las simulaciones de los sub-problemas de potencial eléctrico y tr
 
 Se usó un sistema de coordenadas cilíndricas idealizando la célula y los electrodos como sólidos de revolución. De esta manera la cantidad de nodos en la grilla empleada es considerablemente menor que si se usara un sistema de coordenadas con tres dimensiones, y los tiempos de ejecución se reducen notablemente. 
 
-Se generaron mallas bidimensionales con elementos cuadrilaterales de tamaño variable usando el programa \nombre{Auto-Mesh 2D}. Las zonas cercanas a la membrana celular son de mucho interés y contienen cambios bruscos de potencial y concentraciones. Por esta razón se usaron elementos muy pequeños en estas regiones. Se distinguen en la malla tres regiones: el líquido extracelular, el citoplasma (en el interior de la célula) y la membrana celular. A diferencia de otros trabajos anteriores la membrana celular se modela en la malla con elementos propios del tamaño real en vez de considerarse con un ancho superior al real o directamente una condición de borde. El método de elementos finitos fue elegido en lugar de el método de diferencias finitas porque permite crear mallas con elementos de tamaños irregulares y realizar cambios en las mallas empleadas sin modificar el programa que realiza la simulación.
+Se generaron mallas bidimensionales con elementos cuadrilaterales de tamaño variable usando el programa \nombre{Auto-Mesh 2D} \cite{automesh}. Las zonas cercanas a la membrana celular son de mucho interés y contienen cambios bruscos de potencial y concentraciones. Por esta razón se usaron elementos muy pequeños en estas regiones. Se distinguen en la malla tres regiones: el líquido extracelular, el citoplasma (en el interior de la célula) y la membrana celular. A diferencia de otros trabajos anteriores la membrana celular se modela en la malla con elementos propios del tamaño real en vez de considerarse con un ancho superior al real o directamente una condición de borde. El método de elementos finitos fue elegido en lugar de el método de diferencias finitas porque permite crear mallas con elementos de tamaños irregulares y realizar cambios en las mallas empleadas sin modificar el programa que realiza la simulación.
 
 \begin{figure} 
 \makebox[\textwidth][c] {
@@ -413,3 +413,22 @@ Se generaron mallas bidimensionales con elementos cuadrilaterales de tamaño var
 Las mallas utilizadas tienen entre 7500 y 8900 elementos y representan un dominio de hasta 150 \si{\micro\metre} de alto y hasta 50 \si{\micro\metre} de ancho con células de 25 \si{\micro\metre} de radio y membranas de 5 \si{\nano\metre} de ancho. Para modelar la célula se dividió el ángulo polar en 192 partes con dos elementos por cada ángulo discreto. Los electrodos se modelaron dentro del dominio, en los bordes superior e inferior.
 
 También se usó \nombre{Python} como lenguaje secundario, para ayudar en la generación de mallas, la interpretación de los datos de salida obtenidos en las simulaciones y la generación de gráficos, haciendo uso de la librería \texttt{matplotlib} \cite{matplotlib}. El programa lee los parámetros de ejecución de un archivo \texttt{input.in} y graba periódicamente resultados de potencial y campo eléctrico eléctrico, potencial transmembrana, densidad y radios de poros en la membrana celular, concentraciones de las especies y valores de pH en diferentes archivos de salida.
+
+\clearpage
+
+\subsubsection*{Escalabilidad}
+
+Se analizó la escalabilidad del programa midiendo los tiempos de ejecución para un pulso de 5 \si{\milli\second} con entre 1 y 4 hilos de ejecución. Se puede ver en la tabla \ref{tab:escala} que los mejores tiempos se obtuvieron con 4 threads, pero sin embargo el speedup\footnote{Se define speedup como $S = T_s / T_p$ donde $T_s$ es el tiempo de ejecución serial (con un solo proceso o hilo) y $T_p$ el tiempo de ejecución paralelo \cite{pacheco}} es apenas mayor al obtenido con 2 threads, y la eficiencia\footnote{Se define eficiencia como $E = S / p$ donde $S$ es el speedup y $p$ la cantidad de procesos o hilos \cite{pacheco}} es mucho menor. Se puede concluir que el programa escala correctamente para 2 threads, pero no mejora notablemente al agregar más hilos de ejecución, e incluso empeora los tiempos de ejecución al pasar de 2 a 3 hilos. La baja escalabilidad puede deberse a que solo una fracción del código corre en paralelo (el armado de matrices del cálculo del potencial eléctrico y el cálculo de las concentraciones de especies), mientras que la mayor parte es serial (los cálculos relacionados a los poros y la factorización de matrices para el potencial eléctrico).
+
+\begin{table}[h!]
+    \centering
+	\begin{tabular}{ c | c c c c }              
+		& 1 thread & 2 threads & 3 threads & 4 threads \\
+		\hline
+		Tiempo [\si{\second}] & 1995 & 1331 & 1489 & 1233 \\
+		Speedup & 1 & 1.50 & 1.34 & 1.63 \\
+		Eficiencia & 100\% & 74.9\% & 44.7\% & 40.5\% \\
+	\end{tabular}
+    \caption{Tiempos de ejecución para un pulso de 5 \si{\milli\second} y una malla de 8899 nodos corriendo en un CPU intel i3 2100 a 3.10 GHz con capacidad para 4 threads}
+    \label{tab:escala}
+\end{table}
