@@ -5,7 +5,7 @@ En este capítulo se simula la creación de poros en la membrana celular según 
 
 \section{Implementación}
 
-Como las ecuaciones que gobiernan la creación de poros en la membrana son dependientes del tiempo, fue necesario crear un ciclo que realice iteraciones de las ecuaciones de poros y de potencial eléctrico. La ecuación \ref{eq:poisson} debe correrse periódicamente a pesar de que no depende del tiempo, ya que los valores de conductancias en la membrana ($\sigma_{m}$) son afectados por la aparición de poros. 
+Como las ecuaciones que gobiernan la creación de poros en la membrana son dependientes del tiempo, fue necesario crear un ciclo que realice iteraciones de las ecuaciones de poros y de potencial eléctrico. La ecuación \ref{eq:poisson} debe correrse periódicamente a pesar de que no depende del tiempo, ya que los valores de conductancias en la membrana ($\sigma_{m}$) son afectados por la aparición de poros. Las ecuaciones \ref{eq:poros-crea} y \ref{eq:poros-radio} fueron discretizadas con el método de Euler a un paso\footnote{Si se tiene una ecuación diferencial ordinaria tal que $Y'(x) = f(x, Y(x))$ y $Y(x_0) = Y_0$, el método de Euler con un paso $h$ aproxima la función $Y$ como $y_0 = Y_0$ y $y_{n+1} = y_n + h\,f(x_n, y_n)$ \cite{kendall}}.
 
 La ecuación \ref{eq:poros-crea} que calcula la densidad de poros en cada región de la membrana fue discretizada como
 

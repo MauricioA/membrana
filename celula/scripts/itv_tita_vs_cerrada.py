@@ -60,8 +60,8 @@ plt.clf()
 fig, ax = plt.subplots()
 fig.set_size_inches(16, 6)
 
-ax.plot(angles_exp, itvs_exp, 'ro', label = u'simulaci\u00f3n')
-ax.plot(angles_teo, itvs_teo, label = u'f\u00f3rmula', linewidth=2)
+ax.plot(angles_exp, itvs_exp, 'ro', label = u'Num\u00e9rico')
+ax.plot(angles_teo, itvs_teo, label = u'Anal\u00edtico', linewidth=2)
 
 legend = ax.legend()
 

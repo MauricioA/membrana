@@ -381,7 +381,7 @@ El problema fue dividido en tres partes, según los tres fenómenos físicos pri
 
 El trabajo fue implementado desde cero en \texttt{C++}. Se hizo uso de varias mejoras incorporadas en al lenguaje en \texttt{C++11} y de la librería de álgebra lineal \nombre{Eigen} para resolver sistemas de ecuaciones. Las simulaciones fueron realizadas en un equipo con procesador Intel i3 2100 corriendo a 3.10 GHz y 8GB de memoria RAM con sistema operativo Microsoft Windows 7. El código es portable y fue compilado con Microsoft Visual C++ bajo la interfaz Microsoft Visual Studio 2013, pero también fue probado con los compiladores Intel C Compiler para Windows y GCC para Linux.
 
-Para realizar las simulaciones de los sub-problemas de potencial eléctrico y transporte de especies se utilizó el método de elementos finitos, que requiere resolver sistemas de ecuaciones lineales. Las resoluciones de los sistemas de ecuaciones se hicieron con la librería \nombre{Eigen}, usando matrices esparsas y los métodos LDL y gradiente biconjugado estabilizado. Las ecuaciones de densidad y radio de poros se resolvieron por el método de diferencias finitas. Para acelerar los tiempos de ejecución se usó la interfaz \nombre{OpenMP}, que consiste en directivas para paralelizar código \texttt{C++} en múltiples hilos de ejecución. 
+Para realizar las simulaciones de los sub-problemas de potencial eléctrico y transporte de especies se utilizó el método de elementos finitos, que requiere resolver sistemas de ecuaciones lineales. Las resoluciones de los sistemas de ecuaciones se hicieron con la librería \nombre{Eigen}, usando matrices esparsas y los métodos LDL y gradiente biconjugado estabilizado. Las ecuaciones de densidad y radio de poros se resolvieron por el método de diferencias finitas. %Para acelerar los tiempos de ejecución se usó la interfaz \nombre{OpenMP}, que consiste en directivas para paralelizar código \texttt{C++} en múltiples hilos de ejecución. 
 
 Se usó un sistema de coordenadas cilíndricas idealizando la célula y los electrodos como sólidos de revolución. De esta manera la cantidad de nodos en la grilla empleada es considerablemente menor que si se usara un sistema de coordenadas con tres dimensiones, y los tiempos de ejecución se reducen notablemente. 
 
@@ -412,15 +412,25 @@ Se generaron mallas bidimensionales con elementos cuadrilaterales de tamaño var
 
 Las mallas utilizadas tienen entre 7500 y 8900 elementos y representan un dominio de hasta 150 \si{\micro\metre} de alto y hasta 50 \si{\micro\metre} de ancho con células de 25 \si{\micro\metre} de radio y membranas de 5 \si{\nano\metre} de ancho. Para modelar la célula se dividió el ángulo polar en 192 partes con dos elementos por cada ángulo discreto. Los electrodos se modelaron dentro del dominio, en los bordes superior e inferior.
 
-También se usó \nombre{Python} como lenguaje secundario, para ayudar en la generación de mallas, la interpretación de los datos de salida obtenidos en las simulaciones y la generación de gráficos, haciendo uso de la librería \texttt{matplotlib} \cite{matplotlib}. El programa lee los parámetros de ejecución de un archivo \texttt{input.in} y graba periódicamente resultados de potencial y campo eléctrico eléctrico, potencial transmembrana, densidad y radios de poros en la membrana celular, concentraciones de las especies y valores de pH en diferentes archivos de salida.
+También se usó \nombre{Python} como lenguaje secundario, para ayudar en la generación de mallas, la interpretación de los datos de salida obtenidos en las simulaciones y la generación de gráficos, haciendo uso de la librería \nombre{matplotlib} \cite{matplotlib}. El programa lee los parámetros de ejecución de un archivo \texttt{input.in} y graba periódicamente resultados de potencial y campo eléctrico eléctrico, potencial transmembrana, densidad y radios de poros en la membrana celular, concentraciones de las especies y valores de pH en diferentes archivos de salida.
 
-\clearpage
+%\clearpage
 
-\subsubsection*{Escalabilidad}
+\subsection*{Escalabilidad}
 
-Se analizó la escalabilidad del programa midiendo los tiempos de ejecución para un pulso de 5 \si{\milli\second} con entre 1 y 4 hilos de ejecución. Se puede ver en la tabla \ref{tab:escala} que los mejores tiempos se obtuvieron con 4 threads, pero sin embargo el speedup\footnote{Se define speedup como $S = T_s / T_p$ donde $T_s$ es el tiempo de ejecución serial (con un solo proceso o hilo) y $T_p$ el tiempo de ejecución paralelo \cite{pacheco}} es apenas mayor al obtenido con 2 threads, y la eficiencia\footnote{Se define eficiencia como $E = S / p$ donde $S$ es el speedup y $p$ la cantidad de procesos o hilos \cite{pacheco}} es mucho menor. Se puede concluir que el programa escala correctamente para 2 threads, pero no mejora notablemente al agregar más hilos de ejecución, e incluso empeora los tiempos de ejecución al pasar de 2 a 3 hilos. La baja escalabilidad puede deberse a que solo una fracción del código corre en paralelo (el armado de matrices del cálculo del potencial eléctrico y el cálculo de las concentraciones de especies), mientras que la mayor parte es serial (los cálculos relacionados a los poros y la factorización de matrices para el potencial eléctrico).
+El código implementado contiene partes que corren en paralelo implementadas con \nombre{OpenMP} para mejorar así los tiempos de ejecución.\\
 
-\begin{table}[h!]
+\textbf{OpenMP} es una API (interfaz de programación de aplicaciones) que permite implementar con facilidad código paralelo con múltiples hilos de ejecución y memoria compartida \cite{quinn}. Consta de un conjunto de directivas para el compilador llamadas \textit{pragmas} y se puede utilizar en programas de Fortran, \texttt{C} y \texttt{C++}. Una de las principales ventajas de \nombre{OpenMP} contra otros paradigmas de paralelización como el pasaje de mensajes, es que con OpenMP es muy fácil convertir código serial a paralelo. Por ejemplo para convertir un ciclo serial que consume mucho tiempo de ejecución a uno paralelo suele bastar con agregar unos pocos \textit{pragmas} al código. Con el modelo de pasaje de mensajes, en cambio, sería necesario reescribir gran parte de la lógica del programa, ya que los diferentes procesos no compartirían memoria y necesitarían enviarse mensajes explícitamente. Como desventaja se tiene que es necesario que todos los núcleos involucrados en el cómputo compartan la misma memoria, lo cual impide utilizar clústers de computadoras limitando la paralelización que es posible obtener. Esto no es un problema en este trabajo, ya que se utilizan mallas bidimensionales relativamente pequeñas y que gran parte del código es serial, y por lo tanto no se obtendría una mejora significativa con una cantidad muy grande de procesos ejecutando en paralelo.\\
+
+%TODO se podría explicar que pragmas se usan en el código
+
+Para medir la mejora obtenida al utilizar varios hilos de ejecución se utilizan las medidas de \textit{speedup} y \textit{eficiencia}. Se define speedup como $S = T_s / T_p$ donde $T_s$ es el tiempo de ejecución serial (con un solo proceso o hilo) y $T_p$ el tiempo de ejecución paralelo \cite{pacheco}. La eficiencia en cambio es $E = S / p$ donde $S$ es el speedup y $p$ la cantidad de procesos o hilos \cite{pacheco}.\\
+
+%TODO lo que está abajo no debería estar acá porque son resultados???
+
+En la tabla \ref{tab:escala} se encuentran medidas de los tiempos de ejecución, speedup y eficiencia de una simulación similar a las realizadas en el capítulo \ref{chap:acoplado}, usando entre 1 y 4 hilos de ejecución. Se puede ver que los mejores tiempos se obtuvieron con 4 threads, pero sin embargo el speedup es apenas mayor al obtenido con 2 threads, y la eficiencia es mucho menor. Se puede concluir que el programa escala correctamente para 2 threads, pero no mejora notablemente al agregar más hilos de ejecución, e incluso empeora los tiempos de ejecución al pasar de 2 a 3 hilos. La baja escalabilidad puede deberse a que solo una fracción del código corre en paralelo (el armado de matrices del cálculo del potencial eléctrico y el cálculo de las concentraciones de especies), mientras que la mayor parte es serial (los cálculos relacionados a los poros y la factorización de matrices para el potencial eléctrico).
+
+\begin{table}
     \centering
 	\begin{tabular}{ c | c c c c }              
 		& 1 thread & 2 threads & 3 threads & 4 threads \\
@@ -432,3 +442,9 @@ Se analizó la escalabilidad del programa midiendo los tiempos de ejecución par
     \caption{Tiempos de ejecución para un pulso de 5 \si{\milli\second} y una malla de 8899 nodos corriendo en un CPU intel i3 2100 a 3.10 GHz con capacidad para 4 threads}
     \label{tab:escala}
 \end{table}
+
+
+
+%TODO biblio
+%TODO cambiar todos los openmp por \nombre
+
