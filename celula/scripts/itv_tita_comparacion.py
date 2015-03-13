@@ -8,7 +8,10 @@ import os
 #para generar un graficos de itv vs angulo con varios resultados superpuestos
 
 FOLDERS = [		# (ruta, radio, cant(angulos), )
-	("../salida/pulsativo/02-27/poisson-radio-10/", 10, 192, "10 $\mu$m"),
+	("../salida/temp/500e-15/", 25, 192, "500 nS"),
+	("../salida/temp/5e-12/", 25, 192, "5 $\mu$S"),
+	("../salida/temp/50e-12/", 25, 192, "50 $\mu$S"),
+	("../salida/temp/500e-12/", 25, 192, "500 $\mu$S"),
 ]
 
 font = { 'size': 16 }
@@ -38,6 +41,7 @@ for i in range(len(FOLDERS)):
 plt.clf()
 		
 fig, ax = plt.subplots()
+fig.set_size_inches(16, 6)
 
 for i in range(len(FOLDERS)):
 	ax.plot(angles[i], itvs[i], label = FOLDERS[i][3])

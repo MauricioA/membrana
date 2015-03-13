@@ -57,12 +57,18 @@ En la figura \ref{fig:itv-vs-teo} se pueden comparar los resultados de PTM en fu
 
 \begin{figure}
 	\includegraphics[width=1\textwidth]{itv/itv-vs-teo}
-	\caption{PTM en función del ánglulo polar $\theta$ para E = 1600\vcm y $\alpha$ = 25\si{\micro\metre}. Resultados de la simulación y de la fórmula cerrada.}
+	\caption{PTM en función del ángulo polar $\theta$ para E = 1600\vcm y $\alpha$ = 25\si{\micro\metre}. Resultados de la simulación y de la fórmula cerrada.}
 	\label{fig:itv-vs-teo}
 \end{figure}
 
 \clearpage
 
-También se realizaron simulaciones aplicando diferentes potenciales eléctricos y con células de diferentes radios. En la figura \ref{fig:itv-voltaje} se observa que el PTM aumenta linealmente al aumentar el campo eléctrico aplicado. También sucede lo mismo con el radio de la célula, como puede verse en la figura \ref{fig:itv-radio}. Nuevamente coinciden los resultados de las simulaciones con los de la fórmula cerrada \ref{eq:cos}, la cual indica que los valores de PTM son directamente proporcionales al campo eléctrico y el radio de la célula, y por lo tanto se necesitarán mayores valores de campo eléctrico para lograr un mismo potencial transmembrana cuanto más chica sea la célula.
-
 \dobleimagengrande{itv/itv-voltaje}{itv-voltaje}{PTM en función del ángulo polar $\theta$ para\\ diferentes campos eléctricos aplicados}{itv/itv-radio}{itv-radio}{PTM en función del ángulo polar $\theta$ para\\ células de diferentes radios}
+
+\begin{figure}[h!]\centering
+	\includegraphics[width=1\textwidth]{itv/sigma-m}
+	\caption{PTM en función del ángulo polar $\theta$ para membranas con diferentes conductividades, para un campo eléctrico aplicado de 1600 \si{\volt\per\centi\metre} y una célula de 25 \si{\micro\metre} de radio.}
+	\label{fig:sigma-m}
+\end{figure}
+
+También se realizaron simulaciones aplicando diferentes potenciales eléctricos y con células de diferentes radios. En la figura \ref{fig:itv-voltaje} se observa que el PTM aumenta linealmente al aumentar el campo eléctrico aplicado. También sucede lo mismo con el radio de la célula, como puede verse en la figura \ref{fig:itv-radio}. Nuevamente coinciden los resultados de las simulaciones con los de la fórmula cerrada \ref{eq:cos}, la cual indica que los valores de PTM son directamente proporcionales al campo eléctrico y el radio de la célula, y por lo tanto se necesitarán mayores valores de campo eléctrico para lograr un mismo potencial transmembrana cuanto más chica sea la célula. Por último se estudió el efecto de la conductividad de la membrana celular ($\sigma_m$) en el PTM. En la figura \ref{fig:sigma-m} se observa como el PTM aumenta dramáticamente al disminuir el valor de la conductividad de la membrana. El valor de \mbox{5 \si{\micro\siemens}} (línea verde en el gráfico) fue el utilizado en todo el resto del trabajo.
