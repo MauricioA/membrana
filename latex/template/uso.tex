@@ -1,15 +1,19 @@
-\appendix
-\chapter{Instrucciones de uso} \label{chap:uso}
+%\appendix
+%\chapter{Instrucciones de uso del código} \label{chap:uso}
+
+\chapter{Apéndices} \label{chap:uso}
+
+\section*{Instrucciones de uso del código}
 
 El código entregado se puede compilar en Visual Studio importando la solución con el archivo \texttt{celula.sln}, que usa el compilador Visual C++. Se puede compilar y correr en Linux con el compilador GCC usando el archivo \texttt{Makefile}. Para compilar con Intel C Compiler es necesario modificar el \texttt{Makefile} o el proyecto de Visual Studio. Adicionalmente también se incluyen varios scripts en lenguaje Python para ayudar al proceso de generar de mallas, procesar las salidas obtenidas y generar gráficos.
 
-\section*{Parámetros de entrada}
+\subsection*{Parámetros de entrada}
 
-El programa recibe los parámetros de entrada a través de un archivo \texttt{input.in}, que consta de varias líneas con información de la corrida en la forma \texttt{parámetro: valor} donde los parámetros son los siguientes:
+El programa recibe los parámetros de entrada a través de un archivo \texttt{input.in}, que consta de varias líneas con información de la corrida en la forma 2\texttt{parámetro: valor} donde los parámetros son los siguientes:
 
 \begin{description}
 	\item[\texttt{malla}] ruta del archivo con la malla que representa el dominio. 
-	\item[\texttt{nodpel}] cantidad de nodos por elemento. La mayor parte del código solo puede correr con elementos de 4 nodos, pero el subproblema del potencial eléctrico también puede ser ejecutado con elementos de 3 nodos.
+	\item[\texttt{nodpel}] cantidad de nodos por elemento. La mayor parte del código solo puede correr con elementos de 4 nodos, pero el sub-problema del potencial eléctrico también puede ser ejecutado con elementos de 3 nodos.
 	\item[\texttt{problema}] tipo de problema a correr. Puede ser \texttt{potencial} si solo se desean obtener los resultados de potencial eléctrico (capítulo \ref{chap:itv}), \texttt{poros} si se desea resolver el potencial y el crecimiento de poros (capítulo \ref{chap:poros}), \texttt{transporte} si se desea resolver el potencial y transporte de especies sin poros (capítulo \ref{chap:trans}) y \texttt{acoplado} si se desean correr el modelo acoplado con todos los subproblemas (capítulo \ref{chap:acoplado}).
 	\item[\texttt{salida}] ruta al directorio de salida. El programa no ejecuta si el directorio de salida no está vacío (para evitar sobrescribir resultados).
 	\item[\texttt{threads}] cantidad de hilos de procesamiento a utilizar. Se recomienda usar tantos como tenga el procesador.
@@ -35,7 +39,7 @@ Los parámetros pueden estar en cualquier orden y puede haber en el archivo \tex
 	\item Una línea por cada elemento de cada zona, con un número de elemento dentro de la zona y los números de los nodos que componen el elemento, separados por espacios.
 \end{itemize}
 
-\section*{Formatos de salida}
+\subsection*{Formatos de salida}
 
 El programa genera varias carpetas y archivos en el directorio de salida indicado:
 
