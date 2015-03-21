@@ -9,7 +9,7 @@ El código entregado se puede compilar en Visual Studio importando la solución 
 
 \subsection*{Parámetros de entrada}
 
-El programa recibe los parámetros de entrada a través de un archivo \texttt{input.in}, que consta de varias líneas con información de la corrida en la forma 2\texttt{parámetro: valor} donde los parámetros son los siguientes:
+El programa recibe los parámetros de entrada a través de un archivo \texttt{input.in}, que consta de varias líneas con información de la corrida en la forma \texttt{parámetro: valor} donde los parámetros son los siguientes:
 
 \begin{description}
 	\item[\texttt{malla}] ruta del archivo con la malla que representa el dominio. 
@@ -20,7 +20,7 @@ El programa recibe los parámetros de entrada a través de un archivo \texttt{in
 	\item[\texttt{delta\_t}] intervalo temporal usado para el cálculo de densidad y radio de poros. Las demás ecuaciones se resuelven con intervalos temporales mayores, que son múltiplos del intervalo de poros. Si sólo se calcula el potencial eléctrico este valor se ignora. Para los resultados de este trabajo se utilizó un valor de 1 \si{\nano\second}.
 	\item[\texttt{sigint}] valor de conductividad eléctrica en el interior de la célula, expresado en \si{\siemens \per \micro\metre}.
 	\item[\texttt{sigext}] valor de conductividad eléctrica del líquido extracelular, expresado en \si{\siemens \per \micro\metre}.
-	\item[\texttt{sigint}] valor de conductividad eléctrica en el la membrana celular, expresado en \si{\siemens \per \micro\metre}.
+	\item[\texttt{sigmem}] valor de conductividad eléctrica en el la membrana celular, expresado en \si{\siemens \per \micro\metre}.
 	\item[\texttt{potencial}] diferencia de potencial entre los electrodos, medida en \si{\volt}. Se asume que se encuentra el electrodo positivo en el borde superior de la malla y el negativo en el borde inferior.
 	\item[\texttt{radio}] radio de la célula, medido en \si{\micro\metre}.
 	\item[\texttt{ancho}] ancho de la membrana celular, medido en \si{\micro\metre}.
@@ -47,7 +47,7 @@ El programa genera varias carpetas y archivos en el directorio de salida indicad
 	\item En el directorio \texttt{tension} genera cada 100\usec de la simulación archivos con el nombre \texttt{tension.csv.xxx} con \texttt{xxx} números consecutivos. Los archivos tienen valores de potencial eléctrico para cada nodo, indicado con coordenadas $x$ e $y$.
 	\item En el directorio \texttt{campo} genera cada 100\usec archivos con nombre \texttt{campo.csv.xxx} con valores de las componentes horizontal y vertical y módulo del campo eléctrico y valores de corriente de cada elemento, indicado con coordenadas $x$ e $y$.
 	\item En el directorio \texttt{poros} genera archivos con nombre \texttt{posos.csv.xxx} cada 100\usec con el ángulo polar y el radio en \um de cada poro de la membrana. 
-	\item En el directorio \texttt{concentracion} genera archivos \texttt{concentracion.csv.xxx} cada 100\usec con los valores de concentración de \h, \oh, \na y \cl en cada nodo expresados en átomos por \si{\micro\metre\cubed}.
+	\item En el directorio \texttt{concentracion} genera archivos \texttt{concentracion.csv.xxx} cada 100\usec con los valores de concentración de \h, \oh, \na{} y \cl{} en cada nodo expresados en átomos por \si{\micro\metre\cubed}.
 	\item En el directorio \texttt{concentracion} genera archivos \texttt{molar.csv.xxx} con los mismos valores de concentración pero expresados como concentraciones molares.
 	\item En el directorio \texttt{concentracion} genera archivos con los valores de pH y pOH de cada nodo.
 	\item En un único archivo \texttt{itv.csv} graba periódicamente valores de potencial transmembrana indicados con columnas de tiempo, ángulo polar y PTM.

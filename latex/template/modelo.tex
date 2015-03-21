@@ -13,7 +13,7 @@ En este capítulo se explica en detalle el modelo matemático estudiado y los m�
 
 \section{Modelo Matemático}
 
-Se estudia una única célula idealizada de forma esférica y compuesta por dos materiales: el líquido intracelular (citoplasma) y una fina membrana celular. La célula se encuentra sumergida en un líquido conductor extracelular, y se aplican pulsos eléctricos por medio de dos electrodos equidistantes a la célula, con una diferencia de potencial constante.
+Se estudia una única célula idealizada de forma esférica y compuesta por dos materiales: el líquido intracelular (citoplasma) y una fina membrana celular. La célula se encuentra sumergida en un líquido conductor extracelular, y se aplican pulsos eléctricos por medio de dos electrodos equidistantes a ella, con una diferencia de potencial constante.
 
 %\begin{figure}[h]
 %	\centering
@@ -68,7 +68,7 @@ con
     f_s = \frac{3\sigma_o \left( 3 d \alpha^2 \sigma_i + \left( 3 d^2 \alpha - d^3 \right) \left(\sigma_m - \sigma_i \right) \right)}{2 \alpha^3 \left( \sigma_m + 2 \sigma_o \right) \left(\sigma_m + \frac{1}{2} \sigma_i \right) - 2 \left(\alpha - d \right)^3 \left(\sigma_o - \sigma_m \right) \left( \sigma_i - \sigma_m \right)}
 \end{equation}
 
-donde $E$ es el campo eléctrico, $\theta$ el ángulo polar respecto del campo eléctrico y $\alpha$ el radio de la célula y $\sigma_o$, $\sigma_i$ y $\sigma_m$ las conductividades del líquido extracelular, intracelular y de la membrana respectivamente. Cuando el valor de $\sigma_m$ es al menos cinco órdenes de magnitud menor que $\sigma_o$ y $\sigma_i$ el valor de $f_s$ se puede aproximar como $3/2$\cite{c5-puchiar}. La fórmula \ref{eq:cos} no tiene en cuenta que el PTM puede variar en el tiempo por la creación de poros, por eso en este trabajo no se la usa directamente, si no que usa la ecuación \ref{eq:poisson}.
+donde $E$ es el campo eléctrico, $\theta$ el ángulo polar respecto del campo eléctrico, $\alpha$ el radio de la célula y $\sigma_o$, $\sigma_i$ y $\sigma_m$ las conductividades del líquido extracelular, intracelular y de la membrana respectivamente. Cuando el valor de $\sigma_m$ es al menos cinco órdenes de magnitud menor que $\sigma_o$ y $\sigma_i$, el valor de $f_s$ se puede aproximar como $3/2$\cite{c5-puchiar}. La fórmula \ref{eq:cos} no tiene en cuenta que el PTM puede variar en el tiempo por la creación de poros, por eso en este trabajo no se la usa directamente, si no que usa la ecuación \ref{eq:poisson}.
 
 \subsection*{Generación y evolución de poros}
 El PTM genera en la membrana celular la aparición de poros hidrofílicos, cuya densidad se puede calcular según la ecuación diferencial ordinaria \cite{krass-viejo}
@@ -104,7 +104,7 @@ Por otra parte se asume que la membrana celular se carga como un capacitor y una
 donde $V_m$ es el potencial transmembrana en un punto de la superficie de la célula, $V_p$ es el potencial obtenido por las ecuaciones de potencial eléctrico en ése mismo punto, $t$ es el tiempo transcurrido desde el comienzo del pulso eléctrico, $\alpha$ es el radio de la célula, $C_m$ es la capacitancia superficial de la célula y $\sigma_i$ y $\sigma_o$ las conductancias intra y extracelulares respectivamente.
 
 \subsection*{Transporte de especies}
-Se estudia el transporte de cuatro especies iónicas: \h, \oh, \na y \cl en el dominio producto de la diferencia de potencial aplicada por los electrodos. Para conocer las concentraciones en las diferentes regiones e instantes de tiempo se utiliza la ecuación de conservación de masa de Nernst-Planck \cite{c6-fodava}
+Se estudia el transporte de cuatro especies iónicas: \h, \oh, \na y \cl{} en el dominio producto de la diferencia de potencial aplicada por los electrodos. Para conocer las concentraciones en las diferentes regiones e instantes de tiempo se utiliza la ecuación de conservación de masa de Nernst-Planck \cite{c6-fodava}
 
 %Para conocer la concentración de las especies iónicas se usa la ecuación de conservación de masa de Nernst-Planck \cite{c6-fodava}
 
@@ -128,14 +128,14 @@ donde $\mathbf{n}$ representa la normal al borde.\\
 
 Para la ecuación de generación de poros \ref{eq:poros-crea} se usa como condición inicial que la membrana no contiene poros, mientras que para la ecuación \ref{eq:poros-radio} se asume que los poros se crean con un radio inicial $r^*$.
 
-Para la ecuación de transporte de especies \ref{eq:trans} se usan como condiciones iniciales las concentraciones descritas en la tabla \ref{table:tablita}: $C_{e, i}^0$ siendo $e =$ $i$ ó $o$ si se refiere a los nodos del interior o del exterior de la célula respectivamente e $i =$ \h, \oh, \na ó \cl para la concentración de cada especie y $C_{e,i}$ con $e =$ $a$ ó $c$ si es para el ánodo o el cátodo respectivamente.
+Para la ecuación de transporte de especies \ref{eq:trans} se usan como condiciones iniciales las concentraciones descritas en la tabla \ref{table:tablita}: $C_{e, i}^0$ siendo $e =$ $i$ ó $o$ si se refiere a los nodos del interior o del exterior de la célula respectivamente e $i =$ \h, \oh, \na ó \cl{} para la concentración de cada especie. %y $C_{e,i}$ con $e =$ $a$ ó $c$ si es para el ánodo o el cátodo respectivamente.
 
 Como condición de borde en el borde no ocupado por los electrodos se usa
 \begin{equation}
 	\frac{\partial C_i}{\partial \mathbf{n}} = 0
 \end{equation}
 
-Para los bordes ocupados por los electrodos se usan los valores fijos $C_{e,i}$ descritos anteriormente.
+%Para los bordes ocupados por los electrodos se usan los valores fijos $C_{e,i}$ descritos anteriormente.
 
 \clearpage
 \subsection*{Constantes}
@@ -168,10 +168,10 @@ A continuación se presenta la definición y valores de las constantes usadas.
 		\lineaTabla{D_\oh}{\num{7050} \si{\micro\metre\per\metre^{2}}}{Coeficiente de difusión para \oh}
 		\lineaTabla{D_\na}{\num{1780} \si{\micro\metre\per\metre^{2}}}{Coeficiente de difusión para \na}
 		\lineaTabla{D_\cl}{\num{3830} \si{\micro\metre\per\metre^{2}}}{Coeficiente de difusión para \cl}	
-		\lineaTabla{C_{i,\h}^0}{\num{.3978e-7} \si{\textsc{m}}}{Concentración inicial de \h en citoplasma}
-		\lineaTabla{C_{i,\oh}^0}{\num{.3978e-7} \si{\textsc{m}}}{Concentración inicial de \oh en citoplasma}
-		\lineaTabla{C_{i,\na}^0}{\num{142} \si{\milli\textsc{m}}}{Concentración inicial de \na en citoplasma}
-		\lineaTabla{C_{i,\cl}^0}{\num{108} \si{\milli\textsc{m}}}{Concentración inicial de \cl en citoplasma}
+		\lineaTabla{C_{i,\h}^0}{\num{.3978e-7} \si{\textsc{m}}}{Concentración inicial de \h{} en citoplasma}
+		\lineaTabla{C_{i,\oh}^0}{\num{.3978e-7} \si{\textsc{m}}}{Concentración inicial de \oh{} en citoplasma}
+		\lineaTabla{C_{i,\na}^0}{\num{142} \si{\milli\textsc{m}}}{Concentración inicial de \na{} en citoplasma}
+		\lineaTabla{C_{i,\cl}^0}{\num{108} \si{\milli\textsc{m}}}{Concentración inicial de \cl{} en citoplasma}
 
 		\lineaTabla{C_{o,\h}^0}{\num{1e-7} \si{\textsc{m}}}{Concentración inicial externa de \h}
 		\lineaTabla{C_{o,\oh}^0}{\num{1e-7} \si{\textsc{m}}}{Concentración inicial externa de \oh}
@@ -410,7 +410,7 @@ Se generaron mallas bidimensionales con elementos cuadrilaterales de tamaño var
 \end{figure}
 
 
-Las mallas utilizadas tienen entre 7500 y 8900 elementos y representan un dominio de hasta 150 \si{\micro\metre} de alto y hasta 50 \si{\micro\metre} de ancho con células de 25 \si{\micro\metre} de radio y membranas de 5 \si{\nano\metre} de ancho. Para modelar la célula se dividió el ángulo polar en 192 partes con dos elementos por cada ángulo discreto. Los electrodos se modelaron dentro del dominio, en los bordes superior e inferior.
+Las mallas utilizadas tienen entre 7500 y 8900 elementos y representan un dominio de hasta 150 \si{\micro\metre} de alto y hasta 50 \si{\micro\metre} de ancho con células de entre 10 y 50 \si{\micro\metre} de radio y membranas de 5 \si{\nano\metre} de ancho. Para modelar la célula se dividió el ángulo polar en 192 partes con dos elementos por cada ángulo discreto. Los electrodos se modelaron dentro del dominio, en los bordes superior e inferior.
 
 También se usó \nombre{Python} como lenguaje secundario, para ayudar en la generación de mallas, la interpretación de los datos de salida obtenidos en las simulaciones y la generación de gráficos, haciendo uso de la librería \nombre{matplotlib} \cite{matplotlib}. El programa lee los parámetros de ejecución de un archivo \texttt{input.in} y graba periódicamente resultados de potencial y campo eléctrico eléctrico, potencial transmembrana, densidad y radios de poros en la membrana celular, concentraciones de las especies y valores de pH en diferentes archivos de salida.
 
@@ -426,8 +426,6 @@ El código implementado contiene partes que corren en paralelo implementadas con
 
 Para medir la mejora obtenida al utilizar varios hilos de ejecución se utilizan las medidas de \textit{speedup} y \textit{eficiencia}. Se define speedup como $S = T_s / T_p$ donde $T_s$ es el tiempo de ejecución serial (con un solo proceso o hilo) y $T_p$ el tiempo de ejecución paralelo \cite{pacheco}. La eficiencia en cambio es $E = S / p$ donde $S$ es el speedup y $p$ la cantidad de procesos o hilos \cite{pacheco}.\\
 
-%TODO lo que está abajo no debería estar acá porque son resultados???
-
 En la tabla \ref{tab:escala} se encuentran medidas de los tiempos de ejecución, speedup y eficiencia de una simulación similar a las realizadas en el capítulo \ref{chap:acoplado}, usando entre 1 y 4 hilos de ejecución. Se puede ver que los mejores tiempos se obtuvieron con 4 threads, pero sin embargo el speedup es apenas mayor al obtenido con 2 threads, y la eficiencia es mucho menor. Se puede concluir que el programa escala correctamente para 2 threads, pero no mejora notablemente al agregar más hilos de ejecución, e incluso empeora los tiempos de ejecución al pasar de 2 a 3 hilos. La baja escalabilidad puede deberse a que solo una fracción del código corre en paralelo (el armado de matrices del cálculo del potencial eléctrico y el cálculo de las concentraciones de especies), mientras que la mayor parte es serial (los cálculos relacionados a los poros y la factorización de matrices para el potencial eléctrico).
 
 \begin{table}
@@ -442,9 +440,3 @@ En la tabla \ref{tab:escala} se encuentran medidas de los tiempos de ejecución,
     \caption{Tiempos de ejecución para un pulso de 5 \si{\milli\second} y una malla de 8899 nodos corriendo en un CPU intel i3 2100 a 3.10 GHz con capacidad para 4 threads}
     \label{tab:escala}
 \end{table}
-
-
-
-%TODO biblio
-%TODO cambiar todos los openmp por \nombre
-

@@ -6,7 +6,7 @@ En este capítulo se estudiará el potencial transmembrana generado en una célu
 
 \section{Implementación}
 
-Para resolver la ecuación \ref{eq:poisson} se utilizó el método de elementos finitos, llenando la matriz de rigidez según los conductividades y coordenadas de los elementos y el vector de masa según las condiciones de borde. La matriz de rigidez generada es simétrica definida positiva y con muy pocos elementos distintos de cero. Por estas razones es representada con una matriz esparsa y el sistema de ecuaciones se resuelve con el método de Cholesky. Una vez resuelto el sistema se obtiene el potencial eléctrico en cada nodo de la malla que representa el dominio. Dado que la creación de la matriz es uno de los pasos con mayor costo computacional, se utiliza \texttt{OpenMP} para llenar la matriz en paralelo, usando tantos threads como sean indicados en el archivo de entrada \texttt{input.in}.
+Para resolver la ecuación \ref{eq:poisson} se utilizó el método de elementos finitos, llenando la matriz de rigidez según los conductividades y coordenadas de los elementos y el vector de masa según las condiciones de borde. La matriz de rigidez generada es simétrica definida positiva y con muy pocos elementos distintos de cero. Por estas razones es representada con una matriz esparsa y el sistema de ecuaciones se resuelve con el método LDL. Una vez resuelto el sistema se obtiene el potencial eléctrico en cada nodo de la malla que representa el dominio. Dado que la creación de la matriz es uno de los pasos con mayor costo computacional, se utiliza \texttt{OpenMP} para llenar la matriz en paralelo, usando tantos threads como sean indicados en el archivo de entrada \texttt{input.in}.
 
 Con los resultados obtenidos por el método de elementos finitos se calcula también el PTM en cada ángulo polar de la célula, comparando los potenciales externos con los internos, habiendo previamente identificado los nodos correspondientes al exterior e interior de cada ángulo discreto. También se calcula el campo eléctrico en el dominio como el gradiente del potencial eléctrico. Los resultados de potencial en el dominio, PTM y campo eléctrico se graban en archivos separados en formato \texttt{.csv}. 
 
@@ -17,7 +17,7 @@ La fórmula cerrada \ref{eq:cos} permitiría obtener con mayor facilidad los pot
 \newpage
 
 \section{Resultados}
-A continuación se presentan los resultados obtenidos de una simulación de una célula de 25\um de radio con dos electrodos que generan un campo eléctrico de 1200\vcm.\\
+A continuación se presentan los resultados obtenidos de varias simulaciones de una célula de 25\um de radio con dos electrodos que generan un campo eléctrico de diferentes potenciales.
 
 %\subsection*{Potencial en el dominio}
 
@@ -27,7 +27,7 @@ A continuación se presentan los resultados obtenidos de una simulación de una 
   \begin{center}
     \includegraphics[width=0.48\textwidth]{itv/lineas4}
   \end{center}
-  \caption{Potencial eléctrico en el dominio}
+  \caption{Potencial eléctrico en el dominio para\\ E = 1600 \si{\volt\per\centi\metre}}
   \label{fig:pote}
 \end{wrapfigure}
 
@@ -45,11 +45,11 @@ En la figura \ref{fig:itv-vs-teo} se pueden comparar los resultados de PTM en fu
 
 \clearpage
 
-\dobleimagen{itv/campo-r}{campo-r}{Componente horizontal del campo eléctrico}{itv/campo-r-int}{campo-r-int}{Componente horizontal del campo eléctrico en el interior de la célula}
+\dobleimagen{itv/campo-r}{campo-r}{Componente horizontal del campo eléctrico con E = 1200 \si{\volt\per\centi\metre}}{itv/campo-r-int}{campo-r-int}{Componente horizontal del campo eléctrico en el interior de la célula con E = 1200 \si{\volt\per\centi\metre}}
 
-\dobleimagen{itv/campo-y}{campo-y}{Componente vertical del campo eléctrico}{itv/campo-y-int}{campo-y-int}{Componente vertical del campo eléctrico en el interior de la célula}
+\dobleimagen{itv/campo-y}{campo-y}{Componente vertical del campo eléctrico con E = 1200 \si{\volt\per\centi\metre}}{itv/campo-y-int}{campo-y-int}{Componente vertical del campo eléctrico en el interior de la célula con E = 1200 \si{\volt\per\centi\metre}}
 
-\dobleimagen{itv/campo}{campo}{Módulo del campo eléctrico}{itv/campo-y-int}{campo-int}{Módulo del campo eléctrico en el interior de la célula}
+\dobleimagen{itv/campo}{campo}{Módulo del campo eléctrico\\ con E = 1200 \si{\volt\per\centi\metre}}{itv/campo-y-int}{campo-int}{Módulo del campo eléctrico en el interior de la célula con E = 1200 \si{\volt\per\centi\metre}}
 
 %TODO unidad del campo???
 
@@ -63,7 +63,7 @@ En la figura \ref{fig:itv-vs-teo} se pueden comparar los resultados de PTM en fu
 
 \clearpage
 
-\dobleimagengrande{itv/itv-voltaje}{itv-voltaje}{PTM en función del ángulo polar $\theta$ para\\ diferentes campos eléctricos aplicados}{itv/itv-radio}{itv-radio}{PTM en función del ángulo polar $\theta$ para\\ células de diferentes radios}
+\dobleimagengrande{itv/itv-voltaje}{itv-voltaje}{PTM en función del ángulo polar $\theta$ para\\ diferentes campos eléctricos aplicados}{itv/itv-radio}{itv-radio}{PTM en función del ángulo polar $\theta$ para\\ células de diferentes radios con E = 1600 \si{\volt\per\centi\metre}}
 
 \begin{figure}[h!]\centering
 	\includegraphics[width=1\textwidth]{itv/sigma-m}
