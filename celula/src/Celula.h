@@ -23,7 +23,9 @@ public:
 
 	string salida;
 
+	bool soloPoisson;
 	bool calcularPoros;
+	bool calcularTransporte;
 
 	double potencial;
 	double radio;
@@ -49,9 +51,11 @@ public:
 
 	~Celula();
 
-	void poisson();
+	void loop();
 
 	void acoplado();
+
+	void poisson();
 
 	void chequearSimetria();
 

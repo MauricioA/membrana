@@ -22,13 +22,6 @@ Celula::Celula() {
 
 Celula::~Celula() {}
 
-void Celula::poisson() {
-	Poisson::iteracion(*this);
-	Poros poros(*this);				//necesario para tener los ángulos, etc
-	getEntradaSalida().grabarPoisson();
-	getEntradaSalida().grabarITV(poros);
-}
-
 double inline getDeltaT(double time_pulso, double multiplier, double delta_t) {
 	/* 90% del máximo en 500e-6 */
 	const double K = 500e-6 / log(0.1);
@@ -36,6 +29,15 @@ double inline getDeltaT(double time_pulso, double multiplier, double delta_t) {
 }
 
 /* Loop principal */
+void Celula::loop() {
+	if (soloPoisson) {
+		poisson();
+	} else {
+		acoplado();
+	}
+}
+
+/* Loop acoplado */
 void Celula::acoplado() {
 	auto global_start = chrono::high_resolution_clock::now();
 	const double MULTIPLIER_POISSON = 2000;	
@@ -89,7 +91,7 @@ void Celula::acoplado() {
 				if (calcularPoros) poros->iteracion(delta_t);
 
 				/* Iteración transporte */
-				if (time >= next_transporte) {
+				if (calcularTransporte && time >= next_transporte) {
 					transporte.iteracion(time - last_transporte);
 					last_transporte = time;
 					next_transporte = time + multiplier_transporte * delta_t;
@@ -115,7 +117,7 @@ void Celula::acoplado() {
 
 						int nodosExtremos = valoresExtremos();
 						if (nodosExtremos > 10) {
-							assert(false && "poros extremos muchos");
+							assert(false && "muchos nodos extremos");
 							printf("  pH ext: %d", nodosExtremos);
 						}
 						printf("\n");
@@ -127,7 +129,7 @@ void Celula::acoplado() {
 				/* Grabo disco poisson poros y transporte */
 				if (time >= next_disco) {
 					getEntradaSalida().grabarPoisson();
-					getEntradaSalida().grabarTransporte();
+					if (calcularTransporte) getEntradaSalida().grabarTransporte();
 					if (calcularPoros) getEntradaSalida().grabarPoros(*poros);
 					next_disco = time + PASO_DISCO;
 				}
@@ -164,4 +166,11 @@ int Celula::valoresExtremos() {
 		}
 	}
 	return count;
+}
+
+void Celula::poisson() {
+	Poisson::iteracion(*this);
+	Poros poros(*this);				//necesario para tener los ángulos, etc
+	getEntradaSalida().grabarPoisson();
+	getEntradaSalida().grabarITV(poros);
 }

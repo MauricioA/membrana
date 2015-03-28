@@ -3,7 +3,7 @@
 int main() {
 	Celula celula;
 	
-	celula.acoplado();
+	celula.loop();
 
 	return EXIT_SUCCESS;
 }

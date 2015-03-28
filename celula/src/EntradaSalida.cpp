@@ -71,11 +71,31 @@ void EntradaSalida::leerInput() {
 			iss >> s >> malla;
 		} else if (line.find("nodpel") != string::npos) {
 			iss >> s >> s;
-
 			if (s == "tri") {
 				getCelula().nodpel = 3;
 			} else if (s == "quad") {
 				getCelula().nodpel = 4;
+			} else {
+				assert(false);
+			}
+		} else if (line.find("problema") != string::npos) {
+			iss >> s >> s;
+			if (s == "potencial") {
+				getCelula().soloPoisson = true;
+				getCelula().calcularPoros = false;
+				getCelula().calcularTransporte = false;
+			} else if (s == "poros") {
+				getCelula().soloPoisson = false;
+				getCelula().calcularPoros = true;
+				getCelula().calcularTransporte = false;
+			} else if (s == "transporte") {
+				getCelula().soloPoisson = false;
+				getCelula().calcularPoros = false;
+				getCelula().calcularTransporte = true;
+			} else if (s == "acoplado") {
+				getCelula().soloPoisson = false;
+				getCelula().calcularPoros = true;
+				getCelula().calcularTransporte = true;
 			} else {
 				assert(false);
 			}
@@ -103,10 +123,6 @@ void EntradaSalida::leerInput() {
 			iss >> s >> getCelula().times[ON];
 		} else if (line.find("off_time") != string::npos) {
 			iss >> s >> getCelula().times[OFF];
-		} else if (line.find("poros: true") != string::npos) {
-			getCelula().calcularPoros = true;
-		} else if (line.find("poros: false") != string::npos) {
-			getCelula().calcularPoros = false;
 		}
 	}
 
