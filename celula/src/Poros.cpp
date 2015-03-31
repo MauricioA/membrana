@@ -285,7 +285,7 @@ double inline Poros::actualizarRadio(double radio, double deltaT, double tension
 
 void Poros::nuevoPulso() {
 	comienzoPulso = getCelula().time;
-};
+}
 
 int Poros::getPorosEnTita(InfoAngulo& info) {
 	return (int) (info.area * info.densidad);

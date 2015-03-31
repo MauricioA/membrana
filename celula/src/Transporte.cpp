@@ -99,18 +99,17 @@ void Transporte::masaDiag2D() {
 	const double WEIGL[] = { +1.0, +1.0 };
 
 	for (int iElem = 0; iElem < celula.nElems; iElem++) {
-		Elemento elem = celula.elementos[iElem];
-		Nodo nodosElem[MAXNPEL];
-		double rMed = 0;
-
-		for (int i = 0; i < celula.nodpel; i++) {
-			nodosElem[i] = celula.nodos[elem[i]];
-			rMed += nodosElem[i].x;
-		}
-		rMed /= celula.nodpel;
-
 		switch (celula.nodpel) {
 			case 3: {
+				Elemento elem = celula.elementos[iElem];
+				Nodo nodosElem[3];
+				double rMed = 0;
+				for (int i = 0; i < celula.nodpel; i++) {
+					nodosElem[i] = celula.nodos[elem[i]];
+					rMed += nodosElem[i].x;
+				}
+				rMed /= celula.nodpel;
+
 				double b[3], c[3];
 				Double2D pos[3];
 				for (int i = 0; i < celula.nodpel; i++) {
@@ -127,6 +126,16 @@ void Transporte::masaDiag2D() {
 
 				break;
 			} case 4: {
+				/* Esto está duplicado para que GCC no tire warning */
+				Elemento elem = celula.elementos[iElem];
+				Nodo nodosElem[4];
+				double rMed = 0;
+				for (int i = 0; i < celula.nodpel; i++) {
+					nodosElem[i] = celula.nodos[elem[i]];
+					rMed += nodosElem[i].x;
+				}
+				rMed /= celula.nodpel;
+
 				int iGauss = 0;
 				double weigc[MAXNPEL];
 				double posgc[2][MAXNPEL];

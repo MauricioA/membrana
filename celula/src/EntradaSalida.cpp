@@ -360,14 +360,14 @@ void EntradaSalida::grabarTransporte(bool verbose) {
 	printEnd(1, verbose);
 }
 
+
 void EntradaSalida::grabarPoros(Poros& radios, bool verbose) {
 	printStart("Grabando poros...", verbose);
 	double time = getCelula().time;
+	char buffer[512];
 
-	FILE* fPoros = fopen((
-		getCelula().salida + "/poros/poros-" +
-		to_string(nPoros) + "-" + to_string(time) + ".csv"
-	).c_str(), "w");
+	sprintf(buffer, "%s/poros/poros.csv.%03d", getCelula().salida.c_str(), nPoros);
+	FILE* fPoros = fopen(buffer, "w");
 
 	assert(fPoros > 0);
 	fprintf(fPoros, "      tita,           radio\n");
