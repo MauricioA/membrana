@@ -137,7 +137,6 @@ void Celula::acoplado() {
 				/* Grabo disco itv */
 				if (calcularPoros && time >= next_itv) {
 					getEntradaSalida().grabarITV(*poros);
-					getEntradaSalida().grabarPermeabilizacion(*poros);
 					double step = getDeltaT(pulse_time, MULTIPLIER_ITV, delta_t);
 					next_itv = time + step;
 				}

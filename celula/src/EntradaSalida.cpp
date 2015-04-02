@@ -39,17 +39,12 @@ EntradaSalida::EntradaSalida(Celula& celula) {
 	dst << src.rdbuf();
 
 	fitv = fopen((getCelula().salida + "/itv.csv").c_str(), "w");
-	fPAD = fopen((getCelula().salida + "/PAD.csv").c_str(), "w");
 
 	assert(fitv > 0);
-	assert(fPAD > 0);
-
-	fprintf(fPAD, "        time,    max_PAD\n");
 }
 
 EntradaSalida::~EntradaSalida() {
 	fclose(fitv);
-	fclose(fPAD);
 }
 
 inline Celula& EntradaSalida::getCelula() {
@@ -396,6 +391,27 @@ void EntradaSalida::grabarITV(Poros& poros) {
 	}
 }
 
-void EntradaSalida::grabarPermeabilizacion(Poros& poros) {
-	fprintf(fPAD, "%#10.6g, %10f\n", getCelula().time, poros.getMaxPAD());
+void EntradaSalida::grabarDebug(vector<Triplet<double>>& triplets, VectorXd& rhs, VectorXd& c_ant) {
+	char buffer[512];
+
+	sprintf(buffer, "%s/triplets.csv", getCelula().salida.c_str());
+	FILE* fTrip = fopen(buffer, "w");
+	for (auto& trip : triplets) {
+		fprintf(fTrip, "%d, %d, %g\n", trip.col(), trip.row(), trip.value());
+	}
+	fclose(fTrip);
+
+	sprintf(buffer, "%s/rhs.csv", getCelula().salida.c_str());
+	FILE* fRhs = fopen(buffer, "w");
+	for (int i = 0; i < rhs.size(); i++) {
+		fprintf(fRhs, "%g\n", rhs[i]);
+	}
+	fclose(fRhs);
+
+	sprintf(buffer, "%s/c_ant.csv", getCelula().salida.c_str());
+	FILE* fCAnt = fopen(buffer, "w");
+	for (int i = 0; i < c_ant.size(); i++) {
+		fprintf(fRhs, "%g\n", c_ant[i]);
+	}
+	fclose(fCAnt);
 }

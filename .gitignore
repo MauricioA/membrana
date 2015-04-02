@@ -61,6 +61,7 @@ latex/*/*/*.gz
 latex/proceeding/proceeding.pdf
 latex/template/tesis.pdf
 latex/preinforme/preinforme.pdf
+latex/slides/slides.pdf
 
 celula/scripts/*.prm
 celula/scripts/*.msh

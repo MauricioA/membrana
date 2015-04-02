@@ -26,13 +26,12 @@ public:
 
 	void grabarITV(Poros& poros);
 
-	void grabarPermeabilizacion(Poros& poros);
+	void grabarDebug(vector<Triplet<double>>& triplets, VectorXd& rhs, VectorXd& c_ant);
 
 private:
 	Celula* _celula;
 
 	FILE* fitv;
-	FILE* fPAD;
 
 	int nPoisson;
 	int nTransporte;

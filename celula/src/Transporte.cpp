@@ -27,6 +27,7 @@ Transporte::Transporte(Celula& celula, bool calcularPoros) {
 	for (int i = 0; i < NESPS; i++) {
 		multiple_triplets[i].reserve(celula.elementos.size() * celula.nodpel * celula.nodpel);
 		rhss_esp[i].resize(celula.nNodes);
+		rhss_esp[i].fill(0.);
 		rhss[i].resize(celula.nNodes);
 		rhss_aux[i].resize(celula.nNodes);
 	}
@@ -196,16 +197,15 @@ void Transporte::masaDiag2D() {
 	}
 }
 
-//TODO revisar la parte de rhs_aux y los últimos cambios
 void Transporte::concentracion(int esp, double deltaT) {
 	Celula& celula = getCelula();
 	double esm[MAXNPEL][MAXNPEL];
 	vector<Triplet<double>> &triplets = multiple_triplets[esp];
 	triplets.clear();
 
-	VectorXd &rhs_esp = rhss_esp[esp];
-	VectorXd &rhs = rhss[esp];
-	VectorXd &rhs_aux = rhss_aux[esp];
+	VectorXd& rhs_esp = rhss_esp[esp];
+	VectorXd& rhs = rhss[esp];
+	VectorXd& rhs_aux = rhss_aux[esp];
 	
 	rhs.fill(0);
 	rhs_aux.fill(0);
