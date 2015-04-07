@@ -127,7 +127,7 @@ void Transporte::masaDiag2D() {
 
 				break;
 			} case 4: {
-				/* Esto está duplicado para que GCC no tire warning */
+				/* Esto est'a duplicado para que GCC no tire warning */
 				Elemento elem = celula.elementos[iElem];
 				Nodo nodosElem[4];
 				double rMed = 0;

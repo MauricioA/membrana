@@ -12,7 +12,6 @@ using namespace declaraciones;
 
 class EntradaSalida;
 
-//TODO poner en nodos y elementos todo
 class Celula {
 public:
 	int nodpel;
