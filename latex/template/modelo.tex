@@ -13,7 +13,7 @@ En este capítulo se explica en detalle el modelo matemático estudiado y los m�
 
 \section{Modelo Matemático}
 
-Se estudia una única célula idealizada de forma esférica y compuesta por dos materiales: el líquido intracelular (citoplasma) y una fina membrana celular. La célula se encuentra sumergida en un líquido conductor extracelular, y se aplican pulsos eléctricos por medio de dos electrodos equidistantes a ella, con una diferencia de potencial constante.
+Se estudia una única célula idealizada de forma esférica y compuesta por dos materiales: el líquido intracelular (citoplasma) y una fina membrana celular. La célula se encuentra sumergida en un líquido conductor extracelular, y se aplican pulsos eléctricos por medio de dos electrodos equidistantes a ella, con una diferencia de potencial constante. Los electrodos se encuentran en los bordes superior e inferior del dominio. A lo largo del trabajo se utiliza la letra $E$ para representar el campo eléctrico, $\alpha$ para el radio de la célula y $\theta$ para el ángulo polar.
 
 %\begin{figure}[h]
 %	\centering
@@ -28,16 +28,25 @@ Se estudia una única célula idealizada de forma esférica y compuesta por dos 
 %{\includegraphics[width=5cm]{celula}}
 %\end{figure}
 
-\begin{figure}[h]
-  \begin{minipage}[r]{0.50\textwidth}
-    \includegraphics[width=\textwidth]{celula}
-  \end{minipage}\hfill
-  \begin{minipage}[l]{0.5\textwidth}
-    \caption{
-       Modelo de la célula de radio $r$.\\ $\theta$ representa el ángulo polar\\ y $E$ el campo eléctrico.
-    } \label{fig:03-03}
-  \end{minipage}
+%\begin{figure}[h]
+%  \begin{minipage}[r]{0.50\textwidth}
+%    \includegraphics[width=\textwidth]{dominio2}
+%  \end{minipage}\hfill
+%  \begin{minipage}[l]{0.5\textwidth}
+%    \caption{
+%       Modelo de la célula de radio $r$.\\ $\theta$ representa el ángulo polar\\ y $E$ el campo eléctrico.
+%    } \label{fig:03-03}
+%  \end{minipage}
+%\end{figure}
+
+\begin{figure}[hb]
+	\centering
+	\includegraphics[scale=0.30]{dominio}
+	\label{fig:dominio}
+	\caption{Dominio del problema}
 \end{figure}
+
+\clearpage
 
 Los pulsos se dividen en dos partes con un tiempo de encendido (\ontime) en el que la diferencia de potencial es constante y un tiempo de apagado (\offtime) sin diferencia de potencial entre los electrodos.
 
@@ -71,7 +80,7 @@ con
 donde $E$ es el campo eléctrico, $\theta$ el ángulo polar respecto del campo eléctrico, $\alpha$ el radio de la célula y $\sigma_o$, $\sigma_i$ y $\sigma_m$ las conductividades del líquido extracelular, intracelular y de la membrana respectivamente. Cuando el valor de $\sigma_m$ es al menos cinco órdenes de magnitud menor que $\sigma_o$ y $\sigma_i$, el valor de $f_s$ se puede aproximar como $3/2$\cite{c5-puchiar}. La fórmula \ref{eq:cos} no tiene en cuenta que el PTM puede variar en el tiempo por la creación de poros, por eso en este trabajo no se la usa directamente, si no que usa la ecuación \ref{eq:poisson}.
 
 \subsection*{Generación y evolución de poros}
-El PTM genera en la membrana celular la aparición de poros hidrofílicos, cuya densidad se puede calcular según la ecuación diferencial ordinaria \cite{krass-viejo}
+El PTM genera en la membrana celular la aparición de poros hidrofílicos, cuya variación de la densidad de poros en el tiempo se puede describir según la ecuación diferencial ordinaria \cite{krass-viejo}
 
 \begin{equation} \label{eq:poros-crea}
 	\frac{\partial N}{\partial t} = \alpha_c e^{(V_m/V_{ep})^2} \left( 1 - \frac{N}{N_0 e^{q \left(V_m/V_{ep} \right) ^2}} \right)
@@ -104,7 +113,7 @@ Por otra parte se asume que la membrana celular se carga como un capacitor y una
 donde $V_m$ es el potencial transmembrana en un punto de la superficie de la célula, $V_p$ es el potencial obtenido por las ecuaciones de potencial eléctrico en ése mismo punto, $t$ es el tiempo transcurrido desde el comienzo del pulso eléctrico, $\alpha$ es el radio de la célula, $C_m$ es la capacitancia superficial de la célula y $\sigma_i$ y $\sigma_o$ las conductancias intra y extracelulares respectivamente.
 
 \subsection*{Transporte de especies}
-Se estudia el transporte de cuatro especies iónicas: \h, \oh, \na y \cl{} en el dominio producto de la diferencia de potencial aplicada por los electrodos. Para conocer las concentraciones en las diferentes regiones e instantes de tiempo se utiliza la ecuación de conservación de masa de Nernst-Planck \cite{c6-fodava}
+Se estudia el transporte de cuatro especies iónicas: \h, \oh, \na y \cl{} en el dominio. Para conocer las concentraciones en las diferentes regiones e instantes de tiempo se utiliza la ecuación de conservación de masa de Nernst-Planck \cite{c6-fodava}
 
 %Para conocer la concentración de las especies iónicas se usa la ecuación de conservación de masa de Nernst-Planck \cite{c6-fodava}
 
@@ -118,7 +127,14 @@ $F$ es la constante de Faraday, $R$ la constante de los gases y $T$ la temperatu
 Esta ecuación tiene en cuenta la difusión de las partículas (con el término $D_i \nabla C_i$) pero también el efecto de migración producto del campo eléctrico (con el término $D_i z_i \frac{F}{R T} C_i \nabla \phi$). 
 
 \subsection*{Condiciones de borde}
-Para la ecuación \ref{eq:poisson} se usan condiciones de borde de Dirichlet con potenciales fijos en los electrodos, mientras que para el borde no ocupado por electrodos se usan condiciones de borde de Neumann:
+Para la ecuación \ref{eq:poisson} se usan condiciones de borde de Dirichlet con potenciales fijos en los electrodos:
+
+\begin{equation}
+	\phi_a \; \textrm{para el ánodo y } \phi_c = 0 \; \textrm{para el cátodo}
+\end{equation}
+
+
+mientras que para el borde no ocupado por electrodos se usan condiciones de borde de Neumann:
 
 \begin{equation}
 	\frac{\partial \phi}{\partial \mathbf{n}} = 0
@@ -131,6 +147,7 @@ Para la ecuación de generación de poros \ref{eq:poros-crea} se usa como condic
 Para la ecuación de transporte de especies \ref{eq:trans} se usan como condiciones iniciales las concentraciones descritas en la tabla \ref{table:tablita}: $C_{e, i}^0$ siendo $e =$ $i$ ó $o$ si se refiere a los nodos del interior o del exterior de la célula respectivamente e $i =$ \h, \oh, \na ó \cl{} para la concentración de cada especie. %y $C_{e,i}$ con $e =$ $a$ ó $c$ si es para el ánodo o el cátodo respectivamente.
 
 Como condición de borde en el borde no ocupado por los electrodos se usa
+
 \begin{equation}
 	\frac{\partial C_i}{\partial \mathbf{n}} = 0
 \end{equation}
@@ -222,7 +239,7 @@ A continuación se presenta la definición y valores de las constantes usadas.
 
 %Las ecuaciones descritas en la sección anterior fueron resueltas utilizando los métodos numéricos de elementos finitos y diferencias finitas. 
 
-La complejidad de las ecuaciones descritas en la sección anterior obliga a resolverlas con métodos numéricos. Se eligieron los métodos de elementos finitos y diferencias finitas, que fueron implementados desde cero. El método de elementos finitos requiere además resolver sistemas de ecuaciones lineales, los cuales se resolvieron utilizando la librería Eigen \cite{eigen}.
+La complejidad de las ecuaciones descritas en la sección anterior obliga a resolverlas con métodos numéricos. Se eligieron los métodos de elementos finitos y diferencias finitas, que fueron totalmente desarrollados en este trabajo. El método de elementos finitos requiere además resolver sistemas de ecuaciones lineales, los cuales se resolvieron utilizando la librería Eigen \cite{eigen}.
 
 \subsection*{Método de Elementos Finitos}
 
@@ -379,13 +396,11 @@ BiCGSTAB funciona particularmente bien comparado con métodos directos cuando se
 \section{Implementación}
 El problema fue dividido en tres partes, según los tres fenómenos físicos principales considerados: el potencial eléctrico en el dominio, la evolución de los poros en la membrana celular y el transporte de las especies iónicas. 
 
-El trabajo fue implementado desde cero en \texttt{C++}. Se hizo uso de varias mejoras incorporadas en al lenguaje en \texttt{C++11} y de la librería de álgebra lineal \nombre{Eigen} para resolver sistemas de ecuaciones. Las simulaciones fueron realizadas en un equipo con procesador Intel i3 2100 corriendo a 3.10 GHz y 8GB de memoria RAM con sistema operativo Microsoft Windows 7. El código es portable y fue compilado con Microsoft Visual C++ bajo la interfaz Microsoft Visual Studio 2013, pero también fue probado con los compiladores Intel C Compiler para Windows y GCC para Linux.
+El trabajo fue implementado en \texttt{C++}. Se hizo uso de varias funcionalidades nuevas incorporadas al lenguaje en \texttt{C++11}, y de la librería de álgebra lineal \nombre{Eigen} para resolver sistemas de ecuaciones. Las simulaciones fueron realizadas en un equipo con procesador Intel i3 2100 corriendo a 3.10 GHz y 8GB de memoria RAM con sistema operativo Microsoft Windows 7. El código es portable y fue compilado con Microsoft Visual C++ bajo la interfaz Microsoft Visual Studio 2013, pero también fue probado con los compiladores Intel C Compiler para Windows y GCC para Linux.
 
-Para realizar las simulaciones de los sub-problemas de potencial eléctrico y transporte de especies se utilizó el método de elementos finitos, que requiere resolver sistemas de ecuaciones lineales. Las resoluciones de los sistemas de ecuaciones se hicieron con la librería \nombre{Eigen}, usando matrices esparsas y los métodos LDL y gradiente biconjugado estabilizado. Las ecuaciones de densidad y radio de poros se resolvieron por el método de diferencias finitas. %Para acelerar los tiempos de ejecución se usó la interfaz \nombre{OpenMP}, que consiste en directivas para paralelizar código \texttt{C++} en múltiples hilos de ejecución. 
+Para realizar las simulaciones de los problemas de potencial eléctrico y transporte de especies se utilizó el método de elementos finitos, que requiere resolver sistemas de ecuaciones lineales. Las resoluciones de los sistemas de ecuaciones se hicieron con la librería \nombre{Eigen}, usando matrices esparsas y los métodos LDL y gradiente biconjugado estabilizado. Las ecuaciones de densidad y radio de poros se resolvieron por el método de diferencias finitas. %Para acelerar los tiempos de ejecución se usó la interfaz \nombre{OpenMP}, que consiste en directivas para paralelizar código \texttt{C++} en múltiples hilos de ejecución. 
 
-Se usó un sistema de coordenadas cilíndricas idealizando la célula y los electrodos como sólidos de revolución. De esta manera la cantidad de nodos en la grilla empleada es considerablemente menor que si se usara un sistema de coordenadas con tres dimensiones, y los tiempos de ejecución se reducen notablemente. 
-
-Se generaron mallas bidimensionales con elementos cuadrilaterales de tamaño variable usando el programa \nombre{Auto-Mesh 2D} \cite{automesh}. Las zonas cercanas a la membrana celular son de mucho interés y contienen cambios bruscos de potencial y concentraciones. Por esta razón se usaron elementos muy pequeños en estas regiones. Se distinguen en la malla tres regiones: el líquido extracelular, el citoplasma (en el interior de la célula) y la membrana celular. A diferencia de otros trabajos anteriores la membrana celular se modela en la malla con elementos propios del tamaño real en vez de considerarse con un ancho superior al real o directamente una condición de borde. El método de elementos finitos fue elegido en lugar de el método de diferencias finitas porque permite crear mallas con elementos de tamaños irregulares y realizar cambios en las mallas empleadas sin modificar el programa que realiza la simulación.
+Se usó un sistema de coordenadas cilíndricas idealizando la célula y los electrodos como sólidos de revolución. Se generaron mallas bidimensionales con elementos cuadrilaterales de tamaño variable usando el programa \nombre{Auto-Mesh 2D} \cite{automesh}. Las zonas cercanas a la membrana celular son de mucho interés y contienen cambios bruscos de potencial y concentraciones. Por esta razón se usaron elementos muy pequeños en estas regiones. Se distinguen en la malla tres regiones: el líquido extracelular, el citoplasma (en el interior de la célula) y la membrana celular. A diferencia de otros trabajos anteriores la membrana celular se modela en la malla con elementos propios del tamaño real en vez de considerarse con un ancho superior al real o directamente una condición de borde. El método de elementos finitos fue elegido en lugar de el método de diferencias finitas porque permite crear mallas con elementos de tamaños irregulares y realizar cambios en las mallas empleadas sin modificar el programa que realiza la simulación.
 
 \begin{figure} 
 \makebox[\textwidth][c] {
@@ -410,9 +425,9 @@ Se generaron mallas bidimensionales con elementos cuadrilaterales de tamaño var
 \end{figure}
 
 
-Las mallas utilizadas tienen entre 7500 y 8900 elementos y representan un dominio de hasta 150 \si{\micro\metre} de alto y hasta 50 \si{\micro\metre} de ancho con células de entre 10 y 50 \si{\micro\metre} de radio y membranas de 5 \si{\nano\metre} de ancho. Para modelar la célula se dividió el ángulo polar en 192 partes con dos elementos por cada ángulo discreto. Los electrodos se modelaron dentro del dominio, en los bordes superior e inferior.
+Las mallas utilizadas tienen entre 7500 y 8900 elementos y representan un dominio de hasta 150 \si{\micro\metre} de alto y hasta 50 \si{\micro\metre} de ancho con una célula cuyo radio varía entre 10 y 50 \si{\micro\metre} y con una membrana de 5 \si{\nano\metre} de espesor. Para modelar la membrana se crearon tres arcos separados a 2.5 \si{\nano\metre} de distancia, que fueron divididos en 192 partes en la dirección del ángulo polar. De esta manera se obtiene una membrana con dos elementos en la dirección radial. Los electrodos se modelaron dentro del dominio, en los bordes superior e inferior.
 
-También se usó \nombre{Python} como lenguaje secundario, para ayudar en la generación de mallas, la interpretación de los datos de salida obtenidos en las simulaciones y la generación de gráficos, haciendo uso de la librería \nombre{matplotlib} \cite{matplotlib}. El programa lee los parámetros de ejecución de un archivo \texttt{input.in} y graba periódicamente resultados de potencial y campo eléctrico eléctrico, potencial transmembrana, densidad y radios de poros en la membrana celular, concentraciones de las especies y valores de pH en diferentes archivos de salida.
+También se usó \nombre{Python} como lenguaje secundario, para ayudar en la generación de mallas, la interpretación de los datos de salida obtenidos en las simulaciones y la generación de gráficos, haciendo uso de la librería \nombre{matplotlib} \cite{matplotlib}. El programa lee los parámetros de ejecución de un archivo \texttt{input.in} y graba periódicamente resultados de potencial y campo eléctrico, potencial transmembrana, densidad y radios de poros en la membrana celular, concentraciones de las especies y valores de pH en diferentes archivos de salida.
 
 %\clearpage
 

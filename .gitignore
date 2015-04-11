@@ -77,6 +77,11 @@ mesh/AutoMesh2D/*/*.pnt
 mesh/AutoMesh2D/*/*.inp
 mesh/AutoMesh2D/*/*.msd
 
+papers/inf/Peter Pacheco-An Introduction to Parallel Programming-Morgan Kaufmann (2011).pdf
+papers/inf/Funamentals_of_matrix_computations.pdf
+papers/inf/An_introduction_to_numerical_analysis.pdf
+papers/The Cell.pdf
+
 #################
 ## Eclipse
 #################
