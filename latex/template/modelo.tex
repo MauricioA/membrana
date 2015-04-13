@@ -41,9 +41,9 @@ Se estudia una única célula idealizada de forma esférica y compuesta por dos 
 
 \begin{figure}[hb]
 	\centering
-	\includegraphics[scale=0.30]{dominio}
-	\label{fig:dominio}
+	{\includegraphics[scale=0.30]{dominio}
 	\caption{Dominio del problema}
+	\label{fig:dominio}}
 \end{figure}
 
 \clearpage
@@ -63,7 +63,7 @@ El potencial eléctrico generado por los electrodos se calcula en todo el domini
 	\nabla \sigma_{elem} \cdot (\nabla \phi) = 0 
 \end{equation}
 
-donde $\phi$ representa el potencial eléctrico y $\sigma_{elem}$ la conductividad del material, para $elem = o, i$ o $m$ para el líquido extracelular, el citoplasma o la membrana celular respectivamente. Los valores de las conductividades son muy diferentes para los tres tipos de material, siendo en particular la conductividad de la membrana celular mucho menor que la del resto del dominio.
+donde $\phi$ representa el potencial eléctrico y $\sigma_{elem}$ la conductividad del material, para $elem = o, i$ o $m$ para el líquido extracelular, el citoplasma o la membrana celular respectivamente. Los valores de las conductividades son muy diferentes para los tres tipos de material, siendo en particular la conductividad de la membrana celular mucho menor que la del resto del dominio. 
 
 La diferencia de potencial entre el interior y el exterior de la célula en un punto de su superficie se conoce como potencial transmembrana (PTM). Si la célula es esférica este potencial se puede aproximar con la fórmula cerrada \cite{tsong}
 
@@ -156,7 +156,7 @@ Como condición de borde en el borde no ocupado por los electrodos se usa
 
 \clearpage
 \subsection*{Constantes}
-A continuación se presenta la definición y valores de las constantes usadas.
+A continuación se presenta la definición y valores de las constantes usadas. La unidad de las conductividades eléctricas es el siemens por metro (\si{\siemens\per\metre}).
 
 \newcommand{\lineaTabla}[3]{ ${#1}$ & {#3} & {#2} \\ }
 
@@ -418,14 +418,19 @@ Se usó un sistema de coordenadas cilíndricas idealizando la célula y los elec
 \end{figure}
 
 
+%\begin{figure}
+%	\includegraphics[width=\textwidth]{mesh/membrana}
+%	\caption{Detalle de la malla cerca de la membrana. Los líneas dobles corresponden a elementos de la membrana celular, los elementos de la izquierda corresponden al interior de la célula y los de la derecha al exterior.}
+%	\label{fig:mesh-membrana}
+%\end{figure}
+
 \begin{figure}
-	\includegraphics[width=\textwidth]{mesh/membrana}
-	\caption{Detalle de la malla cerca de la membrana. Los líneas dobles corresponden a elementos de la membrana celular, los elementos de la izquierda corresponden al interior de la célula y los de la derecha al exterior.}
+	\includegraphics[width=\textwidth]{mesh/membrana3}
+	\caption{Detalle de la malla cerca de la membrana. Los elementos coloreados en gris corresponden a la membrana celular, mientras que los de la izquierda corresponden al interior de la célula y los de la derecha al exterior.}
 	\label{fig:mesh-membrana}
 \end{figure}
 
-
-Las mallas utilizadas tienen entre 7500 y 8900 elementos y representan un dominio de hasta 150 \si{\micro\metre} de alto y hasta 50 \si{\micro\metre} de ancho con una célula cuyo radio varía entre 10 y 50 \si{\micro\metre} y con una membrana de 5 \si{\nano\metre} de espesor. Para modelar la membrana se crearon tres arcos separados a 2.5 \si{\nano\metre} de distancia, que fueron divididos en 192 partes en la dirección del ángulo polar. De esta manera se obtiene una membrana con dos elementos en la dirección radial. Los electrodos se modelaron dentro del dominio, en los bordes superior e inferior.
+Las mallas utilizadas tienen entre 7500 y 8900 elementos y representan un dominio de hasta 150 \si{\micro\metre} de alto y hasta 50 \si{\micro\metre} de ancho con una célula cuyo radio varía entre 10 y 50 \si{\micro\metre} y con una membrana de 5 \si{\nano\metre} de espesor. Para modelar la membrana se crearon tres arcos separados a 2.5 \si{\nano\metre} de distancia, que fueron divididos en 192 partes en la dirección del ángulo polar. De esta manera se obtiene una membrana con dos elementos en la dirección radial, como puede observarse en la figura \ref{fig:mesh-membrana}. Los electrodos se modelaron dentro del dominio, en los bordes superior e inferior.
 
 También se usó \nombre{Python} como lenguaje secundario, para ayudar en la generación de mallas, la interpretación de los datos de salida obtenidos en las simulaciones y la generación de gráficos, haciendo uso de la librería \nombre{matplotlib} \cite{matplotlib}. El programa lee los parámetros de ejecución de un archivo \texttt{input.in} y graba periódicamente resultados de potencial y campo eléctrico, potencial transmembrana, densidad y radios de poros en la membrana celular, concentraciones de las especies y valores de pH en diferentes archivos de salida.
 

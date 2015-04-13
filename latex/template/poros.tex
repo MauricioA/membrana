@@ -5,7 +5,7 @@ En este capítulo se simula la creación de poros en la membrana celular según 
 
 \section{Implementación}
 
-Como las ecuaciones que gobiernan la creación de poros en la membrana son dependientes del tiempo, fue necesario crear un ciclo que realice iteraciones de las ecuaciones de poros y de potencial eléctrico. La ecuación \ref{eq:poisson} debe correrse periódicamente a pesar de que no depende del tiempo, ya que los valores de conductancias en la membrana ($\sigma_{m}$) son afectados por la aparición de poros. Las ecuaciones \ref{eq:poros-crea} y \ref{eq:poros-radio} fueron discretizadas con el método de Euler a un paso\footnote{Si se tiene una ecuación diferencial ordinaria tal que $Y'(x) = f(x, Y(x))$ y $Y(x_0) = Y_0$, el método de Euler con un paso $h$ aproxima la función $Y$ como $y_0 = Y_0$ y $y_{n+1} = y_n + h\,f(x_n, y_n)$ \cite{kendall}}.
+Como las ecuaciones que gobiernan la creación de poros en la membrana son dependientes del tiempo, fue necesario crear un ciclo que realice iteraciones de las ecuaciones de poros y de potencial eléctrico. La ecuación \ref{eq:poisson} debe correrse periódicamente a pesar de que no depende del tiempo, ya que los valores de conductancias en la membrana ($\sigma_{m}$) son afectados por la aparición de poros que evolucionan en el espacio y el tiempo. Las ecuaciones \ref{eq:poros-crea} y \ref{eq:poros-radio} fueron discretizadas con el método de Euler\footnote{Si se tiene una ecuación diferencial ordinaria tal que $Y'(x) = f(x, Y(x))$ y $Y(x_0) = Y_0$, el método de Euler con un paso $h$ aproxima la función $Y$ como $y_0 = Y_0$ y $y_{n+1} = y_n + h\,f(x_n, y_n)$ \cite{kendall}}.
 
 La ecuación \ref{eq:poros-crea} que calcula la densidad de poros en cada región de la membrana fue discretizada como
 
@@ -27,7 +27,7 @@ siendo $\alpha$ el radio de la célula y $\theta_1$ y $\theta_2$ los ángulos qu
 
 Se mantiene para cada zona esférica discreta un vector con cada uno de los poros y sus radios. Si en una iteración la cantidad de poros estimada para una región es mayor a cantidad de poros estimada en la iteración anterior, entonces se agregan poros al vector de la región esférica con radio inicial $r_*$.
 
-Para cada uno de los poros se calcula por separado su radio en cada iteración aplicando la ecuación \ref{eq:poros-radio} discretizada como
+Para cada uno de los poros se calcula por separado la variación de su radio en el tiempo aplicando la ecuación \ref{eq:poros-radio} discretizada como
 
 \begin{equation} \label{eq:poros-radio-disc}
 	\frac{r_{t+1} - r_t}{\Delta t} = \frac{D}{kT} \left( \frac{V_m^2 F_{max}}{1+r_h / (r_t+r_a)} + \frac{4 \beta}{r_t} \left(\frac{r_*}{r_t}\right)^4 - 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r_t \right)
@@ -59,7 +59,7 @@ con $D_m$ la difusión de la membrana celular sin poros y $D_p$ la difusión del
 
 \section{Resultados}
 
-Se corrieron simulaciones con células de 25\um de radio y pulsos de entre 1200\vcm y 1600\vcm y 5 \ms de duración. 
+Se corrieron simulaciones con células de 25\um de radio y pulsos de entre 1200\vcm y 1600\vcm y 5 \ms de duración.
 
 %acá poner histogramas de poros en diferentes instantes. Al menos para dos valores de tensión
 %
@@ -69,7 +69,7 @@ Se corrieron simulaciones con células de 25\um de radio y pulsos de entre 1200\
 
 \dobleimagengrandedonde{poros/160kvm/20micro}{histo-160-1}{Distribución de radios de los poros grandes\\ para $E = 1600\,\vcm$ en $t = 20\,\usec$}{poros/160kvm/500micro}{histo-160-2}{Distribución de radios de los poros grandes\\ para $E = 1600\,\vcm$ en $t = 500\,\usec$}{p}
 
-En las figuras \ref{fig:histo-120-1} y \ref{fig:histo-120-2} se presentan histogramas con los radios de los poros grandes creados en diferentes instantes para pulsos de 1200 \si{\kilo\volt\per\centi\metre}. También hay una gran población de poros pequeños (con radio menor a 1 \si{\nano\metre}) que no fueron graficados por ser de poco interés. Se puede observar que la población de poros alcanza valores altos en un primer instante, pero se reduce dramáticamente en los instantes posteriores. En las figuras \ref{fig:histo-160-1} y \ref{fig:histo-160-2} se observa distribución de radios para la misma célula pero con un pulso de 1600 \si{\kilo\volt\per\centi\metre}. Tanto la cantidad como el radio de los poros creados es mayor en el segundo caso, y se observa también una disminución en la población pasados los primeros instantes del pulso. Es importante notar que si bien la cantidad de poros disminuye con el tiempo, los poros que quedan tienen un radio promedio notablemente mayor al de los primeros instantes.
+En las figuras \ref{fig:histo-120-1} y \ref{fig:histo-120-2} se presentan histogramas con los radios de los poros grandes creados en diferentes instantes para pulsos de 1200 \si{\volt\per\centi\metre}. También hay una gran población de poros pequeños (con radio menor a 1 \si{\nano\metre}) que no fueron graficados por ser de poco interés. Se puede observar que la población de poros alcanza valores altos en un primer instante, pero se reduce dramáticamente en los instantes posteriores. En las figuras \ref{fig:histo-160-1} y \ref{fig:histo-160-2} se observa distribución de radios para la misma célula pero con un pulso de 1600 \si{\volt\per\centi\metre}. Tanto la cantidad como el radio de los poros creados es mayor en el segundo caso, y se observa también una disminución en la población pasados los primeros instantes del pulso. Es importante notar que si bien la cantidad de poros disminuye con el tiempo, los poros que quedan tienen un radio promedio notablemente mayor al de los primeros instantes.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{poros/itv-time}
@@ -95,11 +95,11 @@ En las figuras \ref{fig:tita120} y \ref{fig:tita160} se graficaron los potencial
 
 %%%%
 
-Se estudió también el efecto de aplicar una señal de varios pulsos en lugar uno solo. En la figura \ref{fig:poros-tiempo} se graficó la cantidad de poros en función del tiempo para 4 pulsos de 5\ms de \ontime{} y 5\ms de \offtime{} con varios potenciales diferentes. Se puede ver que la cantidad de poros crece únicamente al principio de cada pulso, y se mantiene casi constante durante el resto del pulso, disminuyendo muy levemente durante el tiempo de apagado. Por cada pulso nuevo se crean poros nuevos, aunque la cantidad de poros nuevos disminuye con cada pulso consecutivo. Se puede ver también que el efecto del campo eléctrico sobre la densidad es enorme, obteniéndose poblaciones de casi el doble de poros para al aumentar el potencial aplicado de 1200\vcm a 1600 \si{\volt\per\centi\metre}. El valor de 500\vcm podría tomarse como el valor mínimo necesario para obtener una cantidad considerable de poros, mientras que para 400\vcm y otros valores menores la densidad es despreciable, es decir casi no se produce electroporación. 
+Se estudió también el efecto de aplicar varios pulsos en lugar de uno solo. En la figura \ref{fig:poros-tiempo} se graficó la cantidad de poros en función del tiempo para 4 pulsos de 5\ms de \ontime{} y 5\ms de \offtime{} con varios potenciales diferentes. Se puede ver que la cantidad de poros crece únicamente al principio de cada pulso, y se mantiene casi constante durante el resto del pulso, disminuyendo muy levemente durante el tiempo de apagado. Por cada pulso nuevo se crean poros nuevos, aunque la cantidad de poros nuevos disminuye con cada pulso consecutivo. Se puede ver también que el efecto del campo eléctrico sobre la densidad es enorme, obteniéndose poblaciones de casi el doble de poros al aumentar el potencial aplicado de 1200\vcm a 1600 \si{\volt\per\centi\metre}. El valor de 500\vcm podría tomarse como el valor mínimo necesario para obtener una cantidad considerable de poros, mientras que para 400\vcm y otros valores menores la densidad es despreciable, es decir casi no se produce electroporación. 
 
 En la figura \ref{fig:radios-tiempo} se graficó el promedio de los radios de los poros en función del tiempo. Se nota que los radios altos se obtienen por un instante muy corto de tiempo al principio de cada pulso, y que rápidamente se achican llegando a un valor de equilibrio en aproximadamente la mitad del tiempo del \ontime. Cuando el pulso se apaga, los radios se hacen rápidamente mínimos, y se mantienen en un valor muy chico hasta el inicio del próximo pulso. A diferencia de la cantidad de poros, el radio promedio disminuye al aumentar el potencial eléctrico. Esto puede deberse a que un mayor campo eléctrico produce muchos poros de radio mínimo, afectando el promedio de manera negativa. En cada pulso consecutivo parecen aumentar ligeramente los radios obtenidos, notándose la mayor diferencia entre los radios del primer y el segundo pulso. 
 
-En las figuras \ref{fig:pulso1} a \ref{fig:pulso4} se observan las distribuciones de radios de poros para 1600\vcm al instante de 100\usec luego del comienzo de cada pulso. Las diferencias entre radios se observan sobre todo entre el primer y segundo pulso, mientras que los siguientes parecen tener distribuciones muy similares. La mayor concentración se encuentra siempre en los radios muy pequeños (de aproximadamente 1 \si{\nano\metre}), que afectan poco al proceso de permeabilización de la membrana.
+En las figuras \ref{fig:pulso1} a \ref{fig:pulso4} se observan las distribuciones de radios de poros para 1600\vcm a los 100 \si{\micro\second} del comienzo de cada pulso. Las diferencias entre radios se observan sobre todo entre el primer y segundo pulso, mientras que los siguientes parecen tener distribuciones muy similares. La mayor concentración se encuentra siempre en los radios muy pequeños (de aproximadamente 1 \si{\nano\metre}), que afectan poco al proceso de permeabilización de la membrana.
 
 \clearpage
 
