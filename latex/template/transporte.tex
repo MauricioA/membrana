@@ -3,8 +3,7 @@
 
 En este capítulo se analiza la concentración y movimiento de distintas especies iónicas en el dominio de la figura \ref{fig:dominio}. \\
 
-Se asume un ánodo de platino, el cual es suficientemente inerte ya que su potencial de reducción es alto. De esta manera es posible despreciar la disolución del metal, siendo así las principales reacciones que se observan: la descomposición del agua y la oxidación de las sustancias ya disueltas en ésta. En el caso de tejidos biológicos, estas reacciones involucran la evolución del oxígeno y cloro, junto a una acidificación, a través de las siguientes reacciones:
-
+Se asumen electrodos de platino, material suficientemente inerte ya que su potencial de reducción es alto. De esta manera es posible despreciar la disolución del metal, siendo así las principales reacciones que se observan en el ánodo: la descomposición del agua y la oxidación de las sustancias ya disueltas en ésta. En el caso de tejidos biológicos, estas reacciones involucran la evolución del oxígeno y cloro, junto a una acidificación, a través de las siguientes reacciones:
 
 \begin{equation}
 	\ce{2H_2O <=> O_2 + 4H^+ + 4e^-}
@@ -14,13 +13,13 @@ Se asume un ánodo de platino, el cual es suficientemente inerte ya que su poten
 	\ce{2Cl^- <=> Cl_2 + 2e^-}	
 \end{equation}
 
-Se asume también un cátodo de platino, siendo la principal reacción catódica la descomposición del agua en hidrógeno molecular e iones hidroxilo:
+La principal reacción catódica es la descomposición del agua en hidrógeno molecular e iones hidroxilo:
 
 \begin{equation}
 	\ce{2H_2O + 2e^- <=> H_2 + 2OH^-}
 \end{equation}
 
-El tejido será considerado como una solución acuosa de cloruro de sodio. Se consideran 4 especies iónicas en el análisis: el hidrógeno (\h), el hidroxilo (\oh), el sodio (\na) y cloruro (\cl). No se considera la capacidad de regulación del tejido. Se realizaron simulaciones en las que se aplicaron pulsos eléctricos y se analizó el transporte de las cuatro especies producto del gradiente de concentración y del campo eléctrico según la ley de Nernst-Planck. No se considera en este capítulo la creación de poros en la membrana celular y su efecto sobre el transporte iónico.
+El tejido será considerado como una solución acuosa de cloruro de sodio. Se consideran 4 especies iónicas en el análisis: el hidrógeno (\h), el hidroxilo (\oh), el sodio (\na) y cloruro (\cl). No se considera la capacidad de regulación del tejido. Se realizaron simulaciones en las que se aplicaron pulsos eléctricos y se analizó el transporte de las cuatro especies producto del gradiente de concentración y del campo eléctrico según la ley de Nernst-Planck. No se considera en este capítulo la creación de poros en la membrana celular y su efecto sobre el transporte iónico. Este capítulo está fuertemente basado en la experiencia previa del Laboratorio de Sistemas Complejos en la solución numérica de las ecuaciones de Nernst-Planck \cite{colombo, turjanski, turjanski2, olaiz, suarez}.
 
 \section{Implementación}
 
