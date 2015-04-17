@@ -59,8 +59,8 @@ latex/*/*/*.gz
 
 #pdf incompletos
 latex/proceeding/proceeding.pdf
-latex/template/tesis.pdf
-latex/preinforme/preinforme.pdf
+#latex/template/tesis.pdf
+#latex/preinforme/preinforme.pd
 latex/slides/slides.pdf
 
 celula/scripts/*.prm
