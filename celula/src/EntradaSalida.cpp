@@ -144,16 +144,16 @@ void EntradaSalida::leerInput() {
 	
 	#ifdef _WIN32
 		_mkdir(getCelula().salida.c_str());
-        _mkdir((getCelula().salida + "/tension").c_str());
-        _mkdir((getCelula().salida + "/campo").c_str());
-        _mkdir((getCelula().salida + "/transporte").c_str());
-        _mkdir((getCelula().salida + "/poros").c_str());
+		_mkdir((getCelula().salida + "/tension").c_str());
+		_mkdir((getCelula().salida + "/campo").c_str());
+		_mkdir((getCelula().salida + "/transporte").c_str());
+		_mkdir((getCelula().salida + "/poros").c_str());
 	#else
 		mkdir(getCelula().salida.c_str(), 0777);
-        mkdir((getCelula().salida + "/tension").c_str(), 0777);
-        mkdir((getCelula().salida + "/campo").c_str(), 0777);
-        mkdir((getCelula().salida + "/transporte").c_str(), 0777);
-        mkdir((getCelula().salida + "/poros").c_str(), 0777);
+		mkdir((getCelula().salida + "/tension").c_str(), 0777);
+		mkdir((getCelula().salida + "/campo").c_str(), 0777);
+		mkdir((getCelula().salida + "/transporte").c_str(), 0777);
+		mkdir((getCelula().salida + "/poros").c_str(), 0777);
 	#endif
 
 	printEnd(2, true);
