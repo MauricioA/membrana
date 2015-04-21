@@ -58,6 +58,7 @@ void EntradaSalida::leerInput() {
 	vector<int> dirichV, dirichT;
 	ifstream input("input.in", ifstream::in);
 	assert(input.is_open());
+	bool foundProblema = false;
 
 	while (getline(input, line)) {
 		istringstream iss(line);
@@ -94,6 +95,7 @@ void EntradaSalida::leerInput() {
 			} else {
 				assert(false);
 			}
+			foundProblema = true;
 		} else if (line.find("salida") != string::npos) {
 			iss >> s >> getCelula().salida;
 		} else if (line.find("sigint") != string::npos) {
@@ -122,6 +124,8 @@ void EntradaSalida::leerInput() {
 	}
 
 	input.close();
+
+	assert(foundProblema);
 
 	leerMalla(malla);
 
