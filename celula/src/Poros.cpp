@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cassert>
 #include <cstdio>
+#include <cfloat>
 #include <algorithm>
 #include <numeric>
 #include <iostream>

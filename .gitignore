@@ -2,6 +2,7 @@
 ## Míos
 #################
 
+celula/celula
 celula/salida/1_por_ms/*
 celula/salida/100_trans/*
 celula/salida/corregido/*
@@ -61,7 +62,7 @@ latex/*/*/*.gz
 latex/proceeding/proceeding.pdf
 #latex/template/tesis.pdf
 #latex/preinforme/preinforme.pd
-latex/slides/slides.pdf
+latex/beamer/slides.pdf
 
 celula/scripts/*.prm
 celula/scripts/*.msh

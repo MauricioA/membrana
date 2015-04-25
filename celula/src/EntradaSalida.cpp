@@ -362,7 +362,6 @@ void EntradaSalida::grabarTransporte(bool verbose) {
 
 void EntradaSalida::grabarPoros(Poros& radios, bool verbose) {
 	printStart("Grabando poros...", verbose);
-	double time = getCelula().time;
 	char buffer[512];
 
 	sprintf(buffer, "%s/poros/poros.csv.%03d", getCelula().salida.c_str(), nPoros);
