@@ -4,7 +4,6 @@
 \usetheme{JuanLesPins}
 \usecolortheme{seahorse}
 \usenavigationsymbolstemplate{}
-%
 \usepackage{color}
 \usepackage{listings}
 \usepackage[spanish]{babel}
@@ -15,7 +14,7 @@
 \usepackage[version=3]{mhchem}
 \usepackage{multicol}
 
-\title{Estudio de los Mecanismos Básicos de Electroporación a Través de la Modelación Numérica}
+\title{Estudio de los Mecanismos Básicos de Electroporación a Través de la\\ Modelación Numérica}
       
 \author{Mauricio Alfonso}
 \institute{DC - FCEyN - UBA}
@@ -36,13 +35,11 @@
 	\titlepage
 }
 
-%TODO que aparezcan los items de a uno!!
-%TODO carátula palabra numérica suelta
-%TODO decidir si poner subsections o solo títulos (por ahora poner las dos cosas aunque quede feo)
+%TODO decidir si poner subsections o solo títulos
 
 \section{Introducción} 
 
-\subsection{Introducción} 
+%\subsection{Introducción} 
 
 \frame {
 	%acá habría que poner algo basado en la introducción
@@ -100,7 +97,9 @@
 
 %TODO corregir el C++ en negrita
 
-\subsection{Métodos computacionales} \frame {
+%\subsection{Métodos computacionales} 
+
+\frame {
 	%Mencionar FEM, Euler, C++, Eigen, OpenMP
 	\frametitle{Métodos Computacionales}
 	\begin{itemize}
@@ -113,14 +112,16 @@
 		\item Se trabaja en un dominio bidimensional con coordenadas cilíndricas.
 		\pause
 		\item Se hizo uso de la librería de álgebra lineal \textbf{Eigen} para \texttt{C++}.
-		\pause
+		\pause		
+		\item Descomposiciones \textbf{BiCGSTAB} y \textbf{LDL} con matrices esparsas para resolver los sistemas de ecuaciones del método de elementos finitos. 
+		\pause		
 		\item Se paralelizaron partes del código en varios hilos con \textbf{OpenMP}.
 		\pause
 		\item Adicionalmente se utilizó \textbf{Python} y la librería \textbf{matplotlib} para procesar las salidas. 
 	\end{itemize}
 }
 
-\subsection{Mallado} 
+%\subsection{Mallado} 
 
 \frame {
 	%Poner imágenes y explicar.
@@ -155,90 +156,316 @@
 
 \section{Potencial Eléctrico}
 
-\subsection{Teoría} \frame {
+%\subsection{Teoría} 
+
+\frame {
 	%Fórmulas
 	\frametitle{Potencial Eléctrico}
 	Ecuación de Poisson:
 	\begin{equation*}
 		\nabla \sigma_{elem} \cdot (\nabla \phi) = 0 
-	\end{equation*}
-	El potencial transmembrana (PTM) puede aproximarse a:
+	\end{equation*} \pause
+	El potencial transmembrana (PTM) puede aproximarse como:
 	\begin{equation*}
 		 V^{\theta} = f_s\, E\, \alpha\, \cos (\theta) 
-	\end{equation*}
+	\end{equation*} \pause
 	Condiciones de borde de Dirichlet en los electrodos y de Neumann en el borde restante.
 }
 
-\subsection{Resultados} 
+%\subsection{Resultados} 
 
 \frame {
-	Potencial eléctrico en el dominio
+	%Potencial eléctrico en el dominio
+	\frametitle{Potencial Eléctrico}
+	\center{\includegraphics[height=0.85\textheight]{graficos/lineas}}
 }
 
 \frame {
-	Campo eléctrico
+	\frametitle{Campo eléctrico (componente horizontal)}
+	\begin{multicols}{2}
+		\center{En el exterior:}
+		\center{\includegraphics[width=0.45\textwidth]{graficos/campo-r}}\\
+		\columnbreak
+		\pause
+		\center{En el interior:}
+		\center{\includegraphics[width=0.45\textwidth]{graficos/campo-r-int}}
+	\end{multicols}
 }
 
 \frame {
-	ITV
+	\frametitle{Campo eléctrico (componente vertical)}
+	\begin{multicols}{2}
+		\center{En el exterior:}
+		\center{\includegraphics[width=0.45\textwidth]{graficos/campo-y}}\\
+		\pause
+		\columnbreak
+		\center{En el interior:}
+		\center{\includegraphics[width=0.45\textwidth]{graficos/campo-y-int}}
+	\end{multicols}
+}
+
+\frame {
+	\frametitle{Campo eléctrico (módulo)}
+	\begin{multicols}{2}
+		\center{En el exterior:}
+		\center{\includegraphics[width=0.40\textwidth]{graficos/campo}}\\
+		\columnbreak
+		\pause
+		\center{En el interior:}
+		\center{\includegraphics[width=0.45\textwidth]{graficos/campo-int}}
+	\end{multicols}
+}
+
+\frame {
+	\frametitle{Potencial Transmembrana}
+	\begin{multicols}{2}
+		\center{Para diferentes radios:}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/itv-radio}}\\
+		\columnbreak
+		\pause
+		\center{Para diferentes potenciales aplicados:}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/itv-voltaje}}
+	\end{multicols}
+}
+
+\frame {
+	\frametitle{Potencial Transmembrana}
+	\center{\includegraphics[width=1.0\textwidth]{graficos/itv-vs-teo}}
 }
 
 \section{Poros} 
 
-\subsection{Teoría} \frame {
-	Fórmulas
-}
-
-\subsection{Resultados}
+%\subsection{Teoría} 
 
 \frame {
-	histogramas. quizás hacer videos de los histogramas?
+	\frametitle{Generación y evolución de poros en la membrana}
+	Densidad de poros:
+	\begin{equation*}
+		\frac{\partial N}{\partial t} = \alpha_c e^{(V_m/V_{ep})^2} \left( 1 - \frac{N}{N_0 e^{q \left(V_m/V_{ep} \right) ^2}} \right)
+	\end{equation*}	\pause
+	Radios de los poros:
+	\begin{equation*}
+		\frac{\partial r}{\partial t} = \frac{D}{kT} \left( \frac{V_m^2 F_{max}}{1+r_h / (r+r_a)} + \frac{4 \beta}{r} \left(\frac{r_*}{r}\right)^4 - 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r\right)
+	\end{equation*} 
+	con
+	\begin{equation*}
+		\sigma_{\textrm{\tiny eff}} = 2 \sigma^\prime - \frac{2 \sigma^\prime - \sigma_0}{(1 - A_p / A)^2}
+	\end{equation*}
 }
 
 \frame {
-	itv en función del ángulo y en función del tiempo. Estaría muy bueno poner videos para que se entienda.
+	\frametitle{Generación y evolución de poros en la membrana}
+	Se asume que la membrana se carga como un capacitor y una resistencia en paralelo:
+	\begin{equation*} \begin{split}
+		V_m = V_p\, (1 - e^{-t/\tau}) , \\ \textrm{donde } \tau = \alpha\, C_m \left( \frac{1}{\sigma_i} + \frac{1}{2 \sigma_o} \right)
+	\end{split} \end{equation*} \pause
+	Se actualizan los valores de conductividad de la membrana:
+	\begin{equation*} 
+		\sigma_{\textrm{\tiny elem}} = \sigma_m (1 - p) + \sigma_p p
+	\end{equation*} \pause
+	Y se actualizan los valores de difusión de la membrana:
+	\begin{equation*} 
+		D{\textrm{\tiny elem}} = D_m (1 - p) + D_p p
+	\end{equation*}
+}
+
+%\subsection{Resultados}
+
+\frame {
+	%histogramas. quizás hacer videos de los histogramas?
+	%TODO hacer videos de los histogramas
+	\frametitle{Densidades de radios para 1200 \si{\volt\per\centi\metre}}
+	\begin{multicols}{2}
+		\center{En $t = 20$ \si{\micro\second}:}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/poros/120kvm/20micro}}\\
+		\columnbreak
+		\pause
+		\center{En $t = 500$ \si{\micro\second}:}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/poros/120kvm/500micro}}\\
+	\end{multicols}
+}
+
+
+\frame {
+	\frametitle{Densidades de radios para 1600 \si{\volt\per\centi\metre}}
+	\begin{multicols}{2}
+		\center{En $t = 20$ \si{\micro\second}:}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/poros/160kvm/20micro}}\\
+		\columnbreak
+		\pause
+		\center{En $t = 500$ \si{\micro\second}:}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/poros/160kvm/500micro}}\\
+	\end{multicols}
+}
+
+\frame {
+	\frametitle{Densidades de radios con varios pulsos}
+	\begin{multicols}{2}
+		\center{Primer pulso:}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/poros/160kvm/pulso1}}\\
+		\columnbreak
+		\pause
+		\center{Segundo pulso:}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/poros/160kvm/pulso2}}\\
+	\end{multicols}
+}
+
+\frame {
+	\frametitle{Densidades de radios con varios pulsos}
+	\begin{multicols}{2}
+		\center{Tercer pulso:}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/poros/160kvm/pulso3}}\\
+		\columnbreak
+		\pause
+		\center{Cuarto pulso:}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/poros/160kvm/pulso4}}\\
+	\end{multicols}
+}
+
+%TODO videos de PTM en función del tiempo
+
+\frame {
+	\frametitle{PTM en función del tiempo}
+	\includegraphics[width=\textwidth]{graficos/poros/itv-time}
+}
+
+\frame {
+	\frametitle{PTM en función del ángulo polar}
+	\center{\includegraphics[height=0.85\textheight]{graficos/poros/160kvm/tita}}
 }
 
 \section{Transporte}
 
-\subsection{Teoría} \frame {
-	Fórmulas
+%\subsection{Teoría} 
+
+\frame {
+	\frametitle{Teoría}
+	Se sigue la ley de Nernst-Planck:
+	\begin{equation*}
+		\frac{\partial C_i}{\partial t} = \nabla \cdot \left( D_i \nabla C_i + D_i z_i \frac{F}{R T} C_i \nabla \phi \right)
+	\end{equation*}
+	Para $i = $ \h, \oh, \na{} ó \cl. \pause
+	\vspace{\baselineskip}
+	\\Condiciones de borde de Dirichlet (concentraciones fijas) para $t = 0$ y de Neumann en el borde no ocupado por los electrodos.
 }
 
-\subsection{Resultados} \frame {
-	Gráficos de resultados. Explicar que no sirven para nada.
+%TODO poner las reacciones en los electrodos??
+
+%\subsection{Resultados} 
+
+\frame {
+	\frametitle{Concentraciones}
+	\begin{multicols}{2}
+		\center{\h}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/trans/h}}\\
+		\columnbreak
+		\pause
+		\center{\oh}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/trans/oh}}\\
+	\end{multicols}
+}
+
+%\subsection{Resultados} 
+
+\frame {
+	\frametitle{Concentraciones}
+	\begin{multicols}{2}
+		\center{\na}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/trans/na}}\\
+		\columnbreak
+		\pause
+		\center{\cl}
+		\center{\includegraphics[width=0.50\textwidth]{graficos/trans/cl}}\\
+	\end{multicols}
 }
 
 \section{Acoplado}
 
-\subsection{Teoría} \frame {
-	Fórmulas. podría ir también un poco de implementación?
-}
-
-\subsection{Resultados un pulso} \frame {
-	videos
-}
-
-\subsection{Resultados varios pulsos} 
+%\subsection{Teoría} 
 
 \frame {
-	videos muy grosos. También podrían ir videos de los histogramas.
+	%Fórmulas. podría ir también un poco de implementación?
+	\frametitle{Modelo acoplado}
+	Se acoplaron todos los fenómenos físicos anteriores en una sola simulación y se obtuvieron resultados muy diferentes de concentraciones de especies.\\
 }
+
+%\subsection{Concentraciones con un pulso} 
+
+\frame {
+	\frametitle{Concentraciones con un pulso}
+	(Videos de concentración un pulso)
+}
+
+%\subsection{Resultados varios pulsos} 
+
+\frame {
+	\frametitle{Concentraciones con varios pulsos}
+	(Videos de concentración en varios pulsos)
+}
+
+%TODO podrían ir también las curvas y la comparación con los resultados experimentales
 
 \section{Escalabilidad}
 
-\subsection{Escalabilidad} \frame {
-	Mencionar como se usa openmp y resultados
+%\subsection{Escalabilidad} 
+
+\frame {
+	\frametitle{Escalabilidad}
+	%Mencionar como se usa openmp y resultados
+	Se utiliza OpenMP:\pause
+	\begin{itemize}
+		\item Para llenar en paralelo las matriz usada en el método de elementos finitos para resolver la ecuación de potencial eléctrico. \pause
+		\item Para resolver en paralelo las ecuaciones de transporte de las 4 especies iónicas diferentes. \pause
+	\end{itemize}
+	Resultados de escalabilidad:
+
+	\begin{table}
+	    \centering
+		\begin{tabular}{ c | c c c c }              
+			& 1 thread & 2 threads & 3 threads & 4 threads \\
+			\hline
+			Tiempo [\si{\second}] & 1995 & 1331 & 1489 & 1233 \\
+			Speedup & 1 & 1.50 & 1.34 & 1.63 \\
+			Eficiencia & 100\% & 74.9\% & 44.7\% & 40.5\% \\
+		\end{tabular}
+	    \label{tab:escala}
+	\end{table}	
 }
 
 \section{Conclusiones} 
 
-\subsection{Conclusiones} \frame {
-	Conclusiones
+%TODO no se mencinó nada de potencial mínimo de electroporación!!!
+
+%\subsection{Conclusiones} 
+
+\frame {
+	\frametitle{Conclusiones}
+	\begin{itemize}
+		\item El código implementado logra resolver correctamente la dinámica de creación y evolución de poros, la respuesta eléctrica de la célula y el transporte de cuatro especies iónicas, todo esto de manera acoplada. \pause
+		\item Se discretizó la membrana explícitamente utilizando un mallado adaptativo, en lugar de considerar la membrana una condición de borde, logrando así resultados que se acercan más a la realidad que los obtenidos en trabajos anteriores. \pause
+		\item Se observó el transporte de especies a través de la membrana y se verificó que la apertura de poros contribuye a este fenómeno, ya que se obtuvieron resultados muy diferentes al no considerar electroporación.
+	\end{itemize}
 }
 
-\subsection{Trabajo Futuro} \frame {
-	Trabajo Futuro
+\frame {
+	\frametitle{Conclusiones}
+	\begin{itemize}
+		\item Se notó claramente que una vez alcanzado un umbral mínimo, aumentar la intensidad del pulso eléctrico no aumenta el potencial transmembrana, pero sí acelera el proceso de permeabilización de la membrana. \pause
+		\item Se observó que la mayoría de los poros creados se sellan muy rápidamente, por lo que es necesario repetir el pulso eléctrico periódicamente si se pretende permeabilizar la membrana para introducir especies a la célula.	
+	\end{itemize}
+}
+
+%\subsection{Trabajo Futuro} 
+
+\frame {
+	\frametitle{Trabajo Pendiente}
+	\begin{itemize}
+		\item Simular distintos tipos de pulsos. \pause
+		\item Estudiar un dominio con más de una célula. \pause
+		\item Estudiar el efecto de las concentraciones de especies (en especial el pH) sobre las conductividades. \pause
+		\item Modelar células irregulares en lugar de esféricas, como las encontradas en los tejidos. \pause
+		\item Modelar la deformación de las células producto del campo eléctrico.
+	\end{itemize}
 }
 
 \end{document}
