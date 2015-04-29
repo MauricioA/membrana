@@ -40,7 +40,7 @@ EntradaSalida::EntradaSalida(Celula& celula) {
 
 	fitv = fopen((getCelula().salida + "/itv.csv").c_str(), "w");
 
-	assert(fitv > 0);
+	assert(fitv > 0 && "Directorio de salida posiblemente incorrecto");
 }
 
 EntradaSalida::~EntradaSalida() {
