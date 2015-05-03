@@ -13,7 +13,8 @@
 \usepackage{siunitx}
 \usepackage[version=3]{mhchem}
 \usepackage{multicol}
-
+\usepackage{biblatex}
+ 
 \title{Estudio de los Mecanismos Básicos de Electroporación a Través de la\\ Modelación Numérica}
       
 \author{Mauricio Alfonso}
@@ -24,6 +25,7 @@
 
 \begin{document}
 
+\sisetup{per-mode = symbol}
 \newcommand{\h}{\ce{H^+}}
 \newcommand{\oh}{\ce{OH^-}}
 \newcommand{\na}{\ce{Na^+}}
@@ -35,7 +37,7 @@
 	\titlepage
 }
 
-%TODO decidir si poner subsections o solo títulos
+%TODO cambiar el estilo! (que no quede subsection empty)
 
 \section{Introducción} 
 
@@ -58,37 +60,41 @@
 	\vspace{\baselineskip}
 
 	Se estudiaron tres tipos de fenómenos físicos por separado:
+
+
+
 	\begin{itemize}
-		\item El potencial eléctrico en todo el dominio
-		\item La creación y evolución de poros en la membrana celular
-		\item El transporte de especies iónicas
+		\item El potencial eléctrico en todo el dominio \pause
+		\item La creación y evolución de poros en la membrana celular \pause
+		\item El transporte de especies iónicas \pause
 	\end{itemize}
 	
 	Por último se analizaron todos los fenómenos acoplados.\\
 }
 
 \frame {
-	% luego dominio y pulso
-	\frametitle{Dominio}
-	\begin{center}
-		\includegraphics[keepaspectratio, height=0.88\textheight]{graficos/dominio}	
-	\end{center}
+%	\frametitle{Dominio}
+	
+	\begin{columns}[c]
+		\begin{column}{0.60\textwidth}
+			\center{Dominio:\\}
+			\includegraphics[width=1.0\textwidth]{graficos/dominio}
+		\end{column}
+		%\pause
+		\begin{column}{0.50\textwidth}
+			\center{Pulso:\\}
+			\includegraphics[width=1.0\textwidth]{graficos/pulso}
+		\end{column}
+	\end{columns}
 }
-
-\frame {
-	\frametitle{Pulso Eléctrico}
-	\begin{center}
-		\includegraphics[keepaspectratio, width=0.75\textwidth]{graficos/pulso}	
-	\end{center}
-}
-
 
 \frame {
 	\frametitle{Detalles}
 	\begin{itemize}
-		\item Células esféricas de entre 10 y 50 \si{\micro\metre} de radio. \pause
-		\item Membrana celular de 5 \si{\nano\metre} de espesor. \pause
-		\item Pulsos eléctricos de hasta 2000 \si{\volt\per\centi\metre}, de 5 \si{\milli\second} de \ontime{} y 5 \si{\milli\second} de \offtime. \pause
+		\item Células esféricas de entre 10 y 50 \si{\micro\metre} de radio.\footfullcite{Biophysical journal, 92(2), 404-417, 2007} \footfullcite{Annals of biomedical engineering, 34(4), 642-652, 2006} \pause
+		\item Membrana celular de 5 \si{\nano\metre} de espesor.\footfullcite{Bioelectrochemistry 82, 10-21, 2011} \pause
+		\item Pulsos eléctricos de hasta 2000 \si{\volt\per\centi\metre}, de 5 \si{\milli\second} de \ontime{} y 5 \si{\milli\second} de \offtime. \footfullcite{Biophysical journal, 98(11), 2506-2514, 2010}\pause
+		\item Se considera un modelo donde la densidad de poros en la membrana celular y sus radios dependen del potencial transmembrana.$^{1}$\pause
 		\item Se estudia la concentración de 4 especies iónicas: \h, \oh, \na{} y \cl.
 	\end{itemize}
 }
@@ -165,11 +171,14 @@
 	\begin{equation*}
 		\nabla \sigma_{elem} \cdot (\nabla \phi) = 0 
 	\end{equation*} \pause
-	El potencial transmembrana (PTM) puede aproximarse como:
+	
+	Condiciones de borde de Dirichlet en los electrodos y de Neumann en el borde restante. \pause
+	
+	\vspace{\baselineskip}	
+	La solución analítica del potencial transmembrana (PTM) puede aproximarse como:
 	\begin{equation*}
 		 V^{\theta} = f_s\, E\, \alpha\, \cos (\theta) 
-	\end{equation*} \pause
-	Condiciones de borde de Dirichlet en los electrodos y de Neumann en el borde restante.
+	\end{equation*}
 }
 
 %\subsection{Resultados} 
@@ -339,14 +348,37 @@
 %\subsection{Teoría} 
 
 \frame {
-	\frametitle{Teoría}
+	\frametitle{Cálculo del transporte de especies en el dominio y a través de la membrana}
 	Se sigue la ley de Nernst-Planck:
 	\begin{equation*}
 		\frac{\partial C_i}{\partial t} = \nabla \cdot \left( D_i \nabla C_i + D_i z_i \frac{F}{R T} C_i \nabla \phi \right)
 	\end{equation*}
 	Para $i = $ \h, \oh, \na{} ó \cl. \pause
-	\vspace{\baselineskip}
-	\\Condiciones de borde de Dirichlet (concentraciones fijas) para $t = 0$ y de Neumann en el borde no ocupado por los electrodos.
+	
+	\vspace{2mm}
+
+%Las condiciones de borde son las de dirichlet para los bordes con electrodos. Y las condiciones iniciales a t=0 son valores de esas especies en los tegidos.
+%Y pone los valores!!!
+
+	Condiciones de contorno de Dirichlet para los electrodos y Neumann para el borde restante. Concentraciones molares de especies en $t = 0$:
+
+	\vspace{2mm}
+	
+	\begin{scriptsize} \begin{tabular}{ l | c | c | c | c }
+		%\hline
+		Especie & \h & \oh & \na & \cl \\
+		\hline
+  		Interna & \num{.3978e-7} \si{\textsc{m}} & \num{.3978e-7} \si{\textsc{m}} & \num{142} \si{\milli\textsc{m}} & \num{108} \si{\milli\textsc{m}} \\
+  		\hline
+		Externa & \num{1e-7} \si{\textsc{m}} & \num{1e-7} \si{\textsc{m}} & \num{14e-7} \si{\milli\textsc{m}} & \num{4e-7} \si{\milli\textsc{m}} \\
+	\end{tabular} \end{scriptsize}
+	
+%	\\Condiciones de borde de Dirchlet para los electrodos y de Neumann para el borde no ocupado por los electrodos.
+%
+%	
+%	\vspace{\baselineskip}
+%	\\Condiciones de borde de Dirichlet (concentraciones fijas) para $t = 0$ y de Neumann en el borde no ocupado por los electrodos.
+
 }
 
 %TODO poner las reacciones en los electrodos??
@@ -355,6 +387,7 @@
 
 \frame {
 	\frametitle{Concentraciones}
+	Concentraciones para un pulso de 100 \si{\volt\per\centi\metre} en $t = 380 \si{\micro\second}$
 	\begin{multicols}{2}
 		\center{\h}
 		\center{\includegraphics[width=0.50\textwidth]{graficos/trans/h}}\\
@@ -387,6 +420,26 @@
 	%Fórmulas. podría ir también un poco de implementación?
 	\frametitle{Modelo acoplado}
 	Se acoplaron todos los fenómenos físicos anteriores en una sola simulación y se obtuvieron resultados muy diferentes de concentraciones de especies.\\
+		
+%	6) la 29: Aca pone unos bullets que expliquen las suposiciones principales del modelo acomplado. I) tiempos caracteristicos de cada modelos. II) que se resuelve en cada caso en donde hay potencial aplicado y donde no hay. III) que dato de cada sistema influye en el otro. Por ejemplo el potencial se acompla al modelo de poros al regular apertura y cierre, y el modelo de poros se acopla al trnaporte al regular area de pasaje de especies o apertura de membrana.
+
+	\pause
+	\begin{description}
+		\item[Poros] Cálculo de población de poros y sus radios individuales, además de cómo afecta las constantes de conductividad y difusión de la membrana celular. Se utiliza un intervalo temporal constante de 1 \si{\nano\second}.
+		\item[Potencial] Cálculo del potencial eléctrico en todo el dominio, con un intervalo temporal dinámico: $\Delta_t = 2 \si{\micro\second} \left( 1 - e^{t/-217\si{\nano\second}} \right)$ \pause
+		\item[Transporte] Cálculo de las concentraciones de especies en el dominio. Se utiliza un intervalo temporal constante de 200 \si{\nano\second}.
+	\end{description}
+}
+
+\frame {
+	\frametitle{Modelo acoplado}
+
+	\begin{itemize}
+		\item El campo eléctrico influye en la creación de poros y en la evolución de sus radios, a través del potencial transmembrana. \pause
+		\item Los poros disminuyen la conductividad de la membrana, influyendo en los resultados de campo eléctrico. \pause
+		\item El campo eléctrico influye en los resultados de transporte de especies. \pause
+		\item Los poros también influyen en el transporte de especies disminuyendo la difusión de la membrana.
+	\end{itemize}
 }
 
 %\subsection{Concentraciones con un pulso} 
@@ -403,7 +456,13 @@
 	(Videos de concentración en varios pulsos)
 }
 
-%TODO podrían ir también las curvas y la comparación con los resultados experimentales
+\frame {
+	\frametitle{Comparación con resultados experimentales\footfullcite{Biophysical journal, 76(4), 2158-2165, 1999}}
+	
+	\includegraphics[width=\textwidth]{graficos/experimentales}
+}
+
+%TODO podrían ir también las curvas
 
 \section{Escalabilidad}
 
@@ -464,8 +523,10 @@
 		\item Estudiar un dominio con más de una célula. \pause
 		\item Estudiar el efecto de las concentraciones de especies (en especial el pH) sobre las conductividades. \pause
 		\item Modelar células irregulares en lugar de esféricas, como las encontradas en los tejidos. \pause
-		\item Modelar la deformación de las células producto del campo eléctrico.
+		\item Modelar la deformación de las células producto del campo eléctrico (está siendo realizado en otro trabajo de tesis).
 	\end{itemize}
 }
+
+%TODO ver warnings!!
 
 \end{document}

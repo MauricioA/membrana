@@ -45,6 +45,8 @@ celula/scripts/itvs/*.png
 *.toc
 *.bbl
 *.blg
+*.bcf
+*.run.xml
 
 *.ppt#
 *.docx#
