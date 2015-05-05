@@ -1,7 +1,7 @@
 \documentclass{beamer}
 %\documentclass[handout]{beamer} %handout para imprimir
 
-\usetheme{JuanLesPins}
+\usetheme{Frankfurt}
 \usecolortheme{seahorse}
 \usenavigationsymbolstemplate{}
 \usepackage{color}
@@ -16,12 +16,15 @@
 \usepackage{biblatex}
  
 \title{Estudio de los Mecanismos Básicos de Electroporación a Través de la\\ Modelación Numérica}
-      
+
+\subtitle{Trabajo para optar por el título de\\ Licenciado en Ciencias de la Computación}
+
 \author{Mauricio Alfonso}
-\institute{DC - FCEyN - UBA}
+%\institute{DC - FCEyN - UBA}
+\institute{Departamento de Computación\\ Facultad de Ciencias Exactas y Naturales - Universidad de Buenos Aires}
 %\date[12.2013]{SegInf, 2c - 2013}
 
-%TODO cambiar la fecha
+%TODO cambiar la fecha!!!
 
 \begin{document}
 
@@ -46,7 +49,7 @@
 \frame {
 	%acá habría que poner algo basado en la introducción
 	\begin{itemize}
-		\item La \textbf{Electroporación} o \textbf{Electropermeabilización (EP)} es en la aplicación de pulsos eléctricos a una membrana biológica con el objetivo de incrementar su permeabilidad.
+		\item La \textbf{Electroporación} o \textbf{Electropermeabilización (EP)} consiste en la aplicación de pulsos eléctricos a una membrana biológica con el objetivo de incrementar su permeabilidad.
 		\item De esta manera se facilita el ingreso de agentes terapéuticos a una célula.
 		\item En la medicina se utiliza EP en la electroquimioterapia (ECT), la electrotransferencia génica (GET) y la electroporación irreversible (IRE).
 		\item También tiene aplicaciones en el procesamiento de alimentos y la gestión ambiental. 
@@ -446,7 +449,13 @@
 
 \frame {
 	\frametitle{Concentraciones con un pulso}
-	(Videos de concentración un pulso)
+	%(Videos de concentración un pulso)
+	\center {
+		\href{run:videos/1p/h1.mp4}{\h} \href{run:videos/1p/oh1.mp4}{\oh} \href{run:videos/1p/na5.mp4}{\na} \href{run:videos/1p/cl1.mp4}{\cl}
+	}
+	
+	%\frame {
+%	\href{run:apollo17.avi}{\includegraphics[height=0.7\textheight]{apollo17.jpg}}
 }
 
 %\subsection{Resultados varios pulsos} 
@@ -528,5 +537,17 @@
 }
 
 %TODO ver warnings!!
+
+%\frame {
+%	\href{run:apollo17.avi}{\includegraphics[height=0.7\textheight]{apollo17.jpg}}
+%}
+
+\frame {
+	\center {\Huge{
+		¿Preguntas? \\ \pause
+		\vspace{\baselineskip}
+		¡Muchas gracias!
+	}}
+}
 
 \end{document}
