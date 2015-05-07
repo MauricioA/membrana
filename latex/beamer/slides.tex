@@ -1,5 +1,4 @@
-\documentclass{beamer}
-%\documentclass[handout]{beamer} %handout para imprimir
+\documentclass[handout]{beamer} %handout para imprimir
 
 \usetheme{Frankfurt}
 \usecolortheme{seahorse}
@@ -48,6 +47,7 @@
 
 \frame {
 	%acá habría que poner algo basado en la introducción
+	\frametitle{Electroporación}
 	\begin{itemize}
 		\item La \textbf{Electroporación} o \textbf{Electropermeabilización (EP)} consiste en la aplicación de pulsos eléctricos a una membrana biológica con el objetivo de incrementar su permeabilidad.
 		\item De esta manera se facilita el ingreso de agentes terapéuticos a una célula.
@@ -58,13 +58,11 @@
 
 \frame {
 	% qué se hace y 4 partes
-	En esta tesis se simula numéricamente la aplicación de pulsos eléctricos a una célula y se estudia su respuesta eléctrica, la permeabilización lograda y el transporte de especies iónicas. 
+	En esta tesis se simula numéricamente la aplicación de pulsos eléctricos a un dominio que contiene a una célula y se estudia su respuesta eléctrica, la permeabilización lograda y el transporte de especies iónicas. 
 	
 	\vspace{\baselineskip}
 
 	Se estudiaron tres tipos de fenómenos físicos por separado:
-
-
 
 	\begin{itemize}
 		\item El potencial eléctrico en todo el dominio \pause
@@ -94,11 +92,11 @@
 \frame {
 	\frametitle{Detalles}
 	\begin{itemize}
-		\item Células esféricas de entre 10 y 50 \si{\micro\metre} de radio.\footfullcite{Biophysical journal, 92(2), 404-417, 2007} \footfullcite{Annals of biomedical engineering, 34(4), 642-652, 2006} \pause
+		\item Células esféricas de entre 10 y 50 \si{\micro\metre} de radio.\footfullcite{Biophysical journal, 92(2), 404-417, 2007}\textsuperscript{,} \footfullcite{Annals of biomedical engineering, 34(4), 642-652, 2006} \pause
 		\item Membrana celular de 5 \si{\nano\metre} de espesor.\footfullcite{Bioelectrochemistry 82, 10-21, 2011} \pause
-		\item Pulsos eléctricos de hasta 2000 \si{\volt\per\centi\metre}, de 5 \si{\milli\second} de \ontime{} y 5 \si{\milli\second} de \offtime. \footfullcite{Biophysical journal, 98(11), 2506-2514, 2010}\pause
+		\item Pulsos eléctricos de pocos milisegundos de duración, que generan campos de hasta 2000 \si{\volt\per\centi\metre}. \footfullcite{Biophysical journal, 98(11), 2506-2514, 2010}\pause		
 		\item Se considera un modelo donde la densidad de poros en la membrana celular y sus radios dependen del potencial transmembrana.$^{1}$\pause
-		\item Se estudia la concentración de 4 especies iónicas: \h, \oh, \na{} y \cl.
+		\item Se estudia la evolución de la concentración de 4 especies iónicas: \h, \oh, \na{} y \cl.
 	\end{itemize}
 }
 
@@ -177,10 +175,10 @@
 	
 	Condiciones de borde de Dirichlet en los electrodos y de Neumann en el borde restante. \pause
 	
-	\vspace{\baselineskip}	
+	\vspace{\baselineskip}
 	La solución analítica del potencial transmembrana (PTM) puede aproximarse como:
 	\begin{equation*}
-		 V^{\theta} = f_s\, E\, \alpha\, \cos (\theta) 
+		 PTM^{\theta} = f_s\, E\, \alpha\, \cos (\theta)
 	\end{equation*}
 }
 
@@ -189,7 +187,17 @@
 \frame {
 	%Potencial eléctrico en el dominio
 	\frametitle{Potencial Eléctrico}
-	\center{\includegraphics[height=0.85\textheight]{graficos/lineas}}
+%	\center{\includegraphics[height=0.80\textheight]{graficos/lineas}}
+	
+	\begin{multicols}{2}
+		\center{\includegraphics[height=0.85\textheight]{graficos/lineas}}\\
+		\columnbreak
+		Ejemplo para E = 1600 \si{\volt\per\centi\metre}\\ 
+		$\alpha$ = 25 \si{\micro\metre}\\
+		$\sigma_o$ = 0.20 \si{\siemens\per\metre}\\
+		$\sigma_i$ = 0.15 \si{\siemens\per\metre}\\
+		$\sigma_m$ = \num{5e-6} \si{\siemens\per\metre}\\
+	\end{multicols}
 }
 
 \frame {
@@ -242,7 +250,9 @@
 
 \frame {
 	\frametitle{Potencial Transmembrana}
+	Comparación entre simulación y solución analítica $PTM^{\theta} = f_s\, E\, \alpha\, \cos (\theta)$\\
 	\center{\includegraphics[width=1.0\textwidth]{graficos/itv-vs-teo}}
+	E = 1600 \si{\volt\per\centi\metre} y $\alpha$ = 25 \si{\micro\metre}
 }
 
 \section{Poros} 
@@ -253,11 +263,11 @@
 	\frametitle{Generación y evolución de poros en la membrana}
 	Densidad de poros:
 	\begin{equation*}
-		\frac{\partial N}{\partial t} = \alpha_c e^{(V_m/V_{ep})^2} \left( 1 - \frac{N}{N_0 e^{q \left(V_m/V_{ep} \right) ^2}} \right)
+		\frac{\partial N}{\partial t} = \alpha_c e^{(PTM/V_{ep})^2} \left( 1 - \frac{N}{N_0 e^{q \left(PTM/V_{ep} \right) ^2}} \right)
 	\end{equation*}	\pause
 	Radios de los poros:
 	\begin{equation*}
-		\frac{\partial r}{\partial t} = \frac{D}{kT} \left( \frac{V_m^2 F_{max}}{1+r_h / (r+r_a)} + \frac{4 \beta}{r} \left(\frac{r_*}{r}\right)^4 - 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r\right)
+		\frac{\partial r}{\partial t} = \frac{D}{kT} \left( \frac{PTM^2 F_{max}}{1+r_h / (r+r_a)} + \frac{4 \beta}{r} \left(\frac{r_*}{r}\right)^4 - 2 \pi \gamma + 2 \pi \sigma_{\textrm{\tiny eff}} r\right)
 	\end{equation*} 
 	con
 	\begin{equation*}
@@ -269,7 +279,7 @@
 	\frametitle{Generación y evolución de poros en la membrana}
 	Se asume que la membrana se carga como un capacitor y una resistencia en paralelo:
 	\begin{equation*} \begin{split}
-		V_m = V_p\, (1 - e^{-t/\tau}) , \\ \textrm{donde } \tau = \alpha\, C_m \left( \frac{1}{\sigma_i} + \frac{1}{2 \sigma_o} \right)
+		PTM = V_p\, (1 - e^{-t/\tau}) , \\ \textrm{donde } \tau = \alpha\, C_m \left( \frac{1}{\sigma_i} + \frac{1}{2 \sigma_o} \right)
 	\end{split} \end{equation*} \pause
 	Se actualizan los valores de conductividad de la membrana:
 	\begin{equation*} 
@@ -312,6 +322,7 @@
 
 \frame {
 	\frametitle{Densidades de radios con varios pulsos}
+	Para E = 1600 \si{\volt\per\centi\metre} y $\alpha$ = 25 \si{\micro\metre}
 	\begin{multicols}{2}
 		\center{Primer pulso:}
 		\center{\includegraphics[width=0.50\textwidth]{graficos/poros/160kvm/pulso1}}\\
@@ -342,7 +353,7 @@
 }
 
 \frame {
-	\frametitle{PTM en función del ángulo polar}
+	\frametitle{PTM en función del ángulo polar para E = 1600 \si{\volt\per\centi\metre}}
 	\center{\includegraphics[height=0.85\textheight]{graficos/poros/160kvm/tita}}
 }
 
@@ -450,19 +461,30 @@
 \frame {
 	\frametitle{Concentraciones con un pulso}
 	%(Videos de concentración un pulso)
-	\center {
-		\href{run:videos/1p/h1.mp4}{\h} \href{run:videos/1p/oh1.mp4}{\oh} \href{run:videos/1p/na5.mp4}{\na} \href{run:videos/1p/cl1.mp4}{\cl}
-	}
+	\center { \Huge {
+		\href{run:videos/1p/h1.mp4}{\fbox{\parbox[c][1.5cm][c]{0.20\textwidth}{\center{\h}}}}	
+		\href{run:videos/1p/oh1.mp4}{\fbox{\parbox[c][1.5cm][c]{0.20\textwidth}{\center{\oh}}}}
+		\href{run:videos/1p/na5.mp4}{\fbox{\parbox[c][1.5cm][c]{0.20\textwidth}{\center{\na}}}}
+		\href{run:videos/1p/cl1.mp4}{\fbox{\parbox[c][1.5cm][c]{0.20\textwidth}{\center{\cl}}}}
+	}}\\
 	
-	%\frame {
-%	\href{run:apollo17.avi}{\includegraphics[height=0.7\textheight]{apollo17.jpg}}
+	\vspace{2cm}
+	Para E = 1600 \si{\volt\per\centi\metre} y $\alpha$ = 25 \si{\micro\metre}
 }
 
 %\subsection{Resultados varios pulsos} 
 
 \frame {
 	\frametitle{Concentraciones con varios pulsos}
-	(Videos de concentración en varios pulsos)
+		\center { \Huge {
+		\href{run:videos/varios/h1.mp4}{\fbox{\parbox[c][1.5cm][c]{0.20\textwidth}{\center{\h}}}}	
+		\href{run:videos/varios/oh2.mp4}{\fbox{\parbox[c][1.5cm][c]{0.20\textwidth}{\center{\oh}}}}
+		\href{run:videos/varios/na.mp4}{\fbox{\parbox[c][1.5cm][c]{0.20\textwidth}{\center{\na}}}}
+		\href{run:videos/varios/cl1.mp4}{\fbox{\parbox[c][1.5cm][c]{0.20\textwidth}{\center{\cl}}}}
+	}}
+	
+	\vspace{2cm}
+	Para E = 1600 \si{\volt\per\centi\metre} y $\alpha$ = 25 \si{\micro\metre}
 }
 
 \frame {
@@ -544,9 +566,13 @@
 
 \frame {
 	\center {\Huge{
-		¿Preguntas? \\ \pause
-		\vspace{\baselineskip}
 		¡Muchas gracias!
+	}}
+}
+
+\frame {
+	\center {\Huge{
+		¿Preguntas?
 	}}
 }
 
