@@ -3,7 +3,7 @@
 malla: 	 inputs/25_192_150_5.msh	# alto 150
 nodpel:	 quad
 problema: acoplado
-salida:  salida/temp/aco2/
+salida:  salida/1/
 threads: 2
 delta_t: 1e-9
 

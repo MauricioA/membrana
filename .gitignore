@@ -65,6 +65,7 @@ latex/proceeding/proceeding.pdf
 #latex/template/tesis.pdf
 #latex/preinforme/preinforme.pd
 latex/beamer/slides.pdf
+latex/beamer/defensa2.txt
 
 celula/scripts/*.prm
 celula/scripts/*.msh
