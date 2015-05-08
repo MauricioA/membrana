@@ -1,95 +1,76 @@
-
-***CORRECCIONES
-***PULSOS A UN DOM QUE CONTIENEN
-***VER ITV DEF
-***CONCENTS DE SIGNO OPUESTO!!
-
+ï»¿
 CARATULA
 
 EP (leer)
 
-INTRO TESIS Se simuló numéricamente la aplicación de pulsos eléctricos a una célula y se estudió su respuesta eléctrica, la permeabilización lograda y el transporte de especies iónicas. Para ello se estudiaron tres fenómenos físicos por separado: El potencial eléctrico en todo el dominio, producto de la diferencia de potencial aplicada en los electrodos, la densidad de poros en la membrana celular, y la evolución de sus radios, y el transporte de especies iónicas en el dominio y a través de la membrana. Por último se acoplaron los tres tipos de fenómenos estudiados y se analizó todo junto.
+INTRO TESIS Se simulÃ³ numÃ©ricamente la aplicaciÃ³n de pulsos elÃ©ctricos a una cÃ©lula y se estudiÃ³ su respuesta elÃ©ctrica, la permeabilizaciÃ³n lograda y el transporte de especies iÃ³nicas. Para ello se estudiaron tres fenÃ³menos fÃ­sicos por separado: El potencial elÃ©ctrico en todo el dominio, producto de la diferencia de potencial aplicada en los electrodos, la densidad de poros en la membrana celular, y la evoluciÃ³n de sus radios, y el transporte de especies iÃ³nicas en el dominio y a travÃ©s de la membrana. Por Ãºltimo se acoplaron los tres tipos de fenÃ³menos estudiados y se analizÃ³ todo junto.
 
 simulaci{on porque los fen{omenos son dificiles de medir experim, hay muchas vars. 
-pulsos a un dominio que contien ... (no una c{elula)
 
-DOMINIO El dominio consiste de una única célula esférica sumergida en un líquido conductor extracelular. La célula está compuesta por dos materiales: el citoplasma, o líquido intracelular, y la membrana celular. Se aplican pulsos eléctricos a travéz de dos electrodos que se encuentran en dominio, con el anodo en el borde superior y el catodo en el inferior. Como resultado de la aplicaci{on... la regi{on celular cercana al anodo se hiperpolariza y la cercana al c{atodo se depolariza. mientras que la región central o ecuatorial presenta neutralidad. El campo eléctrico tiene una dirección desde el ánodo hacia el cátodo. \alpha es el radio de la célula, y \theta es el ángulo polar. Los pulsos aplicados son periódicos y tienen un tiempo de encendido llamado ON TIME, con un potencial fijo, y un tiempo de apagado llamado OFF TIME, sin diferencia de potencial en los electrodos.
+DOMINIO El dominio consiste de una Ãºnica cÃ©lula esfÃ©rica sumergida en un lÃ­quido conductor extracelular. La cÃ©lula estÃ¡ compuesta por dos materiales: el citoplasma, o lÃ­quido intracelular, y la membrana celular. Se aplican pulsos elÃ©ctricos a travÃ©z de dos electrodos que se encuentran en dominio, con el anodo en el borde superior y el catodo en el inferior. Como resultado de la aplicaci{on... la regi{on celular cercana al anodo se hiperpolariza y la cercana al c{atodo se depolariza. mientras que la regiÃ³n central o ecuatorial presenta neutralidad. El campo elÃ©ctrico tiene una direcciÃ³n desde el Ã¡nodo hacia el cÃ¡todo. \alpha es el radio de la cÃ©lula, y \theta es el Ã¡ngulo polar. Los pulsos aplicados son periÃ³dicos y tienen un tiempo de encendido llamado ON TIME, con un potencial fijo, y un tiempo de apagado llamado OFF TIME, sin diferencia de potencial en los electrodos.
 
-DETALLES Se consideran c{elulas esféricas con un radio de entre 10 y 50 micrones, con membranas de aproximadamente 5 nm de espesor. Los pulsos generan campos de hasta 2000vcm. En gral los pulsos son de pocos milisegundos. En respuesta al potencial aplicado var{ia tando la densidad de poros como sus radios, que dependen entre otras cosas del ptm. Se estudia la concentración del ión hidrógeno, el hidroxilo, el sodio y el cloruro.
+DETALLES Se consideran c{elulas esfÃ©ricas con un radio de entre 10 y 50 micrones, con membranas de aproximadamente 5 nm de espesor. Los pulsos generan campos de hasta 2000vcm. En gral los pulsos son de pocos milisegundos. En respuesta al potencial aplicado var{ia tando la densidad de poros como sus radios, que dependen entre otras cosas del ptm. Se estudia la concentraciÃ³n del iÃ³n hidrÃ³geno, el hidroxilo, el sodio y el cloruro.
 
-estudiar justificación especies!
+METODOS COMPUTACIONALES (leer directamente de slides y agregar informaciÃ³n que no figura)
 
-METODOS COMPUTACIONALES (leer directamente de slides y agregar información que no figura)
+MALLADO (leer bullets y explicar el dibujo: eje de rotaciÃ³n, electrodos, cÃ©lula. explicar bien tamaÃ±o variable, membrana es zona de interÃ©s, cÃ³mo se generÃ³ la malla? (arcos, etc. debatible))
 
-MALLADO (leer bullets y explicar el dibujo: eje de rotación, electrodos, célula. explicar bien tamaño variable, membrana es zona de interés, cómo se generó la malla? (arcos, etc. debatible))
+explicar que una ventaja de FEM es que puedo variar los tamaÃ±os de los elems (mayor detalle donde hay mayor variaci{on del problema)
 
-explicar que una ventaja de FEM es que puedo variar los tamaños de los elems (mayor detalle donde hay mayor variaci{on del problema)
+POTENCIAL TEO leer slide, explicar que es sigma y phi, explicar quÃ© dirich es potencial fijo y neumann es la derivada del potencial en direcciÃ³n a la normal al borde. explicar que la fÃ³rmula cerrada no se utiliza, y quÃ© es fs (3/2), E, etc
 
-POTENCIAL TEO leer slide, explicar que es sigma y phi, explicar qué dirich es potencial fijo y neumann es la derivada del potencial en dirección a la normal al borde. explicar que la fórmula cerrada no se utiliza, y qué es fs (3/2), E, etc
-
-POTENCIAL RESULTADO puede verse en el interior que el potencial es casi constante, mientras que la diferencia entre el potencial interior y exterior varía segun el ángulo polar: en el ecuador casi no hay diferencia entre el interior y el exterior, mienteras que en los polos la diferencia alcanza valores extremos
+POTENCIAL RESULTADO puede verse en el interior que el potencial es casi constante, mientras que la diferencia entre el potencial interior y exterior varÃ­a segun el Ã¡ngulo polar: en el ecuador casi no hay diferencia entre el interior y el exterior, mienteras que en los polos la diferencia alcanza valores extremos
 
 aclarar que es un ejemplo
 
-CAMPO horiz: en el hemisf hiperp el campo se aleja de la célula (es positivo) y en el depol. se acerca hacia la célula. explicar porqué están separados en interior y exterior. en el interior se nota que el campo es de signo opuesto al del exterior, es decir.... por último los valores extremos de campo están en la membrana celular. vertical: los valores son negativos en todo el dominio porque el campo es hacia abajo, los valores extremos están cerca del ecuador y en la membrana, y los más cercanos a cero cerca de los polos y en el interior de la célula. en el interior de la célula se nota lo mismo. módulo por último se graficó el módulo del campo eléctrico. los valores extremos se encuentran en la membrana y en la zona externa cercana al ecuador de la célula. en el interior los valores son mucho más chicos (cercanos a cero), pero tmb se notan los valores más altos cerca del ecuador. 
+CAMPO horiz: en el hemisf hiperp el campo se aleja de la cÃ©lula (es positivo) y en el depol. se acerca hacia la cÃ©lula. explicar porquÃ© estÃ¡n separados en interior y exterior. en el interior se nota que el campo es de signo opuesto al del exterior, es decir.... por Ãºltimo los valores extremos de campo estÃ¡n en la membrana celular. vertical: los valores son negativos en todo el dominio porque el campo es hacia abajo, los valores extremos estÃ¡n cerca del ecuador y en la membrana, y los mÃ¡s cercanos a cero cerca de los polos y en el interior de la cÃ©lula. en el interior de la cÃ©lula se nota lo mismo. mÃ³dulo por Ãºltimo se graficÃ³ el mÃ³dulo del campo elÃ©ctrico. los valores extremos se encuentran en la membrana y en la zona externa cercana al ecuador de la cÃ©lula. en el interior los valores son mucho mÃ¡s chicos (cercanos a cero), pero tmb se notan los valores mÃ¡s altos cerca del ecuador. 
 
 GRAFICOS ITV 1 explicar que se hizo un an{alisi param{etrico
 explicar lo que pasa (aumenta linealmente itv con radio y potencial aplicado)
 
-GRAFICO ITV 2 explicar que se verifica la fórmula analítica
-
-SIGMAS DONDE???
-
-agregar par{ametros del grafico y repetir la f{ormula
+GRAFICO ITV 2 explicar que se verifica la fÃ³rmula analÃ­tica
 
 POROS FORMULAS 1 explicar que se estudi{o la generaci{on.... con estas ecuaciones....
 
-CAMBIAR V_M POR PTM
+esta ecuaciÃ³n diferencial ordinaria permite conocer la densidad de poros en una regiÃ³n de la membrana celular. (explicar todas las variables: N es la densidad de poros, V_m el ITV, N_0 es la densidad de poros cuando el ITV es 0 y \alpha_c y v_ep son constantes). Aclarar que la densidad es diff en cada regiÃ³n de la cÃ©lula porque el itv es variable, en lugar de considerarse una densidad homogenea. Esta otra ecuaciÃ³n permite conocer el radio de cada poro  individual. (Aclarar sÃ­mbolos: r el radio de un poro, D coeficiente de difusiÃ³n, k cte de boltzman, T temperatura, vm itv, sigma_eff es la tensiÃ³n efectiva (???) de la membrana, calculada con la fÃ³rmula..., que depende del Ã¡rea ocupara por todos los poros y  el Ã¡rea total de la membrana y el resto (rh, ra, beta, r_star y gamma son constantes)) El 1 tÃ©rmino corresponde a la fuerza elÃ©ctrica producida por el ITV, el 2Âº a la repulsiÃ³n estÃ©rica (???), el 3Âº a la tensiÃ³n superficial del poro y el 4Âº a la tensiÃ³n superficial de la cÃ©lula. (?????)
 
-esta ecuación diferencial ordinaria permite conocer la densidad de poros en una región de la membrana celular. (explicar todas las variables: N es la densidad de poros, V_m el ITV, N_0 es la densidad de poros cuando el ITV es 0 y \alpha_c y v_ep son constantes). Aclarar que la densidad es diff en cada región de la célula porque el itv es variable, en lugar de considerarse una densidad homogenea. Esta otra ecuación permite conocer el radio de cada poro  individual. (Aclarar símbolos: r el radio de un poro, D coeficiente de difusión, k cte de boltzman, T temperatura, vm itv, sigma_eff es la tensión efectiva (???) de la membrana, calculada con la fórmula..., que depende del área ocupara por todos los poros y  el área total de la membrana y el resto (rh, ra, beta, r_star y gamma son constantes)) El 1 término corresponde a la fuerza eléctrica producida por el ITV, el 2º a la repulsión estérica (???), el 3º a la tensión superficial del poro y el 4º a la tensión superficial de la célula. (?????)
+POROS FORMULAS 2 explicar las fÃ³rmulas
+	
+HISTOGRAMAS UN PULSO mostrar que aumentan los poros con el potencial aplicado, aclarar que hay muchos poros chicos que no se grafican, mostrar que los radios no parecen cambiar con el voltaje, mostrar que se sellan muy rÃ¡pidamente, aunque los que perduran tienen radio mÃ¡s grande que los que habÃ­a antes
 
-POROS FORMULAS 2 explicar las fórmulas
-cambiar vm por itv
-
-HISTOGRAMAS UN PULSO mostrar que aumentan los poros con el potencial aplicado, aclarar que hay muchos poros chicos que no se grafican, mostrar que los radios no parecen cambiar con el voltaje, mostrar que se sellan muy rápidamente, aunque los que perduran tienen radio más grande que los que había antes
-
-HISTOGRAMAS VARIOS PULSOS la gran mayoría de los poros son muy pequeños y por lo tanto influyen poco. hay una diferencia sobre todo entre el primer y segundo pulso, pero no tanto en los posteriores. Los radios parecen alcanzar un valor a partir del 2º pulso que no se modifica demasiado en los posteriores. este resultado corrobora lo que se observa experimentalmente con la aplicaci{on continua de pulsos..
+HISTOGRAMAS VARIOS PULSOS la gran mayorÃ­a de los poros son muy pequeÃ±os y por lo tanto influyen poco. hay una diferencia sobre todo entre el primer y segundo pulso, pero no tanto en los posteriores. Los radios parecen alcanzar un valor a partir del 2Âº pulso que no se modifica demasiado en los posteriores. este resultado corrobora lo que se observa experimentalmente con la aplicaci{on continua de pulsos..
 
 PTM VS TIEMPO 
 se estudi{o el modelo de ptm con el modelo de poros y se observa como var{ia el ptm en funci{on del tiempo por efecto.... 
-explicar qué demonios muestra el gráfico, mostrar como al aumentar el potencial no aumenta el pico de itv
+explicar quÃ© demonios muestra el grÃ¡fico, mostrar como al aumentar el potencial no aumenta el pico de itv
 
 ITV VS TITA idem
-poner los valores (radio, etc)
 aclarar que se hicieron muchos  otros
 
 TRANSPORTE FORMULAS como se dijo antes, otro aspecto es la evoluci{on de las especies... para eso... 
-explicar fórmula con sus símbolos (F cte Faraday, R cte de gases, T temp), aclarar que el 1º término es para el movimiento de especies producto del gradiente de concentraciones o difusi{on, y el 2º es la movilidad generada por el campo eléctrico. 
+explicar fÃ³rmula con sus sÃ­mbolos (F cte Faraday, R cte de gases, T temp), aclarar que el 1Âº tÃ©rmino es para el movimiento de especies producto del gradiente de concentraciones o difusi{on, y el 2Âº es la movilidad generada por el campo elÃ©ctrico. 
 se estudian 4 especies.... 
 
-GRAFICOS DE CONCENTRACIONES explicar lo que pasa adentro y afuera, según la valencia (ver tesis) aclarar que no sirve de mucho porque hubo que dejarlo poco tiempo y con potencial aplicado muy chico
+GRAFICOS DE CONCENTRACIONES explicar lo que pasa adentro y afuera, segÃºn la valencia (ver tesis) aclarar que no sirve de mucho porque hubo que dejarlo poco tiempo y con potencial aplicado muy chico
 
 ACOPLADO TEO (leer lo que dice)
 
-VIDEOS UN PULSO explicar signos. explicar que los resultados son muy diferentes a los de solo transporte por considerarse la dinámica de poros. 
-
-poner valores 
+VIDEOS UN PULSO explicar signos. explicar que los resultados son muy diferentes a los de solo transporte por considerarse la dinÃ¡mica de poros. 
 aclarar siempre que es solo un ejemplo
 
-VIDEOS VARIOS PULSOS en el interior: cuando el pulso está encendido se concentran extremos altos de densidad cerca de la membrana en el hemisferio del mismo signo que la especie, y en el otro hemisferio se crea una zona de concentraciones bajas, que avanzan hacia el ecuador, y cuando está apagado las concentraciones se dispersan: se agranda la zona con concentraciones altas y disminuye deja de avanzar el frente con concs. bajas. En el exterior: se crea una zona con concentraciones altas que rodea la célula en el polo de signo popuesto al de la especie, que avanza hacia el ecuador cuando el pulso está encendido, y se aleja de la célula cuando el pulso está apagado. En el polo de mismo signo se crea una zonade concentración baja, pero que se aleja de la célula. Los movs. de h y oh fueron mayores a los de na y cl por las constantes de difusión. se observa mucho más movimiento que con un solo pulso. 
+VIDEOS VARIOS PULSOS en el interior: cuando el pulso estÃ¡ encendido se concentran extremos altos de densidad cerca de la membrana en el hemisferio del mismo signo que la especie, y en el otro hemisferio se crea una zona de concentraciones bajas, que avanzan hacia el ecuador, y cuando estÃ¡ apagado las concentraciones se dispersan: se agranda la zona con concentraciones altas y disminuye deja de avanzar el frente con concs. bajas. En el exterior: se crea una zona con concentraciones altas que rodea la cÃ©lula en el polo de signo popuesto al de la especie, que avanza hacia el ecuador cuando el pulso estÃ¡ encendido, y se aleja de la cÃ©lula cuando el pulso estÃ¡ apagado. En el polo de mismo signo se crea una zonade concentraciÃ³n baja, pero que se aleja de la cÃ©lula. Los movs. de h y oh fueron mayores a los de na y cl por las constantes de difusiÃ³n. se observa mucho mÃ¡s movimiento que con un solo pulso. 
 
 la cant de pulsos facilita el ingreso de especies a la c{elula
 
-COMPARACIÓN EXPERIMENTALES si bien hay pocos resultados experim., se verificó el funcionamiento correcto de las simulaciones implementadas comparándolas cualitativamente con resultados experimentales siguiendo part{iculas cargadas fluorecentes con pulsos de entere 3 y 6 ms. las imágenes corresponden a snapshots en distintos instantes de tiempo. se puede ver que las concentraciones en el interior de la célula son similares.
+COMPARACIÃ“N EXPERIMENTALES si bien hay pocos resultados experim., se verificÃ³ el funcionamiento correcto de las simulaciones implementadas comparÃ¡ndolas cualitativamente con resultados experimentales siguiendo part{iculas cargadas fluorecentes con pulsos de entere 3 y 6 ms. las imÃ¡genes corresponden a snapshots en distintos instantes de tiempo. se puede ver que las concentraciones en el interior de la cÃ©lula son similares.
 
 ESCALABILIDAD tarda aprox. (ver tiempo) por lo tanto se busc{o optimizar.... 
-esto es facil de explicar. aclarar que no parece escalar con más de 2 threads. ver si esto combiene decirlo o no, aunque podría decir que se podría mejorar la escalabilidad al considerar dominios con más elementos, es decir un mallado más denso
+esto es facil de explicar. aclarar que no parece escalar con mÃ¡s de 2 threads. ver si esto combiene decirlo o no, aunque podrÃ­a decir que se podrÃ­a mejorar la escalabilidad al considerar dominios con mÃ¡s elementos, es decir un mallado mÃ¡s denso
 
 aclarar que esto es para escalabilidad fuerte, pero que es probable que con dominios m{as grandes mejore la escalabilidad debil (malla mas densa)
 
-CONCLUSIONES leer, no hay mucho más
+CONCLUSIONES leer, no hay mucho mÃ¡s
 
 PENDIENTE idem
 
-PREGUNTAS? CONSULTAS? DUDAS? INQUIETUDES?
-separar en dos (al reves)
+PREGUNTAS? 

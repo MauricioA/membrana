@@ -22,8 +22,7 @@
 %\institute{DC - FCEyN - UBA}
 \institute{Departamento de Computación\\ Facultad de Ciencias Exactas y Naturales - Universidad de Buenos Aires}
 %\date[12.2013]{SegInf, 2c - 2013}
-
-%TODO cambiar la fecha!!!
+\date{11 de mayo de 2015}
 
 \begin{document}
 
@@ -118,13 +117,13 @@
 		\pause
 		\item Se trabaja en un dominio bidimensional con coordenadas cilíndricas.
 		\pause
-		\item Se hizo uso de la librería de álgebra lineal \textbf{Eigen} para \texttt{C++}.
+		\item Se hizo uso de la biblioteca de álgebra lineal \textbf{Eigen} para \texttt{C++}.
 		\pause		
 		\item Descomposiciones \textbf{BiCGSTAB} y \textbf{LDL} con matrices esparsas para resolver los sistemas de ecuaciones del método de elementos finitos. 
 		\pause		
 		\item Se paralelizaron partes del código en varios hilos con \textbf{OpenMP}.
 		\pause
-		\item Adicionalmente se utilizó \textbf{Python} y la librería \textbf{matplotlib} para procesar las salidas. 
+		\item Adicionalmente se utilizó \textbf{Python} y la biblioteca \textbf{matplotlib} para procesar las salidas. 
 	\end{itemize}
 }
 
@@ -170,7 +169,7 @@
 	\frametitle{Potencial Eléctrico}
 	Ecuación de Poisson:
 	\begin{equation*}
-		\nabla \sigma_{elem} \cdot (\nabla \phi) = 0 
+		\nabla ( \sigma_{elem} \cdot \nabla \phi) = 0 
 	\end{equation*} \pause
 	
 	Condiciones de borde de Dirichlet en los electrodos y de Neumann en el borde restante. \pause
@@ -401,7 +400,7 @@
 
 \frame {
 	\frametitle{Concentraciones}
-	Concentraciones para un pulso de 100 \si{\volt\per\centi\metre} en $t = 380 \si{\micro\second}$
+	Concentraciones para un pulso de 100 \si{\volt\per\centi\metre} en t = 380 \si{\micro\second}
 	\begin{multicols}{2}
 		\center{\h}
 		\center{\includegraphics[width=0.50\textwidth]{graficos/trans/h}}\\
@@ -469,7 +468,7 @@
 	}}\\
 	
 	\vspace{2cm}
-	Para E = 1600 \si{\volt\per\centi\metre} y $\alpha$ = 25 \si{\micro\metre}
+	Para un pulso de 5 \si{\milli\second} con E = 1600 \si{\volt\per\centi\metre} y $\alpha$ = 25 \si{\micro\metre}
 }
 
 %\subsection{Resultados varios pulsos} 
@@ -484,7 +483,7 @@
 	}}
 	
 	\vspace{2cm}
-	Para E = 1600 \si{\volt\per\centi\metre} y $\alpha$ = 25 \si{\micro\metre}
+	Para 4 pulsos de 5 \si{\milli\second} con E = 1600 \si{\volt\per\centi\metre} y $\alpha$ = 25 \si{\micro\metre}
 }
 
 \frame {
