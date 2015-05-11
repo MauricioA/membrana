@@ -54,7 +54,7 @@ for folder in folders:
 		radios = np.array(radios)
 		plt.clf()
 		
-		#descomentar para escala automática
+		#descomentar para escala autom'ica
 		fig, ax = plt.subplots()
 		ax.set_xlim(MIN_X, MAX_X)
 		ax.set_ylim(MIN_Y, MAX_Y)

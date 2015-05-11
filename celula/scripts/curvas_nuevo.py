@@ -74,8 +74,9 @@ for file in files:
 		plt.ylabel(labels[esp], fontdict=font)
 
 		ax.set_xlim(0, xlim)
+		#ax.set_ylim(2e-2, 1e0)
 
-		# para poner líneas de borde célula
+		# para poner lineas de borde celula
 		#max = np.amax(iniciales['y'])
 		#plt.axvline(x=max/5 * 2, color="gray", ls='--')
 		#plt.axvline(x=max/5 * 3, color="gray", ls='--')
@@ -84,6 +85,6 @@ for file in files:
 
 		ax.legend(loc = 'lower right')
 
-		outfile = '%s-%02d.png' % (esp, nFile)
+		outfile = '%s-%04d.png' % (esp, nFile)
 		pylab.savefig('%s/%s' % (out_dir, outfile), bbox_inches='tight')
 		print outfile

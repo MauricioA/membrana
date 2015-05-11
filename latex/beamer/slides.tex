@@ -1,8 +1,9 @@
 \documentclass[handout]{beamer} %handout para imprimir
-
 \usetheme{Frankfurt}
+\useoutertheme[subsection=false]{miniframes}
 \usecolortheme{seahorse}
 \usenavigationsymbolstemplate{}
+
 \usepackage{color}
 \usepackage{listings}
 \usepackage[spanish]{babel}
@@ -19,9 +20,7 @@
 \subtitle{Trabajo para optar por el título de\\ Licenciado en Ciencias de la Computación}
 
 \author{Mauricio Alfonso}
-%\institute{DC - FCEyN - UBA}
 \institute{Departamento de Computación\\ Facultad de Ciencias Exactas y Naturales - Universidad de Buenos Aires}
-%\date[12.2013]{SegInf, 2c - 2013}
 \date{11 de mayo de 2015}
 
 \begin{document}
@@ -57,6 +56,8 @@
 
 \frame {
 	% qué se hace y 4 partes
+	\frametitle{Modelo}	
+	
 	En esta tesis se simula numéricamente la aplicación de pulsos eléctricos a un dominio que contiene a una célula y se estudia su respuesta eléctrica, la permeabilización lograda y el transporte de especies iónicas. 
 	
 	\vspace{\baselineskip}
@@ -74,6 +75,7 @@
 
 \frame {
 %	\frametitle{Dominio}
+	\frametitle{Modelo}		
 	
 	\begin{columns}[c]
 		\begin{column}{0.60\textwidth}
@@ -101,15 +103,13 @@
 
 \section{Implementación}
 
-%TODO corregir el C++ en negrita
-
 %\subsection{Métodos computacionales} 
 
 \frame {
 	%Mencionar FEM, Euler, C++, Eigen, OpenMP
 	\frametitle{Métodos Computacionales}
 	\begin{itemize}
-		\item Se implementaron las simulaciones desde cero en \textbf{C++}.
+		\item Se implementaron las simulaciones desde cero en \textbf{C\raisebox{.25ex}{++}}.
 		\pause
 		\item Se utiliza principalmente el \textbf{Método de Elementos Finitos} y en menor medida diferencias finitas.
 		\pause
@@ -394,8 +394,6 @@
 
 }
 
-%TODO poner las reacciones en los electrodos??
-
 %\subsection{Resultados} 
 
 \frame {
@@ -492,8 +490,6 @@
 	\includegraphics[width=\textwidth]{graficos/experimentales}
 }
 
-%TODO podrían ir también las curvas
-
 \section{Escalabilidad}
 
 %\subsection{Escalabilidad} 
@@ -522,8 +518,6 @@
 }
 
 \section{Conclusiones} 
-
-%TODO no se mencinó nada de potencial mínimo de electroporación!!!
 
 %\subsection{Conclusiones} 
 
@@ -556,12 +550,6 @@
 		\item Modelar la deformación de las células producto del campo eléctrico (está siendo realizado en otro trabajo de tesis).
 	\end{itemize}
 }
-
-%TODO ver warnings!!
-
-%\frame {
-%	\href{run:apollo17.avi}{\includegraphics[height=0.7\textheight]{apollo17.jpg}}
-%}
 
 \frame {
 	\center {\Huge{
